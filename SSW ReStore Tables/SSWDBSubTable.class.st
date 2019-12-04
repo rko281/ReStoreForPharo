@@ -1,0 +1,20 @@
+"
+ReStore
+©2019 John Aspinall
+https://github.com/rko281/ReStoreForDolphin
+https://github.com/rko281/ReStoreForPharo
+"
+Class {
+	#name : #SSWDBSubTable,
+	#superclass : #SSWDBAbstractSubTable,
+	#category : #'SSW ReStore Tables'
+}
+
+{ #category : #evaluating }
+SSWDBSubTable >> withAllFields [
+
+	"Return a table equivalent to the receiver but containing all possible fields.	
+	For a subtable (not inherited further) can optimise this back to just the receiver"
+
+	^self
+]
