@@ -16,9 +16,7 @@ SSWReStoreTest >> debugStream [
 SSWReStoreTest >> initConnectionFor: aReStore [
 
 	aReStore 
-		connection:"
-		 (SSWUDBCSQLite3Connection on: 'file:memory&cache=shared')"
-		(SSWP3Connection new url: 'psql://testclient:test@192.168.1.104:5432/test').
+		connection: (SSWUDBCSQLite3Connection on: 'file:memory&cache=shared')
 ]
 
 { #category : #'*SSW ReStore Tests-Pharo' }
