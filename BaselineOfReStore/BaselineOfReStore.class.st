@@ -31,7 +31,7 @@ BaselineOfReStore >> baseline: spec [
 BaselineOfReStore >> udbcSQLite: spec [
 
 	spec
-		baseline: 'ReStore-UDBC-SQLite'
+		baseline: 'UDBC'
 		with: [
 			spec  
 				loads: #('SQLite');
