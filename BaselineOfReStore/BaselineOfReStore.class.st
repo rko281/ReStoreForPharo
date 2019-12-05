@@ -22,10 +22,10 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore Querying' with: [ spec requires: #('SSW ReStore Collections') ];
 					package: 'SSW ReStore Main' with: [ spec requires: #('SSW ReStore Querying') ];
 					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Main') ];
-					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo') ];
+					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo' 'UDBC') ];
 					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore UDBC SQLite') ];
 					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
-					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo') ] .
+					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo' 'P3') ] .
 				
 				spec
 					group: 'Tests' with: #(#'SSW ReStore Tests-Pharo');
