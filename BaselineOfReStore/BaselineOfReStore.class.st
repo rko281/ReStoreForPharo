@@ -11,6 +11,7 @@ BaselineOfReStore >> baseline: spec [
 		for: #common
 		do: [
 				self udbcSQLite: spec.
+				self p3: spec.
 				spec
 					package: 'Wolphin';
 					package: 'SSW ReStore Base Additions' with: [ spec requires: #('Wolphin') ];
@@ -24,7 +25,26 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Main') ];
 					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo') ];
 					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore UDBC SQLite') ];
-					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ] ]
+					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
+					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo') ] .
+				
+				spec
+					group: 'Tests' with: #(#'SSW ReStore Tests-Pharo');
+					group: 'UDBC SQLite' with: #(#'SSW ReStore UDBC SQLite');
+					group: 'P3 PostgreSQL' with: #(#'SSW ReStore P3');
+					group: 'all' with: #('Tests' 'P3 PostgreSQL');
+					group: 'default' with: #('Tests')]
+]
+
+{ #category : #baselines }
+BaselineOfReStore >> p3: spec [
+
+	spec
+		baseline: 'P3'
+		with: [
+			spec  
+				repository: 'github://svenvc/P3'
+		]
 ]
 
 { #category : #baselines }
