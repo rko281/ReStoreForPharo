@@ -20,20 +20,20 @@ SSWUDBCSQLite3ResultSet >> cachedRows [
 		cachedRows ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 SSWUDBCSQLite3ResultSet >> close [
 
 	"In Dolphin this closes the result set, leaving the statement open.
 	Nothing to do here"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
 SSWUDBCSQLite3ResultSet >> closeAfter: aBlock [
 
 	^[aBlock value: self] ensure: [ self close ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWUDBCSQLite3ResultSet >> describeParam: anInteger [
 
 	^nil
@@ -47,13 +47,13 @@ SSWUDBCSQLite3ResultSet >> do: aBlock [
 		ifNotNil: [ :next | aBlock value: next. true]] whileTrue
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWUDBCSQLite3ResultSet >> exec [
 
 	self execute: self sqlString withCollection: self values
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWUDBCSQLite3ResultSet >> exec: aString [
 
 	self sqlString: aString.
@@ -62,7 +62,7 @@ SSWUDBCSQLite3ResultSet >> exec: aString [
 	self exec
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWUDBCSQLite3ResultSet >> execQuery: anSQLQuery [
 
 	| stream |
@@ -105,7 +105,8 @@ SSWUDBCSQLite3ResultSet >> first [
 { #category : #'initialize-release' }
 SSWUDBCSQLite3ResultSet >> free [
 
-	self close
+	self statement free.
+	statement := nil
 ]
 
 { #category : #initialization }
@@ -131,7 +132,7 @@ SSWUDBCSQLite3ResultSet >> nextOfClass: aRowClass [
 			yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SSWUDBCSQLite3ResultSet >> numRows [
 
 	^db changes
@@ -159,7 +160,7 @@ SSWUDBCSQLite3ResultSet >> parent: aConnection [
 	db := aConnection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWUDBCSQLite3ResultSet >> prepareStatement: anSQLText [
 
 	self sqlString: anSQLText .
@@ -197,7 +198,7 @@ SSWUDBCSQLite3ResultSet >> results [
 	^self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SSWUDBCSQLite3ResultSet >> rowsAffected [
 
 	^self closeAfter: [ :stmt | stmt numRows ]

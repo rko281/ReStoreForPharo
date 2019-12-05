@@ -28,7 +28,7 @@ SSWUDBCSQLite3Statement >> dataTypeForObject: anObject [
 { #category : #'connection open/close' }
 SSWUDBCSQLite3Statement >> free [
 
-	self finalize
+	handle isNil ifFalse: [self finalize]
 ]
 
 { #category : #accessing }

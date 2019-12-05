@@ -6,6 +6,12 @@ Class {
 	#category : #'SSW ReStore UDBC SQLite'
 }
 
+{ #category : #'connection open/close' }
+SSWUDBCSQLite3Connection >> basicClose [
+
+	super close
+]
+
 { #category : #initialization }
 SSWUDBCSQLite3Connection >> basicConnect [
 
@@ -72,6 +78,13 @@ SSWUDBCSQLite3Connection >> prepareQuery: anSQLQuery [
 		query: anSQLQuery;
 		paramCols: (self columnsForFields: anSQLQuery parameterisedFields);
 		yourself 
+]
+
+{ #category : #'connection open/close' }
+SSWUDBCSQLite3Connection >> prepareToClose [
+
+	"Allow resources to be finalized"
+	Smalltalk garbageCollectMost
 ]
 
 { #category : #printing }

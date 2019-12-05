@@ -48,9 +48,10 @@ SSWReStoreDBConnection >> beginTxn [
 { #category : #'connection open/close' }
 SSWReStoreDBConnection >> close [ 
 
-	super close.
-	
-	self reset
+	self 
+		prepareToClose;
+		basicClose;
+		reset
 ]
 
 { #category : #accessing }
