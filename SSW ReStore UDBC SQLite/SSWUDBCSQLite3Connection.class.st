@@ -20,6 +20,28 @@ SSWUDBCSQLite3Connection >> basicConnect [
 	^self open
 ]
 
+{ #category : #'public API - introspection' }
+SSWUDBCSQLite3Connection >> columnNamesFor: aTableName [
+	
+	self isOpen
+		ifFalse: [ UDBCSQLite3NotOpen signal ]
+		ifTrue: [ 
+			| s tableExists |
+			s := self prepare: 'select count(*) from sqlite_master where type = "table" and tbl_name = ?'.
+			s at: 1 putString: aTableName.
+	  		s basicExecute: [ :row | tableExists := ((row integerAt: 0) = 1) ].
+	  		s finalize.
+			tableExists ifTrue: [ 
+				| columns |
+				columns := OrderedCollection new.
+				s := self prepare: 'pragma table_info(', (self sqlDialect asIdentifier: aTableName), ')'.
+				s basicExecute: [ :row | columns add: (row stringAt: 1) ].
+				s finalize.
+				^ columns ].
+			^ nil ]
+		
+]
+
 { #category : #constants }
 SSWUDBCSQLite3Connection >> dbErrorClass [
 

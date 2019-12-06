@@ -892,7 +892,7 @@ SSWDBTable >> removeDefinition [
 	creationTable isNil ifTrue: [^#()].
 
 	(self reStore dbIncludesTableNamed: creationTable name) ifTrue: 
-		[self reStore executeSQL: ('DROP TABLE ', creationTable name)].
+		[self reStore executeSQL: ('DROP TABLE ', (self sqlDialect asIdentifier: creationTable name))].
 
 	containedTables := creationTable containedTables.
 	containedTables do: [ :containedTable | containedTable removeDefinition].

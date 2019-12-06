@@ -1,11 +1,11 @@
 Class {
 	#name : #WeakIdentityDictionary,
-	#superclass : #WeakIdentityKeyDictionary,
+	#superclass : #WeakIdentityValueDictionary,
 	#category : #Wolphin
 }
 
 { #category : #'instance creation' }
 WeakIdentityDictionary class >> newWithWeakKeys: anInteger [
 
-	^self new: anInteger
+	^WeakIdentityKeyDictionary new: anInteger
 ]

@@ -120,6 +120,16 @@ SSWSQLDialect >> alterField: aField table: aTable in: aReStore [
 		aField writeSQLDefinitionOn: stream]
 ]
 
+{ #category : #helpers }
+SSWSQLDialect >> asIdentifier: aString [
+
+	| stream |
+	
+	stream := self sqlWriteStream.
+	stream nextPutIdentifier: aString.
+	^stream contents
+]
+
 { #category : #datatypes }
 SSWSQLDialect >> boolean [
 
