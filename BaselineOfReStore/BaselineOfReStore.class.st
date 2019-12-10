@@ -23,7 +23,7 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore Querying' with: [ spec requires: #('SSW ReStore Collections') ];
 					package: 'SSW ReStore Main' with: [ spec requires: #('SSW ReStore Querying') ];
 					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Main') ];
-					package: 'SSW ReStore SQLite3' with: [ spec requires: #('SSW ReStore for Pharo' 'Pharo-SQLite3') ];
+					package: 'SSW ReStore SQLite3' with: [ spec requires: #('SSW ReStore for Pharo' 'SQLite3') ];
 					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore SQLite3') ];
 					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
 					package: 'SSW ReStore Examples' with: [ spec requires: #('SSW ReStore SQLite3') ];
@@ -32,7 +32,7 @@ BaselineOfReStore >> baseline: spec [
 				
 				spec
 					group: 'Tests' with: #(#'SSW ReStore Tests-Pharo');
-					group: 'SQLite3' with: #(#'SSW ReStore SQLite3');
+					group: 'Pharo SQLite3' with: #(#'SSW ReStore SQLite3');
 					group: 'P3 PostgreSQL' with: #(#'SSW ReStore P3');
 					group: 'UDBC SQLite' with: #(#'SSW ReStore UDBC SQLite');
 					group: 'Examples' with: #(#'SSW ReStore Examples');
@@ -55,7 +55,7 @@ BaselineOfReStore >> p3: spec [
 BaselineOfReStore >> sqlite3: spec [
 
 	spec
-		baseline: 'Pharo-SQLite3'
+		baseline: 'SQLite3'
 		with: [
 			spec
 				repository: 'github://pharo-rdbms/Pharo-SQLite3/src'
