@@ -15,16 +15,9 @@ SSWReStoreTest >> debugStream [
 { #category : #'*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> initConnectionFor: aReStore [
 
-	"Use SQLite, in memory if possible"
+	"Use SQLite in memory"
 	
-	| name |
-
-	"Needs two connections? Must use file"
-	(self class allInstVarNames includes: #reStore2)
-		ifTrue: [ name := 'test.db' ]
-		ifFalse: [ name := ':memory:' ].
-
-	aReStore connection: (SSWUDBCSQLite3Connection on: name)
+	aReStore connection: (SSWSQLite3Connection on: 'file::memory:?cache=shared')
 ]
 
 { #category : #'*SSW ReStore Tests-Pharo' }

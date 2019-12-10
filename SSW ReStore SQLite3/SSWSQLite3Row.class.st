@@ -1,35 +1,35 @@
 Class {
-	#name : #SSWUDBCSQLite3Row,
-	#superclass : #UDBCSQLite3Row,
+	#name : #SSWSQLite3Row,
+	#superclass : #SQLite3Row,
 	#instVars : [
 		'fieldMap'
 	],
-	#category : #'SSW ReStore UDBC SQLite'
+	#category : #'SSW ReStore SQLite3'
 }
 
 { #category : #accessing }
-SSWUDBCSQLite3Row >> atField: aField [
+SSWSQLite3Row >> atField: aField [
 
 	^self atField: aField ifAbsent: [nil]
 
 ]
 
 { #category : #accessing }
-SSWUDBCSQLite3Row >> atField: aField ifAbsent: aBlock [
+SSWSQLite3Row >> atField: aField ifAbsent: aBlock [
 
 	^fieldMap at: aField ifAbsent: aBlock
 ]
 
 { #category : #initializing }
-SSWUDBCSQLite3Row >> createFieldMapFrom: aDBQuery [
+SSWSQLite3Row >> createFieldMapFrom: aDBQuery [
 
 	fieldMap := Dictionary new.
-	data keysAndValuesDo: 
+	columnNames with: values do: 
 		[ :key :value |
 		key isString ifTrue: [ fieldMap at: (aDBQuery fieldNamed: key) put: value ] ]
 ]
 
 { #category : #accessing }
-SSWUDBCSQLite3Row >> fieldMap [
+SSWSQLite3Row >> fieldMap [
 	^ fieldMap
 ]

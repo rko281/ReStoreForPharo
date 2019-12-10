@@ -10,8 +10,9 @@ BaselineOfReStore >> baseline: spec [
 	spec
 		for: #common
 		do: [
-				self udbcSQLite: spec.
+				self sqlite3: spec.
 				self p3: spec.
+				self udbcSQLite: spec.
 				spec
 					package: 'Wolphin';
 					package: 'SSW ReStore Base Additions' with: [ spec requires: #('Wolphin') ];
@@ -22,16 +23,18 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore Querying' with: [ spec requires: #('SSW ReStore Collections') ];
 					package: 'SSW ReStore Main' with: [ spec requires: #('SSW ReStore Querying') ];
 					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Main') ];
-					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo' 'UDBC') ];
-					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore UDBC SQLite') ];
+					package: 'SSW ReStore SQLite3' with: [ spec requires: #('SSW ReStore for Pharo' 'SQLite3') ];
+					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore SQLite3') ];
 					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
-					package: 'SSW ReStore Examples' with: [ spec requires: #('SSW ReStore UDBC SQLite') ];
-					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo' 'P3') ] .
+					package: 'SSW ReStore Examples' with: [ spec requires: #('SSW ReStore SQLite3') ];
+					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo' 'P3') ];
+					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo' 'UDBC') ] .
 				
 				spec
 					group: 'Tests' with: #(#'SSW ReStore Tests-Pharo');
-					group: 'UDBC SQLite' with: #(#'SSW ReStore UDBC SQLite');
+					group: 'SQLite3' with: #(#'SSW ReStore SQLite3');
 					group: 'P3 PostgreSQL' with: #(#'SSW ReStore P3');
+					group: 'UDBC SQLite' with: #(#'SSW ReStore UDBC SQLite');
 					group: 'Examples' with: #(#'SSW ReStore Examples');
 					group: 'all' with: #('Tests' 'Examples' 'P3 PostgreSQL');
 					group: 'default' with: #('Tests' 'Examples')]
@@ -45,6 +48,17 @@ BaselineOfReStore >> p3: spec [
 		with: [
 			spec  
 				repository: 'github://svenvc/P3'
+		]
+]
+
+{ #category : #baselines }
+BaselineOfReStore >> sqlite3: spec [
+
+	spec
+		baseline: 'SQLite3'
+		with: [
+			spec
+				repository: 'github://pharo-rdbms/Pharo-SQLite3/src'
 		]
 ]
 
