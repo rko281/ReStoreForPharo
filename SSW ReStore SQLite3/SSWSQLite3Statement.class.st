@@ -1,28 +1,22 @@
 Class {
 	#name : #SSWSQLite3Statement,
 	#superclass : #SQLite3PreparedStatement,
+	#traits : 'SSWReStoreDBStatement',
+	#classTraits : 'SSWReStoreDBStatement classTrait',
 	#instVars : [
-		'query'
+		'values'
 	],
 	#category : #'SSW ReStore SQLite3'
 }
 
-{ #category : #'public - accessing' }
-SSWSQLite3Statement >> at: aSymbol putAllocatedID: anAllocatedID [
+{ #category : #execution }
+SSWSQLite3Statement >> execute [
 
-	^self at: aSymbol putInteger: anAllocatedID asInteger
-]
+	results isNil ifFalse: 
+		[ self clearBindings; reset.
+		results := nil ].
 
-{ #category : #'connection open/close' }
-SSWSQLite3Statement >> close [
-]
-
-{ #category : #'public - accessing' }
-SSWSQLite3Statement >> dataTypeForObject: anObject [
-
-	(anObject isKindOf: SSWDBAllocatedID) ifTrue: [ ^#at:putAllocatedID: ].
-	
-	^super dataTypeForObject: anObject
+	^(SSWSQLite3ResultSet new statement: self) execute
 ]
 
 { #category : #'connection open/close' }
@@ -32,11 +26,23 @@ SSWSQLite3Statement >> free [
 ]
 
 { #category : #accessing }
-SSWSQLite3Statement >> query [
-	^ query
+SSWSQLite3Statement >> parent [
+
+	^connection
 ]
 
 { #category : #accessing }
-SSWSQLite3Statement >> query: anObject [
-	query := anObject
+SSWSQLite3Statement >> valueAt: anIndex put: anObject [
+
+	self values at: anIndex put: anObject
+]
+
+{ #category : #accessing }
+SSWSQLite3Statement >> values [
+	^ values ifNil: [ #() ]
+]
+
+{ #category : #accessing }
+SSWSQLite3Statement >> values: anObject [
+	values := anObject collect: [  :each | each reStoreValue ]
 ]

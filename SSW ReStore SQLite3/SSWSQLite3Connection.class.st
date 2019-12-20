@@ -48,24 +48,12 @@ SSWSQLite3Connection >> dbErrorClass [
 	^SQLite3AbstractError
 ]
 
-{ #category : #querying }
-SSWSQLite3Connection >> exec: aString [
+{ #category : #'as yet unclassified' }
+SSWSQLite3Connection >> execute: aString [
 
 	^ SSWSQLite3ResultSet new execute: aString 
 		with: #() 
 		on: self	
-]
-
-{ #category : #querying }
-SSWSQLite3Connection >> executeQuery: anSQLQuery cursorType: aSymbol [
-
-	"Entry point for ad-hoc querying"
-
-	anSQLQuery preExecIn: self.
-
-	^(self newStatement: aSymbol) 
-		execQuery: anSQLQuery;
-		yourself
 ]
 
 { #category : #initialization }
@@ -81,38 +69,11 @@ SSWSQLite3Connection >> isConnected [
 	^self isOpen
 ]
 
-{ #category : #querying }
-SSWSQLite3Connection >> newStatement [
-
-	^SSWSQLite3ResultSet new
-		parent: self;
-		yourself
-]
-
-{ #category : #querying }
-SSWSQLite3Connection >> prepareQuery: anSQLQuery [
-
-	"Entry point for system-generated querying (read, refresh, insert).
-	Prepare and return a parameterized statement for the execution of anSQLQuery"
-
-	^(self newStatement
-		prepareStatement: (anSQLQuery sqlStringIn: self sqlDialect))
-		query: anSQLQuery;
-		paramCols: (self columnsForFields: anSQLQuery parameterisedFields);
-		yourself 
-]
-
 { #category : #'connection open/close' }
 SSWSQLite3Connection >> prepareToClose [
 
 	"Allow resources to be finalized"
 	Smalltalk garbageCollectMost
-]
-
-{ #category : #printing }
-SSWSQLite3Connection >> printParameterPlaceholder: anInteger on: aStream [
-
-	aStream nextPut: $?
 ]
 
 { #category : #constants }

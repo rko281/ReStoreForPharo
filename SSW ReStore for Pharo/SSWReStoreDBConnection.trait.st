@@ -51,7 +51,7 @@ SSWReStoreDBConnection >> close [
 	self 
 		prepareToClose;
 		basicClose;
-		reset
+		resetTrait
 ]
 
 { #category : #accessing }
@@ -101,7 +101,7 @@ SSWReStoreDBConnection >> connect [
 	
 	self isConnected ifTrue: 
 		[self sqlDialect: (self sqlDialectClass newFor: self).
-		self reset]
+		self resetTrait]
 ]
 
 { #category : #accessing }
@@ -126,6 +126,34 @@ SSWReStoreDBConnection >> evaluateAsTxn: aBlock [
 		aBlock value
 			ifTrue: [self commitTxn. true]
 			ifFalse: [self rollbackTxn. false]] on: Error do: [ :exc | self rollbackTxn. exc pass]
+]
+
+{ #category : #querying }
+SSWReStoreDBConnection >> exec: aString [
+
+	self logQueryExecution: aString.
+	^self execute: aString
+]
+
+{ #category : #querying }
+SSWReStoreDBConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
+
+	"Entry point for ad-hoc querying"
+
+	| stream values statement |
+		
+	anSQLQuery preExecIn: self.
+
+	stream := SSWSQLWriteStream newIn: self sqlDialect.
+	anSQLQuery writeSQLOn: stream.
+	values := stream parameterizedValues collect: [ :each | each reStoreValue].
+	statement := self prepare: stream contents.
+
+	^statement 
+		setQuery: anSQLQuery;
+		values: values;
+		exec;
+		yourself
 ]
 
 { #category : #accessing }
@@ -163,22 +191,21 @@ SSWReStoreDBConnection >> isDebug [
 	^self debugStream notNil
 ]
 
-{ #category : #accessing }
-SSWReStoreDBConnection >> maxColumnNameLength [ 
-^63
-]
-
-{ #category : #accessing }
-SSWReStoreDBConnection >> maxTableNameLength [ 
-^63
-]
-
 { #category : #querying }
-SSWReStoreDBConnection >> newStatement: aSymbol [ 
-	"Private - Answer a statement connected to the receiver and with the specified 
-	cursor type."
+SSWReStoreDBConnection >> logQueryExecution: aString [
 
-	^self newStatement
+	self debugStream ifNotNil: [ :stream | stream cr; show: aString].
+	self incrementQueryCount
+]
+
+{ #category : #accessing }
+SSWReStoreDBConnection >> maxColumnNameLength [
+	^63
+]
+
+{ #category : #accessing }
+SSWReStoreDBConnection >> maxTableNameLength [
+	^63
 ]
 
 { #category : #'connection open/close' }
@@ -196,6 +223,37 @@ SSWReStoreDBConnection >> postConnect [
 		self evaluateAsTxn: [self exec: script. true]]
 ]
 
+{ #category : #querying }
+SSWReStoreDBConnection >> prepareQuery: anSQLQuery [
+
+	"Entry point for system-generated querying (read, refresh, insert).
+	Prepare and return a parameterized statement for the execution of anSQLQuery"
+
+	| stream |
+		
+	anSQLQuery preExecIn: self.
+
+	stream := SSWSQLWriteStream newIn: self sqlDialect.
+	anSQLQuery writeSQLOn: stream.
+
+	^(self prepare: stream contents)
+		setQuery: anSQLQuery;
+		parametersCount: stream parameterizedValues size;
+		yourself
+]
+
+{ #category : #'connection open/close' }
+SSWReStoreDBConnection >> prepareToClose [
+
+	"Pre-close actions; users reimplement as necessary"
+]
+
+{ #category : #printing }
+SSWReStoreDBConnection >> printParameterPlaceholder: anInteger on: aStream [
+
+	aStream nextPut: $?
+]
+
 { #category : #accessing }
 SSWReStoreDBConnection >> queryCount [
 	^ queryCount
@@ -206,17 +264,10 @@ SSWReStoreDBConnection >> queryCount: anObject [
 	queryCount := anObject
 ]
 
-{ #category : #accessing }
-SSWReStoreDBConnection >> reservedWords [
-
-	^#()
-]
-
 { #category : #'connection open/close' }
 SSWReStoreDBConnection >> reset [
 
-	self 
-		columnDescriptions: IdentityDictionary new
+	"Carry out any reset actions necessary after connect or disconnect"
 ]
 
 { #category : #querying }
@@ -225,6 +276,14 @@ SSWReStoreDBConnection >> resetQueryCount [
 	self queryCount: 0
 
 	
+]
+
+{ #category : #'connection open/close' }
+SSWReStoreDBConnection >> resetTrait [
+
+	self 
+		columnDescriptions: IdentityDictionary new;
+		reset
 ]
 
 { #category : #transactions }
@@ -256,6 +315,6 @@ SSWReStoreDBConnection >> stopQueryCounting [
 	
 ]
 
-{ #category : #placeholders }
+{ #category : #accessing }
 SSWReStoreDBConnection >> willAutoCommit: aBoolean [
 ]

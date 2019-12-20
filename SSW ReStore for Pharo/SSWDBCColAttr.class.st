@@ -27,6 +27,12 @@ SSWDBCColAttr >> connection: anObject [
 ]
 
 { #category : #accessing }
+SSWDBCColAttr >> fieldName [
+
+	^self name
+]
+
+{ #category : #accessing }
 SSWDBCColAttr >> index [
 	^ index
 ]

@@ -376,7 +376,7 @@ SSWDBObjectProxy >> printString [
 { #category : #'accessing:derived' }
 SSWDBObjectProxy >> reStoreValue [
 
-	^id
+	^id reStoreValue
 ]
 
 { #category : #forwarding }
