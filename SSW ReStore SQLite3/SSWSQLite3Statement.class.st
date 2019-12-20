@@ -12,11 +12,13 @@ Class {
 { #category : #execution }
 SSWSQLite3Statement >> execute [
 
-	results isNil ifFalse: 
-		[ self clearBindings; reset.
-		results := nil ].
+	^self execute: self values
+]
 
-	^(SSWSQLite3ResultSet new statement: self) execute
+{ #category : #execution }
+SSWSQLite3Statement >> execute: bindings [ 
+
+	^(super execute: bindings) asSSWSQLite3ResultSet
 ]
 
 { #category : #'connection open/close' }

@@ -2,7 +2,8 @@ Class {
 	#name : #SSWSQLite3ResultSet,
 	#superclass : #SQLite3Cursor,
 	#instVars : [
-		'cachedRows'
+		'cachedRows',
+		'query'
 	],
 	#pools : [
 		'SQLite3Constants'
@@ -16,27 +17,12 @@ SSWSQLite3ResultSet >> cachedRows [
 	^cachedRows ifNil: [ cachedRows := self rows ]
 ]
 
-{ #category : #'initialize-release' }
-SSWSQLite3ResultSet >> close [
-
-	"In Dolphin this closes the result set, leaving the statement open.
-	Nothing to do here"
-]
-
 { #category : #private }
 SSWSQLite3ResultSet >> do: aBlock [
 
 	[self next
 		ifNil: [ false ]
 		ifNotNil: [ :next | aBlock value: next. true]] whileTrue
-]
-
-{ #category : #API }
-SSWSQLite3ResultSet >> execute [ 
-
-	statement values keysAndValuesDo: [ :i :v | self execute: statement withIndex: i withValue: v ].
-	moreRows := statement step = 100.	" == SQLITE_ROW "
-	^self
 ]
 
 { #category : #accessing }
@@ -79,7 +65,7 @@ SSWSQLite3ResultSet >> numRows [
 { #category : #accessing }
 SSWSQLite3ResultSet >> query [
 
-	^statement query
+	^query
 ]
 
 { #category : #accessing }
@@ -93,4 +79,16 @@ SSWSQLite3ResultSet >> statement: anSSWSQLite3Statement [
 
 	statement := anSSWSQLite3Statement.
 	connection := anSSWSQLite3Statement parent
+]
+
+{ #category : #initialization }
+SSWSQLite3ResultSet >> statement: aStatement moreRows: aBoolean rows: rCollection mutators: mCollection [
+
+	statement := aStatement.
+	connection := aStatement parent.
+	query := aStatement query.
+		
+	moreRows := aBoolean.
+	rows := rCollection.
+	mutators := mCollection
 ]

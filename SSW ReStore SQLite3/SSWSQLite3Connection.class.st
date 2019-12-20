@@ -48,12 +48,10 @@ SSWSQLite3Connection >> dbErrorClass [
 	^SQLite3AbstractError
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 SSWSQLite3Connection >> execute: aString [
 
-	^ SSWSQLite3ResultSet new execute: aString 
-		with: #() 
-		on: self	
+	^(self prepare: aString) execute
 ]
 
 { #category : #initialization }
