@@ -11,7 +11,7 @@ Metacello new
     load: 'all'
 ```
 
-This will load ReStore with support for SQLite (via [UDBC](https://github.com/astares/Pharo-UDBC)) and PostgreSQL (via [P3](https://github.com/svenvc/P3)), plus the example classes we'll discuss next.
+This will load ReStore with support for SQLite (via [pharo-rdbms](https://github.com/pharo-rdbms/Pharo-SQLite3)) and PostgreSQL (via [P3](https://github.com/svenvc/P3)), plus the example classes we'll discuss next.
 
 # A Simple Example
 Let's consider a simple customer order application with the following classes (found in the `SSW ReStore Examples` package):
@@ -54,7 +54,7 @@ With ReStore definitions created for all classes we can now connect to the datab
 
 ```smalltalk
 ReStore
-	connection: (SSWUDBCSQLite3Connection on: 'test.db');
+	connection: (SSWSQLite3Connection on: (Smalltalk imageDirectory / 'test.db') fullName);
 	connect;
 	addClasses: {Customer. Address. Order. Product};
 	synchronizeAllClasses.
@@ -133,7 +133,7 @@ Customer storedInstances detect: [ :each | each orders anySatisfy: [ :order | (o
 ```
 
 # Next Steps
-This is just a sample of what ReStore can do with an empahsis on simplicity. ReStore also supports more sophisticated usage patterns including:
+This is just a sample of what ReStore can do, with an empahsis on simplicity. ReStore also supports more sophisticated usage patterns including:
  - transactions with automatic change-tracking
  - multi-user update clash detection and resolution
  - persistent class hierarchies

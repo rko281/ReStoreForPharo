@@ -24,7 +24,7 @@ SSWSQLite3Connection >> basicConnect [
 SSWSQLite3Connection >> columnNamesFor: aTableName [
 	
 	self isOpen
-		ifFalse: [ UDBCSQLite3NotOpen signal ]
+		ifFalse: [ SQLite3NotOpen signal ]
 		ifTrue: [ 
 			| s tableExists |
 			s := self prepare: 'select count(*) from sqlite_master where type = "table" and tbl_name = ?'.
