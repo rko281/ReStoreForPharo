@@ -23,7 +23,19 @@ SSWDBProxy >> _proxyInstVarAt: index put: value [
 ]
 
 { #category : #'*SSW ReStore for Pharo' }
+SSWDBProxy >> asCollectionElement [
+
+	^self
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
 SSWDBProxy >> asSetElement [
+
+	^self
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
+SSWDBProxy >> enclosedElement [
 
 	^self
 ]

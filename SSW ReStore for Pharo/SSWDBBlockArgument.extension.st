@@ -24,7 +24,7 @@ SSWDBBlockArgument >> postProcessDNU: anObject [
 	| sender node |
 
 	sender := thisContext sender sender.
-	node := sender method sourceNodeForPC: sender neighborPCWithCorrectMapping.
+	node := sender method sourceNodeForPC: sender sswNeighborPCWithCorrectMapping.
 	node isMessage ifFalse: [^anObject ].
 
 	"Collection>>includes: -> self>>includedIn:"
