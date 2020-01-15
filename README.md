@@ -117,7 +117,8 @@ johnSmith store.
 Customer storedInstances detect: [ :each | each address postcode = 'W1 1AA'].
 
 "Creating an Order - first we need a product"
-widget := Product new name: 'Widget'; store.
+widget := Product new name: 'Widget'.
+widget store.
 
 johnSmith 
     addOrder: 
