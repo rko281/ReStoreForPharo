@@ -115,6 +115,14 @@ Object class >> shouldInheritPersistency [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+Object class >> shouldInlinePersistency [
+
+	"Return whether this class should always be inlined when referenced from another class's reStoreDefinition"
+
+	^false
+]
+
+{ #category : #'*SSW ReStore Tables' }
 Object class >> shouldSubclassesInheritPersistency [
 
 	"Return a Boolean indicating whether the receiver class' persistency 

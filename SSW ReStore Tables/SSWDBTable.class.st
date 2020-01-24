@@ -419,7 +419,30 @@ SSWDBTable >> define: aSymbol asInstVarHolding: aClass [
 
 	"Return the field created"
 	
-	^self define: aSymbol asFieldNamed: (self dbNameFor: aSymbol) holding: aClass
+	^aClass shouldInlinePersistency
+		ifTrue: [self define: aSymbol asInstVarHoldingInlined: aClass]
+		ifFalse: [self define: aSymbol asFieldNamed: (self dbNameFor: aSymbol) holding: aClass]
+]
+
+{ #category : #defining }
+SSWDBTable >> define: aSymbol asInstVarHoldingInlined: aClass [
+
+	| inliner |
+
+	inliner := SSWFieldInliner new.
+	inliner 
+		table: self;
+		instanceClass: self instanceClass;
+		inlinedName: aSymbol;
+		inlinedSlot: (self instanceClass allInstVarNames indexOf: aSymbol asString);
+		inlinedClass: aClass.
+
+	inliner inlinedSlot < 1 ifTrue: [self error: ('Undefined instance variable ', aSymbol)].
+
+	aClass reStoreDefinition addDefinitionToTable: inliner.
+
+	"To satisfy protocol of returning field created"
+	^inliner fields first
 ]
 
 { #category : #defining }

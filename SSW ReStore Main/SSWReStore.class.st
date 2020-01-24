@@ -100,7 +100,7 @@ SSWReStore class >> initialize [
 { #category : #'initialize/release' }
 SSWReStore class >> initializeReStoreGlobal [
 
-	Smalltalk at: #ReStore put: self globalDefault
+	self class environment at: #ReStore put: self globalDefault
 ]
 
 { #category : #'instance creation' }

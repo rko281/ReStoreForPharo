@@ -52,6 +52,12 @@ SSWInstVarAccessor >> accesses: aSymbol [
 	^self name = aSymbol
 ]
 
+{ #category : #testing }
+SSWInstVarAccessor >> accessesDeeply: aSymbol [
+
+	^false
+]
+
 { #category : #evaluating }
 SSWInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 

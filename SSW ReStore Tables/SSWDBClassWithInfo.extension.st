@@ -11,3 +11,9 @@ SSWDBClassWithInfo >> defineAs: aSymbol in: anSSWDBTable [
 
 	^anSSWDBTable define: aSymbol asInstVarHolding: self
 ]
+
+{ #category : #'*SSW ReStore Tables' }
+SSWDBClassWithInfo >> shouldInlinePersistency [
+
+	^false
+]

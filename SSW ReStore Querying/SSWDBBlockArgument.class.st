@@ -65,9 +65,13 @@ SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 				ifNil: [self simulateMessageSend: aMessage]
 				ifNotNil: [ :collection | self newCollectionReceiverFor: collection]]
 		ifFalse: 
-			[(field targetClass isPersistentIn: self reStore)
-				ifTrue: [self newReceiverFor: field]
-				ifFalse: [self finalField: (self queryFieldFor: field)]]]
+			[field isInlined "Need explicit check for inlined fields"
+			ifTrue: 
+				[self newInlinedReceiverFor: selector] 
+			ifFalse: 
+				[(field targetClass isPersistentIn: self reStore)
+					ifTrue: [self newReceiverFor: field]
+					ifFalse: [self finalField: (self queryFieldFor: field)]]]]
 	ifFalse:
 		[arguments size > 1 ifTrue: [self parseError: 'Cannot support more than one comparison argument'].
 		(self hasFinalField not and: [self currentClass isPersistentBaseClass not and: [arguments last == SSWDBDumbArgument current]]) ifTrue: 
@@ -372,6 +376,16 @@ SSWDBBlockArgument >> newCollectionReceiverFor: aCollectionSpec [
 
 	^aCollectionSpec dbBlockCollectionReceiver
 		parser: self parser;
+		yourself
+]
+
+{ #category : #helpers }
+SSWDBBlockArgument >> newInlinedReceiverFor: aSymbol [
+
+	^SSWDBInlinedBlockReceiver new
+		parser: self parser;
+		currentClass: self currentClass;
+		inlinedInstVar: aSymbol;
 		yourself
 ]
 

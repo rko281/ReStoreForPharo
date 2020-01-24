@@ -115,6 +115,12 @@ SSWDBField >> isFieldCollection [
 ]
 
 { #category : #testing }
+SSWDBField >> isInlined [
+
+	^self accessor isInlined
+]
+
+{ #category : #testing }
 SSWDBField >> isRelated [
 
 	"isRelated indicates whether the receiver field represents an object which is related to the owning/source object such that it will be commited/rolled-back with that object when withRelatedComponents is used"

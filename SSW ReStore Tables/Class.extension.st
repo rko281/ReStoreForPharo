@@ -10,3 +10,11 @@ Class >> defineAs: aSymbol in: anSSWDBTable [
 
 	^anSSWDBTable define: aSymbol asInstVarHolding: self
 ]
+
+{ #category : #'*SSW ReStore Tables' }
+Class >> inlined [
+
+	^SSWDBInlinedClass new
+		inlinedClass: self;
+		yourself
+]

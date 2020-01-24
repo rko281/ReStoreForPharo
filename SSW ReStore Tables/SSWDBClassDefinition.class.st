@@ -25,6 +25,15 @@ SSWDBClassDefinition class >> forClass: aClass [
 		yourself
 ]
 
+{ #category : #defining }
+SSWDBClassDefinition >> addDefinitionToTable: aDBTable [
+
+	self instVarDefinitions do: [ :assoc | aDBTable define: assoc key as: assoc value].
+
+	self tableName isNil ifFalse: [aDBTable name: self tableName].
+	self idInstVar isNil ifFalse: [aDBTable defineAsID: self idInstVar]
+]
+
 { #category : #converting }
 SSWDBClassDefinition >> asTableIn: aReStore [
 
@@ -32,10 +41,7 @@ SSWDBClassDefinition >> asTableIn: aReStore [
 
 	table := self definedClass reStoreTableClass forClass: self definedClass in: aReStore.
 
-	self instVarDefinitions do: [ :assoc | table define: assoc key as: assoc value].
-
-	self tableName isNil ifFalse: [table name: self tableName].
-	self idInstVar isNil ifFalse: [table defineAsID: self idInstVar].
+	self addDefinitionToTable: table.
 		
 	^table isDefined
 		ifTrue: [table]

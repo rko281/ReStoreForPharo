@@ -30,12 +30,12 @@ SSWDBBlockArgument >> postProcessDNU: anObject [
 	"Collection>>includes: -> self>>includedIn:"
 	( node selector = #includes: and: [(anObject isKindOf: SSWDBCollectionBlockReceiver) not ]) ifTrue: 
 		[ sender pc: sender followingPc.
-		  ^anObject includedIn: (sender at: sender stackPtr) ].
+		  ^sender at: sender stackPtr put: (anObject includedIn: (sender at: sender stackPtr)) ].
 
 	"String>>match: -> self>>matches:"
 	node selector = #match: ifTrue: 
 		[ sender pc: sender followingPc.
-		  ^anObject matches: (sender at: sender stackPtr) ].
+		  ^sender at: sender stackPtr put: (anObject matches: (sender at: sender stackPtr)) ].
 
 	^anObject
 ]

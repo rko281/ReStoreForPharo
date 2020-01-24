@@ -27,6 +27,12 @@ SSWAccessor >> accesses: aSymbol [
 	^self subclassResponsibility
 ]
 
+{ #category : #testing }
+SSWAccessor >> isInlined [
+
+	^false
+]
+
 { #category : #evaluating }
 SSWAccessor >> name [
 

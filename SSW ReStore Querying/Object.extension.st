@@ -39,6 +39,9 @@ Object >> qualify: instances in: aReStore via: aCollection [
 			[| accessor chain |
 			accessor := field accessor.
 			chain := aCollection copyWith: accessor name.
+			[accessor isInlined] whileTrue: 
+				[accessor := accessor inlinedAccessor.
+				chain := chain copyWith: accessor name].
 			(field targetClass isPersistentIn: aReStore)
 			ifTrue: 
 				[(value _dbProxyIfNone: [nil])
