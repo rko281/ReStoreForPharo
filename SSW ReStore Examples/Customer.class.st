@@ -21,7 +21,7 @@ Customer class >> reStoreDefinition [
 		define: #emailAddress as: (String maxSize: 100);
 		define: #dateOfBirth as: Date;
 		define: #address as: Address dependent;
-		define: #orders as: (OrderedCollection of: Order dependent owner: #customer);
+		define: #orders as: (OrderedCollection of: CustomerOrder dependent owner: #customer);
 		yourself.
 ]
 

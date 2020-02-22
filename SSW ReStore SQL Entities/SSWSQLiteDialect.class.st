@@ -74,8 +74,14 @@ SSWSQLiteDialect >> defaultMaxTableNameLength [
 SSWSQLiteDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
+		"String functions"
 		at: #size put: 'LENGTH(%1)' asSQLFunctionIntegerResult;
 		at: #midString:from: put: 'SUBSTR(%1,%3,%2)' asSQLFunction;
+
+		"Date functions"
+		at: #dayOfMonth put: 'CAST(STRFTIME(''%%d'',%1) AS INTEGER)' asSQLFunctionIntegerResult;
+		at: #monthIndex put: 'CAST(STRFTIME(''%%m'',%1) AS INTEGER)' asSQLFunctionIntegerResult;
+		at: #year put: 'CAST(STRFTIME(''%%Y'',%1) AS INTEGER)' asSQLFunctionIntegerResult;
 		yourself
 ]
 

@@ -30,7 +30,7 @@ Collection >> _dbAdd: anObject [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> _fetchComponents: aCollection [
+Collection >> _fetchAll: aCollection [
 
 	"Private - ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
 	to fetch from the database the components in the inst vars named in aCollection"
@@ -43,7 +43,6 @@ Collection >> _fetchComponents: aCollection [
 	table := reStore tableForClass: any class.
 
 	aCollection do: [ :instVar | (table componentAccessing: instVar) readAllFor: self]
-
 	
 ]
 
@@ -171,21 +170,33 @@ Collection >> directAdd: anObject suggestedIndex: anInteger [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> fetchComponent: aSymbol [
+Collection >> fetch: aSymbol [
 
 	"ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
 	to fetch from the database the component in the inst var named aSymbol"
 
-	^self fetchComponents: (Array with: aSymbol)
+	^self fetchAll: (Array with: aSymbol)
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> fetchComponents: aCollection [
+Collection >> fetchAll: aCollection [
 
 	"ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
 	to fetch from the database the components in the inst vars named in aCollection"
 
-	^(self select: [ :each | each _isRecovered]) _fetchComponents: aCollection
+	^(self select: [ :each | each _isRecovered]) _fetchAll: aCollection
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Collection >> fetchComponent: aSymbol [
+	#deprecated.
+	^self fetch: aSymbol
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Collection >> fetchComponents: aCollection [
+	#deprecated.
+	^self fetchAll: aCollection
 ]
 
 { #category : #'*SSW ReStore Collections' }

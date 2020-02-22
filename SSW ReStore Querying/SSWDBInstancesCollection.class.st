@@ -201,6 +201,48 @@ SSWDBInstancesCollection >> first: anInteger [
 	^collection
 ]
 
+{ #category : #initializing }
+SSWDBInstancesCollection >> include: aSymbol [
+
+	"Arrange for the content of the inst var named aSymbol to be bulk fetched when elements of the receiver are read from the database"
+
+	self includeAll: (Array with: aSymbol)
+]
+
+{ #category : #initializing }
+SSWDBInstancesCollection >> includeAll: aCollectionOfInstVarNames [
+
+	"Arrange for the contents of aCollectionOfInstVarNames (representing components of the receiver) to be bulk fetched when elements of the receiver are read from the database"
+	
+	self includeTableComponents: (aCollectionOfInstVarNames collect: [ :instVarName | self table componentAccessing: instVarName])
+]
+
+{ #category : #initializing }
+SSWDBInstancesCollection >> includeDependentComponents [
+
+	"Arrange for dependent contents to be bulk pre-fetched when elements of the receiver are read from the database"
+
+	self includeTableComponents: self table dependentComponents
+]
+
+{ #category : #initializing }
+SSWDBInstancesCollection >> includeRelatedComponents [
+
+	"Arrange for related contents to be bulk pre-fetched when elements of the receiver are read from the database"
+
+	self includeTableComponents: self table relatedComponents
+]
+
+{ #category : #initializing }
+SSWDBInstancesCollection >> includeTableComponents: aCollectionOfTableComponents [
+
+	"Private - Arrange for the contents of aCollectionOfTableComponents to be bulk fetched when elements of the receiver are read from the database"
+
+	aCollectionOfTableComponents do: 
+		[ :component | 
+		self postReadActions add: [ :elements | component readAllFor: elements]]
+]
+
 { #category : #testing }
 SSWDBInstancesCollection >> includes: anObject [
 
@@ -566,46 +608,28 @@ SSWDBInstancesCollection >> unstoreAll [
 	^self unstore: [ :each | true]
 ]
 
-{ #category : #initializing }
+{ #category : #deprecated }
 SSWDBInstancesCollection >> withComponent: aSymbol [
-
-	"Arrange for the content of the inst var named aSymbol to be bulk fetched when elements of the receiver are read from the database"
-
-	self withComponents: (Array with: aSymbol)
+	#deprecated.
+	self include: aSymbol
 ]
 
-{ #category : #initializing }
+{ #category : #deprecated }
 SSWDBInstancesCollection >> withComponents: aCollectionOfInstVarNames [
-
-	"Arrange for the contents of aCollectionOfInstVarNames (representing components of the receiver) to be bulk fetched when elements of the receiver are read from the database"
-
-	self withTableComponents: (aCollectionOfInstVarNames collect: [ :instVarName | self table componentAccessing: instVarName])
+	#deprecated.
+	self includeAll: aCollectionOfInstVarNames
 ]
 
-{ #category : #initializing }
+{ #category : #deprecated }
 SSWDBInstancesCollection >> withDependentComponents [
-
-	"Arrange for dependent contents to be bulk pre-fetched when elements of the receiver are read from the database"
-
-	self withTableComponents: self table dependentComponents
+	#deprecated.
+	self includeDependentComponents
 ]
 
-{ #category : #initializing }
+{ #category : #deprecated }
 SSWDBInstancesCollection >> withRelatedComponents [
-
-	"Arrange for related contents to be bulk pre-fetched when elements of the receiver are read from the database"
-
-	self withTableComponents: self table relatedComponents
-]
-
-{ #category : #initializing }
-SSWDBInstancesCollection >> withTableComponents: aCollectionOfTableComponents [
-
-	"Private - Arrange for the contents of aCollectionOfTableComponents to be bulk fetched when elements of the receiver are read from the database"
-
-	aCollectionOfTableComponents do: 
-		[ :component | 
-		self postReadActions add: [ :elements | component readAllFor: elements]]
+	#deprecated.
+	self includeRelatedComponents
 ]
 
 { #category : #evaluating }

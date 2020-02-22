@@ -53,6 +53,22 @@ SSWDBProxy >> gtDisplayString [
 ]
 
 { #category : #'*SSW ReStore for Pharo' }
+SSWDBProxy >> gtInspectorActions [
+
+	"Prevent unstubbing or errors"
+
+	^#()
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
+SSWDBProxy >> gtInspectorPresentationsIn: composite inContext: aGTInspector [
+
+	"Prevent unstubbing or errors"
+
+	self gtInspectorPresentationsFromPragmas: #() In: composite inContext: aGTInspector
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
 SSWDBProxy >> notNil [
 
 	^true
