@@ -20,14 +20,14 @@ Let's consider a simple customer order application with the following classes (f
 Object subclass: #Customer
 	instanceVariableNames: 'firstName surname emailAddress dateOfBirth address orders'
 
-Object subclass: #Address
-	instanceVariableNames: 'line1 postcode country'
-
-Object subclass: #Order
-	instanceVariableNames: 'date product quantity customer'
+Object subclass: #CustomerOrder
+	instanceVariableNames: 'orderDate customer items totalPrice'
+	
+Object subclass: #CustomerOrderItem
+	instanceVariableNames: 'order product quantity'
     
 Object subclass: #Product
-	instanceVariableNames: 'name description'
+	instanceVariableNames: 'name description price'
 ```
 
 The first step in adding persistency with ReStore is to define the structure of the classes. This is done with the class method reStoreDefinition - for the Customer class this is:
@@ -41,13 +41,13 @@ reStoreDefinition
 		define: #emailAddress as: (String maxSize: 100);
 		define: #dateOfBirth as: Date;
 		define: #address as: Address dependent;
-		define: #orders as: (OrderedCollection of: Order dependent owner: #customer);
+		define: #orders as: (OrderedCollection of: CustomerOrder dependent owner: #customer);
 		yourself.
 ```
 
 A couple of things worth highlighting here:
  - `define: #address as: Address dependent` - adding `dependent` to a definition means that object is dependent on the originating object for its existence. In this case the customer's address object is dependent on the owning customer - this means any changes to the address will be saved along with the customer, and the address will be deleted if the customer is deleted. 
- - `define: #orders as: (OrderedCollection of: Order dependent owner: #customer)` - this is an example of an owned collection definition. An owned collection is one where the elements of the collection contain a reference to the owner of the collection. In this case instances of Order refer to their owning customer via their customer instance variable. 
+ - `define: #orders as: (OrderedCollection of: CustomerOrder dependent owner: #customer)` - this is an example of an owned collection definition. An owned collection is one where the elements of the collection contain a reference to the owner of the collection. In this case instances of Order refer to their owning customer via their customer instance variable. 
 
 # Creating the Database
 With ReStore definitions created for all classes we can now connect to the database and create the database structure:
@@ -56,7 +56,7 @@ With ReStore definitions created for all classes we can now connect to the datab
 ReStore
 	connection: (SSWSQLite3Connection on: (Smalltalk imageDirectory / 'test.db') fullName);
 	connect;
-	addClasses: {Customer. Address. Order. Product};
+	addClasses: {Customer. Address. CustomerOrder. CustomerOrderItem. Product};
 	synchronizeAllClasses.
 ```
 
@@ -117,20 +117,22 @@ johnSmith store.
 Customer storedInstances detect: [ :each | each address postcode = 'W1 1AA'].
 
 "Creating an Order - first we need a product"
-widget := Product new name: 'Widget'.
-widget store.
+widget := Product new name: 'Widget'; price: 2.5s2; store; yourself.
 
 johnSmith 
     addOrder: 
-        (Order new 
-            date: Date today;
-            product: widget;
-            quantity: 4;
+        (CustomerOrder new 
+            orderDate: Date today;
+            addItem: 
+	    	(CustomerOrderItem new
+			product: widget;
+			quantity: 4;
+			yourself);
             yourself);
     store.
-    
+
 "Check it:"
-Customer storedInstances detect: [ :each | each orders anySatisfy: [ :order | (order product = widget) & (order quantity = 4)]].
+Customer storedInstances detect: [ :each | each orders anySatisfy: [ :order | order totalPrice = 10]].
 ```
 
 # Next Steps
@@ -142,4 +144,4 @@ This is just a sample of what ReStore can do, with an empahsis on simplicity. Re
  - query-by-example (template queries)
  - customisable Smalltalk-to-SQL conversion
  
- Documentation and examples of these to follow. In the meantime please browse the included SUnits for more examples. 
+Full documentation can be found [here](https://drive.google.com/file/d/1NllXPOF09wTX7J6qeTKs3Vp_uTy3tIIL/view?usp=sharing). Please also see the included SUnits for more examples. 
