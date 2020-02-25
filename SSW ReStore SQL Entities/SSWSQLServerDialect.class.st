@@ -36,6 +36,14 @@ SSWSQLServerDialect >> cursorType [
 	^#keysetDriven
 ]
 
+{ #category : #constants }
+SSWSQLServerDialect >> dateAndTimeFormat [
+
+	"The format for DateAndTImes when expressed as Strings"
+
+	^'yyyy-MM-dd HH:mm:ssfff'
+]
+
 { #category : #datatypes }
 SSWSQLServerDialect >> datetime [
 
@@ -147,4 +155,10 @@ SSWSQLServerDialect >> shouldMaskSuccessWithInfo [
 SSWSQLServerDialect >> supportsImplicitTrueConditions [
 
 	^false
+]
+
+{ #category : #datatypes }
+SSWSQLServerDialect >> unsizedBlob [
+
+	^'varbinary(max)'
 ]

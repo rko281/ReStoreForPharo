@@ -132,3 +132,9 @@ SSWPostgreSQLDialect >> shouldMaskSuccessWithInfo [
 
 	^true
 ]
+
+{ #category : #datatypes }
+SSWPostgreSQLDialect >> unsizedBlob [
+
+	^'bytea'
+]

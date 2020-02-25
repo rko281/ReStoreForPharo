@@ -143,6 +143,12 @@ SSWMSAccessDialect >> trueObject [
 	^-1
 ]
 
+{ #category : #datatypes }
+SSWMSAccessDialect >> unsizedBlob [
+
+	^'LONGBINARY'
+]
+
 { #category : #constants }
 SSWMSAccessDialect >> updateDelaySeconds [
 

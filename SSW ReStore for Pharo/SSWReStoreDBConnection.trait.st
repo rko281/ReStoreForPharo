@@ -114,6 +114,31 @@ SSWReStoreDBConnection >> debugStream: anObject [
 	debugStream := anObject
 ]
 
+{ #category : #constants }
+SSWReStoreDBConnection >> defaultMaxColumnBytes [
+
+	"Comment taken from Dolphin implementation; method is included here since it also impacts on the assumed size of unsized Strings:
+	
+	
+	defaultMaxColumnBytes defines the default maximum size of a column in bytes - this is used to initialize/cap the size of a column's replication buffer.
+	
+	The default is 128KB (2 raisedTo: 17) which is increased compared to the limit defined in Dolphin's Database Connection (64KB, 2 raisedTo: 16 - see DBField>>initializeForColumn:).
+	If a larger size is needed you can set an appropriate value for your application following login by sending maxColumnBytes: to your ReStore's sqlDialect object.
+	Bear in mind that wide character strings (if supported) can use > 1 byte per character.
+	
+	Also bear in mind that this value is used when creating a ByteArray for each unsized column which is replicated.
+	If you increase this value then consider specifying a maximum String size in your reStoreDefinition methods to avoid unnecessarily large buffers.
+
+	Also bear in mind that this value can be limited by the ODBC driver. 
+	e.g. as of writing SQLite appears to be limited to 65536 bytes, whilst Postgres lets you specify the limit in the Datasource dialog (but the default is only 8190 bytes!!)
+
+	Purely anecdotally, a maxColumnBytes of 1MB (2 raisedTo: 20) makes no discernable performance difference compared to the Dolphin default size of 64KB when run over the entire ReStore test suite.
+
+	Very large values really need the use of unbound columns and incremental (paged) put/getData, however this is not yet implemented (and is potentially less performant than bound columns)"
+
+	^"(2**17)" 131072
+]
+
 { #category : #transactions }
 SSWReStoreDBConnection >> evaluateAsTxn: aBlock [
 

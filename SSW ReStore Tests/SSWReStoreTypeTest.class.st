@@ -63,6 +63,44 @@ SSWReStoreTypeTest >> testANSI [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreTypeTest >> testBytes [
+
+	| bytes allBytes tiny med large t id |
+
+	bytes := ByteArray withAll: (0 to: 255).
+	allBytes := bytes.
+	(10000 / bytes size) rounded timesRepeat: [allBytes := allBytes, bytes].
+
+	tiny := allBytes copyFrom: 1 to: 255.
+	med := allBytes copyFrom: 1 to: 2000.
+	large := allBytes copyFrom: 1 to: 5000.
+
+	t := self createTestInstance.
+	t 
+		tinyBlob: tiny;
+		medBlob: med;
+		largeBlob: large;
+		unsizedBlob: allBytes;
+		store.
+	id := t _id.
+
+	reStore simulateReconnect.
+	t := (reStore instancesOf: TypeTest) detect: [ :each | each _id = id].
+
+	self assert: t tinyBlob equals: tiny.
+	self assert: t medBlob equals: med.
+	self assert: t largeBlob equals: large.
+	self assert: t unsizedBlob equals: allBytes.
+
+	"SQLServer can't query on binary columns"
+	reStore sqlDialect class ~~ SSWSQLServerDialect ifTrue: 
+		[self assert: ((reStore instancesOf: TypeTest) detect: [ :each | each tinyBlob = tiny]) identicalTo: t.
+		self assert: ((reStore instancesOf: TypeTest) detect: [ :each | each medBlob = med]) identicalTo: t.
+		self assert: ((reStore instancesOf: TypeTest) detect: [ :each | each largeBlob = large]) identicalTo: t.
+		self assert: ((reStore instancesOf: TypeTest) detect: [ :each | each unsizedBlob = allBytes]) identicalTo: t]
+]
+
+{ #category : #'unit tests' }
 SSWReStoreTypeTest >> testDate [
 
 	| t |

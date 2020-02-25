@@ -1,14 +1,6 @@
 Extension { #name : #String }
 
 { #category : #'*SSW ReStore Base Additions' }
-String class >> dbMaxFieldSize [
-
-	"The receiver represents the unsized character column concept in the database, therefore the max field size is undefined"
-
-	^nil
-]
-
-{ #category : #'*SSW ReStore Base Additions' }
 String class >> fixedSize: anInteger [
 
 	"For DB support: specifies a fixed-sized String of anInteger characters"

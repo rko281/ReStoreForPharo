@@ -13,6 +13,10 @@ Class {
 		'medText',
 		'largeText',
 		'unsizedText',
+		'tinyBlob',
+		'medBlob',
+		'largeBlob',
+		'unsizedBlob',
 		'integer',
 		'float',
 		'decimal',
@@ -36,15 +40,24 @@ TypeTest class >> reStoreDefinition [
 		define: #medText as: (String maxSize: 2000);
 		define: #largeText as: (String maxSize: 5000);
 		define: #unsizedText as: String;
+
+		define: #tinyBlob as: (ByteArray maxSize: 255);
+		define: #medBlob as: (ByteArray maxSize: 2000);
+		define: #largeBlob as: (ByteArray maxSize: 5000);
+		define: #unsizedBlob as: ByteArray;
+
 		define: #integer as: Integer;
 		define: #float as: Float;
 		define: #decimal as: (ScaledDecimal withPrecision: 20 scale: 4);
+
 		define: #date as: Date;
 		define: #time as: Time;
 		define: #datetime as: DateAndTime;
 		define: #datetimeWithMilliseconds as: DateAndTime withMillisecondResolution;
+
 		define: #trueBoolean as: Boolean;
 		define: #falseBoolean as: Boolean;
+
 		yourself
 ]
 
@@ -157,6 +170,16 @@ TypeTest >> integer: anObject [
 ]
 
 { #category : #accessing }
+TypeTest >> largeBlob [
+	^ largeBlob
+]
+
+{ #category : #accessing }
+TypeTest >> largeBlob: anObject [
+	largeBlob := anObject
+]
+
+{ #category : #accessing }
 TypeTest >> largeText [
 	"Private - Answer the value of the receiver's ''largeText'' instance variable."
 
@@ -168,6 +191,16 @@ TypeTest >> largeText: anObject [
 	"Private - Set the value of the receiver's ''largeText'' instance variable to the argument, anObject."
 
 	largeText := anObject
+]
+
+{ #category : #accessing }
+TypeTest >> medBlob [
+	^ medBlob
+]
+
+{ #category : #accessing }
+TypeTest >> medBlob: anObject [
+	medBlob := anObject
 ]
 
 { #category : #accessing }
@@ -199,6 +232,16 @@ TypeTest >> time: anObject [
 ]
 
 { #category : #accessing }
+TypeTest >> tinyBlob [
+	^ tinyBlob
+]
+
+{ #category : #accessing }
+TypeTest >> tinyBlob: anObject [
+	tinyBlob := anObject
+]
+
+{ #category : #accessing }
 TypeTest >> trueBoolean [
 	"Private - Answer the value of the receiver's ''trueBoolean'' instance variable."
 
@@ -210,6 +253,16 @@ TypeTest >> trueBoolean: anObject [
 	"Private - Set the value of the receiver's ''trueBoolean'' instance variable to the argument, anObject."
 
 	trueBoolean := anObject
+]
+
+{ #category : #accessing }
+TypeTest >> unsizedBlob [
+	^ unsizedBlob
+]
+
+{ #category : #accessing }
+TypeTest >> unsizedBlob: anObject [
+	unsizedBlob := anObject
 ]
 
 { #category : #accessing }

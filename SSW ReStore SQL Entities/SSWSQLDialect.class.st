@@ -15,7 +15,8 @@ Class {
 		'maxTableNameLength',
 		'sqlFunctions',
 		'maxColumnBytes',
-		'unsizedStringSize'
+		'unsizedStringSize',
+		'unsizedBlobSize'
 	],
 	#category : #'SSW ReStore SQL Entities'
 }
@@ -128,6 +129,35 @@ SSWSQLDialect >> asIdentifier: aString [
 	stream := self sqlWriteStream.
 	stream nextPutIdentifier: aString.
 	^stream contents
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> blob [
+
+    "unsizedBlobSize is used to determine the most appropriate column type (see unsizedBlobSize method comment)"
+
+    ^self blobTypeForSize: self unsizedBlobSize
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> blobTypeForSize: anInteger [
+
+    anInteger <= self maxColumnBytes ifTrue: 
+        [(self blobTypes asSortedCollection: [ :assoc1 :assoc2 | assoc1 key <= assoc2 key]) do: [ :assoc | assoc key >= anInteger ifTrue: [^assoc value]]].
+
+    self error: 'No Blob type found for size <1p> - consider increasing maxColumnBytes'
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> blobTypes [
+
+    "Return a collection of associations between the maximum size of an unsized ByteArray type (i.e. one whose type declaration does not include its size, c.f. varblob), and its name in this dialect.
+
+    By default this just consists of the blob type - dialects with more blob types can extend as necessary"
+
+    ^OrderedCollection new
+        add: (self unsizedBlobSize -> self unsizedBlob);
+        yourself
 ]
 
 { #category : #datatypes }
@@ -344,8 +374,7 @@ SSWSQLDialect >> defaultMaxColumnBytes [
 
 	"default value for maxColumnBytes - see that method's comment"
 	
-	"Default to the same as Dolphin's DBConnect hard-coded value"
-	^65536 "(2 raisedTo: 16)"
+    ^self connection defaultMaxColumnBytes
 ]
 
 { #category : #constants }
@@ -376,12 +405,21 @@ SSWSQLDialect >> defaultSQLFunctions [
 ]
 
 { #category : #constants }
+SSWSQLDialect >> defaultUnsizedBlobSize [
+
+    "default value for unsizedBlobSize - see that method's comment"
+    
+    "Default to the maximum column bytes - 1 (for null terminator)"
+    ^self maxColumnBytes - 1
+]
+
+{ #category : #constants }
 SSWSQLDialect >> defaultUnsizedStringSize [
 
 	"default value for unsizedStringSize - see that method's comment"
 	
 	"Default to the maximum column bytes - 1 (for null terminator)"
-	^self defaultMaxColumnBytes - 1
+	^self maxColumnBytes - 1
 ]
 
 { #category : #constants }
@@ -449,8 +487,6 @@ SSWSQLDialect >> identifierQuoteOpen [
 SSWSQLDialect >> initialize [
 
 	self
-		maxColumnBytes: self defaultMaxColumnBytes;
-		unsizedStringSize: self defaultUnsizedStringSize;
 		sqlFunctions: self defaultSQLFunctions;
 		classNameTransformation: self defaultClassNameTransformation;
 		instVarNameTransformation: self defaultInstVarNameTransformation
@@ -461,6 +497,9 @@ SSWSQLDialect >> initializeFor: aDBConnection [
 
 	self
 		connection: aDBConnection;
+		maxColumnBytes: self defaultMaxColumnBytes;
+		unsizedStringSize: self defaultUnsizedStringSize;
+		unsizedBlobSize: self defaultUnsizedBlobSize;
 		maxColumnNameLength: (aDBConnection maxColumnNameLength ifNil: [self defaultMaxColumnNameLength]);
 		maxTableNameLength: (aDBConnection maxTableNameLength ifNil: [self defaultMaxTableNameLength])
 ]
@@ -521,22 +560,12 @@ SSWSQLDialect >> maxCharacter [
 { #category : #accessing }
 SSWSQLDialect >> maxColumnBytes [
 
-	"maxColumnBytes stores the maximum size of a column in bytes - this is used to initialize a column's replication buffer where there is no size information (e.g. LongText).
-	This is not really a dialect-specific attribute but its value affects the choice of String column type so we specify it here.
+	"defaultMaxColumnBytes defines the default maximum size of a column in bytes; this is not really a dialect-specific attribute but its value affects the choice of String column type so we specify it here.
 
-	The default is (2 raisedTo: 16), which is the standard maximum buffer size in Dolphin's database interface.
-	If a larger size is needed you can set an appropriate value for your application following login.
-	Bear in mind that wide character strings (if supported) can use > 1 byte per character.
+	The default is defined by the connection object; if a different size is needed you can set an appropriate value for your application following login.
 	
-	Also bear in mind that this value is used to create a ByteArray for each unsized column which is replicated.
-	If you increase this value then consider specifying a maximum String size in your class spec methods to avoid unnecessarily large buffers.
-
-	Also bear in mind that this value can be limited by the ODBC driver. 
-	e.g. as of writing SQLite appears to be limited to 65536 bytes, whilst Postgres lets you specify the limit in the Datasource dialog (but the default is only 8190 bytes!!)
-
-	Purely anecdotally, a maxColumnBytes of 1MB (2 raisedTo: 20) makes no discernable performance difference compared to the default size when run over the entire ReStore test suite.
-
-	Very large values really need the use of unbound columns and incremental (paged) put/getData, however this is not yet implemented (and is potentially less performant than bound columns)"
+	Also bear in mind that (depending on the driver) this value may be used when creating a buffer for each unsized column which is replicated.
+	If you increase this value then consider specifying a maximum String size in your class spec methods to avoid unnecessarily large buffers"
 
 	^maxColumnBytes
 ]
@@ -788,6 +817,33 @@ SSWSQLDialect >> trueObject [
 	"The object which represents the true Boolean in this dialect"
 
 	^1
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> unsizedBlob [
+
+	^'BLOB'
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> unsizedBlobSize [
+
+	"unsizedBlobSize stores the size assumed for ByteArrays in persistent classes if no explicit size is given.
+	Whilst not strictly an SQLDialect attribute it is specified here for its interplay with column type choice.
+
+	An unsized ByteArray will use the smallest blob type which supports unsizedBlobSize bytes
+	- this is useful for databases which have more than one unsized blob type, to ensure the most efficient type is used"
+
+	^unsizedBlobSize
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> unsizedBlobSize: anInteger [
+
+	unsizedBlobSize := anInteger.
+
+	"Ensure we can actually handle ByteArrays of this size. +1 is to accomodate a null terminator"
+	self maxColumnBytes: (self maxColumnBytes max: (self unsizedBlobSize + 1))
 ]
 
 { #category : #datatypes }

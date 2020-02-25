@@ -229,7 +229,7 @@ SSWReStoreInlinedTest >> test03QueryFirstLevelInlinedEquality [
 	self assert: john firstName equals: 'John'.
 "
 	address := InlinedAddress new line1: '2 some road'; postcode: postcode.
-	john := persons detect: [ :each | ('s*' match: each surname) & (each address2 = address)] ifNone: [nil].
+	john := persons detect: [ :each | ('S*' match: each surname) & (each address2 = address)] ifNone: [nil].
 	self assert: (john notNil).
 	self assert: john firstName equals: 'John'.
 
@@ -477,12 +477,12 @@ SSWReStoreInlinedTest >> test09QueryInlinedEquality [
 	self assert: (dave isNil).
 	
 	postcode := InlinedPostcode new code1: 'e2'; code2: '2aa'.
-	john := persons detect: [ :each | (each address2 postcode = postcode) & ('j*' match: each firstName)] ifNone: [nil].
+	john := persons detect: [ :each | (each address2 postcode = postcode) & ('J*' match: each firstName)] ifNone: [nil].
 	self assert: (john notNil).
 	self assert: john firstName equals: 'John'.
 
 	address := InlinedAddress new line1: '2 some road'; postcode: postcode.
-	john := persons detect: [ :each | ('s*' match: each surname) & (each address2 = address)] ifNone: [nil].
+	john := persons detect: [ :each | ('S*' match: each surname) & (each address2 = address)] ifNone: [nil].
 	self assert: (john notNil).
 	self assert: john firstName equals: 'John'.
 

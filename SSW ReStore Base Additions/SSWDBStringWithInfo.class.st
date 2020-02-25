@@ -14,12 +14,6 @@ Class {
 }
 
 { #category : #accessing }
-SSWDBStringWithInfo >> dbMaxFieldSize [
-
-	^self fieldSize
-]
-
-{ #category : #accessing }
 SSWDBStringWithInfo >> fieldSize [
 
 	"fieldSize stores the size of the field in which 'instances' of this 'class' will live.
