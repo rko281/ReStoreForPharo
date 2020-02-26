@@ -3,6 +3,9 @@ Class {
 	#superclass : #SQLite3Connection,
 	#traits : 'SSWReStoreDBConnection',
 	#classTraits : 'SSWReStoreDBConnection classTrait',
+	#pools : [
+		'SQLite3Constants'
+	],
 	#category : #'SSW ReStore SQLite3'
 }
 
@@ -65,6 +68,21 @@ SSWSQLite3Connection >> initialize [
 SSWSQLite3Connection >> isConnected [
 
 	^self isOpen
+]
+
+{ #category : #'connection open/close' }
+SSWSQLite3Connection >> open [
+
+	"Override to enable URI naming if specified by the dbFilename"
+	
+	(dbFilename beginsWith: 'file:') ifFalse: [ ^super open ].
+
+	library 
+		open: dbFilename 
+		withFlags: (SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_URI) 
+		via: dbHandle.
+		
+	isOpen := true
 ]
 
 { #category : #'connection open/close' }
