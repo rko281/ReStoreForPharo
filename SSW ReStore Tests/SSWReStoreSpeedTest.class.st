@@ -10,7 +10,7 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : #running }
 SSWReStoreSpeedTest >> sampleSet [
 
 	^(1 to: self sampleSize) collect: 
@@ -22,7 +22,7 @@ SSWReStoreSpeedTest >> sampleSet [
 			yourself]
 ]
 
-{ #category : #Running }
+{ #category : #running }
 SSWReStoreSpeedTest >> sampleSize [
 
 	^100
@@ -32,9 +32,6 @@ SSWReStoreSpeedTest >> sampleSize [
 SSWReStoreSpeedTest >> test1Write [
 
 	| people time |
-
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
 
 	people := self sampleSet.
 
@@ -52,9 +49,7 @@ SSWReStoreSpeedTest >> test1Write [
 SSWReStoreSpeedTest >> test2Read [
 
 	| people time |
-
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
+	
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
@@ -76,8 +71,6 @@ SSWReStoreSpeedTest >> test3Update [
 
 	| people time |
 
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
@@ -112,8 +105,6 @@ SSWReStoreSpeedTest >> test4RefreshNoChange [
 
 	| people time |
 
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
@@ -134,8 +125,6 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 
 	| people time |
 
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
@@ -169,9 +158,7 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 SSWReStoreSpeedTest >> test9Delete [
 
 	| people time |
-
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
+	
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.

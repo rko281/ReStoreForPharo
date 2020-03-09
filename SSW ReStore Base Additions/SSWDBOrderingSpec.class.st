@@ -73,6 +73,20 @@ SSWDBOrderingSpec >> criteria: anOrderedCollection [
 	criteria := anOrderedCollection
 ]
 
+{ #category : #operations }
+SSWDBOrderingSpec >> invert [
+
+	self isAscending: self isAscending not
+]
+
+{ #category : #converting }
+SSWDBOrderingSpec >> inverted [
+
+	"Answer a new ordering spec equivalent to the receiver but with reversed ordering"
+
+	^self copy invert
+]
+
 { #category : #accessing }
 SSWDBOrderingSpec >> isAscending [
 

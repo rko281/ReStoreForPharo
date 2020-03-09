@@ -20,14 +20,6 @@ SSWReStoreCommitTests >> addClassesTo: aReStore [
 ]
 
 { #category : #public }
-SSWReStoreCommitTests >> setUp [
-
-	super setUp.
-
-	reStore destroyAllClasses; synchronizeAllClasses
-]
-
-{ #category : #public }
 SSWReStoreCommitTests >> test01SelfReference [
 
 	| obj |

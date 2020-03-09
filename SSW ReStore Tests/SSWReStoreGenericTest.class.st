@@ -55,8 +55,6 @@ SSWReStoreGenericTest >> setUp [
 
 	super setUp.
 
-	reStore destroyAllClasses; synchronizeAllClasses.
-
 	self createTestObject.
 
 	self fetchTestObjects

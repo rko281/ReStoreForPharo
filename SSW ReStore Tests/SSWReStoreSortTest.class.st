@@ -119,6 +119,16 @@ SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreSortTest >> testClassSortImplementationReversed [
+
+	| instances |
+
+	instances := (reStore instancesOf: SimplePerson) beSorted reverse.
+
+	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
+]
+
+{ #category : #'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementationWithBlocks [
 
 	| instances |
@@ -213,6 +223,16 @@ SSWReStoreSortTest >> testSortImplementationOnPersistentObjectWithBlocks [
 	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friendCompareWithBlocks: b].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
+]
+
+{ #category : #'unit tests' }
+SSWReStoreSortTest >> testSortImplementationReversed [
+
+	| instances |
+
+	instances := (reStore instancesOf: SimplePerson) sortBlock: [ :a :b | a <= b].
+
+	self assert: (instances reverse asOrderedCollection collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
 ]
 
 { #category : #'unit tests' }

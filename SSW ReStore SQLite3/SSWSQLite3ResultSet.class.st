@@ -2,7 +2,7 @@ Class {
 	#name : #SSWSQLite3ResultSet,
 	#superclass : #SQLite3Cursor,
 	#instVars : [
-		'cachedRows',
+		'firstRow',
 		'query'
 	],
 	#pools : [
@@ -10,12 +10,6 @@ Class {
 	],
 	#category : #'SSW ReStore SQLite3'
 }
-
-{ #category : #accessing }
-SSWSQLite3ResultSet >> cachedRows [
-
-	^cachedRows ifNil: [ cachedRows := self rows ]
-]
 
 { #category : #private }
 SSWSQLite3ResultSet >> do: aBlock [
@@ -27,10 +21,7 @@ SSWSQLite3ResultSet >> do: aBlock [
 
 { #category : #accessing }
 SSWSQLite3ResultSet >> first [
-
-	^self cachedRows isEmpty 
-		ifTrue: [ nil ] 
-		ifFalse: [self cachedRows first]
+	^firstRow ifNil: [ self next ]
 ]
 
 { #category : #initialization }
@@ -44,6 +35,14 @@ SSWSQLite3ResultSet >> initialize [
 SSWSQLite3ResultSet >> last [
 
 	^self cachedRows last
+]
+
+{ #category : #API }
+SSWSQLite3ResultSet >> next [
+
+	^firstRow isNil 
+		ifTrue: [ firstRow := super next ]
+		ifFalse: [ super next ]
 ]
 
 { #category : #API }
@@ -69,9 +68,24 @@ SSWSQLite3ResultSet >> query [
 ]
 
 { #category : #accessing }
+SSWSQLite3ResultSet >> readStream [
+
+	^SSWDBForwardOnlyReadStream on: self
+]
+
+{ #category : #accessing }
 SSWSQLite3ResultSet >> size [
 
-	^self numRows
+	"size as in number of rows.
+	nil = unknown"
+
+	^nil
+]
+
+{ #category : #accessing }
+SSWSQLite3ResultSet >> species [
+
+	^OrderedCollection 
 ]
 
 { #category : #accessing }

@@ -2,7 +2,8 @@ Class {
 	#name : #SSWP3ResultSet,
 	#superclass : #P3Result,
 	#instVars : [
-		'query'
+		'query',
+		'dataStream'
 	],
 	#category : #'SSW ReStore P3'
 }
@@ -12,6 +13,12 @@ SSWP3ResultSet >> close [
 
 	"In Dolphin this closes the result set, leaving the statement open.
 	Nothing to do here"
+]
+
+{ #category : #accessing }
+SSWP3ResultSet >> dataStream [
+
+	^dataStream ifNil: [ dataStream := self data readStream ]
 ]
 
 { #category : #enumerating }
@@ -36,6 +43,12 @@ SSWP3ResultSet >> last [
 		ifFalse: [self rowWith: data last]
 ]
 
+{ #category : #enumerating }
+SSWP3ResultSet >> next [
+
+	^self dataStream next ifNotNil: [ :rowData | self rowWith: rowData ]
+]
+
 { #category : #accessing }
 SSWP3ResultSet >> numRows [
 
@@ -50,6 +63,12 @@ SSWP3ResultSet >> numRows [
 ]
 
 { #category : #accessing }
+SSWP3ResultSet >> position: anInteger [
+	
+	self dataStream position: anInteger
+]
+
+{ #category : #accessing }
 SSWP3ResultSet >> query [
 	^ query
 ]
@@ -57,6 +76,19 @@ SSWP3ResultSet >> query [
 { #category : #accessing }
 SSWP3ResultSet >> query: anObject [
 	query := anObject
+]
+
+{ #category : #accessing }
+SSWP3ResultSet >> readStream [
+
+	^SSWDBReadStream on: self
+]
+
+{ #category : #accessing }
+SSWP3ResultSet >> resetAndFetchFirst [
+
+	self dataStream reset.
+	^self next
 ]
 
 { #category : #'initialize-release' }
@@ -76,5 +108,11 @@ SSWP3ResultSet >> rowWith: someData [
 { #category : #accessing }
 SSWP3ResultSet >> size [
 
-	^data size
+	^self numberOfRecords
+]
+
+{ #category : #accessing }
+SSWP3ResultSet >> species [
+
+	^OrderedCollection
 ]

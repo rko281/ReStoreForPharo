@@ -24,9 +24,6 @@ SSWReStoreTypeTest >> addClassesTo: aReStore [
 { #category : #running }
 SSWReStoreTypeTest >> createTestInstance [
 
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
-
 	datetime := DateAndTime now withResolution: reStore sqlDialect maxDateTimeResolution.
 	date := datetime asDate.
 	time := datetime asTime.

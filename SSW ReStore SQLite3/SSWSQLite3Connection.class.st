@@ -89,7 +89,7 @@ SSWSQLite3Connection >> open [
 SSWSQLite3Connection >> prepareToClose [
 
 	"Allow resources to be finalized"
-	Smalltalk garbageCollectMost
+	SmalltalkImage current garbageCollectMost
 ]
 
 { #category : #constants }

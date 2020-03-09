@@ -76,8 +76,6 @@ SSWReStoreObjectAPITests >> setUp [
 
 	super setUp.
 
-	reStore destroyAllClasses; synchronizeAllClasses.
-
 	reStore2 := SSWReStore new.
 	self initReStore: reStore2.
 

@@ -29,6 +29,14 @@ SSWReStoreTest >> addClassesTo: aReStore [
 ]
 
 { #category : #running }
+SSWReStoreTest >> countQueriesDuring: aBlock [
+
+	self countQueries.
+	^[aBlock value.
+	self queryCount] ensure: [self stopQueryCounting]
+]
+
+{ #category : #running }
 SSWReStoreTest >> createReStore [
 
 	reStore := SSWReStore new
@@ -40,9 +48,6 @@ SSWReStoreTest >> createStandardTestInstance [
 	"Private - Initialize the database"
 	
 	| t |
-
-	reStore destroyAllClasses.
-	reStore synchronizeAllClasses.
 
 	reStore simulateReconnect.
 
@@ -137,7 +142,10 @@ SSWReStoreTest >> refreshDelay [
 { #category : #running }
 SSWReStoreTest >> releaseReStore: aReStore [
 
-	aReStore isConnected ifTrue: [aReStore disconnect].
+	aReStore isConnected ifTrue: 
+		[[aReStore destroyAllClasses] on: Error do: [ :exc | aReStore reconnect; destroyAllClasses. exc return].
+		aReStore disconnect].
+	
 	aReStore clearTableCache
 ]
 
@@ -147,7 +155,8 @@ SSWReStoreTest >> setUp [
 	self createReStore.
 	self initReStore: reStore.
 	reStore connect.
-	self addClassesTo: reStore
+	self addClassesTo: reStore.
+	reStore synchronizeAllClasses
 ]
 
 { #category : #running }

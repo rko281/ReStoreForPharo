@@ -24,8 +24,6 @@ SSWReStoreInlinedTest >> setUp [
 
 	super setUp.
 
-	reStore destroyAllClasses; synchronizeAllClasses.
-
 	(Array 
 		with: 
 			(InlinedTestPerson new 

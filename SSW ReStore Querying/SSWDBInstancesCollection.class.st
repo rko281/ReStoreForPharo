@@ -64,6 +64,12 @@ SSWDBInstancesCollection >> allSatisfy: aBlock [
 	^self size = (self satisfying: aBlock) size
 ]
 
+{ #category : #evaluating }
+SSWDBInstancesCollection >> anyOne [
+
+	^self first
+]
+
 { #category : #enumerating }
 SSWDBInstancesCollection >> anySatisfy: aBlock [
 	
@@ -102,6 +108,23 @@ SSWDBInstancesCollection >> asSortedCollection: aTwoArgBlock [
 		asSortedCollection
 ]
 
+{ #category : #initializing }
+SSWDBInstancesCollection >> beOrdered [
+
+	"Order the receiver based on the ID field.
+	This will normally tally with insertion order where instances have the default numeric ID"
+
+	self sortBlock: [ :a :b | a _id < b _id]
+]
+
+{ #category : #initializing }
+SSWDBInstancesCollection >> beSorted [
+
+	"Give the receiver the default sort order"
+
+	self sortBlock: SortedCollection defaultSortBlock
+]
+
 { #category : #enumerating }
 SSWDBInstancesCollection >> collect: collectBlock [
 	
@@ -124,15 +147,6 @@ SSWDBInstancesCollection >> collectInto: aCollection [
 	Return aCollection"
 	
 	^self collect: [ :object | object] into: aCollection
-]
-
-{ #category : #copying }
-SSWDBInstancesCollection >> copy [
-
-	^self shallowCopy
-		parser: self parser copy;
-		yourself
-		
 ]
 
 { #category : #initializing }
@@ -191,14 +205,7 @@ SSWDBInstancesCollection >> first [
 { #category : #evaluating }
 SSWDBInstancesCollection >> first: anInteger [
 
-	| stream collection |
-
-	stream := self readStream.
-	collection := OrderedCollection new: anInteger.
-
-	anInteger timesRepeat: [collection add: stream next].
-
-	^collection
+	^self readStream next: anInteger
 ]
 
 { #category : #initializing }
@@ -284,7 +291,13 @@ SSWDBInstancesCollection >> isSorted [
 { #category : #evaluating }
 SSWDBInstancesCollection >> last [
 
-	^self readStream last
+	^self reverse first
+]
+
+{ #category : #evaluating }
+SSWDBInstancesCollection >> last: anInteger [
+
+	^(self reverse first: anInteger) reverse
 ]
 
 { #category : #enumerating }
@@ -337,6 +350,12 @@ SSWDBInstancesCollection >> parser: anSSWDBBlockParser [
 	to generate corresponding SSWSQLQueries"
 	
 	parser := anSSWDBBlockParser
+]
+
+{ #category : #copying }
+SSWDBInstancesCollection >> postCopy [
+
+	self parser: self parser copy
 ]
 
 { #category : #accessing }
@@ -446,8 +465,10 @@ SSWDBInstancesCollection >> reStore: anSSWReStore [
 SSWDBInstancesCollection >> readStream [
 
 	"Create and return an appropraite ReadStream-like object on the receiver"
-	
-	^SSWDBReadStream on: self
+
+	^self resultSet readStream
+		setInstancesCollection: self;
+		yourself
 ]
 
 { #category : #initializing }
@@ -485,6 +506,23 @@ SSWDBInstancesCollection >> resultSet [
 	
 	"Always use #keysetDriven to give a flexible, efficient result set"
 	^self reStore executeQuery: query cursorType: #keysetDriven
+]
+
+{ #category : #evaluating }
+SSWDBInstancesCollection >> reverse [
+
+	"Return a copy of the receiver with reversed ordering"
+
+	| reversed |
+
+	reversed := self copy.
+
+	"If no explicit ordering apply ID ordering - this at least gives us something to reverse"
+	reversed isSorted ifFalse: [self beOrdered].
+	
+	reversed parser invertOrdering.
+
+	^reversed
 ]
 
 { #category : #enumerating }

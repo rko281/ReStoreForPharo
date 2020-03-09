@@ -199,17 +199,6 @@ SSWDBBlockParser >> collectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #copying }
-SSWDBBlockParser >> copy [
-
-	^self shallowCopy
-		qualifyingConditions: self qualifyingConditions copy;
-		qualifyingTables: self qualifyingTables copy;
-		orderingSpecs: self orderingSpecs copy;
-		groupByFields: self groupByFields copy;
-		yourself
-]
-
 { #category : #accessing }
 SSWDBBlockParser >> currentConditions [
 	^currentConditions
@@ -293,6 +282,12 @@ SSWDBBlockParser >> includedTables [
 	This is the referencedTables, without duplicated entries"
 	
 	^self referencedTables withoutDuplicates
+]
+
+{ #category : #'parsing - api' }
+SSWDBBlockParser >> invertOrdering [
+
+	self orderingSpecs: (self orderingSpecs collect: [ :each | each inverted])
 ]
 
 { #category : #accessing }
@@ -547,6 +542,16 @@ SSWDBBlockParser >> popAccumulatedConditions [
 	self 
 		accumulatedConditions: popped key;
 		currentConditions: popped value
+]
+
+{ #category : #copying }
+SSWDBBlockParser >> postCopy [
+
+	self
+		qualifyingConditions: self qualifyingConditions copy;
+		qualifyingTables: self qualifyingTables copy;
+		orderingSpecs: self orderingSpecs copy;
+		groupByFields: self groupByFields copy
 ]
 
 { #category : #'parsing - api' }

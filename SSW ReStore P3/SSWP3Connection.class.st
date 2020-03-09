@@ -141,5 +141,5 @@ SSWP3Connection >> statementCache: anOrderedCollection [
 { #category : #accessing }
 SSWP3Connection >> tables [
 
-	^self listTablesInSchema: 'public'
+	^(self listTablesInSchema: 'public') asOrderedCollection
 ]
