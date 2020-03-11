@@ -18,7 +18,7 @@ SSWReStoreDependentObjectTest >> _testComponentExistenceOnDependency [
 	self assert: (component _dbProxyIn: reStore ifNone: [nil]) isNil.
 
 	reStore simulateReconnect.
-	self assert: ((reStore instancesOf: component class) detect: [ :each | each name = component name] ifNone: [nil]) isNil
+	self assert: ((component class storedInstancesIn: reStore) detect: [ :each | each name = component name] ifNone: [nil]) isNil
 ]
 
 { #category : #accessing }

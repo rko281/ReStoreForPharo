@@ -21,12 +21,29 @@ SSWReStoreDefaultWriteTest >> addClassesTo: aReStore [
 ]
 
 { #category : #Running }
+SSWReStoreDefaultWriteTest >> createTestData [
+
+	super createTestData.
+
+	reStore evaluateAsTransaction:
+		[((SimplePerson storedInstancesIn: reStore) detect: [ :each | each fullName = 'John Smith']) address: (SimpleAddress new postcode: 'J1 1JJ')].
+
+	OwnerTest new
+		name: 'owner';
+		ownedOrdered: 
+			(OrderedCollection
+				with: (OwnedTest new name: 'owned1')
+				with: (OwnedTest new name: 'owned2'));
+		store
+]
+
+{ #category : #Running }
 SSWReStoreDefaultWriteTest >> setUp [
 
 	super setUp.
 
 	reStore evaluateAsTransaction:
-		[((reStore instancesOf: SimplePerson) detect: [ :each | each fullName = 'John Smith']) address: (SimpleAddress new postcode: 'J1 1JJ')].
+		[((SimplePerson storedInstancesIn: reStore) detect: [ :each | each fullName = 'John Smith']) address: (SimpleAddress new postcode: 'J1 1JJ')].
 
 	OwnerTest new
 		name: 'owner';
@@ -72,7 +89,7 @@ SSWReStoreDefaultWriteTest >> testCommitFailure [
 	self assert: zoe1 store.
 
 	"Double check"
-	reStore2 refresh: zoe2.
+	zoe2 refresh.
 	self assert: zoe2 age = newAge1
 ]
 

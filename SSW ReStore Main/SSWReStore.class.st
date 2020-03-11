@@ -883,7 +883,7 @@ SSWReStore >> enableFullTableRecords [
 	self 
 		evaluateAsTxn: [(self tableForClass: SSWDBTableRecord) synchronizeDefinition. true];
 		evaluateAsTxn: 
-			[(self instancesOf: SSWDBTableRecord satisfying: [ :each | each fullTableName = nil]) modify: [ :each | each fullTableName: each tableName].
+			[((self instancesOf: SSWDBTableRecord) satisfying: [ :each | each fullTableName = nil]) modify: [ :each | each fullTableName: each tableName].
 			true]
 
 ]
@@ -1173,14 +1173,6 @@ SSWReStore >> insertProxy: aProxydObject [
 SSWReStore >> instancesOf: aClass [
 
 	^SSWDBInstancesCollection forClass: aClass in: self
-]
-
-{ #category : #querying }
-SSWReStore >> instancesOf: aClass satisfying: qualifierBlock [
-
-	"Convenience method"
-	
-	^(self instancesOf: aClass) satisfying: qualifierBlock
 ]
 
 { #category : #testing }
@@ -1647,7 +1639,7 @@ SSWReStore >> renameTable: oldTable to: newTable [
 	self sqlDialect renameTableNamed: oldTable name to: newTable name in: self.
 
 	"Also update the TableRecord in the DB"
-	instances := self instancesOf: SSWDBTableRecord satisfying: [ :each | each tableName = oldTable name].
+	instances := (self instancesOf: SSWDBTableRecord) satisfying: [ :each | each tableName = oldTable name].
 	self supportsFullTableRecords ifTrue: [instances modify: [ :each | each fullTableName: newTable fullName]].
 	instances modify: [ :each | each tableName: newTable name].
 
@@ -1676,7 +1668,7 @@ SSWReStore >> renamedClass: aClass from: aSymbol [
 	newTable := self addClass: aClass.
 	newTable isRootTable ifFalse: 
 		["Create and modify an instancesOf: collection for rows specifying the old class name"
-		instances := self instancesOf: newTable rootClass satisfying: [ :e | e class = aSymbol asString].
+		instances := (self instancesOf: newTable rootClass) satisfying: [ :e | e class = aSymbol asString].
 		^instances modify: [ :each | each class: aClass]].
 
 	newDefinitionTable := newTable forCreation.
@@ -1773,7 +1765,7 @@ SSWReStore >> rollbackTransaction [
 		self transaction: self transaction ownerTransaction.
 		self connection rollbackTxn].
 
-	rolledBack do: [ :each | each isDBProxy ifFalse: [each onRollback]]
+	rolledBack do: [ :each | each onRollback]
 ]
 
 { #category : #querying }
@@ -1956,7 +1948,7 @@ SSWReStore >> tableForClass: aClass ifAbsent: aBlock [
 { #category : #'cache management' }
 SSWReStore >> tableRecordFor: aDBTable [
 
-	^self nextIDCache at: aDBTable ifAbsentPut: [(self instancesOf: SSWDBTableRecord) detect: [ :seq | seq tableName = aDBTable name] ifNone: [self error: 'nextID not found for table ', aDBTable tableName]].
+	^self nextIDCache at: aDBTable ifAbsentPut: [(self instancesOf: SSWDBTableRecord) detect: [ :seq | seq tableName = aDBTable name] ifNone: [self error: 'nextID not found for table ', aDBTable name]]
 ]
 
 { #category : #accessing }

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #TypeTest,
@@ -171,7 +170,7 @@ TypeTest >> integer: anObject [
 
 { #category : #accessing }
 TypeTest >> largeBlob [
-	^ largeBlob
+	^largeBlob
 ]
 
 { #category : #accessing }
@@ -195,7 +194,7 @@ TypeTest >> largeText: anObject [
 
 { #category : #accessing }
 TypeTest >> medBlob [
-	^ medBlob
+	^medBlob
 ]
 
 { #category : #accessing }
@@ -233,7 +232,7 @@ TypeTest >> time: anObject [
 
 { #category : #accessing }
 TypeTest >> tinyBlob [
-	^ tinyBlob
+	^tinyBlob
 ]
 
 { #category : #accessing }
@@ -257,7 +256,7 @@ TypeTest >> trueBoolean: anObject [
 
 { #category : #accessing }
 TypeTest >> unsizedBlob [
-	^ unsizedBlob
+	^unsizedBlob
 ]
 
 { #category : #accessing }

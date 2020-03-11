@@ -6,12 +6,17 @@ https://github.com/rko281/ReStoreForPharo
 "
 Class {
 	#name : #SSWReStoreUpdateClashTest,
-	#superclass : #SSWReStoreTest,
-	#instVars : [
-		'reStore2'
-	],
+	#superclass : #SSWReStore2Test,
 	#category : #'SSW ReStore Tests'
 }
+
+{ #category : #Running }
+SSWReStoreUpdateClashTest >> createTestData [
+
+	self createStandardTestInstance.
+	reStore simulateReconnect.
+	self refreshDelay
+]
 
 { #category : #Running }
 SSWReStoreUpdateClashTest >> prvTestOwnerTest: anOwnerTest in: aReStore [
@@ -22,31 +27,29 @@ SSWReStoreUpdateClashTest >> prvTestOwnerTest: anOwnerTest in: aReStore [
 	oldNumber := anOwnerTest number.
 
 	self deny: aReStore isTransactionInProgress.
-	self deny: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
+	self deny: anOwnerTest hasChanged.
 
 	anOwnerTest name: ('xxx', oldName, 'xxx').
-	self assert: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
-
-	aReStore rollbackAll: (Array with: anOwnerTest).
-	self deny: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
+	self assert: anOwnerTest hasChanged.
+	anOwnerTest rollback.
+	self deny: anOwnerTest hasChanged.
 	self assert: anOwnerTest name = oldName.
 
 	anOwnerTest number: (oldNumber + 123).
-	self assert: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
-
-	aReStore rollbackAll: (Array with: anOwnerTest).
-	self deny: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
+	self assert: anOwnerTest hasChanged.
+	anOwnerTest rollback.
+	self deny: anOwnerTest hasChanged.
 	self assert: (anOwnerTest number = oldNumber).
 
 	anOwnerTest name: ('xxx', oldName, 'xxx').
-	self assert: (aReStore commitAll: (Array with: anOwnerTest)).
-	self deny: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
+	anOwnerTest store.
+	self deny: anOwnerTest hasChanged.
 
 	anOwnerTest number: (oldNumber + 123).
-	aReStore commitAll: (Array with: anOwnerTest).
-	self deny: (aReStore haveAnyChanged: (Array with: anOwnerTest)).
+	anOwnerTest store.
+	self deny: anOwnerTest hasChanged.
 
-	aReStore refreshAll: (Array with: anOwnerTest).
+	anOwnerTest refresh.
 	self assert: (anOwnerTest name = ('xxx', oldName, 'xxx')).
 	self assert: (anOwnerTest number = (oldNumber + 123))
 ]
@@ -58,46 +61,21 @@ SSWReStoreUpdateClashTest >> prvTestTest: aTest in: aReStore [
 
 	oldName := aTest name.
 
-	self deny: (aReStore haveAnyChanged: (Array with: aTest)).
+	self deny: aTest hasChanged.
 
 	aTest name: ('xxx', oldName, 'xxx').
-	self assert: (aReStore haveAnyChanged: (Array with: aTest)).
+	self assert: aTest hasChanged.
 
-	aReStore rollbackAll: (Array with: aTest).
-	self deny: (aReStore haveAnyChanged: (Array with: aTest)).
+	aTest rollback.
+	self deny: aTest hasChanged.
 	self assert: aTest name = oldName.
 
 	aTest name: ('xxx', oldName, 'xxx').
-	self assert: (aReStore commitAll: (Array with: aTest)).
-	self deny: (aReStore haveAnyChanged: (Array with: aTest)).
+	self assert: aTest store.
+	self deny: aTest hasChanged.
 
-	aReStore refreshAll: (Array with: aTest).
+	aTest refresh.
 	self assert: (aTest name = ('xxx', oldName, 'xxx'))
-]
-
-{ #category : #Running }
-SSWReStoreUpdateClashTest >> setUp [
-
-	super setUp.
-
-	reStore2 := SSWReStore new.
-	self initReStore: reStore2.
-
-	reStore2 connect.
-	reStore2 addClass: Test; addClass: OwnedTest; addClass: OwnerTest.
-
-	self createStandardTestInstance.
-	reStore simulateReconnect.
-	self refreshDelay
-]
-
-{ #category : #Running }
-SSWReStoreUpdateClashTest >> tearDown [
-
-	super tearDown.
-	reStore2 isNil ifFalse: 
-		[self releaseReStore: reStore2.
-		reStore2 := nil]
 ]
 
 { #category : #'unit tests' }
@@ -107,8 +85,8 @@ SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 
 	| inst1 inst2 origName |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	origName := inst1 name.
 
 	self assert: (reStore evaluateAsTransaction: [inst1 number: 11]).
@@ -145,8 +123,8 @@ SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 	
 	| inst1 inst2 oldNumber |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	oldNumber := inst1 number.
 
 	"OwnerTest blocks updates on instances with this name..."
@@ -177,8 +155,8 @@ SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 
 	| inst1 inst2 oldSingle |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	oldSingle := inst2 single1 name.
 
 	self assert: (reStore evaluateAsTransaction: [inst1 name: 'test2:1']).
@@ -208,8 +186,8 @@ SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (reStore evaluateAsTransaction: [inst1 name: 'test3:1']).
 	self deny: (reStore2 evaluateAsTransaction: [inst2 name: 'test3:2'. inst2 single1 name: 'single3:2']).
@@ -224,8 +202,8 @@ SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 	reStore simulateReconnect.
 	reStore2 simulateReconnect.
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	
 	"self refreshDelay."
 
@@ -241,8 +219,8 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	inst1 single1 name.
 	inst2 single1 name.
 
@@ -275,8 +253,8 @@ SSWReStoreUpdateClashTest >> test06DetectFailNoHandle [
 
 	| inst1 inst2 oldName oldSingle |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	inst1 single1 name.
 	oldName := inst2 name.
@@ -313,8 +291,8 @@ SSWReStoreUpdateClashTest >> test07DetectFailWithDeleteRollback [
 
 	| inst1 inst2 single2 cls id |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	single2 := inst2 single1.
 	cls := single2 class.
@@ -330,7 +308,7 @@ SSWReStoreUpdateClashTest >> test07DetectFailWithDeleteRollback [
 
 	self assert: single2 isPersistent.
 	self deny: single2 _dbProxy _isDeleted.
-	self assert: ((reStore2 instancesOf: cls) detect: [ :each | each _id = id]) == single2
+	self assert: ((cls storedInstancesIn: reStore2) detect: [ :each | each _id = id]) == single2
 ]
 
 { #category : #'unit tests' }
@@ -340,8 +318,8 @@ SSWReStoreUpdateClashTest >> test08DetectFailWithDeleteRollforward [
 
 	| inst1 inst2 single2 cls id |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	single2 := inst2 single1.
 	cls := single2 class.
@@ -356,7 +334,7 @@ SSWReStoreUpdateClashTest >> test08DetectFailWithDeleteRollforward [
 	reStore2 refreshAndRollforwardTransaction; commitTransaction.
 
 	self deny: inst2 single1 isPersistent.
-	self deny: ((reStore2 instancesOf: inst2 single1 class) anySatisfy: [ :each | each _id = id])
+	self deny: ((inst2 single1 class storedInstancesIn: reStore2) anySatisfy: [ :each | each _id = id])
 ]
 
 { #category : #'unit tests' }
@@ -407,8 +385,8 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 
 	| inst1 inst2 record1 record2 nextID |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	record1 := reStore tableRecordFor: ((reStore tableForClass: OwnerTest) collectionAccessing: #ordered) collectionTable.
 	record2 := reStore2 tableRecordFor: ((reStore2 tableForClass: OwnerTest) collectionAccessing: #ordered) collectionTable.
@@ -451,8 +429,8 @@ SSWReStoreUpdateClashTest >> test12RollforwardNextIDAllocations [
 
 	| inst1 inst2 new2 id |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	new2 := Test new name: 'new2'.
 
 	self assert: (reStore evaluateAsTransaction: [inst1 name: 'test3:1']).

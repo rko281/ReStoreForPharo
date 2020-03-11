@@ -22,43 +22,40 @@ SSWReStoreImplicitTrueQueryTest >> addClassesTo: aReStore [
 ]
 
 { #category : #public }
-SSWReStoreImplicitTrueQueryTest >> setUp [
+SSWReStoreImplicitTrueQueryTest >> createTestData [
 
-	super setUp.
+	reStore evaluateAsTransaction: 
+		[TypeTest new
+			varchar: '1true';
+			integer: 1;
+			char: 'a';
+			trueBoolean: true;
+			storeIn: reStore.
 
-	reStore beginTransaction.
+		TypeTest new
+			varchar: '1false';
+			integer: 1;
+			char: 'a';
+			trueBoolean: false;
+			storeIn: reStore.
 
-	TypeTest new
-		varchar: '1true';
-		integer: 1;
-		char: 'a';
-		trueBoolean: true;
-		storeIn: reStore.
+		TypeTest new
+			varchar: '2true';
+			integer: 2;
+			char: 'b';
+			trueBoolean: true;
+			storeIn: reStore.
 
-	TypeTest new
-		varchar: '1false';
-		integer: 1;
-		char: 'a';
-		trueBoolean: false;
-		storeIn: reStore.
+		TypeTest new
+			varchar: '2false';
+			integer: 2;
+			char: 'b';
+			trueBoolean: false;
+			storeIn: reStore].
 
-	TypeTest new
-		varchar: '2true';
-		integer: 2;
-		char: 'b';
-		trueBoolean: true;
-		storeIn: reStore.
+	reStore simulateReconnect.
 
-	TypeTest new
-		varchar: '2false';
-		integer: 2;
-		char: 'b';
-		trueBoolean: false;
-		storeIn: reStore.
-
-	reStore commitTransaction.
-
-	instances := reStore instancesOf: TypeTest
+	instances := TypeTest storedInstancesIn: reStore
 ]
 
 { #category : #public }

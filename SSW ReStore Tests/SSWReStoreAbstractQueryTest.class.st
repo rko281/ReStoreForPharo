@@ -13,54 +13,47 @@ Class {
 { #category : #public }
 SSWReStoreAbstractQueryTest class >> isAbstract [
 
-	^self name == #SSWReStoreAbstractQueryTest
+	^self == SSWReStoreAbstractQueryTest
 ]
 
-{ #category : #public }
-SSWReStoreAbstractQueryTest >> setUp [
+{ #category : #running }
+SSWReStoreAbstractQueryTest >> createTestData [
 
-	| john jim david zoe |
+	reStore evaluateAsTransaction:
+		[| john jim david zoe |
+		john := SimplePerson new 
+			surname: 'Smith'; 
+			firstName: 'John'; 
+			emailAddress: 'john@something'; 
+			age: 20;
+			storeIn: reStore.
 
-	super setUp.
+		jim := SimplePerson new 
+			surname: 'Brown'; 
+			firstName: 'Jim'; 
+			emailAddress: 'jim@somewhere'; 
+			age: 30;
+			storeIn: reStore.
 
-	reStore beginTransaction.
+		david := SimplePerson new 
+			surname: 'Smythe'; 
+			firstName: 'David'; 
+			emailAddress: 'david@somewhere'; 
+			age: 40;
+			storeIn: reStore.
 
-	john := SimplePerson new 
-		surname: 'Smith'; 
-		firstName: 'John'; 
-		emailAddress: 'john@something'; 
-		age: 20;
-		storeIn: reStore.
+		zoe := SimplePerson new 
+			surname: 'Brown'; 
+			firstName: 'Zoe';  
+			friend: john;
+			age: 20;
+			yourself;
+			storeIn: reStore.
 
-	jim := SimplePerson new 
-		surname: 'Brown'; 
-		firstName: 'Jim'; 
-		emailAddress: 'jim@somewhere'; 
-		age: 30;
-		storeIn: reStore.
-
-	david := SimplePerson new 
-		surname: 'Smythe'; 
-		firstName: 'David'; 
-		emailAddress: 'david@somewhere'; 
-		age: 40;
-		storeIn: reStore.
-
-	zoe := SimplePerson new 
-		surname: 'Brown'; 
-		firstName: 'Zoe';  
-		friend: john;
-		age: 20;
-		yourself;
-		storeIn: reStore.
-
-	john friend: david.
-
-	reStore commitTransaction
-
+		john friend: david]
 ]
 
-{ #category : #public }
+{ #category : #constants }
 SSWReStoreAbstractQueryTest >> sortedPersonFullNames [
 
 	^#('David Smythe' 'Jim Brown' 'John Smith' 'Zoe Brown')

@@ -1,6 +1,6 @@
 "
 ReStore
-©2020 John Aspinall
+©2019 John Aspinall
 https://github.com/rko281/ReStoreForDolphin
 https://github.com/rko281/ReStoreForPharo
 "
@@ -20,9 +20,7 @@ SSWReStoreInlinedTest >> addClassesTo: aReStore [
 ]
 
 { #category : #running }
-SSWReStoreInlinedTest >> setUp [
-
-	super setUp.
+SSWReStoreInlinedTest >> createTestData [ 
 
 	(Array 
 		with: 
@@ -74,10 +72,9 @@ SSWReStoreInlinedTest >> setUp [
 				bankBalance: (NumberWithCurrency new number: 987.65; currency: 'EUR'; yourself);
 				yourself)) storeAllIn: reStore.
 
-
 	reStore simulateReconnect.
 
-	persons := (reStore instancesOf: InlinedTestPerson) sortBlock: [ :p1 :p2 | p1 firstName <= p2 firstName]
+	persons := (InlinedTestPerson storedInstancesIn: reStore) sortBlock: [ :p1 :p2 | p1 firstName <= p2 firstName]
 ]
 
 { #category : #'unit tests' }

@@ -6,9 +6,8 @@ https://github.com/rko281/ReStoreForPharo
 "
 Class {
 	#name : #SSWReStoreUpdateClashTestPersistent,
-	#superclass : #SSWReStoreTest,
+	#superclass : #SSWReStore2Test,
 	#instVars : [
-		'reStore2',
 		'singleA1',
 		'singleB1',
 		'singleC1',
@@ -28,35 +27,11 @@ SSWReStoreUpdateClashTestPersistent >> createStandardTestInstance [
 	singleB1 := Test new name: 'singleB'.
 	singleC1 := Test new name: 'singleC'.
 
-	self assert: (reStore commitAll: (Array with: singleA1 with: singleB1 with: singleC1))
+	self assert: ((Array with: singleA1 with: singleB1 with: singleC1) storeAllIn: reStore)
 ]
 
 { #category : #Running }
-SSWReStoreUpdateClashTestPersistent >> reinitSingles1 [
-
-	singleA1 := (reStore instancesOf: Test) detect: [ :e | e name = 'singleA'].
-	singleB1 := (reStore instancesOf: Test) detect: [ :e | e name = 'singleB'].
-	singleC1 := (reStore instancesOf: Test) detect: [ :e | e name = 'singleC']
-]
-
-{ #category : #Running }
-SSWReStoreUpdateClashTestPersistent >> reinitSingles2 [
-
-	singleA2 := (reStore2 instancesOf: Test) detect: [ :e | e name = 'singleA'].
-	singleB2 := (reStore2 instancesOf: Test) detect: [ :e | e name = 'singleB'].
-	singleC2 := (reStore2 instancesOf: Test) detect: [ :e | e name = 'singleC']
-]
-
-{ #category : #Running }
-SSWReStoreUpdateClashTestPersistent >> setUp [
-
-	super setUp.
-
-	reStore2 := SSWReStore new.
-	self initReStore: reStore2.
-
-	reStore2 connect.
-	reStore2 addClass: Test; addClass: OwnedTest; addClass: OwnerTest.
+SSWReStoreUpdateClashTestPersistent >> createTestData [
 
 	self createStandardTestInstance.
 	reStore simulateReconnect.
@@ -64,12 +39,19 @@ SSWReStoreUpdateClashTestPersistent >> setUp [
 ]
 
 { #category : #Running }
-SSWReStoreUpdateClashTestPersistent >> tearDown [
+SSWReStoreUpdateClashTestPersistent >> reinitSingles1 [
 
-	super tearDown.
-	reStore2 isNil ifFalse: 
-		[self releaseReStore: reStore2.
-		reStore2 := nil]
+	singleA1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'singleA'].
+	singleB1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'singleB'].
+	singleC1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'singleC']
+]
+
+{ #category : #Running }
+SSWReStoreUpdateClashTestPersistent >> reinitSingles2 [
+
+	singleA2 := (Test storedInstancesIn: reStore2) detect: [ :e | e name = 'singleA'].
+	singleB2 := (Test storedInstancesIn: reStore2) detect: [ :e | e name = 'singleB'].
+	singleC2 := (Test storedInstancesIn: reStore2) detect: [ :e | e name = 'singleC']
 ]
 
 { #category : #'unit tests' }
@@ -82,8 +64,8 @@ SSWReStoreUpdateClashTestPersistent >> test01 [
 	self reinitSingles1.
 	self reinitSingles2.
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (reStore evaluateAsTransaction: [inst1 single1: inst1 single2]).
 	self assert: (reStore2 evaluateAsTransaction: [inst2 single2: inst2 single1]).
@@ -108,8 +90,8 @@ SSWReStoreUpdateClashTestPersistent >> test02 [
 	self reinitSingles1.
 	self reinitSingles2.
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	oldName := inst2 name.
 

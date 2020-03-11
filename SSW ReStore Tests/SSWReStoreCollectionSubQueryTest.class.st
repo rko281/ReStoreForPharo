@@ -27,11 +27,11 @@ SSWReStoreCollectionSubQueryTest class >> myTestSelectors [
 ]
 
 { #category : #running }
-SSWReStoreCollectionSubQueryTest >> setUp [
+SSWReStoreCollectionSubQueryTest >> createTestData [
 
 	| orders |
 
-	super setUp.
+	super createTestData.
 
 	reStore evaluateAsTransaction: 
 		[SimpleProduct new
@@ -40,7 +40,7 @@ SSWReStoreCollectionSubQueryTest >> setUp [
 			retailPrice: 2000;
 			storeIn: reStore].
 
-	goldPlatedWobulator := (reStore instancesOf: SimpleProduct) detect: [ :each | each retailPrice = 2000].
+	goldPlatedWobulator := (SimpleProduct storedInstancesIn: reStore) detect: [ :each | each retailPrice = 2000].
 
 	orders := OrderedCollection new.
 
@@ -53,16 +53,15 @@ SSWReStoreCollectionSubQueryTest >> setUp [
 	
 	1 to: 10 do: [ :index | orders add: (customer1 orders add: (SimpleProductOrder new product: wobulator; quantity: (index * 100); customer: customer1; yourself))].
 
-	reStore commitAll: 
-		((OrderedCollection withAll: orders)
-			add: customer1 withRelatedComponents;
-			add: customer2 withRelatedComponents;
-			add: customer3 withRelatedComponents;
-			yourself).
+	((OrderedCollection withAll: orders)
+		add: customer1;
+		add: customer2;
+		add: customer3;
+		yourself) storeAllIn: reStore.
 
 	reStore refreshAllObjects.
 
-	customers := reStore instancesOf: SimplePerson
+	customers := SimplePerson storedInstancesIn: reStore
 ]
 
 { #category : #'unit tests' }

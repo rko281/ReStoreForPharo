@@ -41,7 +41,7 @@ SSWReStoreSpeedTest >> test1Write [
 		show: (time := Time millisecondsToRun: [people storeIn: reStore]) displayString;
 		show: ' ms'.
 
-	self assert: ((reStore instancesOf: SimplePerson) size = self sampleSize).
+	self assert: ((SimplePerson storedInstancesIn: reStore) size = self sampleSize).
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
@@ -49,12 +49,12 @@ SSWReStoreSpeedTest >> test1Write [
 SSWReStoreSpeedTest >> test2Read [
 
 	| people time |
-	
+
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
 
-	people := reStore instancesOf: SimplePerson.
+	people := SimplePerson storedInstancesIn: reStore.
 
 	Transcript 
 		cr; 
@@ -75,7 +75,7 @@ SSWReStoreSpeedTest >> test3Update [
 
 	reStore simulateReconnect.
 
-	people := (reStore instancesOf: SimplePerson) asOrderedCollection.
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
 	people do: 
 		[ :person || id |
 		id := person _id.
@@ -90,7 +90,7 @@ SSWReStoreSpeedTest >> test3Update [
 		show: ' ms'.
 
 	reStore simulateReconnect.
-	(reStore instancesOf: SimplePerson) asOrderedCollection do: 
+	(SimplePerson storedInstancesIn: reStore) asOrderedCollection do: 
 		[ :person || id |
 		id := person _id.
 		id odd 
@@ -109,7 +109,7 @@ SSWReStoreSpeedTest >> test4RefreshNoChange [
 
 	reStore simulateReconnect.
 
-	people := (reStore instancesOf: SimplePerson) asOrderedCollection.
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
 
 	Transcript 
 		cr; 
@@ -129,7 +129,7 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 
 	reStore simulateReconnect.
 
-	people := (reStore instancesOf: SimplePerson) asOrderedCollection.
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
 
 	reStore connection evaluateAsTxn:
 		[people do: 
@@ -158,12 +158,12 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 SSWReStoreSpeedTest >> test9Delete [
 
 	| people time |
-	
+
 	self sampleSet storeAllIn: reStore.
 
 	reStore simulateReconnect.
 
-	people := (reStore instancesOf: SimplePerson) asOrderedCollection.
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
 	
 	Transcript 
 		cr; 
@@ -171,6 +171,6 @@ SSWReStoreSpeedTest >> test9Delete [
 		show:  (time := Time millisecondsToRun: [people unstoreAll]) displayString;
 		show: ' ms'.
 
-	self assert: (reStore instancesOf: SimplePerson) isEmpty.
+	self assert: (SimplePerson storedInstancesIn: reStore) isEmpty.
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]

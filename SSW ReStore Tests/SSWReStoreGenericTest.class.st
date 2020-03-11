@@ -6,10 +6,9 @@ https://github.com/rko281/ReStoreForPharo
 "
 Class {
 	#name : #SSWReStoreGenericTest,
-	#superclass : #SSWReStoreTest,
+	#superclass : #SSWReStore2Test,
 	#instVars : [
-		'testObject',
-		'reStore2'
+		'testObject'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -36,6 +35,14 @@ SSWReStoreGenericTest >> componentDefinition [
 ]
 
 { #category : #running }
+SSWReStoreGenericTest >> createTestData [
+
+	self createTestObject.
+
+	self fetchTestObjects
+]
+
+{ #category : #running }
 SSWReStoreGenericTest >> createTestObject [
 
 	reStore evaluateAsTransaction: [self templateTestObject storeIn: reStore]
@@ -47,35 +54,7 @@ SSWReStoreGenericTest >> fetchTestObjects [
 	(Delay forMilliseconds: 10) wait.
 	reStore simulateReconnect.
 
-	testObject := (reStore instancesOf: GenericTest) first
-]
-
-{ #category : #running }
-SSWReStoreGenericTest >> setUp [
-
-	super setUp.
-
-	self createTestObject.
-
-	self fetchTestObjects
-]
-
-{ #category : #running }
-SSWReStoreGenericTest >> setUpReStore2 [
-
-	reStore2 := SSWReStore new.
-	self initReStore: reStore2.
-	reStore2 connect.
-	self addClassesTo: reStore2
-]
-
-{ #category : #running }
-SSWReStoreGenericTest >> tearDown [
-
-	super tearDown.
-	reStore2 isNil ifFalse: 
-		[reStore2 disconnect. 
-		reStore2 := nil]
+	testObject := (GenericTest storedInstancesIn: reStore) first
 ]
 
 { #category : #accessing }

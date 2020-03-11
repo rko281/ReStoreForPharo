@@ -412,8 +412,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdated [
 	changedName := originalName, '_changed'.
 	
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
-	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
+	reStore2 evaluateAsTransaction: [((component class storedInstancesIn: reStore2) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
 	self refreshDelay.
 
 	"Ensure reStore wasn't affected"
@@ -439,7 +438,6 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedDeeply [
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].	
 
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component deepTest class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
 	self refreshDelay.
 
@@ -464,8 +462,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusion [
 	changedName := originalName, '_changed'.
 	
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
-	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
+	reStore2 evaluateAsTransaction: [((component class storedInstancesIn: reStore2) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
 	self refreshDelay.
 
 	"Ensure reStore wasn't affected"
@@ -491,7 +488,6 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusionDeeply 
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].	
 
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component deepTest class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName]].
 	self refreshDelay.
 
@@ -522,7 +518,6 @@ SSWReStoreRelatedObjectTest >> testRefreshIfUpdatedRollbackRemovedComponentChang
 	changedName := originalName, '_changed'.
 
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: 
 		[| testObject2 |
 		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
@@ -544,7 +539,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChange [
 	changedName := originalName, '_changed'.
 
 	"Update component in other session; remove component in this session"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: 
 		[| testObject2 |
 		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
@@ -569,7 +563,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChangeWithExclu
 	changedName := originalName, '_changed'.
 
 	"Update component in other session; remove component in this session"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: 
 		[| testObject2 |
 		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
@@ -635,8 +628,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdated [
 
 	"Update via reStore2 so versioning is respected"
 	changedName2 := originalName, '_changed2'.
-	self setUpReStore2.
-	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
+	reStore2 evaluateAsTransaction: [((component class storedInstancesIn: reStore2) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
 	self refreshDelay.
 
 	"Refresh of just the owner does not revert the change to the component"
@@ -662,7 +654,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedDeeply
 
 	"Update via reStore2 so versioning is respected"
 	changedName2 := originalName, '_changed2'.
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component deepTest class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
 	self refreshDelay.
 
@@ -688,8 +679,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithEx
 
 	"Update via reStore2 so versioning is respected"
 	changedName2 := originalName, '_changed2'.
-	self setUpReStore2.
-	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
+	reStore2 evaluateAsTransaction: [((component class storedInstancesIn: reStore2) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
 	self refreshDelay.
 
 	"Refresh of just the owner does not revert the change to the component"
@@ -714,7 +704,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithEx
 
 	"Update via reStore2 so versioning is respected"
 	changedName2 := originalName, '_changed2'.
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: component deepTest class) satisfying: [ :each | each name = originalName]) modify: [ :each | each name: changedName2]].
 	self refreshDelay.
 
@@ -787,7 +776,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChange [
 	component name: changedName.
 
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: testObject class) satisfying: [ :each | each name = testObject name]) modify: [ :each | each component: nil]].
 
 	reStore refresh: testObject withRelatedComponents.
@@ -805,7 +793,6 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChangeWithExcl
 	component name: changedName.
 
 	"Update via reStore2 so versioning is respected"
-	self setUpReStore2.
 	reStore2 evaluateAsTransaction: [((reStore2 instancesOf: testObject class) satisfying: [ :each | each name = testObject name]) modify: [ :each | each component: nil]].
 
 	reStore refresh: (testObject withRelatedComponents without: component).

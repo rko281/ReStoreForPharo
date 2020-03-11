@@ -19,7 +19,7 @@ SSWReStoreSortTest >> _testClassSortImplementationInverted [
 	| instances |
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<=>).
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -30,7 +30,7 @@ SSWReStoreSortTest >> _testClassSortImplementationWithBlocksInverted [
 	| instances |
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==>).
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -42,7 +42,7 @@ SSWReStoreSortTest >> _testSortInverted [
 
 	self changeDavidToJohn.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | (b firstName > a firstName) | (b firstName = a firstName & (b surname >= a surname))].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | (b firstName > a firstName) | (b firstName = a firstName & (b surname >= a surname))].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
@@ -54,7 +54,7 @@ SSWReStoreSortTest >> _testSortWithBlocksInverted [
 
 	self changeDavidToJohn.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | b firstName > a firstName or: [b firstName = a firstName and: [b surname >= a surname]]].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | b firstName > a firstName or: [b firstName = a firstName and: [b surname >= a surname]]].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
@@ -64,9 +64,9 @@ SSWReStoreSortTest >> changeDavidToJohn [
 
 	| davidToJohn |
 
-	davidToJohn := (reStore instancesOf: SimplePerson) detect: [ :each | each firstName = 'David'].
+	davidToJohn := (SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'David'].
 	davidToJohn firstName: 'John'.
-	reStore commit: davidToJohn
+	davidToJohn store
 ]
 
 { #category : #running }
@@ -91,7 +91,7 @@ SSWReStoreSortTest >> testClassSortImplementation [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -101,7 +101,7 @@ SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
 	"Jim Brown	David Smythe	Jim Brown
@@ -109,11 +109,11 @@ SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 	John Smith	Zoe Brown		John Smith
 	David Smythe	Jim Brown		David Smythe"
 
-	reStore commitAll: instances.
+	instances storeAll.
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#friendCompare:). "a friend <= b friend"
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -123,7 +123,7 @@ SSWReStoreSortTest >> testClassSortImplementationReversed [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) beSorted reverse.
+	instances := (SimplePerson storedInstancesIn: reStore) beSorted reverse.
 
 	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
 ]
@@ -134,7 +134,7 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocks [
 	| instances |
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==).
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -144,13 +144,13 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocksOnPersistentObject [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#friendCompareWithBlocks:).
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -160,12 +160,12 @@ SSWReStoreSortTest >> testDeepSort [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | (a friend firstName < b friend firstName) | (a friend firstName = b friend firstName & (a friend surname <= b friend surname))].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | (a friend firstName < b friend firstName) | (a friend firstName = b friend firstName & (a friend surname <= b friend surname))].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'David Smythe' 'Zoe Brown' 'John Smith' ))
 ]
@@ -175,12 +175,12 @@ SSWReStoreSortTest >> testDeepSortWithBlocks [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friend firstName < b friend firstName or: [a friend firstName = b friend firstName and: [a friend surname <= b friend surname]]].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friend firstName < b friend firstName or: [a friend firstName = b friend firstName and: [a friend surname <= b friend surname]]].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'David Smythe' 'Zoe Brown' 'John Smith' ))
 ]
@@ -190,7 +190,7 @@ SSWReStoreSortTest >> testSortImplementation [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a <= b].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a <= b].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -200,12 +200,12 @@ SSWReStoreSortTest >> testSortImplementationOnPersistentObject [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friendCompare: b].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friendCompare: b].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -215,12 +215,12 @@ SSWReStoreSortTest >> testSortImplementationOnPersistentObjectWithBlocks [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friendCompareWithBlocks: b].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friendCompareWithBlocks: b].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -230,7 +230,7 @@ SSWReStoreSortTest >> testSortImplementationReversed [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) sortBlock: [ :a :b | a <= b].
+	instances := (SimplePerson storedInstancesIn: reStore) sortBlock: [ :a :b | a <= b].
 
 	self assert: (instances reverse asOrderedCollection collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
 ]
@@ -240,7 +240,7 @@ SSWReStoreSortTest >> testSortImplementationWithBlocks [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a <== b].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a <== b].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
@@ -252,7 +252,7 @@ SSWReStoreSortTest >> testStandardSort [
 
 	self changeDavidToJohn.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | (a firstName < b firstName) | (a firstName = b firstName & (a surname <= b surname))].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | (a firstName < b firstName) | (a firstName = b firstName & (a surname <= b surname))].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
@@ -262,12 +262,12 @@ SSWReStoreSortTest >> testStandardSortOnPersistentObject [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friend <= b friend].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friend <= b friend].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -277,13 +277,13 @@ SSWReStoreSortTest >> testStandardSortOnPersistentObjectWithBlocks [
 
 	| instances |
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection.
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' )).
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
-	reStore commitAll: instances.
+	instances storeAll.
 
 	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==).
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a friend <= b friend].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friend <= b friend].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
@@ -295,7 +295,7 @@ SSWReStoreSortTest >> testStandardSortWithBlocks [
 
 	self changeDavidToJohn.
 
-	instances := (reStore instancesOf: SimplePerson) asSortedCollection: [ :a :b | a firstName < b firstName or: [a firstName = b firstName and: [a surname <= b surname]]].
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a firstName < b firstName or: [a firstName = b firstName and: [a surname <= b surname]]].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]

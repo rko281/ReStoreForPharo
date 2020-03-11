@@ -11,11 +11,11 @@ Class {
 }
 
 { #category : #running }
-SSWReStoreAggregateQueryTest >> setUp [
+SSWReStoreAggregateQueryTest >> createTestData [
 
 	| orders |
 
-	super setUp.
+	super createTestData.
 
 	orders := OrderedCollection new.
 
@@ -23,7 +23,7 @@ SSWReStoreAggregateQueryTest >> setUp [
 	1 to: 5 do: [ :index | orders add: (SimpleProductOrder new product: gadget; quantity: (index * 10); customer: (index odd ifTrue: [customer1] ifFalse: [customer2]); yourself)].
 	1 to: 2 do: [ :index | orders add: (SimpleProductOrder new product: wobulator; quantity: (index * 100); customer: (index odd ifTrue: [customer1] ifFalse: [customer2]); yourself)].
 
-	reStore commitAll: orders
+	orders storeAllIn: reStore
 ]
 
 { #category : #public }
@@ -31,7 +31,7 @@ SSWReStoreAggregateQueryTest >> testAll [
 
 	| orders mins maxs sums avgs counts |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	counts := Dictionary new.
 	mins := Dictionary new.
 	maxs := Dictionary new.
@@ -78,7 +78,7 @@ SSWReStoreAggregateQueryTest >> testGroupWithObject [
 	"SELECT * FROM TABLE GROUP BY FIELD not supported on Access or SQL Server"
 	((reStore sqlDialect isKindOf: SSWMSAccessDialect) or: [reStore sqlDialect isKindOf: SSWSQLServerDialect]) ifTrue: [^self].
 
-	uniqueProducts := (reStore instancesOf: SimpleProductOrder) project: [ :each | each product].
+	uniqueProducts := (SimpleProductOrder storedInstancesIn: reStore) project: [ :each | each product].
 
 	self assert: (uniqueProducts size = 3)
 ]
@@ -88,7 +88,7 @@ SSWReStoreAggregateQueryTest >> testGroupedAverage [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each quantity average]) do: [ :pair | results at: pair first put: pair last].
@@ -107,7 +107,7 @@ SSWReStoreAggregateQueryTest >> testGroupedCount [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each count]) do: [ :pair | results at: pair first put: pair last].
@@ -123,7 +123,7 @@ SSWReStoreAggregateQueryTest >> testGroupedMaximum [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each quantity maximum]) do: [ :pair | results at: pair first put: pair last].
@@ -139,7 +139,7 @@ SSWReStoreAggregateQueryTest >> testGroupedMinimum [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each quantity minimum]) do: [ :pair | results at: pair first put: pair last].
@@ -155,7 +155,7 @@ SSWReStoreAggregateQueryTest >> testGroupedSum [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each quantity sum]) do: [ :pair | results at: pair first put: pair last].
@@ -171,7 +171,7 @@ SSWReStoreAggregateQueryTest >> testMultiGroupedCount [
 
 	| orders results |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 	results := Dictionary new.
 
 	(orders project: [ :each | each product || each customer || each count]) do: [ :pair | (results at: pair first ifAbsentPut: [Dictionary new]) at: pair second put: pair last].
@@ -197,7 +197,7 @@ SSWReStoreAggregateQueryTest >> testSimpleAverage [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders project: [ :each | each quantity average]) asArray first truncated = 29
 ]
@@ -207,7 +207,7 @@ SSWReStoreAggregateQueryTest >> testSimpleCount [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders project: [ :each | each count]) asArray = #(17)
 ]
@@ -217,7 +217,7 @@ SSWReStoreAggregateQueryTest >> testSimpleGroup [
 
 	| people  uniqueSurnames |
 
-	people := reStore instancesOf: SimplePerson.
+	people := SimplePerson storedInstancesIn: reStore.
 
 	uniqueSurnames := people project: [ :each | each surname].
 
@@ -230,7 +230,7 @@ SSWReStoreAggregateQueryTest >> testSimpleMaximum [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders project: [ :each | each quantity maximum]) asArray = #(200)
 ]
@@ -240,7 +240,7 @@ SSWReStoreAggregateQueryTest >> testSimpleMinimum [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders project: [ :each | each quantity minimum]) asArray = #(1)
 ]
@@ -250,7 +250,7 @@ SSWReStoreAggregateQueryTest >> testSimpleSum [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders project: [ :each | each quantity sum]) asArray = #(505)
 ]
@@ -262,7 +262,7 @@ SSWReStoreAggregateQueryTest >> testSize_ie_Count [
 
 	| orders |
 
-	orders := reStore instancesOf: SimpleProductOrder.
+	orders := SimpleProductOrder storedInstancesIn: reStore.
 
 	self assert: (orders size = 17)
 ]

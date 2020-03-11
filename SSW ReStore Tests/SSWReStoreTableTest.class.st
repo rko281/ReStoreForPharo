@@ -139,15 +139,13 @@ SSWReStoreTableTest >> setUp [
 		useLongNotes: false; 
 		useBestFriend: false.
 
-	super setUp.
-
-	self createTestData 
+	super setUp
 ]
 
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test01VerifySetup [
 
-	self assert: ((reStore instancesOf: SimplePerson) size = (self sampleSize * 2))
+	self assert: ((SimplePerson storedInstancesIn: reStore) size = (self sampleSize * 2))
 ]
 
 { #category : #'unit tests' }
@@ -160,14 +158,14 @@ SSWReStoreTableTest >> test02RenameClass [
 
 	self renameClass.
 
-	people := reStore instancesOf: SimplePerson2.
+	people := SimplePerson2 storedInstancesIn: reStore.
 
 	self assert: (people size = (self sampleSize * 2)).
 	self assert: (people anySatisfy: [ :each | each firstName = 'John']).
 	self assert: (people anySatisfy: [ :each | each firstName = 'Sam']).
 
 	table := reStore tableForClass: SimplePerson2.
-	self assert: (((reStore instancesOf: SSWDBTableRecord) detect: [ :seq | seq tableName = table name]) nextID >= (self sampleSize + 1))
+	self assert: (((SSWDBTableRecord storedInstancesIn: reStore) detect: [ :seq | seq tableName = table name]) nextID >= (self sampleSize + 1))
 ]
 
 { #category : #'unit tests' }
@@ -180,7 +178,7 @@ SSWReStoreTableTest >> test03RenameInstVar [
 	SimplePerson2 useForename: true.
 	reStore renamedInstVar: #forename from: #firstName in: SimplePerson2.
 
-	people := reStore instancesOf: SimplePerson2.
+	people := SimplePerson2 storedInstancesIn: reStore.
 
 	self assert: (people anySatisfy: [ :each | each forename = 'John']).
 	self assert: (people anySatisfy: [ :each | each forename = 'Sam']).
@@ -198,7 +196,7 @@ SSWReStoreTableTest >> test04RenameInstVarPersistent [
 	SimplePerson2 useBestFriend: true.
 	reStore renamedInstVar: #bestFriend from: #friend in: SimplePerson2.
 
-	people := reStore instancesOf: SimplePerson2.
+	people := SimplePerson2 storedInstancesIn: reStore.
 
 	self assert: ((people detect: [ :each | each firstName = 'John']) bestFriend firstName = 'Sam')
 ]
@@ -224,7 +222,7 @@ SSWReStoreTableTest >> test06ChangeInstVarClass [
 			notes: ((String new: originalSize) atAllPut: char);
 			yourself].
 
-	reStore commitAll: people.
+	people storeAllIn: reStore.
 	reStore simulateReconnect.
 
 	SimplePerson2 useLongNotes: true.
@@ -233,7 +231,7 @@ SSWReStoreTableTest >> test06ChangeInstVarClass [
 	reStore changedClassOfInstVar: #notes in: SimplePerson2 modifyUsing: 
 		[ :each | each notes, 'longer'].
 
-	people := (reStore instancesOf: SimplePerson2) asOrderedCollection.
+	people := (SimplePerson2 storedInstancesIn: reStore) asOrderedCollection.
 	self assert: (people allSatisfy: [ :each | (each notes size > originalSize) and: [each notes endsWith: 'longer']])
 ]
 
@@ -258,7 +256,7 @@ SSWReStoreTableTest >> test07AlterInstVar [
 			notes: ((String new: originalSize) atAllPut: char);
 			yourself].
 
-	reStore commitAll: people.
+	people storeAllIn: reStore.
 	reStore simulateReconnect.
 
 	SimplePerson2 useLongNotes: true.
@@ -267,7 +265,7 @@ SSWReStoreTableTest >> test07AlterInstVar [
 	reStore alterInstVar: #notes in: SimplePerson2.
 
 	"Verify no data loss"
-	self assert: ((reStore instancesOf: SimplePerson2) asOrderedCollection allSatisfy: [ :each | (each notes size = originalSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
+	self assert: ((SimplePerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size = originalSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
 
 	"Verify the size has been increased"
 	newSize := SimplePerson2 notesSize.
@@ -277,7 +275,7 @@ SSWReStoreTableTest >> test07AlterInstVar [
 	people storeAll.
 
 	reStore simulateReconnect.
-	self assert: ((reStore instancesOf: SimplePerson2) asOrderedCollection allSatisfy: [ :each | (each notes size = newSize) and: [each notes allSatisfy: [ :char | char = each surname first]]])
+	self assert: ((SimplePerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size = newSize) and: [each notes allSatisfy: [ :char | char = each surname first]]])
 ]
 
 { #category : #'unit tests' }
@@ -295,45 +293,45 @@ SSWReStoreTableTest >> test09DestroyTable [
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test11VerifySetup [
 
-	self assert: (reStore instancesOf: SuperPerson) size = ((self sampleSize * 3) + 3). "1 x super + 2 x Detailed + (1 custom super + 2 custom detailed)" 
-	self assert: (reStore instancesOf: SuperPerson) withoutInheritance size = (self sampleSize + 1) "+1 custom super".
-	self assert: (reStore instancesOf: DetailedPerson) size = ((self sampleSize * 2) + 2) "+2 custom detailed"
+	self assert: (SuperPerson storedInstancesIn: reStore) size = ((self sampleSize * 3) + 3). "1 x super + 2 x Detailed + (1 custom super + 2 custom detailed)" 
+	self assert: (SuperPerson storedInstancesIn: reStore) withoutInheritance size = (self sampleSize + 1) "+1 custom super".
+	self assert: (DetailedPerson storedInstancesIn: reStore) size = ((self sampleSize * 2) + 2) "+2 custom detailed"
 ]
 
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test12Unstore [
 
-	self assert: ((reStore instancesOf: SuperPerson satisfying: [ :each | each firstName = 'James']) size = 2).
-	self assert: ((reStore instancesOf: DetailedPerson satisfying: [ :each | each firstName = 'James']) size = 1).
-	self assert: ((reStore instancesOf: SuperPerson satisfying: [ :each | each firstName = 'Peter']) size = 1).
+	self assert: (((SuperPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'James']) size = 2).
+	self assert: (((DetailedPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'James']) size = 1).
+	self assert: (((SuperPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'Peter']) size = 1).
 
-	self assert: (((reStore instancesOf: SuperPerson) unstore: [ :each | each firstName = 'James']) = 2).
-	self assert: (((reStore instancesOf: DetailedPerson) unstore: [ :each | each firstName = 'Peter']) = 1).
+	self assert: (((SuperPerson storedInstancesIn: reStore) unstore: [ :each | each firstName = 'James']) = 2).
+	self assert: (((DetailedPerson storedInstancesIn: reStore) unstore: [ :each | each firstName = 'Peter']) = 1).
 
-	self assert: ((reStore instancesOf: SuperPerson satisfying: [ :each | each firstName = 'James']) isEmpty).
-	self assert: ((reStore instancesOf: SuperPerson satisfying: [ :each | each firstName = 'Peter']) isEmpty).
-	self assert: ((reStore instancesOf: SuperPerson) size = (self sampleSize * 3)).
-	self assert: ((reStore instancesOf: SuperPerson) withoutInheritance size = self sampleSize).
-	self assert: ((reStore instancesOf: DetailedPerson) size = (self sampleSize * 2)).
+	self assert: (((SuperPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'James']) isEmpty).
+	self assert: (((SuperPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'Peter']) isEmpty).
+	self assert: ((SuperPerson storedInstancesIn: reStore) size = (self sampleSize * 3)).
+	self assert: ((SuperPerson storedInstancesIn: reStore) withoutInheritance size = self sampleSize).
+	self assert: ((DetailedPerson storedInstancesIn: reStore) size = (self sampleSize * 2)).
 
 ]
 
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test13RenameClassHierarchy [
 
-	| people table columns |
+	| people table |
 
 	DetailedPerson2 useDateOfBirth: false.
 	self renameDetailedClass.
 
-	people := reStore instancesOf: DetailedPerson2.
+	people := DetailedPerson2 storedInstancesIn: reStore.
 
 	self assert: (people size = ((self sampleSize * 2) + 2)).
 	self assert: (people anySatisfy: [ :each | each firstName = 'John']).
 	self assert: (people anySatisfy: [ :each | each firstName = 'Sam']).
 
 	table := reStore tableForClass: DetailedPerson2.
-	self assert: (((reStore instancesOf: SSWDBTableRecord) detect: [ :seq | seq tableName = table name]) nextID >= (self sampleSize + 1)).
+	self assert: (((SSWDBTableRecord storedInstancesIn: reStore) detect: [ :seq | seq tableName = table name]) nextID >= (self sampleSize + 1)).
 
 	self ensureHierarchyColumnsAllPresent
 ]
@@ -348,7 +346,7 @@ SSWReStoreTableTest >> test14RenameInstVarHierarchy [
 	DetailedPerson2 useDateOfBirth: true.
 	reStore renamedInstVar: #dateOfBirth from: #dob in: DetailedPerson2.
 
-	people := reStore instancesOf: DetailedPerson2.
+	people := DetailedPerson2 storedInstancesIn: reStore.
 
 	self assert: (people anySatisfy: [ :each | each dateOfBirth = (Date newDay: 1 monthIndex: 1 year: 1970)]).
 
@@ -365,7 +363,7 @@ SSWReStoreTableTest >> test15RenameInstVarPersistentHierarchy [
 	DetailedPerson2 useBestFriend: true.
 	reStore renamedInstVar: #bestFriend from: #friend in: DetailedPerson2.
 
-	people := reStore instancesOf: DetailedPerson2.
+	people := DetailedPerson2 storedInstancesIn: reStore.
 
 	self assert: ((people detect: [ :each | each firstName = 'John']) bestFriend firstName = 'Sam').
 
@@ -396,7 +394,7 @@ SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 			notes: ((String new: originalSize) atAllPut: char);
 			yourself].
 
-	reStore commitAll: people.
+	people storeAllIn: reStore.
 
 	self refreshDelay.
 
@@ -406,7 +404,7 @@ SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 	reStore changedClassOfInstVar: #notes in: DetailedPerson2 modifyUsing: 
 		[ :each | each notes, 'xxx xxx xxx longer'].
 
-	self assert: ((reStore instancesOf: DetailedPerson2) asOrderedCollection allSatisfy: [ :each | (each notes size > originalSize) and: [each notes endsWith: 'longer']]).
+	self assert: ((DetailedPerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size > originalSize) and: [each notes endsWith: 'longer']]).
 
 	self ensureHierarchyColumnsAllPresent
 ]
@@ -435,7 +433,7 @@ SSWReStoreTableTest >> test17AlterInstVarHierarchy [
 			notes: ((String new: originalSize) atAllPut: char);
 			yourself].
 
-	reStore commitAll: people.
+	people storeAllIn: reStore.
 
 	reStore simulateReconnect.
 
@@ -444,7 +442,7 @@ SSWReStoreTableTest >> test17AlterInstVarHierarchy [
 	reStore alterInstVar: #notes in: DetailedPerson2.
 
 	"Verify no data loss"
-	self assert: ((reStore instancesOf: DetailedPerson2) asOrderedCollection allSatisfy: [ :each | (each notes size = originalSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
+	self assert: ((DetailedPerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size = originalSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
 
 	"Verify the size has been increased"
 	newSize := DetailedPerson2 notesSize.
@@ -454,7 +452,7 @@ SSWReStoreTableTest >> test17AlterInstVarHierarchy [
 	people storeAll.
 
 	reStore simulateReconnect.
-	self assert: ((reStore instancesOf: DetailedPerson2) asOrderedCollection allSatisfy: [ :each | (each notes size = newSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
+	self assert: ((DetailedPerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size = newSize) and: [each notes allSatisfy: [ :char | char = each surname first]]]).
 
 	self ensureHierarchyColumnsAllPresent
 ]
@@ -464,7 +462,7 @@ SSWReStoreTableTest >> test19DestroyTable [
 
 	self renameDetailedClass.
 	reStore destroyClass: DetailedPerson2.
-	self assert: (reStore instancesOf: SuperPerson) size = (self sampleSize + 1)
+	self assert: (SuperPerson storedInstancesIn: reStore) size = (self sampleSize + 1)
 
 ]
 
@@ -485,12 +483,12 @@ SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 					surname:'Jones'; firstName: 'Bill';yourself);
 			storeIn: reStore].
 
-	self assert: ((reStore instancesOf: SuperPerson) size = 2).
-	self assert: ((reStore instancesOf: DetailedPerson1) size = 1).
-	self assert: ((reStore instancesOf: DetailedPerson2) size = 1).
+	self assert: ((SuperPerson storedInstancesIn: reStore) size = 2).
+	self assert: ((DetailedPerson1 storedInstancesIn: reStore) size = 1).
+	self assert: ((DetailedPerson2 storedInstancesIn: reStore) size = 1).
 
-	self assert: (((reStore instancesOf: DetailedPerson1) select: [ :e | 'Jon*' match: e friend2 surname]) size = 1).
-	self assert: (((reStore instancesOf: DetailedPerson1) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John').
+	self assert: (((DetailedPerson1 storedInstancesIn: reStore) select: [ :e | 'Jon*' match: e friend2 surname]) size = 1).
+	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John').
 
 	reStore disconnect; connect; destroyAllClasses
 ]

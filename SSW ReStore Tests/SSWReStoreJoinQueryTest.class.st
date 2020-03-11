@@ -23,7 +23,7 @@ SSWReStoreJoinQueryTest >> testCollectWithAlreadyJoinedTable [
 
 	| persons david zoe results friendNames |
 
-	persons := reStore instancesOf: SimplePerson.
+	persons := SimplePerson storedInstancesIn: reStore.
 
 	"Make the data a bit more interesting"
 	david := persons detect: [ :each | each firstName = 'David'].
@@ -55,7 +55,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldMultipleConditional [
 
 	| instances john query results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 	john := instances detect: [ :each | each firstName = 'John'].
 
 	"Although the query references the link to the friend table, the table itself is not required.
@@ -77,7 +77,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldReusedConditional [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | each friend firstName = 'David' or: [each friend isNil]].
 
@@ -92,7 +92,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldSoleConditional [
 
 	| instances query results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	"Although the query references the link to the friend table, the table itself is not required.
 	Inline the internals of SSWDBInstancesCollection>>select: so we can check the internals of the query"
@@ -113,7 +113,7 @@ SSWReStoreJoinQueryTest >> testMultipleJoinFieldConditional [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	"Previously, the reused friend join was ignored on the last conditional, resulting in the conditional being on the test join 
 	(thus returning all persons, since none have a populated test inst var)"
@@ -130,7 +130,7 @@ SSWReStoreJoinQueryTest >> testNestedJoinFieldConditional [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	"John's friend = david
 	Zoe's friend = john"
@@ -147,7 +147,7 @@ SSWReStoreJoinQueryTest >> testSatisfyingWithAlreadyJoinedTable [
 
 	| persons david zoe results |
 
-	persons := reStore instancesOf: SimplePerson.
+	persons := SimplePerson storedInstancesIn: reStore.
 
 	"Make the data a bit more interesting"
 	david := persons detect: [ :each | each firstName = 'David'].
@@ -176,7 +176,7 @@ SSWReStoreJoinQueryTest >> testSelectWithAlreadyJoinedTable [
 
 	| persons david zoe results |
 
-	persons := reStore instancesOf: SimplePerson.
+	persons := SimplePerson storedInstancesIn: reStore.
 
 	"Make the data a bit more interesting"
 	david := persons detect: [ :each | each firstName = 'David'].

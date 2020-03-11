@@ -21,7 +21,7 @@ SSWReStoreCollectQueryTest >> testComplexMathFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each firstName || (each age + each firstName size)].
 
@@ -39,7 +39,7 @@ SSWReStoreCollectQueryTest >> testFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each fullName || each fullName size ].
 
@@ -54,7 +54,7 @@ SSWReStoreCollectQueryTest >> testIsNilFirstCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend isNil || each fullName].
 
@@ -70,7 +70,7 @@ SSWReStoreCollectQueryTest >> testIsNilInlinedOrCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | (each friend isNil or: [each firstName = 'John']) || each fullName].
 
@@ -86,7 +86,7 @@ SSWReStoreCollectQueryTest >> testIsNilLastCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each fullName || each friend isNil].
 
@@ -102,7 +102,7 @@ SSWReStoreCollectQueryTest >> testIsNilMultipleCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend isNil || each emailAddress isNil || each fullName].
 
@@ -124,7 +124,7 @@ SSWReStoreCollectQueryTest >> testIsNilOrCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | (each friend isNil | (each firstName = 'John')) || each fullName].
 
@@ -140,7 +140,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each firstName || each friend firstName || each surname || each friend surname].
 
@@ -166,7 +166,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldFirstCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend firstName || each friend surname || each firstName|| each surname].
 
@@ -192,7 +192,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldOnlyCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend firstName || each friend surname].
 
@@ -208,7 +208,7 @@ SSWReStoreCollectQueryTest >> testMathFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each firstName || (each age + 5)].
 
@@ -226,7 +226,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalFirstCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend isNil || (each surname = 'Brown') || each fullName].
 
@@ -250,7 +250,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalLastCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each fullName || each friend isNil || (each surname = 'Brown')].
 
@@ -274,7 +274,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalOnSameFieldCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each fullName || each friend isNil || each friend friend isNil].
 
@@ -294,7 +294,7 @@ SSWReStoreCollectQueryTest >> testMultipleFieldCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each firstName || each surname || each age || each fullName].
 
@@ -312,7 +312,7 @@ SSWReStoreCollectQueryTest >> testMultipleInlinedFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | (each surname = 'Brown' and: [each age = 20]) || each fullName].
 
@@ -327,7 +327,7 @@ SSWReStoreCollectQueryTest >> testMultipleInlinedMethodFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each isBrown20 || each fullName].
 
@@ -342,7 +342,7 @@ SSWReStoreCollectQueryTest >> testNotNilFirstCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend notNil || each fullName].
 
@@ -358,7 +358,7 @@ SSWReStoreCollectQueryTest >> testNotNilLastCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each fullName || each friend notNil].
 
@@ -374,7 +374,7 @@ SSWReStoreCollectQueryTest >> testObjectFieldCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each firstName || each friend].
 
@@ -396,7 +396,7 @@ SSWReStoreCollectQueryTest >> testObjectFieldOnlyCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each friend].
 
@@ -411,7 +411,7 @@ SSWReStoreCollectQueryTest >> testSingleConditionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each surname = 'Brown'].
 
@@ -425,7 +425,7 @@ SSWReStoreCollectQueryTest >> testSingleFieldCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each surname].
 
@@ -438,7 +438,7 @@ SSWReStoreCollectQueryTest >> testSingleInlinedFunctionCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each surname = 'Brown' and: [each age = 20]].
 
@@ -452,7 +452,7 @@ SSWReStoreCollectQueryTest >> testThisObjectFieldOnlyCollectQuery [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances collect: [ :each | each].
 

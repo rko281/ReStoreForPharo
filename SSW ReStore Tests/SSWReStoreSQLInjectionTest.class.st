@@ -15,7 +15,7 @@ SSWReStoreSQLInjectionTest >> testNumberQueryCriteriaInjection [
 
 	| instances injectedAge matches |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	injectedAge := '999 OR 1 = 1'.
 
@@ -31,7 +31,7 @@ SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection1 [
 
 	| instances injectedName results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	injectedName := 'John'' OR 1=1'.
 	results := instances select: [ :each | each firstName = injectedName].
@@ -44,7 +44,7 @@ SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection2 [
 
 	| instances injectedName results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	injectedName := 'John'' OR ''Dave''=''Dave'.
 	results := instances select: [ :each | each firstName = injectedName].
@@ -57,15 +57,12 @@ SSWReStoreSQLInjectionTest >> testStringUpdateInjection [
 
 	| instances injectedName person |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 	person := instances detect: [ :each | each firstName = 'John'].
 
 	"Use SQL injection to have the statement affect a different object"
 	injectedName := 'Nathanial'' WHERE FIRST_NAME = ''David'.
-	reStore commit: 
-		(person
-			firstName: injectedName;
-			yourself).
+	person firstName: injectedName; store.
 
 	"If the injection failed, John should no longer exist (is now Nathanial+injection text), and David should still exist"
 	self assert: (instances satisfying: [ :each | each firstName = 'John']) isEmpty.

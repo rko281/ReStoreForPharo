@@ -18,22 +18,19 @@ SSWReStoreHierarchyTest >> addClassesTo: aReStore [
 ]
 
 { #category : #running }
-SSWReStoreHierarchyTest >> setUp [
+SSWReStoreHierarchyTest >> createTestData [
 
-	super setUp.
-
-	reStore commitAll: 
-		(Array
-			with: (SuperPerson new firstName: 'john')
-			with: (MidPerson new firstName: 'dave'; middleName: 'davison')
-			with: (SubPerson new firstName: 'mike'; middleName: 'michaelson'; age: 22)).
+	(Array
+		with: (SuperPerson new firstName: 'john')
+		with: (MidPerson new firstName: 'dave'; middleName: 'davison')
+		with: (SubPerson new firstName: 'mike'; middleName: 'michaelson'; age: 22)) storeAllIn: reStore.
 
 	reStore simulateReconnect
 ]
 
 { #category : #'unit tests' }
 SSWReStoreHierarchyTest >> test01VerifySetUp [
-	self assert: ((reStore instancesOf: SuperPerson) size = 3)
+	self assert: ((SuperPerson storedInstancesIn: reStore ) size = 3)
 ]
 
 { #category : #'unit tests' }
@@ -41,22 +38,22 @@ SSWReStoreHierarchyTest >> test02Counts [
 
 	| insts |
 
-	insts := reStore instancesOf: SuperPerson.
+	insts := SuperPerson storedInstancesIn: reStore.
 	self assert: (insts size = 3).
 
-	insts := (reStore instancesOf: SuperPerson) withoutInheritance.
+	insts := (SuperPerson storedInstancesIn: reStore ) withoutInheritance.
 	self assert: (insts size = 1).
 
-	insts := reStore instancesOf: MidPerson.
+	insts := MidPerson storedInstancesIn: reStore.
 	self assert: (insts size = 2).
 
-	insts := (reStore instancesOf: MidPerson) withoutInheritance.
+	insts := (MidPerson storedInstancesIn: reStore) withoutInheritance.
 	self assert: (insts size = 1).
 
-	insts := reStore instancesOf: SubPerson.
+	insts := SubPerson storedInstancesIn: reStore.
 	self assert: (insts size = 1).
 
-	insts := (reStore instancesOf: SubPerson) withoutInheritance.
+	insts := (SubPerson storedInstancesIn: reStore) withoutInheritance.
 	self assert: (insts size = 1)
 ]
 
@@ -67,9 +64,9 @@ SSWReStoreHierarchyTest >> test03Querying [
 
 	| persons midPersons subPersons |
 
-	persons := reStore instancesOf: SuperPerson.
-	midPersons := reStore instancesOf: MidPerson.
-	subPersons := reStore instancesOf: SubPerson.
+	persons := SuperPerson storedInstancesIn: reStore.
+	midPersons := MidPerson storedInstancesIn: reStore.
+	subPersons := SubPerson storedInstancesIn: reStore.
 	
 	self assert: ((persons satisfying: [ :each | each firstName = 'john']) size = 1).
 	self assert: ((midPersons satisfying: [ :each | each firstName = 'john']) size = 0).
@@ -94,7 +91,7 @@ SSWReStoreHierarchyTest >> test04Classes [
 
 	| insts john dave mike |
 
-	insts := reStore instancesOf: SuperPerson.
+	insts := SuperPerson storedInstancesIn: reStore.
 	
 	john := insts detect: [ :e | e firstName = 'john'].
 	self assert: john isDBProxy.
@@ -125,7 +122,7 @@ SSWReStoreHierarchyTest >> test05MidFirst [
 
 	| midPersons |
 
-	midPersons := reStore instancesOf: MidPerson.
+	midPersons := MidPerson storedInstancesIn: reStore.
 	self assert: ({MidPerson. SubPerson} includes: midPersons first class).
 	self should: [(midPersons satisfying: [ :each | each firstName = 'john']) first] raise: Error
 ]
@@ -137,7 +134,7 @@ SSWReStoreHierarchyTest >> test06SubFirst [
 
 	| subPersons |
 
-	subPersons := reStore instancesOf: SubPerson.
+	subPersons := SubPerson storedInstancesIn: reStore.
 
 	self assert: (subPersons first class = SubPerson).
 	self should: [(subPersons satisfying: [ :each | each firstName = 'john']) first] raise: Error

@@ -54,11 +54,11 @@ SSWReStoreDefaultTest >> setUp [
 { #category : #running }
 SSWReStoreDefaultTest >> tearDown [
 
-	super tearDown.
-
-	SSWReStore reset.
-
 	reStore2 isNil ifFalse: 
 		[self releaseReStore: reStore2.
-		reStore2 := nil]
+		reStore2 := nil].
+
+	super tearDown.
+
+	SSWReStore reset
 ]

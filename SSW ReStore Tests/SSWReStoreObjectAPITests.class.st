@@ -6,14 +6,11 @@ https://github.com/rko281/ReStoreForPharo
 "
 Class {
 	#name : #SSWReStoreObjectAPITests,
-	#superclass : #SSWReStoreTest,
-	#instVars : [
-		'reStore2'
-	],
+	#superclass : #SSWReStore2Test,
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #private }
+{ #category : #running }
 SSWReStoreObjectAPITests >> _testCreateObject [
 
 	| obj1 |
@@ -35,7 +32,7 @@ SSWReStoreObjectAPITests >> _testCreateObject [
 	^obj1
 ]
 
-{ #category : #private }
+{ #category : #running }
 SSWReStoreObjectAPITests >> _testCreateObjects [
 
 	| obj1 obj2 |
@@ -69,26 +66,6 @@ SSWReStoreObjectAPITests >> createReStore [
 	"Private - Use the default instance"
 
 	reStore := ReStore
-]
-
-{ #category : #running }
-SSWReStoreObjectAPITests >> setUp [
-
-	super setUp.
-
-	reStore2 := SSWReStore new.
-	self initReStore: reStore2.
-
-	reStore2 connect
-]
-
-{ #category : #running }
-SSWReStoreObjectAPITests >> tearDown [
-
-	super tearDown.
-	reStore2 isNil ifFalse: 
-		[self releaseReStore: reStore2.
-		reStore2 := nil]
 ]
 
 { #category : #'unit tests' }

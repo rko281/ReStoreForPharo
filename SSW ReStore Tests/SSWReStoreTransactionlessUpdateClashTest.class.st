@@ -17,14 +17,14 @@ SSWReStoreTransactionlessUpdateClashTest >> test01DetectAndMerge [
 
 	| inst1 inst2 origName |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	origName := inst1 name.
 
 	inst1 number: 11.
 	inst2 name: 'test1:2'.
-	self assert: (reStore commit: inst1).
-	self assert: (reStore2 commit: inst2).
+	self assert: inst1 store.
+	self assert: inst2 store.
 
 	self deny: reStore hasTransaction.
 	self deny: reStore2 hasTransaction.
@@ -60,22 +60,18 @@ SSWReStoreTransactionlessUpdateClashTest >> test02DetectNoMerge [
 	
 	| inst1 inst2 oldNumber |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	oldNumber := inst1 number.
 
 	"OwnerTest blocks updates on instances with this name..."
 	inst1 name: 'blockMerge'.
-	self assert: (reStore commit: inst1).
+	self assert: inst1 store.
 	"...so the following will fail"
 	inst2 number: 99.
-	self deny: (reStore2 commit: inst2). 
+	self deny: inst2 store. 
 
-	self deny: reStore hasTransaction.
-	self assert: reStore2 hasTransaction.
-
-	reStore2 rollbackAndRefreshTransaction.
-	self deny: (reStore2 hasTransaction).
+	inst2 refresh.
 	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = 'blockMerge').
 	self assert: (inst2 number = oldNumber).
@@ -96,22 +92,21 @@ SSWReStoreTransactionlessUpdateClashTest >> test03DetectFailRollback [
 
 	| inst1 inst2 oldSingle |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	oldSingle := inst2 single1 name.
 
 	inst1 name: 'test2:1'.
 	inst2 name: 'test2:2'. 
 	inst2 single1 name: 'single2:2'.
 
-	self assert: (reStore commit: inst1).
-	self deny: (reStore2 commitAll: (Array with: inst2 with: inst2 single1)). 
+	self assert: inst1 store.
+	self deny: (Array with: inst2 with: inst2 single1) storeAll. 
 
 	self deny: reStore hasTransaction.
-	self assert: reStore2 hasTransaction.
+	self deny: reStore2 hasTransaction.
 
-	reStore2 rollbackAndRefreshTransaction.
-	self deny: (reStore2 hasTransaction).
+	(Array with: inst2 with: inst2 single1) refreshAll. 
 	self assert: (inst1 isDBProxy).
 	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = 'test2:1').
@@ -134,15 +129,15 @@ SSWReStoreTransactionlessUpdateClashTest >> test04DetectFailRollforward [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	inst1 name: 'test3:1'.
 	inst2 name: 'test3:2'. 
 	inst2 single1 name: 'single3:2'.
 
-	self assert: (reStore commit: inst1).
-	self deny: (reStore2 commitAll: (Array with: inst2 with: inst2 single1)). 
+	self assert: inst1 store.
+	self deny: ([(Array with: inst2 with: inst2 single1) storeAll] on: StoreFailure do: [ :exc | exc return: false]).
 
 	self deny: reStore hasTransaction.
 	self assert: reStore2 hasTransaction.
@@ -156,8 +151,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test04DetectFailRollforward [
 
 	reStore simulateReconnect.
 	reStore2 simulateReconnect.
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	
 	"self refreshDelay."
 
@@ -173,8 +168,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test05DetectFailAndHandle [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	inst1 single1 name.
 	inst2 single1 name.
 
@@ -182,8 +177,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test05DetectFailAndHandle [
 	inst2 name: 'test4:2'. 
 	inst2 single1 name: 'single4:2'.
 
-	self assert: (reStore commit: inst1 single1).
-	self assert: (reStore2 commitAll: (Array with: inst2 with: inst2 single1)). 
+	self assert: inst1 single1 store.
+	self assert: (Array with: inst2 with: inst2 single1) storeAll. 
 
 	self deny: reStore hasTransaction.
 	self deny: reStore2 hasTransaction.
@@ -214,8 +209,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test06DetectFailNoHandle [
 
 	| inst1 inst2 oldName oldSingle |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	inst1 single1 name.
 	oldName := inst2 name.
@@ -226,13 +221,13 @@ SSWReStoreTransactionlessUpdateClashTest >> test06DetectFailNoHandle [
 	inst2 name: 'test5:2'. 
 	inst2 single1 name: 'single5:2'.
 
-	self assert: (reStore commitAll: (Array with: inst1 with: inst1 single1)).
-	self deny: (reStore2 commitAll: (Array with: inst2 with: inst2 single1)).
+	self assert: (Array with: inst1 with: inst1 single1) storeAll.
+	self deny: (Array with: inst2 with: inst2 single1) storeAll.
 
 	self deny: reStore hasTransaction.
-	self assert: reStore2 hasTransaction.
+	self deny: reStore2 hasTransaction.
 
-	reStore2 rollbackTransaction.
+	(Array with: inst2 with: inst2 single1) rollbackAll.
 
 	self assert: (inst1 isDBProxy).
 	self assert: (inst2 isDBProxy).

@@ -21,11 +21,11 @@ SSWReStoreNotNilQueryTest >> testAndNotNilCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each firstName = 'John' and: [each test notNil]].
 	self assert: (results size = 1).
@@ -40,11 +40,11 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilAndCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each firstName = 'John' and: [each hasTest]].
 	self assert: (results size = 1).
@@ -61,7 +61,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilAndJointCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | each friend notNil].
 	self deny: results isEmpty.
@@ -78,11 +78,11 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each hasTest & (each firstName = 'John')].
 	self assert: results size = 1.
@@ -104,11 +104,11 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilOrCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each firstName = 'John' or: [each hasTest]].
 	self assert: results size = 1.
@@ -126,7 +126,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilOrJointCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | each friend notNil].
 	self deny: results isEmpty.
@@ -143,7 +143,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | each friend notNil].
 	self deny: results isEmpty.
@@ -160,7 +160,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedAndCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | (each friend notNil and: [each firstName = 'John']) & (each surname = 'Brown')].
 	self assert: results isEmpty
@@ -171,7 +171,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedOrCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | (each friend notNil and: [each firstName = 'John']) | (each surname = 'Brown')].
 	self assert: (results size = 3).
@@ -184,13 +184,12 @@ SSWReStoreNotNilQueryTest >> testNotNilDeepFieldCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
-	instances asOrderedCollection do: [ :each | each test: (Test new name: nil)].
-	reStore commitAll: instances asOrderedCollection.
+	instances asOrderedCollection do: [ :each | each test: (Test new name: nil)]; storeAll.
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: john fullName).
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each test name notNil].
 	self assert: results size = 1.
@@ -217,15 +216,14 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldFirstCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
-	instances asOrderedCollection do: [ :each | each surname: nil].
-	reStore commitAll: instances asOrderedCollection.
+	instances := SimplePerson storedInstancesIn: reStore.
+	instances asOrderedCollection do: [ :each | each surname: nil]; storeAll.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john 
 		surname: 'Smith';
 		test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each surname notNil & (each firstName = 'John')].
 	self assert: results size = 1.
@@ -244,15 +242,14 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldLastCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
-	instances asOrderedCollection do: [ :each | each surname: nil].
-	reStore commitAll: instances asOrderedCollection.
+	instances := SimplePerson storedInstancesIn: reStore.
+	instances asOrderedCollection do: [ :each | each surname: nil]; storeAll.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john 
 		surname: 'Smith';
 		test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | (each firstName = 'John') & each surname notNil].
 	self assert: results size = 1.
@@ -275,13 +272,12 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldMidCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
-	instances asOrderedCollection do: [ :each | each surname: nil].
-	reStore commitAll: instances asOrderedCollection.
+	instances := SimplePerson storedInstancesIn: reStore.
+	instances asOrderedCollection do: [ :each | each surname: nil]; storeAll.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john surname: 'Smith'; test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | (each firstName = 'John') & each surname notNil & each test notNil].
 	self assert: results size = 1.
@@ -300,13 +296,12 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldSoleCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
-	instances asOrderedCollection do: [ :each | each surname: nil].
-	reStore commitAll: instances asOrderedCollection.
+	instances := SimplePerson storedInstancesIn: reStore.
+	instances asOrderedCollection do: [ :each | each surname: nil]; storeAll.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john surname: 'Smith'.
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each surname notNil].
 	self assert: (results size = 1).
@@ -318,11 +313,11 @@ SSWReStoreNotNilQueryTest >> testNotNilFirstCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	results := instances select: [ :each | each test notNil & (each firstName = 'John')].
 	self assert: (results size = 1).
@@ -341,11 +336,11 @@ SSWReStoreNotNilQueryTest >> testNotNilLastCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	self shouldnt: [results := instances select: [ :each | (each firstName = 'John') & each test notNil]] raise: Error.
 	self assert: (results size = 1).
@@ -364,11 +359,11 @@ SSWReStoreNotNilQueryTest >> testNotNilMidCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	self shouldnt: [results := instances select: [ :each | (each firstName = 'John') & each test notNil & (each surname = 'Smith')]] raise: Error.
 	self assert: (results size = 1).
@@ -386,10 +381,10 @@ SSWReStoreNotNilQueryTest >> testNotNilMultipleConditions [
 
 	| instances jim results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 	jim := instances detect: [ :each | each firstName = 'Jim'].
 	jim test: (Test new name: 'test').
-	reStore commit: jim.
+	jim store.
 
 	results := instances select: [ :each | (each friend notNil or: [each test notNil]) or: [each firstName = 'John']].
 	self assert: (results size = 3).
@@ -410,7 +405,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | each friend notNil].
 	self assert: (results size = 2).
@@ -427,7 +422,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedAndCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | (each friend notNil or: [each firstName = 'David']) & (each firstName = 'Zoe')].
 	self assert: (results size = 1).
@@ -439,7 +434,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedOrCondition [
 
 	| instances results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	results := instances select: [ :each | (each friend notNil or: [each firstName = 'David']) | (each firstName = 'Jim')].
 	self assert: (results size = 4)
@@ -450,11 +445,11 @@ SSWReStoreNotNilQueryTest >> testNotNilSoleCondition [
 
 	| instances john results |
 
-	instances := reStore instancesOf: SimplePerson.
+	instances := SimplePerson storedInstancesIn: reStore.
 
 	john := instances detect: [ :each | each firstName = 'John'].
 	john test: (Test new name: 'jTest').
-	reStore commit: john.
+	john store.
 
 	self shouldnt: [results := instances select: [ :each | each test notNil]] raise: Error.
 	self assert: (results size = 1).

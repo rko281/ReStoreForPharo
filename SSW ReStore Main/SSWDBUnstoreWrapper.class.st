@@ -25,3 +25,9 @@ SSWDBUnstoreWrapper >> _commitIn: anSSWReStore [
 
 	self object unstore
 ]
+
+{ #category : #acccessing }
+SSWDBUnstoreWrapper >> _reStoreIfNone: aBlock [
+
+	^SSWReStore reStoreForObject: self object ifNone: aBlock
+]

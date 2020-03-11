@@ -6,36 +6,16 @@ https://github.com/rko281/ReStoreForPharo
 "
 Class {
 	#name : #SSWReStoreRefreshTest,
-	#superclass : #SSWReStoreTest,
-	#instVars : [
-		'reStore2'
-	],
+	#superclass : #SSWReStore2Test,
 	#category : #'SSW ReStore Tests'
 }
 
 { #category : #running }
-SSWReStoreRefreshTest >> setUp [
-
-	super setUp.
-
-	reStore2 := SSWReStore new.
-	self initReStore: reStore2.
-
-	reStore2 connect.
-	self addClassesTo: reStore2.
+SSWReStoreRefreshTest >> createTestData [
 
 	self createStandardTestInstance.
 	reStore simulateReconnect.
 	self refreshDelay
-]
-
-{ #category : #running }
-SSWReStoreRefreshTest >> tearDown [
-
-	super tearDown.
-	reStore2 isNil ifFalse: 
-		[self releaseReStore: reStore2.
-		reStore2 := nil]
 ]
 
 { #category : #'unit tests' }
@@ -45,8 +25,8 @@ SSWReStoreRefreshTest >> test01 [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	"Update in one session"
 	self assert: (reStore evaluateAsTransaction: [inst1 number: 11]).
@@ -55,7 +35,7 @@ SSWReStoreRefreshTest >> test01 [
 	self assert: (inst2 number = 123).
 	self refreshDelay.
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2).
+	inst2 refresh.
 
 	self assert: (inst2 number = 11)
 ]
@@ -67,8 +47,8 @@ SSWReStoreRefreshTest >> test02 [
 
 	| inst1 inst2 prevNumber |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 name = 'owner').
 	self assert: (inst2 name = 'owner').
@@ -79,8 +59,8 @@ SSWReStoreRefreshTest >> test02 [
 	reStore evaluateAsTxn: [reStore executeSQL: 'update owner_test set name = ''changed'''. true].
 	self refreshDelay.
 
-	reStore refreshAllIfUpdated: (Array with: inst1).
-	reStore2 refreshAllIfUpdated: (Array with: inst2).
+	inst1 refresh.
+	inst2 refresh.
 
 	self usesVersioning 
 	ifTrue: 
@@ -102,7 +82,7 @@ SSWReStoreRefreshTest >> test02 [
 	self assert: (inst1 number = 22).
 	self assert: (inst2 number = prevNumber).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2).
+	inst2 refresh.
 
 	self assert: (inst2 number = 22).
 	self assert: (inst2 name = 'changed').
@@ -116,8 +96,8 @@ SSWReStoreRefreshTest >> test03 [
 
 	| inst1 inst2 prevNumber |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	prevNumber := inst1 number.
 
 	"Update in one session"
@@ -127,10 +107,10 @@ SSWReStoreRefreshTest >> test03 [
 	self assert: (inst2 number = prevNumber).
 	self refreshDelay.
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2).
+	inst2 refresh.
 
 	self assert: (inst2 number = 9876).
-	self deny: (reStore2 haveAnyChanged: (Array with: inst2))
+	self deny: inst2 hasChanged
 ]
 
 { #category : #'unit tests' }
@@ -140,8 +120,8 @@ SSWReStoreRefreshTest >> test04 [
 
 	| inst1 num inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	"Update in one session"
 	num := Time millisecondClockValue \\ 10000.
@@ -150,7 +130,7 @@ SSWReStoreRefreshTest >> test04 [
 	self assert: (inst1 number = num).
 
 	self refreshDelay.
-	reStore2 refreshAllIfUpdated: (reStore2 cachedInstancesOf: OwnerTest).
+	(reStore2 cachedInstancesOf: OwnerTest) refreshAll.
 	self assert: (inst2 number = num)
 ]
 
@@ -161,8 +141,8 @@ SSWReStoreRefreshTest >> test20 [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 ownedOrdered size = 2).
 	self assert: (inst2 ownedOrdered size = 2).
@@ -174,7 +154,7 @@ SSWReStoreRefreshTest >> test20 [
 	self assert: (inst1 ownedOrdered size = 3).
 	self assert: (inst2 ownedOrdered size = 2).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered).
+	inst2 ownedOrdered refresh.
 
 	self assert: (inst2 ownedOrdered size = 3).
 	self assert: ((inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray = #('added' 'owned1' 'owned2'))
@@ -189,8 +169,8 @@ SSWReStoreRefreshTest >> test21 [
 
 	| inst1 inst2 prevSize prevColl |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	prevSize := inst1 ownedOrdered size.
 	prevColl := (inst1 ownedOrdered collect: [ :e | e name]) asSortedCollection.
@@ -203,7 +183,7 @@ SSWReStoreRefreshTest >> test21 [
 	self assert: (inst1 ownedOrdered size = (prevSize - 1)).
 	self assert: (inst2 ownedOrdered size = prevSize).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered).
+	inst2 ownedOrdered refresh.
 
 	self assert: (inst2 ownedOrdered size = (prevSize - 1)).
 	self assert: ((inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray = (prevColl remove: 'owned1'; yourself) asArray)
@@ -216,8 +196,8 @@ SSWReStoreRefreshTest >> test23 [
 
 	| inst1 inst2 prevSize prevColl |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	prevSize := inst1 ownedOrdered size.
 	prevColl := (inst1 ownedOrdered collect: [ :e | e name]) asSortedCollection.
@@ -230,10 +210,10 @@ SSWReStoreRefreshTest >> test23 [
 	self assert: (inst1 ownedOrdered size = prevSize).
 	self assert: (inst2 ownedOrdered size = prevSize).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered).
+	inst2 ownedOrdered refresh.
 
 	self assert: (inst2 ownedOrdered size = prevSize).
-	self assert: ((inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray = (prevColl remove: 'owned2'; add: 'xyz'; yourself) asArray)
+	self assert: (inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray equals: (prevColl remove: 'owned2'; add: 'xyz'; yourself) asArray
 ]
 
 { #category : #'unit tests' }
@@ -243,8 +223,8 @@ SSWReStoreRefreshTest >> test24 [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 ownedOrdered size = 2).
 	self assert: (inst2 ownedOrdered size = 2).
@@ -256,7 +236,7 @@ SSWReStoreRefreshTest >> test24 [
 	self assert: (inst1 ownedOrdered first name = 'test24').
 	self deny: (inst2 ownedOrdered anySatisfy: [ :e | e name = 'test24']).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered withComponents).
+	inst2 ownedOrdered refresh.
 
 	self assert: (inst2 ownedOrdered size = 2).
 	self assert: (inst2 ownedOrdered anySatisfy: [ :e | e name = 'test24']).
@@ -270,8 +250,8 @@ SSWReStoreRefreshTest >> test25 [
 
 	| inst1 inst2 size1 size2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	size1 := inst1 ownedOrdered size.
 	size2 := inst2 ownedOrdered size.
@@ -287,7 +267,7 @@ SSWReStoreRefreshTest >> test25 [
 	self deny: (inst2 ownedOrdered anySatisfy: [ :e | e name = 'test25']).
 	self assert: (inst2 ownedOrdered size = size2).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered withComponents).
+	inst2 ownedOrdered refresh.
 
 	self assert: (inst2 ownedOrdered size = size1).
 	self assert: (inst2 ownedOrdered first name = 'test25')
@@ -300,8 +280,8 @@ SSWReStoreRefreshTest >> test26 [
 
 	| inst1 inst2 size1 size2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	size1 := inst1 ownedOrdered size.
 	size2 := inst2 ownedOrdered size.
@@ -317,11 +297,11 @@ SSWReStoreRefreshTest >> test26 [
 	self deny: (inst2 ownedOrdered anySatisfy: [ :e | e name = 'test26']).
 	self assert: (inst2 ownedOrdered size = size2).
 
-	reStore2 refreshAllIfUpdated: (Array with: inst2 ownedOrdered withComponents).
+	inst2 refresh.
 
 	self assert: (inst2 ownedOrdered size = size1).
 	self assert: (inst2 ownedOrdered first name = 'test26').
-	self deny: (reStore2 haveAnyChanged: (Array with: inst2))
+	self deny: inst2 hasChanged
 ]
 
 { #category : #'unit tests' }
@@ -331,11 +311,11 @@ SSWReStoreRefreshTest >> test31 [
 
 	| origName inst1 inst2 test1 test2 ver1 |
 
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 	test2 := inst2 ownedOrdered first.
 	origName := test2 name.
 
-	test1 := (reStore instancesOf: Test) detect: [ :e | e name = origName] ifNone: [nil].
+	test1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = origName] ifNone: [nil].
 	self assert: (test1 notNil).
 	self usesVersioning ifTrue: [ver1 := test1 _version].
 
@@ -345,7 +325,7 @@ SSWReStoreRefreshTest >> test31 [
 
 	"Touch in session1 then read inst1's ordered collection - should not refresh test1 as it has been touched"
 	test1 name.
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 ownedOrdered first == test1).
 	self assert: (test1 name = origName).
 
@@ -371,8 +351,8 @@ SSWReStoreRefreshTest >> test32 [
 
 	| inst1 inst2 test1 |
 
-	test1 := (reStore instancesOf: Test) detect: [ :e | e name = 'ordered1'] ifNone: [nil].
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	test1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'ordered1'] ifNone: [nil].
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (test1 notNil).
 	self assert: (inst2 ordered first name = test1 name).
@@ -383,7 +363,7 @@ SSWReStoreRefreshTest >> test32 [
 
 	"Touch in session1 then read inst1's ordered collection - should not refresh test1 as it has been touched"
 	test1 name.
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 ordered first == test1).
 	self assert: (test1 name = 'ordered1').
 
@@ -405,8 +385,8 @@ SSWReStoreRefreshTest >> test33 [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 ownedOrdered size = 2).
 	self assert: (inst2 ownedOrdered size = 2).
@@ -429,7 +409,7 @@ SSWReStoreRefreshTest >> test33 [
 	inst2 ownedOrdered last name.
 
 	"Read them"
-	self assert: ((reStore2 instancesOf: OwnedTest satisfying: [ :each | each owner = inst2]) asOrderedCollection size = 2).
+	self assert: ((OwnedTest storedInstancesIn: reStore2) satisfying: [ :each | each owner = inst2]) asOrderedCollection size equals: 2.
 
 	"Although we read the latest versions, should not have refreshed the last one as it was touched"
 	self assert: (inst2 ownedOrdered first name = 'testA1').
@@ -437,7 +417,7 @@ SSWReStoreRefreshTest >> test33 [
 
 	"Untouch and re-read"
 	reStore2 rollbackTransaction.
-	(reStore2 instancesOf: Test) asOrderedCollection.
+	(Test storedInstancesIn: reStore2) asOrderedCollection.
 
 	"Should now have picked up the change"
 	self assert: (inst2 ownedOrdered first name = 'testA1').
@@ -451,8 +431,8 @@ SSWReStoreRefreshTest >> test34 [
 
 	| inst1 inst2 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 ordered size = 2).
 	self assert: (inst2 ordered size = 2).
@@ -475,7 +455,7 @@ SSWReStoreRefreshTest >> test34 [
 	inst2 ordered last name.
 
 	"Read them"
-	(reStore2 instancesOf: Test) asOrderedCollection.
+	(Test storedInstancesIn: reStore2) asOrderedCollection.
 
 	"Although we read the latest versions, should not have refreshed the last one as it was touched"
 	self assert: (inst2 ordered first name = 'testB1').
@@ -483,7 +463,7 @@ SSWReStoreRefreshTest >> test34 [
 
 	"Untouch and re-read"
 	reStore2 rollbackTransaction.
-	(reStore2 instancesOf: Test) asOrderedCollection.
+	(Test storedInstancesIn: reStore2) asOrderedCollection.
 
 	"Should now have picked up the change"
 	self assert: (inst2 ordered first name = 'testB1').
@@ -497,8 +477,8 @@ SSWReStoreRefreshTest >> test35 [
 
 	| inst1 inst2 name1 |
 
-	inst1 := (reStore instancesOf: OwnerTest) asOrderedCollection first.
-	inst2 := (reStore2 instancesOf: OwnerTest) asOrderedCollection first.
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
 
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 123).
@@ -509,7 +489,7 @@ SSWReStoreRefreshTest >> test35 [
 
 	"Rollback and refresh - shouldn't do anything as no change"
 	reStore rollbackTransaction.
-	(reStore instancesOf: OwnerTest) asOrderedCollection first.
+	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 123).
 	self assert: (inst1 name == name1).
@@ -522,14 +502,14 @@ SSWReStoreRefreshTest >> test35 [
 	"Rollback, touch and refresh - shouldn't do anything due to touch"
 	reStore rollbackTransaction.
 	inst1 name.
-	(reStore instancesOf: OwnerTest) asOrderedCollection first.
+	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 123).
 	self assert: (inst1 name == name1).
 
 	"Rollback and refresh - should update, but only number"
 	reStore rollbackTransaction.
-	(reStore instancesOf: OwnerTest) asOrderedCollection first.
+	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 987).
 	self assert: (inst1 name == name1).
@@ -543,7 +523,7 @@ SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 
 	| insts realInsts |
 
-	insts := reStore instancesOf: OwnerTest satisfying: [ :e | e name = 'refreshTest40'].
+	insts := (OwnerTest storedInstancesIn: reStore) satisfying: [ :e | e name = 'refreshTest40'].
 
 	"Get rid of previous data then recreate"
 	insts unstoreAll.
@@ -559,7 +539,7 @@ SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 		((realInsts collect: [ :each | each number]) asSortedCollection asArray = #(1 2 3 4 5 6 7 8 9 10)).
 
 	"Update in the other session"
-	(reStore2 instancesOf: OwnerTest satisfying: [ :e | e name = 'refreshTest40']) modify: [ :e | e number: e number + 10].
+	((reStore2 instancesOf: OwnerTest) satisfying: [ :e | e name = 'refreshTest40']) modify: [ :e | e number: e number + 10].
 
 	self refreshDelay.
 

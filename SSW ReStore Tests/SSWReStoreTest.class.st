@@ -49,8 +49,6 @@ SSWReStoreTest >> createStandardTestInstance [
 	
 	| t |
 
-	reStore simulateReconnect.
-
 	reStore beginTransaction.
 	t := OwnerTest new.
 	t
@@ -121,6 +119,10 @@ SSWReStoreTest >> createStandardTestInstance [
 ]
 
 { #category : #running }
+SSWReStoreTest >> createTestData [
+]
+
+{ #category : #running }
 SSWReStoreTest >> initReStore: aReStore [
 
 	self initConnectionFor: aReStore
@@ -142,10 +144,8 @@ SSWReStoreTest >> refreshDelay [
 { #category : #running }
 SSWReStoreTest >> releaseReStore: aReStore [
 
-	aReStore isConnected ifTrue: 
-		[[aReStore destroyAllClasses] on: Error do: [ :exc | aReStore reconnect; destroyAllClasses. exc return].
-		aReStore disconnect].
-	
+	aReStore isConnected ifTrue: [aReStore disconnect].
+
 	aReStore clearTableCache
 ]
 
@@ -156,7 +156,8 @@ SSWReStoreTest >> setUp [
 	self initReStore: reStore.
 	reStore connect.
 	self addClassesTo: reStore.
-	reStore synchronizeAllClasses
+	reStore destroyAllClasses; synchronizeAllClasses.
+	self createTestData
 ]
 
 { #category : #running }
@@ -165,6 +166,8 @@ SSWReStoreTest >> tearDown [
 	self resetQueryCount; stopQueryCounting.
 
 	reStore isNil ifFalse: 
-		[self releaseReStore: reStore.
+		[reStore reconnect.
+		reStore destroyAllClasses.
+		self releaseReStore: reStore.
 		reStore := nil]
 ]

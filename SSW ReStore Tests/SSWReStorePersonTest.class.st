@@ -13,7 +13,7 @@ Class {
 { #category : #public }
 SSWReStorePersonTest class >> isAbstract [
 
-	^self name == #SSWReStorePersonTest
+	^self == SSWReStorePersonTest
 ]
 
 { #category : #Running }

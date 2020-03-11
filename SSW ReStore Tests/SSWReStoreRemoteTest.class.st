@@ -11,9 +11,7 @@ Class {
 }
 
 { #category : #running }
-SSWReStoreRemoteTest >> setUp [
-
-	super setUp.
+SSWReStoreRemoteTest >> createTestData [
 
 	self createStandardTestInstance.
 	reStore simulateReconnect
@@ -24,7 +22,7 @@ SSWReStoreRemoteTest >> test1OwnedRemote [
 
 	| inst |
 
-	inst := (reStore instancesOf: OwnerTest) first.
+	inst := (OwnerTest storedInstancesIn: reStore) first.
 
 	self assert: (inst ownedOrdered remote size = 2).
 	self assert: (inst ownedOrdered remote asOrderedCollection anySatisfy: [ :each | each name = 'owned1']).
@@ -53,7 +51,7 @@ SSWReStoreRemoteTest >> test2GeneralRemote [
 
 	| inst |
 
-	inst := (reStore instancesOf: OwnerTest) first.
+	inst := (OwnerTest storedInstancesIn: reStore) first.
 
 	self assert: (inst ordered remote size = 2).
 	self assert: (inst ordered remote asOrderedCollection first name = 'ordered1').

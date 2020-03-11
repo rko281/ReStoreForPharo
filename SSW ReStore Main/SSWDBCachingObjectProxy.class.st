@@ -65,17 +65,38 @@ SSWDBCachingObjectProxy >> _commitChanges [
 	^self _isPersistent
 	ifTrue:
 		[self _isDeleted
-			ifTrue: [reStore deleteProxy: self. true]
+			ifTrue: [self _commitUnstore]
 			ifFalse: [self _commitUpdates]]
 	ifFalse:
-		[reStore insertProxy: self.
-		true]
+		[self _commitStore]
+]
+
+{ #category : #'actions-internal' }
+SSWDBCachingObjectProxy >> _commitStore [
+
+	"Private - Return a Boolean indicating whether the commit succeeds"
+
+	reStore insertProxy: self.
+
+	"Assumed to always succeed"
+	^true
+]
+
+{ #category : #'actions-internal' }
+SSWDBCachingObjectProxy >> _commitUnstore [
+
+	"Private - Return a Boolean indicating whether the commit succeeds"
+
+	reStore deleteProxy: self. 
+
+	"Assumed to always succeed"
+	^true
 ]
 
 { #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _commitUpdates [
 
-	"Return a Boolean indicating whether the commit succeeds"
+	"Private - Return a Boolean indicating whether the commit succeeds"
 
 	| updates |
 
@@ -163,12 +184,10 @@ SSWDBCachingObjectProxy >> _postCommitChanges [
 	^self _isPersistent
 	ifTrue:
 		[self _isDeleted
-			ifTrue: [self _postCommitDelete]
+			ifTrue: [self _postCommitUnstore]
 			ifFalse: [self _postCommitUpdates]]
 	ifFalse:
-		[self _dbTable idDataField ifNotNil: [ :idDataField | idDataField accessor value: id in: proxiedObject].
-		self _aquireCopyObject.
-		self _intern	"Re-register"]
+		[self _postCommitStore]
 ]
 
 { #category : #'actions-internal' }
@@ -182,6 +201,30 @@ SSWDBCachingObjectProxy >> _postCommitDelete [
 	proxiedObject onUnstored.
 
 	copyObject := proxiedObject := SSWDBDeletedObject newForClass: class id: id.
+]
+
+{ #category : #'actions-internal' }
+SSWDBCachingObjectProxy >> _postCommitStore [
+
+	"Private - The receiver has been inserted into the database.
+	Complete follow-on work"
+
+	self _dbTable idDataField ifNotNil: [ :idDataField | idDataField accessor value: id in: proxiedObject].
+	self _aquireCopyObject.
+	self _intern	"Re-register"
+]
+
+{ #category : #'actions-internal' }
+SSWDBCachingObjectProxy >> _postCommitUnstore [
+
+	"Private - The receiver has been successfully deleted from the database.
+	Complete follow-on work and notify interest parties"
+
+	reStore uncacheObject: self. 
+
+	proxiedObject onUnstored.
+
+	copyObject := proxiedObject := SSWDBDeletedObject newForClass: class id: id
 ]
 
 { #category : #'actions-internal' }
@@ -370,9 +413,10 @@ SSWDBCachingObjectProxy >> _rollbackChanges [
 { #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _rollbackStore [
 
-	"The receiver was a newly-persisted object - deregister from the reStore"
+	"Private - The receiver was a newly-persisted object - deregister from the reStore"
 
-	reStore deregisterProxy: self
+	reStore deregisterProxy: self.
+	self _swapReferences
 ]
 
 { #category : #'actions-internal' }
@@ -386,7 +430,7 @@ SSWDBCachingObjectProxy >> _rollbackUnstore [
 { #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _rollbackUpdates [
 
-	"Forget any updates by instantiating from the copyObject.
+	"Private - Forget any updates by instantiating from the copyObject.
 	Also transfer over any events registered against the current proxiedObject"
 
 	| me him |
