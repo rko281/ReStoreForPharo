@@ -11,7 +11,7 @@ Metacello new
     load: 'all'
 ```
 
-This will load ReStore with support for SQLite (via [pharo-rdbms](https://github.com/pharo-rdbms/Pharo-SQLite3)) and PostgreSQL (via [P3](https://github.com/svenvc/P3)), plus the example classes we'll discuss next.
+This will load ReStore with support for SQLite and MySQL (via [pharo-rdbms](https://github.com/pharo-rdbms/Pharo-SQLite3)), PostgreSQL (via [P3](https://github.com/svenvc/P3)), plus the example classes we'll discuss next.
 
 # A Simple Example
 Let's consider a simple customer order application with the following classes (found in the `SSW ReStore Examples` package):
@@ -60,8 +60,10 @@ ReStore
 	synchronizeAllClasses.
 ```
 
- - for simplicity we're using [SQLite](https://www.sqlite.org/); please ensure the SQLite3 library/DLL is available to your image. If you'd rather use PostgreSQL you'll need to specify a connection similar to this: 
- `(SSWP3Connection new url: 'psql://user:pwd@192.168.1.234:5432/database')`
+ - for simplicity we're using [SQLite](https://www.sqlite.org/); please ensure the SQLite3 library/DLL is available to your image. If you'd rather use PostgreSQL you'll need to specify a connection similar to this:   
+ `(SSWP3Connection new url: 'psql://user:pwd@192.168.1.234:5432/database')`   
+ or for MySQL you'll need a connection similar to this:    
+ `(SSWMySQLConnection new connectionSpec: (MySQLDriverSpec new db: 'database'; host: '192.168.1.234'; port: 3306; user: 'user'; password: 'pwd'; yourself); yourself)`
 - `synchronizeAllClasses` prompts ReStore to create the necessary database tables for the classes `Customer`, `Address`, `Order` and `Product`. If you subsequently modify these classes (and their ReStore definitions) you can run `synchronizeAllClasses` again to prompt ReStore to automatically update the table definitions (add or remove columns from the tables) to match the updated class definitions.
 
 # Storing Objects
