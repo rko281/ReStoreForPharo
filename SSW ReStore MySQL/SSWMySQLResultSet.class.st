@@ -34,13 +34,41 @@ SSWMySQLResultSet >> last [
 ]
 
 { #category : #accessing }
+SSWMySQLResultSet >> next [ 
+	^self nextRow
+]
+
+{ #category : #accessing }
 SSWMySQLResultSet >> numRows [ 
 
 	^rows size
 ]
 
 { #category : #accessing }
+SSWMySQLResultSet >> readStream [
+
+	^SSWDBForwardOnlyReadStream on: self
+]
+
+{ #category : #accessing }
+SSWMySQLResultSet >> rows: aCollection [
+
+	statement isNil ifTrue: [^super rows: aCollection].
+	
+	super rows: (aCollection collect: [ :each | each asSSWMySQLRowFrom: statement query])
+]
+
+{ #category : #accessing }
 SSWMySQLResultSet >> size [
 
-	^self numRows
+	"size as in number of rows.
+	nil = unknown"
+
+	^nil
+]
+
+{ #category : #accessing }
+SSWMySQLResultSet >> species [
+
+	^OrderedCollection
 ]

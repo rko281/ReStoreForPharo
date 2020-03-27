@@ -4,13 +4,13 @@ Extension { #name : #MySQLResultSet }
 MySQLResultSet >> asSSWMySQLResultSet [
 
 	^SSWMySQLResultSet new
+		statement: statement;
 		nextResult: nextResult;
 		header: header;
 		fields: fields;
 		fieldsEof: fieldsEof;
-		rows: (statement ifNil: [rows] ifNotNil: [ :stmt | rows collect: [ :each | each asSSWMySQLRowFrom: stmt query]]);
+		rows: rows;
 		rowsEof: rowsEof;
-		statement: statement;
 		yourself
 ]
 

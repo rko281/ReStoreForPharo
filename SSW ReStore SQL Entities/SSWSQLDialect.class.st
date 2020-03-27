@@ -405,6 +405,14 @@ SSWSQLDialect >> defaultSQLFunctions [
 ]
 
 { #category : #constants }
+SSWSQLDialect >> defaultTimeResolution [
+
+	"0 = seconds, 3 = milliseconds etc."
+
+	^self defaultDateTimeResolution
+]
+
+{ #category : #constants }
 SSWSQLDialect >> defaultUnsizedBlobSize [
 
     "default value for unsizedBlobSize - see that method's comment"
@@ -610,6 +618,14 @@ SSWSQLDialect >> maxTableNameLength: anObject [
 ]
 
 { #category : #constants }
+SSWSQLDialect >> maxTimeResolution [
+
+	"0 = seconds, 3 = milliseconds etc."
+
+	^self maxDateTimeResolution
+]
+
+{ #category : #constants }
 SSWSQLDialect >> maxVarchar [
 
 	^self maxCharacter
@@ -793,6 +809,14 @@ SSWSQLDialect >> timeStringFor: aTime [
 	"Return the String representation of aTime in this dialect"
 
 	^aTime printStringFormat: self timeFormat
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> timeWithResolution [
+
+	"Parameter is resolution (0=seconds, 3=milliseconds etc.)"
+
+	^'TIME(<1p>)'
 ]
 
 { #category : #helpers }

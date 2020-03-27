@@ -219,7 +219,7 @@ SSWReStoreTypeTest >> testTimeQuery [
 
 	reStore simulateReconnect.
 
-	t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each time = time] ifNone: [nil].
+	t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each time = (time withResolution: reStore sqlDialect defaultTimeResolution)] ifNone: [nil].
 	self assert: t2 notNil.
 	self assert: t2 date = typeTest date
 ]

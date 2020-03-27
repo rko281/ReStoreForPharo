@@ -12,7 +12,7 @@ BaselineOfReStore >> baseline: spec [
 		do: [
 				self sqlite3: spec.
 				self p3: spec.
-				self udbcSQLite: spec.
+				self mySQL: spec.
 				spec
 					package: 'Wolphin';
 					package: 'SSW ReStore Base Additions' with: [ spec requires: #('Wolphin') ];
@@ -28,16 +28,27 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
 					package: 'SSW ReStore Examples' with: [ spec requires: #('SSW ReStore SQLite3') ];
 					package: 'SSW ReStore P3' with: [ spec requires: #('SSW ReStore for Pharo' 'P3') ];
-					package: 'SSW ReStore UDBC SQLite' with: [ spec requires: #('SSW ReStore for Pharo' 'UDBC') ] .
+					package: 'SSW ReStore MySQL' with: [ spec requires: #('SSW ReStore for Pharo' 'MySQL') ] .
 				
 				spec
 					group: 'Tests' with: #(#'SSW ReStore Tests-Pharo');
 					group: 'Pharo SQLite3' with: #(#'SSW ReStore SQLite3');
 					group: 'P3 PostgreSQL' with: #(#'SSW ReStore P3');
-					group: 'UDBC SQLite' with: #(#'SSW ReStore UDBC SQLite');
+					group: 'Pharo MySQL' with: #(#'SSW ReStore MySQL');
 					group: 'Examples' with: #(#'SSW ReStore Examples');
-					group: 'all' with: #('Tests' 'Examples' 'P3 PostgreSQL');
+					group: 'all' with: #('Tests' 'Examples' 'P3 PostgreSQL' 'Pharo MySQL');
 					group: 'default' with: #('Tests' 'Examples')]
+]
+
+{ #category : #baselines }
+BaselineOfReStore >> mySQL: spec [
+
+	spec
+		baseline: 'MySQL'
+		with: [
+			spec
+				repository: 'github://pharo-rdbms/Pharo-MySQL/src'
+		]
 ]
 
 { #category : #baselines }
@@ -59,17 +70,5 @@ BaselineOfReStore >> sqlite3: spec [
 		with: [
 			spec
 				repository: 'github://pharo-rdbms/Pharo-SQLite3/src'
-		]
-]
-
-{ #category : #baselines }
-BaselineOfReStore >> udbcSQLite: spec [
-
-	spec
-		baseline: 'UDBC'
-		with: [
-			spec  
-				loads: #('SQLite');
-				repository: 'github://astares/Pharo-UDBC/src'
 		]
 ]
