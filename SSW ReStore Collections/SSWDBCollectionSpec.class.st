@@ -291,6 +291,14 @@ SSWDBCollectionSpec >> relatedComponentsOf: anObject do: aBlock [
 ]
 
 { #category : #accessing }
+SSWDBCollectionSpec >> targetClass [
+
+	"The homogeous (super)class of elements of the receiver"
+
+	^self subclassResponsibility
+]
+
+{ #category : #accessing }
 SSWDBCollectionSpec >> templateCollection [
 
 	"collection stores an empty collection that is used as the template 

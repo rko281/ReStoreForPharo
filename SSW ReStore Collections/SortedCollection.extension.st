@@ -50,15 +50,6 @@ SortedCollection >> _dbAdd: anObject [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-SortedCollection >> directAdd: anObject [
-
-	"For speed, ReStore will instruct the database to recover objects already sorted.
-	directAdd: allows these sorted objects to be added to the receiver without further sorting"
-
-	^super addLast: anObject
-]
-
-{ #category : #'*SSW ReStore Collections' }
 SortedCollection >> isSortedCollection [
 
 	^true

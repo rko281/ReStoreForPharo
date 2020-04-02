@@ -64,7 +64,7 @@ SSWDBCollectionEntry >> _proxiedObject [
 { #category : #actions }
 SSWDBCollectionEntry >> addTargetTo: aCollection [
 
-	aCollection directAdd: self target
+	aCollection _dbAdd: self target
 ]
 
 { #category : #actions }

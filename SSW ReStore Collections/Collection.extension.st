@@ -30,6 +30,15 @@ Collection >> _dbAdd: anObject [
 ]
 
 { #category : #'*SSW ReStore Collections' }
+Collection >> _dbAdd: anObject suggestedIndex: anInteger [
+
+	"Add anObject to the receiver, possibly at the index anInteger.
+	The suggestedIndex is only required by keyed collections so defer to just _dbAdd:"
+
+	^self _dbAdd: anObject
+]
+
+{ #category : #'*SSW ReStore Collections' }
 Collection >> _fetchAll: aCollection [
 
 	"Private - ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -123,6 +132,13 @@ Collection >> _nonKeyedCollectionAdditions [
 ]
 
 { #category : #'*SSW ReStore Collections' }
+Collection >> _proxifyIn: aCollectionProxy [
+
+	aCollectionProxy _proxiedObject: self.
+	^self
+]
+
+{ #category : #'*SSW ReStore Collections' }
 Collection >> _valueRemovalsIn: aCollectionOfChanges [
 
 	"Return a collection of SSWDBCollectionObjectRemovals representing those values (objects)
@@ -150,26 +166,6 @@ Collection >> _valuesRemovedBy: aCollectionOfChanges [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> directAdd: anObject [
-
-	"Add anObject to the receiver.
-	Sent by ReStore when populating a collection; assume elements are added in correct order
-	and so bypass any internal ordering (e.g. see SortedCollection>>directAdd:)"
-
-	^self add: anObject
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> directAdd: anObject suggestedIndex: anInteger [
-
-	"Add anObject to the receiver, possibly at the index anInteger.
-	The suggestedIndex is only required by keyed collections, 
-	so defer to just directAdd:"
-
-	^self directAdd: anObject
-]
-
-{ #category : #'*SSW ReStore Collections' }
 Collection >> fetch: aSymbol [
 
 	"ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -185,18 +181,6 @@ Collection >> fetchAll: aCollection [
 	to fetch from the database the components in the inst vars named in aCollection"
 
 	^(self select: [ :each | each _isRecovered]) _fetchAll: aCollection
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> fetchComponent: aSymbol [
-	#deprecated.
-	^self fetch: aSymbol
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> fetchComponents: aCollection [
-	#deprecated.
-	^self fetchAll: aCollection
 ]
 
 { #category : #'*SSW ReStore Collections' }

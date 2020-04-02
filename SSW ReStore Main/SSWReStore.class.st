@@ -1039,7 +1039,7 @@ SSWReStore >> fetchObjectsOfClass: aClass withQuery: anSSWSQLQuery into: aCollec
 		
 	table := self tableForClass: aClass.
 
-	self rowsFromQuery: anSSWSQLQuery do: [ :row | aCollection directAdd: (self objectFromRow: row table: table)]
+	self rowsFromQuery: anSSWSQLQuery do: [ :row | aCollection _dbAdd: (self objectFromRow: row table: table)]
 ]
 
 { #category : #querying }
@@ -1054,7 +1054,7 @@ SSWReStore >> fetchObjectsOfClass: aClass withStatement: aDBPreparedStatement in
 		rowsFromStatement: aDBPreparedStatement 
 		do: 
 			[ :row |
-			aCollection directAdd: (self objectFromRow: row table: table) suggestedIndex: index.
+			aCollection _dbAdd: (self objectFromRow: row table: table) suggestedIndex: index.
 			index := index + 1]
 ]
 

@@ -28,7 +28,7 @@ SSWDBKeyedCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 { #category : #actions }
 SSWDBKeyedCollectionEntry >> addTargetTo: aCollection [
 
-	aCollection directAdd: self target suggestedIndex: self index
+	aCollection _dbAdd: self target suggestedIndex: self index
 ]
 
 { #category : #accessing }

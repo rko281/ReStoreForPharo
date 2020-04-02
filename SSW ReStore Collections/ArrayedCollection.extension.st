@@ -27,7 +27,7 @@ ArrayedCollection >> _changesFrom: aCollectionOfEntries [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-ArrayedCollection >> directAdd: anObject suggestedIndex: anInteger [
+ArrayedCollection >> _dbAdd: anObject suggestedIndex: anInteger [
 
 	"Translate to at:put:"
 

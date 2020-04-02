@@ -39,15 +39,6 @@ SSWReStoreGenericObjectTest >> fetchTestObjects [
 ]
 
 { #category : #accessing }
-SSWReStoreGenericObjectTest >> templateComponent [
-
-	"Ensure unique name"
-	(Delay forMilliseconds: 1) wait.
-
-	^GenericOwnedTest new name: (self class name, Time millisecondClockValue printString)
-]
-
-{ #category : #accessing }
 SSWReStoreGenericObjectTest >> templateTestObject [
 
 	^GenericTest new

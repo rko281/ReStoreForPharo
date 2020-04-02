@@ -33,6 +33,24 @@ GenericTest class >> reStoreDefinition [
 		yourself
 ]
 
+{ #category : #comparing }
+GenericTest >> = a [
+
+	^self name = a name
+]
+
+{ #category : #adding }
+GenericTest >> addToMultiKeyDictionary: aTest [
+
+	^(self component at: aTest key ifAbsentPut: [OrderedCollection new]) add: aTest
+]
+
+{ #category : #adding }
+GenericTest >> addToSingleKeyDictionary: aTest [
+
+	^self component at: aTest key put: aTest
+]
+
 { #category : #accessing }
 GenericTest >> component [
 	^component
@@ -41,6 +59,12 @@ GenericTest >> component [
 { #category : #accessing }
 GenericTest >> component: anObject [
 	component := anObject
+]
+
+{ #category : #comparing }
+GenericTest >> hash [
+
+	^self name hash
 ]
 
 { #category : #accessing }

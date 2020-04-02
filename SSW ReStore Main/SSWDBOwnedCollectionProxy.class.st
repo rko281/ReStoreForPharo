@@ -13,12 +13,16 @@ Class {
 	#category : #'SSW ReStore Main'
 }
 
+{ #category : #actions }
+SSWDBOwnedCollectionProxy >> _acquireCopyCollection [
+
+	copyCollection := collectionSpec copyCollection: proxiedObject
+]
+
 { #category : #testing }
 SSWDBOwnedCollectionProxy >> _checkHasChanged [
 
-	^self _isDeleted or: [self _isPersistent not or: 
-		[(proxiedObject size ~= copyCollection size) 
-			or: [proxiedObject anySatisfy: [ :each | (copyCollection identityIncludes: each) not]]]]
+	^self _isDeleted or: [self _isPersistent not or: [collectionSpec hasCollection: proxiedObject anyAdditionsOrRemovalsFrom: copyCollection]]
 ]
 
 { #category : #accessing }
@@ -54,7 +58,7 @@ SSWDBOwnedCollectionProxy >> _isPersistent [
 { #category : #actions }
 SSWDBOwnedCollectionProxy >> _postCommitChanges [
 
-	copyCollection := proxiedObject copy
+	self _acquireCopyCollection
 ]
 
 { #category : #actions }
@@ -72,10 +76,10 @@ SSWDBOwnedCollectionProxy >> _prepareToCommit [
 			[added := #().
 			removed := copyCollection]
 		ifFalse:
-			[added := proxiedObject reject: [ :each | copyCollection identityIncludes: each].
-			removed := copyCollection reject: [ :each | proxiedObject identityIncludes: each]]]
+			[added := collectionSpec elementsIn: proxiedObject notIn: copyCollection.
+			removed := collectionSpec elementsIn: copyCollection notIn: proxiedObject]]
 	ifFalse:
-		[added := proxiedObject.
+		[added := collectionSpec allElementsIn: proxiedObject.
 		removed := #()].
 
 	added := added reject: [ :each | each isNil].
@@ -104,7 +108,7 @@ SSWDBOwnedCollectionProxy >> _proxiedObject: aCollection [
 	"Overriden to set the copyCollection"
 	
 	super _proxiedObject: aCollection.
-	copyCollection := aCollection copy
+	self _acquireCopyCollection
 ]
 
 { #category : #actions }
@@ -113,7 +117,7 @@ SSWDBOwnedCollectionProxy >> _rollbackChanges [
 	"Forget any changes by instantiating from the copyCollection.
 	Also transfer over any events registered against the current proxiedObject"
 
-	| wasDeleted me him |
+	| wasDeleted me him spec |
 
 	"Reinstate the proxiedObject if the receiver was deleted"
 	self _isDeleted 
@@ -126,10 +130,11 @@ SSWDBOwnedCollectionProxy >> _rollbackChanges [
 
 	me := proxiedObject.
 	him := self.
+	spec := collectionSpec.
 	self _swapReferences.
 
 	wasDeleted ifFalse:
-		[me _proxiedObject: me _copyCollection copy.
+		[me _proxiedObject: (spec copyCollection: me _copyCollection).
 		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
 ]
 

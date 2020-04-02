@@ -123,6 +123,14 @@ SSWInstVarAccessor >> slot: anInteger [
 	slot := anInteger
 ]
 
+{ #category : #evaluating }
+SSWInstVarAccessor >> value: targetObject [
+
+	"Polymorphic with Blocks and Messages"
+
+	^self valueIn: targetObject
+]
+
 { #category : #updating }
 SSWInstVarAccessor >> value: valueObject in: targetObject [
 
@@ -136,5 +144,5 @@ SSWInstVarAccessor >> valueIn: targetObject [
 
 	"Return the value of the instance variable of targetObject represented by the receiver"
 
-	^targetObject _instVarAt: self slot
+	^targetObject instVarAt: self slot
 ]

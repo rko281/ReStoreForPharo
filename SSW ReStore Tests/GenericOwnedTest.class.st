@@ -8,6 +8,7 @@ Class {
 	#superclass : #Test,
 	#instVars : [
 		'owner',
+		'key',
 		'deepTest'
 	],
 	#category : #'SSW ReStore Tests'
@@ -18,14 +19,9 @@ GenericOwnedTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
 		define: #owner as: GenericTest;
+		define: #key as: (String maxSize: 128);
 		define: #deepTest as: Test dependent;
 		yourself
-]
-
-{ #category : #public }
-GenericOwnedTest class >> shouldInheritPersistency [
-
-	^true
 ]
 
 { #category : #accessing }
@@ -36,6 +32,16 @@ GenericOwnedTest >> deepTest [
 { #category : #accessing }
 GenericOwnedTest >> deepTest: anObject [
 	deepTest := anObject
+]
+
+{ #category : #accessing }
+GenericOwnedTest >> key [
+	^ key
+]
+
+{ #category : #accessing }
+GenericOwnedTest >> key: anObject [
+	key := anObject
 ]
 
 { #category : #accessing }

@@ -85,14 +85,6 @@ SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 ]
 
 { #category : #'parsing - internal' }
-SSWDBBlockArgument >> _instVarAt: anIndex [
-
-	"Allow InstVarAccessors to interrogate the receiver"
-
-	^self perform: (self currentClass allInstVarNames at: anIndex) asSymbol
-]
-
-{ #category : #'parsing - internal' }
 SSWDBBlockArgument >> applyFunction: aString withArguments: aCollection [
 
 	"Apply the given SQL function String to the finalField"

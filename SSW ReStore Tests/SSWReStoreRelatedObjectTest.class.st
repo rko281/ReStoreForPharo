@@ -519,9 +519,7 @@ SSWReStoreRelatedObjectTest >> testRefreshIfUpdatedRollbackRemovedComponentChang
 
 	"Update via reStore2 so versioning is respected"
 	reStore2 evaluateAsTransaction: 
-		[| testObject2 |
-		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
-		testObject2 component name: changedName.
+		[testObject2 component name: changedName.
 		testObject2 component: nil].
 
 	self refreshDelay.
@@ -539,10 +537,8 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChange [
 	changedName := originalName, '_changed'.
 
 	"Update component in other session; remove component in this session"
-	reStore2 evaluateAsTransaction: 
-		[| testObject2 |
-		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
-		testObject2 component name: changedName].
+	testObject2 component name: changedName.
+	self assert: testObject2 store.
 	testObject component: nil.
 
 	self refreshDelay.
@@ -563,10 +559,8 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChangeWithExclu
 	changedName := originalName, '_changed'.
 
 	"Update component in other session; remove component in this session"
-	reStore2 evaluateAsTransaction: 
-		[| testObject2 |
-		testObject2 := (reStore2 instancesOf: testObject class) detect: [ :each | each name = testObject name].
-		testObject2 component name: changedName].
+	testObject2 component name: changedName.
+	self assert: testObject2 store.
 	testObject component: nil.
 
 	self refreshDelay.

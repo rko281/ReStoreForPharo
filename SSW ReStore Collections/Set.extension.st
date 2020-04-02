@@ -4,7 +4,7 @@ Extension { #name : #Set }
 Set >> _changesFrom: aSetOfEntries [
 
 	"Return the changes made to the receiver compared to aSetOf(Collection)Entries.
-	For a Set, consider additions and removals and removal only"
+	For a Set, consider additions and removals only"
 
 	| changes oldSet |
 

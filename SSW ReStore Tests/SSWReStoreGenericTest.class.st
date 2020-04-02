@@ -8,7 +8,8 @@ Class {
 	#name : #SSWReStoreGenericTest,
 	#superclass : #SSWReStore2Test,
 	#instVars : [
-		'testObject'
+		'testObject',
+		'testObject2'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -55,6 +56,23 @@ SSWReStoreGenericTest >> fetchTestObjects [
 	reStore simulateReconnect.
 
 	testObject := (GenericTest storedInstancesIn: reStore) first
+]
+
+{ #category : #running }
+SSWReStoreGenericTest >> setUp [
+
+	super setUp.
+
+	testObject2 := (GenericTest storedInstancesIn: reStore2) first
+]
+
+{ #category : #running }
+SSWReStoreGenericTest >> templateComponent [
+
+	"Ensure unique name"
+	(Delay forMicroseconds: 10) wait.
+
+	^GenericOwnedTest new name: (self class name, Time microsecondClockValue printString)
 ]
 
 { #category : #accessing }

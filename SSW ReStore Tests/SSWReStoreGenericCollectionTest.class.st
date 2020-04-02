@@ -22,18 +22,24 @@ SSWReStoreGenericCollectionTest class >> isAbstract [
 { #category : #helpers }
 SSWReStoreGenericCollectionTest >> _testComponentExistenceOnDependency: component [
 
-	"No dependency at this level so should still exist"
+	"Private - No dependency at this level so should still exist"
 
 	self assert: (component _dbProxyIn: reStore ifNone: [nil]) notNil.
 
 	reStore simulateReconnect.
-	self assert: ((component class storedInstancesIn: reStore) detect: [ :each | each name = component name] ifNone: [nil]) notNil
+	self assert: ((component class storedInstancesIn: reStore) anySatisfy: [ :each | each name = component name])
 ]
 
 { #category : #helpers }
 SSWReStoreGenericCollectionTest >> addToCollection [
 
-	^collection add: self templateComponent
+	^self addToCollection: collection
+]
+
+{ #category : #helpers }
+SSWReStoreGenericCollectionTest >> addToCollection: aCollection [
+
+	^aCollection add: self templateComponent
 ]
 
 { #category : #public }
@@ -45,9 +51,21 @@ SSWReStoreGenericCollectionTest >> fetchTestObjects [
 ]
 
 { #category : #helpers }
+SSWReStoreGenericCollectionTest >> remove: anObject fromCollection: aCollection [
+
+	^aCollection remove: anObject
+]
+
+{ #category : #helpers }
 SSWReStoreGenericCollectionTest >> removeFromCollection [
 
-	^collection remove: collection anyOne
+	^self removeFromCollection: collection
+]
+
+{ #category : #helpers }
+SSWReStoreGenericCollectionTest >> removeFromCollection: aCollection [
+
+	^self remove: aCollection anyOne fromCollection: aCollection
 ]
 
 { #category : #helpers }
@@ -92,13 +110,13 @@ SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentAddition [
 
 	originalSize := collection size.
 
-	added := self templateComponent.
-	reStore2 evaluateAsTransaction: [(reStore2 instancesOf: testObject class) first component add: added].
+	added := self addToCollection: testObject2 component.
+	self assert: testObject2 store.
 	self refreshDelay.
 
 	collection refresh.
-	self assert: (collection size = (originalSize + 1)).
-	self assert: ((collection select: [ :each | each name = added name]) size = 1)
+	self assert: collection size equals: (originalSize + 1).
+	self assert: (collection select: [ :each | each name = added name]) size equals: 1
 ]
 
 { #category : #'unit tests' }
@@ -109,11 +127,12 @@ SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentRemoval [
 	component := collection anyOne.
 	originalSize := collection size.
 
-	reStore2 evaluateAsTransaction: [removed := (reStore2 instancesOf: testObject class) first component remove: ((component class storedInstancesIn: reStore2) detect: [ :each | each name = component name])].
+	removed := self remove: ((component class storedInstancesIn: reStore2) detect: [ :each | each name = component name]) fromCollection: testObject2 component.
+	self assert: testObject2 store.
 	self refreshDelay.
 
 	collection refresh.
-	self assert: (collection size = (originalSize - 1)).
+	self assert: collection size equals: (originalSize - 1).
 	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
 	self deny: (collection includes: component)
 ]
@@ -162,7 +181,8 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnRemoval [
 	| component |
 
 	component := collection anyOne.
-	collection remove: component.
+	self remove: component fromCollection: collection.
+
 	testObject store.
 
 	self _testComponentExistenceOnDependency: component
@@ -175,7 +195,7 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnReplacement [
 
 	| originalAndReplacement |
 
-	reStore evaluateAsTransaction: [originalAndReplacement := self replaceInCollection: (reStore instancesOf: testObject class) first component].
+	reStore evaluateAsTransaction: [originalAndReplacement := self replaceInCollection].
 
-	self _testComponentExistenceOnDependency: originalAndReplacement key
+	self componentDefinition isValueDependent ifTrue: [self _testComponentExistenceOnDependency: originalAndReplacement key]
 ]

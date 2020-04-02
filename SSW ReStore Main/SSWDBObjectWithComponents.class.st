@@ -94,7 +94,7 @@ SSWDBObjectWithComponents >> _refreshIn: aReStore with: aBlock [
 	self withComponentsIn: aReStore do: [ :each | all add: each].
 
 	evaluated := self exclusions copy.
-	self withComponentsIn: aReStore do: aBlock visited: self exclusions copy evaluated: evaluated.
+	self withComponentsIn: aReStore do: [ :each | evaluated addAll: (aBlock value: each)] visited: self exclusions copy evaluated: evaluated.
 
 	"Now refresh any skipped items"
 	all do: [ :each | (evaluated includes: each) ifFalse: [evaluated addAll: (aBlock value: each)]]

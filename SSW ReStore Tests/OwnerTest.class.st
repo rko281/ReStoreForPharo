@@ -65,16 +65,16 @@ OwnerTest class >> reStoreDefinition [
 		define: #sortedNumbers as: (SortedCollection of: Integer);
 		define: #descNumbers as: (((SortedCollection sortBlock: [ :x :y | x > y] "sortDescendingOn: #yourself")) of: Integer);
 		define: #listOfTimes as: ((SSWReStoreTest listModelOn: OrderedCollection new) of: Time);
-		define: #dictOfSizes as: (Dictionary of: Integer keyClass: String);
+		define: #dictOfSizes as: (Dictionary of: String -> Integer);
 
 		define: #set as: (Set of: Test dependent);
 		define: #array as: ((Array new: 4) of: Test dependent);
 		define: #ordered as: (OrderedCollection of: Test dependent);
 		define: #sorted as: ((SortedCollection new" sortAscendingOn: #name") of: Test dependent);
 		define: #list as: ((SSWReStoreTest listModelOn: OrderedCollection new) of: Test dependent);
-		define: #aspectDictionary as: (Dictionary of: Test dependent keyedOn: #name);
-		define: #keyedBaseDictionary as: (Dictionary of: Test dependent keyClass: String);
-		define: #keyedGeneralDictionary as: (Dictionary of: Test dependent keyClass: Test dependent);
+		define: #aspectDictionary as: (Dictionary of: #name -> Test dependent);
+		define: #keyedBaseDictionary as: (Dictionary of: String -> Test dependent);
+		define: #keyedGeneralDictionary as: (Dictionary of: Test dependent -> Test dependent);
 		yourself
 ]
 

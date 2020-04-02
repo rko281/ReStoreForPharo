@@ -55,6 +55,15 @@ SSWDBObjectProxy class >> modifyUpdatesFor: anSSWDBTable [
 	^OrderedCollection new
 ]
 
+{ #category : #forwarding }
+SSWDBObjectProxy >> = anotherObject [
+
+	"No need to fetch the object if #= == #=="
+	^(proxiedObject isNil and: [(class lookupMethod: #=) == (Object>>#=)])
+		ifTrue: [self == anotherObject]
+		ifFalse: [self doesNotUnderstand: (Message selector: #= arguments: (Array with: anotherObject))]
+]
+
 { #category : #'actions-internal' }
 SSWDBObjectProxy >> _aquireCollectionProxiesUsing: collectionSpecs [
 
@@ -181,15 +190,6 @@ SSWDBObjectProxy >> _idIn: aReStore [
 	^reStore == aReStore 
 		ifTrue: [id]
 		ifFalse: [nil error: 'incorrect ReStore parameter']
-]
-
-{ #category : #forwarding }
-SSWDBObjectProxy >> _instVarAt: anInteger [
-
-	"Sent from internal code to access the proxiedObject directly.
-	ASSERT: the receiver is a recovered proxy"
-	
-	^proxiedObject instVarAt: anInteger
 ]
 
 { #category : #forwarding }
@@ -323,6 +323,16 @@ SSWDBObjectProxy >> debugPrintString [
 	^self _isDeleted 
 		ifTrue: ['<Deleted persistent object>']
 		ifFalse: [super debugPrintString]
+]
+
+{ #category : #forwarding }
+SSWDBObjectProxy >> hash [
+
+	"No need to fetch the object if hash == identityHash"
+
+	^(proxiedObject isNil and: [(class lookupMethod: #hash) == (Object>>#hash)])
+		ifTrue: [self identityHash]
+		ifFalse: [self doesNotUnderstand: (Message selector: #hash)]
 ]
 
 { #category : #forwarding }

@@ -1,14 +1,6 @@
 Extension { #name : #Object }
 
 { #category : #'*SSW ReStore Base Additions' }
-Object >> _instVarAt: anInteger [
-
-	"Make the receiver polymorphic with proxies"
-	
-	^self instVarAt: anInteger
-]
-
-{ #category : #'*SSW ReStore Base Additions' }
 Object >> _instVarAt: anInteger put: anObject [
 
 	"Make the receiver polymorphic with proxies"

@@ -20,12 +20,6 @@ OwnedTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #public }
-OwnedTest class >> shouldInheritPersistency [
-
-	^true
-]
-
 { #category : #accessing }
 OwnedTest >> owner [
 	"Private - Answer the value of the receiver's ''owner'' instance variable."

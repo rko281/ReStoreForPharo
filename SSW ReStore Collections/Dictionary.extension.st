@@ -11,29 +11,85 @@ Dictionary >> _changesFrom: aCollectionOfEntries [
 	ifTrue:
 		[self _collectionAdditions]
 	ifFalse:
-		[(aCollectionOfEntries first isKindOf: SSWDBDictionaryEntry)
-			ifTrue: [super _changesFrom: aCollectionOfEntries]
-			ifFalse: [self _keyedChangesFrom: aCollectionOfEntries]]
+		[(aCollectionOfEntries first isKindOf: SSWDBCacheDictionaryEntry)
+		ifTrue: 
+			[self _isMultiValue
+				ifTrue: [self _multiValueChangesFrom: aCollectionOfEntries]
+				ifFalse: [super _changesFrom: aCollectionOfEntries]]
+		ifFalse: 
+			[self _keyedChangesFrom: aCollectionOfEntries]]
 ]
 
 { #category : #'*SSW ReStore Collections' }
 Dictionary >> _collectionAdditions [
 
-	"Override to include key information"
+	"Override to 
+	 - check for multi-value dictionary
+	 - include key information"
 
-	^self _keyedCollectionAdditions
+	^self _isMultiValue
+		ifTrue: [self _multiValueKeyedCollectionAdditions]
+		ifFalse: [self _keyedCollectionAdditions]
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> _dbAdd: targetObject suggestedIndex: keyObject [
+
+	"Make the receiver polymorphic with an indexed collection. keyObject = index"
+
+	^self at: keyObject put: targetObject
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> _isMultiValue [
+
+	^self isEmpty not and: [self anyOne isKindOf: Collection]
 ]
 
 { #category : #'*SSW ReStore Collections' }
 Dictionary >> _keyRemovalsIn: aCollectionOfChanges [
 
-	^(aCollectionOfChanges isEmpty or: [aCollectionOfChanges first affectedEntry isKindOf: SSWDBDictionaryEntry])
+	^(aCollectionOfChanges isEmpty or: [aCollectionOfChanges first affectedEntry isKindOf: SSWDBCacheDictionaryEntry])
 	ifTrue:
 		[#()]
 	ifFalse:
 		[aCollectionOfChanges
 			select: [ :change | change canRemoveKey and: [(self includesKey: change affectedEntry index) not]]
 			thenCollect: [ :change | SSWDBCollectionObjectRemoval newWithObject: change affectedEntry index]]
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> _multiValueChangesFrom: aCollectionOfEntries [
+
+	"Return the changes made to the receiver compared to aCollectionOf(Dictionary)Entries.
+	The receiver is a multi-value dictionary"
+
+	| allValues changes |
+
+	allValues := self inject: (IdentitySet new: self size * 4) into: [ :all :values | all addAll: values; yourself].
+	changes := OrderedCollection new.
+
+	aCollectionOfEntries do: 
+		[ :entry |
+		((self at: entry key ifAbsent: [#()]) includes: entry target) 
+			ifTrue: [allValues remove: entry target]
+			ifFalse: [changes add: (SSWDBCollectionRemoval newWithEntry: entry)]].
+
+	allValues do: [ :each | changes add: (SSWDBCollectionAddition added: each)].
+
+	^changes
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> _multiValueKeyedCollectionAdditions [
+
+	| additions |
+
+	additions := OrderedCollection new.
+
+	self keysAndValuesDo: [ :key :values | values do: [ :each | additions add: (SSWDBCollectionAddition added: each at: key)]].
+
+	^additions
 ]
 
 { #category : #'*SSW ReStore Collections' }
@@ -45,32 +101,27 @@ Dictionary >> _valuesRemovedBy: aCollectionOfChanges [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Dictionary >> directAdd: targetObject suggestedIndex: keyObject [
+Dictionary >> of: anAssociation [
 
-	"Make the receiver polymorphic with an indexed collection (key=index)"
+	"ReStore specification method - specify a Dictionary which stores instances of the class which is the value of anAssociation.
+	The key of Association should be either:
+	 - the class of the keys of the Dictionary, e.g.  Dictionary of: DateAndTime -> CustomerOrder
+	OR
+	 - an instance variable name (Symbol) of the value class; the contents of this instance variable is used as the key for each element, e.g. Dictionary of: #surname -> Person
+	OR
+	 - a 1-arg Block which is evaluated with each elements to derive the key, e.g. Dictionary of: [ :obj | obj name asLowercase] -> Person
+	Create and return an appropriate SSWDBCollectionSpec"
 
-	^self directAt: keyObject put: targetObject
+	^(anAssociation key isSymbol or: [anAssociation key isKindOf: BlockClosure])
+		ifTrue: [self of: anAssociation value keyedOn: anAssociation key]
+		ifFalse: [self of: anAssociation value keyClass: anAssociation key]
 
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Dictionary >> directAt: aKey put: anObject [
-
-	^self at: aKey put: anObject
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Dictionary class >> of: targetClass keyClass: keyClass [
-
-	"ReStore specification method - create and return an appropriate SSWDBCollectionSpec"
-
-	^self new of: targetClass keyClass: keyClass
 ]
 
 { #category : #'*SSW ReStore Collections' }
 Dictionary >> of: targetClass keyClass: keyClass [
 
-	"ReStore specification method - specify a Dictionary which stores instances of targetClass.
+	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
 	The Dictionary's keys will be of the class keyClass, which should be a valid persistent class.
 	Create and return an appropriate SSWDBCollectionSpec"
 
@@ -80,23 +131,58 @@ Dictionary >> of: targetClass keyClass: keyClass [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Dictionary >> of: targetClass keyedOn: aSymbol [
+Dictionary >> of: targetClass keyedOn: aSymbolOrBlock [
 
-	"ReStore specification method - specify a Dictionary which stores instances of targetClass.
-	Instances are stored in the receiver at: the value of their instance variable named aSymbol.
+	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
+	The target class may alternatively be a collection specification (e.g. OrderedCollection of: Person) for a multi-value dictionary.
+	Instances are stored in the receiver at: the value detemined by evaluating aSymbolOrBlock with them (usually but not always the value of an instance variable).
 	Create and return an appropriate SSWDBCollectionSpec"
 
-	^(self of: targetClass specClass: SSWDBStaticCacheDictionarySpec)
-		keyedOn: aSymbol;
+	| spec |
+
+	(targetClass isKindOf: SSWDBCollectionSpec)
+	ifTrue: 
+		[spec := self of: targetClass targetClass specClass: SSWDBStaticMultiValueCacheDictionarySpec.
+		targetClass isValueDependent ifTrue: [spec beValueDependent]]
+	ifFalse: 
+		[spec := self of: targetClass specClass: SSWDBStaticCacheDictionarySpec].
+
+	^spec
+		keyedOn: aSymbolOrBlock;
 		yourself
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Dictionary class >> of: targetClass keyedOn: aSymbol [
+Dictionary >> of: anAssociation owner: aSymbol [
 
-	"ReStore specification method - create and return an appropriate SSWDBCollectionSpec"
+	"Private - ReStore specification method - specify a Dictionary which stores instances of the class which is the value of anAssociation.
+	The key of Association should be an instance variable name (Symbol) of the value class; the contents of this instance variable is used as the key for each element, e.g. Dictionary of: #surname -> Person
+	Create and return an appropriate SSWDBCollectionSpec"
 
-	^self new of: targetClass keyedOn: aSymbol
+	^self of: anAssociation value owner: aSymbol keyedOn: anAssociation key
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> of: targetClass owner: ownerSymbol keyedOn: aSymbol [
+
+	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
+	The target class may alternatively be a collection specification (e.g. OrderedCollection of: Person) for a multi-value dictionary.
+	Instances are stored in the receiver at: the value detemined by evaluating aSymbolOrBlock with them (usually but not always the value of an instance variable).
+	Create and return an appropriate SSWDBCollectionSpec"
+
+	| spec |
+
+	(targetClass isKindOf: SSWDBCollectionSpec)
+	ifTrue: 
+		[spec := self of: targetClass targetClass specClass: SSWDBOwnedMultiValueCacheDictionarySpec.
+		targetClass isValueDependent ifTrue: [spec beValueDependent]]
+	ifFalse: 
+		[spec := self of: targetClass specClass: SSWDBOwnedCacheDictionarySpec].
+
+	^spec
+		owner: ownerSymbol;
+		keyedOn: aSymbol;
+		yourself
 ]
 
 { #category : #'*SSW ReStore Collections' }

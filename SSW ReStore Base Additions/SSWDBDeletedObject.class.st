@@ -24,6 +24,12 @@ SSWDBDeletedObject class >> newForClass: aClass id: anInteger [
 ]
 
 { #category : #accessing }
+SSWDBDeletedObject >> _id [
+
+	^self id
+]
+
+{ #category : #accessing }
 SSWDBDeletedObject >> deletedObjectClass [
 
 	"deletedObjectClass stores the Class of object for which the receiver 

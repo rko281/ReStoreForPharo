@@ -205,16 +205,16 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentAddition [
 
 	originalSize := collection size.
 
-	added := self templateComponent.
-	reStore2 evaluateAsTransaction: [(reStore2 instancesOf: testObject class) first component add: added].
+	added := self addToCollection: testObject2 component.
+	self assert: testObject2 store.
 	self refreshDelay.
 
 	reStore refresh: testObject.
 	self assert: collection size = originalSize.
 
 	reStore refresh: testObject withComponents.
-	self assert: (collection size = (originalSize + 1)).
-	self assert: ((collection select: [ :each | each name = added name]) size = 1)
+	self assert: collection size equals: (originalSize + 1).
+	self assert: (collection select: [ :each | each name = added name]) size equals: 1
 ]
 
 { #category : #public }
@@ -263,15 +263,16 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentRemoval [
 	component := collection anyOne.
 	originalSize := collection size.
 
-	self assert: (reStore2 evaluateAsTransaction: [removed := (reStore2 instancesOf: testObject class) first component remove: ((component class storedInstancesIn: reStore2) detect: [ :each | each name = component name])]).
+	removed := self remove: ((component class storedInstancesIn: reStore2) detect: [ :each | each name = component name]) fromCollection: testObject2 component.
+	self assert: testObject2 store.
 	self refreshDelay.
 
 	reStore refresh: testObject.
-	self assert: collection size = originalSize.
+	self assert: collection size equals: originalSize.
 	self assert: (collection includes: component).
 
 	reStore refresh: testObject withComponents.
-	self assert: (collection size = (originalSize - 1)).
+	self assert: collection size equals: (originalSize - 1).
 	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
 	self deny: (collection includes: component)
 ]
