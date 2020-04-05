@@ -53,7 +53,7 @@ SSWMySQLResultSet >> readStream [
 { #category : #accessing }
 SSWMySQLResultSet >> rows: aCollection [
 
-	statement isNil ifTrue: [^super rows: aCollection].
+	(statement isNil or:[aCollection isNil]) ifTrue: [^super rows: aCollection].
 	
 	super rows: (aCollection collect: [ :each | each asSSWMySQLRowFrom: statement query])
 ]
@@ -71,4 +71,11 @@ SSWMySQLResultSet >> size [
 SSWMySQLResultSet >> species [
 
 	^OrderedCollection
+]
+
+{ #category : #accessing }
+SSWMySQLResultSet >> statement: anSSWMySQLStatement [
+
+	anSSWMySQLStatement ifNotNil: [ :stmt | stmt adoptResultSet: self].
+	super statement: anSSWMySQLStatement
 ]

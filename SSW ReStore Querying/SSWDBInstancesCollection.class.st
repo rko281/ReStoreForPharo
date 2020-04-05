@@ -497,15 +497,13 @@ SSWDBInstancesCollection >> reject: rejectBlock [
 { #category : #evaluating }
 SSWDBInstancesCollection >> resultSet [
 
-	"Return a DBResultSet (open query results) onto the collection of rows
-	represented by the receiver"
+	"Private - Return a DBResultSet (open query results) onto the collection of rows represented by the receiver"
 	
 	| query |
-	
+
 	query := self parser collectQueryFrom: [ :elem | elem].
-	
-	"Always use #keysetDriven to give a flexible, efficient result set"
-	^self reStore executeQuery: query cursorType: #keysetDriven
+
+	^self reStore executeQuery: query cursoredFetch: true
 ]
 
 { #category : #evaluating }

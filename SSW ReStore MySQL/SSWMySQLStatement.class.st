@@ -6,6 +6,21 @@ Class {
 	#category : #'SSW ReStore MySQL'
 }
 
+{ #category : #'initialize-release' }
+SSWMySQLStatement >> adoptResultSet: anSSWMySQLResultSet [
+
+	rsContext := anSSWMySQLResultSet 
+]
+
+{ #category : #'initialize-release' }
+SSWMySQLStatement >> cursoredFetch: aBoolean [ 
+
+	"Set a default fetchSize"
+	(aBoolean and: [ fetchSize isNil ]) ifTrue: [ 	fetchSize := 10 ].
+
+	super cursoredFetch: aBoolean
+]
+
 { #category : #accessing }
 SSWMySQLStatement >> execute [
 

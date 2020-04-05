@@ -257,15 +257,6 @@ SSWSQLDialect >> connection: anObject [
 	connection := anObject
 ]
 
-{ #category : #constants }
-SSWSQLDialect >> cursorType [
-
-	"Return the Symbol-ic name of the ODBC cursor type that will be used when creating statements. 
-	See DBAbstractStatement>>cursorType for further details"
-
-	^#forwardOnly
-]
-
 { #category : #datatypes }
 SSWSQLDialect >> date [
 

@@ -9,6 +9,12 @@ Class {
 	#category : #'SSW ReStore SQLite3'
 }
 
+{ #category : #'initialize-release' }
+SSWSQLite3Statement >> cursoredFetch: aBoolean [
+
+	"Always enabled"
+]
+
 { #category : #execution }
 SSWSQLite3Statement >> execute [
 

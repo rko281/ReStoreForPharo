@@ -24,6 +24,12 @@ SSWP3Statement >> client: aClient name: aString paramDescriptions: pCollection f
 	fieldDescriptions := fCollection
 ]
 
+{ #category : #'initialize-release' }
+SSWP3Statement >> cursoredFetch: aBoolean [
+
+	"Not implemented?"
+]
+
 { #category : #executing }
 SSWP3Statement >> execute [
 

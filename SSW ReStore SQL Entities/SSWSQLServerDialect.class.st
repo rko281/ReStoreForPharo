@@ -31,12 +31,6 @@ SSWSQLServerDialect >> canDescribeParameters [
 ]
 
 { #category : #constants }
-SSWSQLServerDialect >> cursorType [
-
-	^#keysetDriven
-]
-
-{ #category : #constants }
 SSWSQLServerDialect >> dateAndTimeFormat [
 
 	"The format for DateAndTImes when expressed as Strings"

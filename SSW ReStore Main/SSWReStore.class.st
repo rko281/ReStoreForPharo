@@ -968,23 +968,23 @@ SSWReStore >> evaluateInTxn: aBlock [
 { #category : #connection }
 SSWReStore >> executeQuery: anSSWSQLQuery [
 
-	"Execute the given query with the default cursorType.
+	"Execute the given query.
 	If it is a read query, return the DBResultSet (client code should close this when done)
 	If it is a write query, return the number of rows affected"
 
-	^self executeQuery: anSSWSQLQuery cursorType: self sqlDialect cursorType
+	^self executeQuery: anSSWSQLQuery cursoredFetch: false
 ]
 
 { #category : #connection }
-SSWReStore >> executeQuery: anSSWSQLQuery cursorType: aSymbol [
+SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
 
-	"Execute the given query with the given cursorType.
-	If it is a read query, return the DBResultSet (client code should close this when done)
+	"Execute the given query.
+	If it is a read query, return the DBResultSet (client code should close this when done); aBoolean controls whether the result set is cursored (incremental read)
 	If it is a write query, return the number of rows affected"
 
 	| statement |
 
-	statement := self connection executeQuery: anSSWSQLQuery cursorType: aSymbol.
+	statement := self connection executeQuery: anSSWSQLQuery cursoredFetch: aBoolean.
 
 	^anSSWSQLQuery isReadQuery
 		ifTrue: [statement results]

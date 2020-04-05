@@ -161,7 +161,7 @@ SSWReStoreDBConnection >> exec: aString [
 ]
 
 { #category : #querying }
-SSWReStoreDBConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
+SSWReStoreDBConnection >> executeQuery: anSQLQuery cursoredFetch: aBoolean [
 
 	"Entry point for ad-hoc querying"
 
@@ -177,6 +177,7 @@ SSWReStoreDBConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
 	^statement 
 		setQuery: anSQLQuery;
 		values: values;
+		cursoredFetch: aBoolean;
 		exec;
 		yourself
 ]
