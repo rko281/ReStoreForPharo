@@ -197,7 +197,7 @@ SSWReStoreQueryTest >> test8CustomQuery [
 
 	self createProducts.
 
-	reStore sqlDialect sqlFunctions at: #plusPercent: put: '%1 * (1 + (%2 / 100))' asSQLFunction.
+	reStore translateMessage: #plusPercent: toFunction: '%1 * (1 + (%2 / 100))' asSQLFunction.
 
 	instances := SimpleProduct storedInstancesIn: reStore.
 	results := instances collect: [ :each | each supplierPrice plusPercent: 100].

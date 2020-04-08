@@ -826,6 +826,12 @@ SSWSQLDialect >> transformInstVarName: aSymbol [
 	^self instVarNameTransformation value: aSymbol
 ]
 
+{ #category : #initializing }
+SSWSQLDialect >> translateMessage: aSymbol toFunction: aSQLFunction [
+
+	self sqlFunctions at: aSymbol put: aSQLFunction
+]
+
 { #category : #constants }
 SSWSQLDialect >> trueObject [
 

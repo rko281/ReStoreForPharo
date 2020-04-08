@@ -2033,6 +2033,16 @@ SSWReStore >> transactionMutex: aMutex [
 	transactionMutex := aMutex
 ]
 
+{ #category : #'initialize/release' }
+SSWReStore >> translateMessage: aSymbol toFunction: aSQLFunction [
+
+	"Add aSymbol>>aSQLFunction as an additional message>>function translation"
+
+	self isConnected ifFalse: [self error: 'connect before adding functions'].
+
+	self sqlDialect translateMessage: aSymbol toFunction: aSQLFunction
+]
+
 { #category : #'cache management' }
 SSWReStore >> uncacheObject: aPersistentObjectProxy [
 
