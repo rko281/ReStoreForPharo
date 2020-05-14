@@ -95,7 +95,7 @@ SSWReStoreTableTest >> ensureHierarchyColumnsAllPresent [
 	reStore addClassWithSubclasses: SuperPerson.
 	table := (reStore tableForClass: SuperPerson) forCreation.
 
-	columns := (reStore connection columns: table name) collect: [ :each | each name].
+	columns := (reStore connection _columnsInTable: table) collect: [ :each | each name].
 	expected := table allFields collect: [ :each | each name].
 
 	self assert: (expected allSatisfy: [ :each | columns includes: each])
@@ -152,9 +152,6 @@ SSWReStoreTableTest >> test01VerifySetup [
 SSWReStoreTableTest >> test02RenameClass [
 
 	| people table |
-
-	(reStore dbIncludesTableNamed: self renamedTableName) ifTrue:
-		[reStore evaluateAsTxn: [reStore executeSQL: 'DROP TABLE ', self renamedTableName. true]].
 
 	self renameClass.
 
@@ -281,13 +278,13 @@ SSWReStoreTableTest >> test07AlterInstVar [
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test09DestroyTable [
 
-	| tableName |
+	| table |
 
-	tableName := (reStore tableForClass: SimplePerson2) name.
+	table := reStore tableForClass: SimplePerson2.
 
 	reStore destroyClass: SimplePerson2.
 
-	self deny: (reStore dbIncludesTableNamed: tableName)
+	self deny: (reStore dbIncludesTable: table)
 ]
 
 { #category : #'unit tests' }
@@ -488,7 +485,5 @@ SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 	self assert: ((DetailedPerson2 storedInstancesIn: reStore) size = 1).
 
 	self assert: (((DetailedPerson1 storedInstancesIn: reStore) select: [ :e | 'Jon*' match: e friend2 surname]) size = 1).
-	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John').
-
-	reStore disconnect; connect; destroyAllClasses
+	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John')
 ]

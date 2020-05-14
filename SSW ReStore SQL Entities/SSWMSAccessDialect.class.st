@@ -22,12 +22,6 @@ SSWMSAccessDialect >> boolean [
 	^'YESNO'
 ]
 
-{ #category : #testing }
-SSWMSAccessDialect >> canDescribeParameters [
-
-	^false
-]
-
 { #category : #datatypes }
 SSWMSAccessDialect >> date [
 
@@ -113,11 +107,11 @@ SSWMSAccessDialect >> maxDateTimeResolution [
 ]
 
 { #category : #maintenance }
-SSWMSAccessDialect >> renameTableNamed: oldName to: newName in: anSSWReStore [
+SSWMSAccessDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore 
-		executeSQLFrom: [ :stream | stream nextPutAll: 'SELECT * INTO '; nextPutIdentifier: newName; nextPutAll: ' FROM '; nextPutIdentifier: oldName];
-		executeSQLFrom: [ :stream | stream nextPutAll: 'DROP TABLE '; nextPutIdentifier: oldName]
+		executeSQLFrom: [ :stream | stream nextPutAll: 'SELECT * INTO '; writeSQLFor: newTable; nextPutAll: ' FROM '; writeSQLFor: oldTable];
+		executeSQLFrom: [ :stream | stream nextPutAll: 'DROP TABLE '; writeSQLFor: oldTable]
 ]
 
 { #category : #testing }

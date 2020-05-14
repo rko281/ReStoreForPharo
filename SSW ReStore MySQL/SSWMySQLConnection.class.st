@@ -27,10 +27,15 @@ SSWMySQLConnection >> beginTransaction [
 	self query: 'BEGIN'
 ]
 
-{ #category : #'public API - introspection' }
-SSWMySQLConnection >> columnNamesFor: aTableName [
+{ #category : #'as yet unclassified' }
+SSWMySQLConnection >> columnNamesForTable: aDBTable [
 
-	^(self execute: 'SHOW COLUMNS FROM ', (self sqlDialect asIdentifier: aTableName)) collect: [ :row | row first ]
+	| stream |
+	
+	stream := self sqlDialect sqlWriteStream.
+	stream nextPutAll: 'SHOW COLUMNS FROM '; writeSQLFor: aDBTable.
+
+	^(self execute: stream contents) collect: [ :row | row first ]
 ]
 
 { #category : #transactions }
@@ -55,10 +60,15 @@ SSWMySQLConnection >> dbErrorClass [
 	^MySQLDriverError
 ]
 
-{ #category : #'public API - introspection' }
-SSWMySQLConnection >> declaredColumnTypesFor: aTableName [
+{ #category : #enquiries }
+SSWMySQLConnection >> declaredColumnTypesForTable: aDBTable [
 
-	^(self query: 'SHOW COLUMNS FROM ', (self sqlDialect asIdentifier: aTableName)) collect: [ :each | (each atIndex: 2) asString ]
+	| stream |
+	
+	stream := self sqlDialect sqlWriteStream.
+	stream nextPutAll: 'SHOW COLUMNS FROM '; writeSQLFor: aDBTable.
+
+	^(self execute: stream contents) collect: [ :row | (row atIndex: 2) asString ]
 ]
 
 { #category : #'error handling' }
@@ -105,7 +115,9 @@ SSWMySQLConnection >> sqlDialectClass [
 ]
 
 { #category : #accessing }
-SSWMySQLConnection >> tables [
+SSWMySQLConnection >> tablesInNamespace: aString [
 
-	^(self execute: 'SHOW TABLES') collect: [ :row | row first ]
+	^((aString isNil or: [aString = self sqlDialect standardNamespace])
+		ifTrue: [ self execute: 'SHOW TABLES' ]
+		ifFalse: [ self execute: 'SHOW TABLES IN ', (self sqlDialect asIdentifier: aString) ]) collect: [ :row | row first ]
 ]

@@ -57,6 +57,12 @@ SSWDBQueryTable >> fieldAccessing: aSymbol [
 	^self table fieldAccessing: aSymbol
 ]
 
+{ #category : #testing }
+SSWDBQueryTable >> hasNamespace [
+
+	^self table hasNamespace
+]
+
 { #category : #evaluating }
 SSWDBQueryTable >> hasStaticConditions [
 
@@ -191,7 +197,7 @@ SSWDBQueryTable >> writeSQLOn: aStream [
 
 	"Alias the actual table name if necessary"
 		
-	aStream nextPutAll: self table name.
+	self table writeSQLNameOn: aStream.
 
 	self repetitionIndex > 0 ifTrue:
 		[aStream nextPutAll: ' AS '.

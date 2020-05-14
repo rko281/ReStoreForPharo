@@ -22,14 +22,6 @@ SSWSQLServerDialect >> boolean [
 	^'BIT'
 ]
 
-{ #category : #testing }
-SSWSQLServerDialect >> canDescribeParameters [
-
-	"Appears to be supported by the native ODBC driver, but flaky (doesn't work with > 1 param?), so let's act as if it doesn't work"
-
-	^false
-]
-
 { #category : #constants }
 SSWSQLServerDialect >> dateAndTimeFormat [
 
@@ -60,6 +52,12 @@ SSWSQLServerDialect >> defaultMaxColumnNameLength [
 SSWSQLServerDialect >> defaultMaxTableNameLength [
 
 	^128
+]
+
+{ #category : #constants }
+SSWSQLServerDialect >> defaultStandardNamespace [
+
+	^'dbo'
 ]
 
 { #category : #constants }
@@ -130,19 +128,13 @@ SSWSQLServerDialect >> maxCharacter [
 { #category : #maintenance }
 SSWSQLServerDialect >> renameField: oldField to: newField in: aReStore [
 
-	aReStore executeSQL: ('EXEC sp_rename ''<1s>.<2s>'', <3p>, ''COLUMN''' expandMacrosWith: newField table name with: oldField name with: newField name)
+	aReStore executeSQL: ('EXEC sp_rename ''<1s>.<2s>'', <3p>, ''COLUMN''' expandMacrosWith: newField table qualifiedName with: oldField name with: newField name)
 ]
 
 { #category : #maintenance }
-SSWSQLServerDialect >> renameTableNamed: oldName to: newName in: anSSWReStore [
+SSWSQLServerDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
-	anSSWReStore executeSQL: ('EXEC sp_rename <1p>,<2p>' expandMacrosWith: oldName with: newName)
-]
-
-{ #category : #testing }
-SSWSQLServerDialect >> shouldMaskSuccessWithInfo [
-
-	^true
+	anSSWReStore executeSQL: ('EXEC sp_rename <1p>,<2p>' expandMacrosWith: oldTable qualifiedName with: newTable name)
 ]
 
 { #category : #testing }

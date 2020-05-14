@@ -79,19 +79,18 @@ SSWSQLTableAllFields >> requiresAliasing [
 { #category : #output }
 SSWSQLTableAllFields >> writeAliasedSQLOn: aStream [
 
-	"Aliasing is handled by the receiver's table.
-	Hence - defer to writeSQLOn:"
-	
+	"Workaround for SQLite which gives error with namespace.table_name.* "
+	(self table hasNamespace and: [self table sqlDialect shouldExpandNamespacedAllFields]) ifTrue: [^self table allFields writeAliasedSQLOn: aStream].
+
+	"Use <table name>.<field name> notation to avoid ambiguity"
+	self table writeSQLNameOn: aStream.
+	aStream nextPut: $..
 	self writeSQLOn: aStream
 ]
 
 { #category : #output }
 SSWSQLTableAllFields >> writeSQLOn: aStream [
 
-	"Use <table name>.<field name> notation to avoid ambiguity"
-	self table writeSQLNameOn: aStream.
-	aStream nextPut: $..
-	
 	"Use an empty (i.e. 'all') field collection to handle the SQL representation of 'all'"
 	(SSWSQLFieldCollection new) writeSQLOn: aStream
 ]

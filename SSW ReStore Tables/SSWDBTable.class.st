@@ -21,7 +21,8 @@ Class {
 		'readStatement',
 		'refreshStatement',
 		'deleteStatement',
-		'readAllBatchSize'
+		'readAllBatchSize',
+		'namespace'
 	],
 	#category : #'SSW ReStore Tables'
 }
@@ -633,6 +634,12 @@ SSWDBTable >> hasFieldAccessing: aSymbol [
 	^(self fieldAccessing: aSymbol) notNil 
 ]
 
+{ #category : #testing }
+SSWDBTable >> hasNamespace [
+
+	^self namespace notNil
+]
+
 { #category : #accessing }
 SSWDBTable >> idDataField [
 
@@ -751,6 +758,26 @@ SSWDBTable >> name [
 	^name
 ]
 
+{ #category : #accessing }
+SSWDBTable >> namespace [
+
+	"namespace optionally stores the namespace (String, meaning schema or database depending on dialect) with which to qualify the table, i.e. the table is expressed as <namespace>.<table name>
+	This is useful where some data is held in another namespace on the same server (e.g. a read-only namespace holding sensitive information). 
+	Note that a class/table can only exist in one namespace"
+
+	^namespace
+]
+
+{ #category : #accessing }
+SSWDBTable >> namespace: aString [
+
+	"namespace optionally stores the namespace (String, meaning schema or database depending on dialect) with which to qualify the table, i.e. the table is expressed as <namespace>.<table name>
+	This is useful where some data is held in another namespace on the same server (e.g. a read-only namespace holding sensitive information). 
+	Note that a class/table can only exist in one namespace"
+
+	namespace := aString
+]
+
 { #category : #'instance creation' }
 SSWDBTable >> nonPersistentCopyOf: anObject [
 
@@ -787,6 +814,14 @@ SSWDBTable >> parameterisedRefreshQuery [
 	^self parameterisedRecoveryQuery
 		fields: (SSWSQLFieldCollection with: self versionControlField);
 		yourself
+]
+
+{ #category : #accessing }
+SSWDBTable >> qualifiedName [
+
+	^self hasNamespace
+		ifTrue: [self namespace, '.', self name]
+		ifFalse: [self name]
 ]
 
 { #category : #accessing }
@@ -914,8 +949,8 @@ SSWDBTable >> removeDefinition [
 	creationTable := self forCreation.
 	creationTable isNil ifTrue: [^#()].
 
-	(self reStore dbIncludesTableNamed: creationTable name) ifTrue: 
-		[self reStore executeSQL: ('DROP TABLE ', (self sqlDialect asIdentifier: creationTable name))].
+	(self reStore dbIncludesTable: creationTable) ifTrue: 
+		[self reStore executeSQLFrom: [ :stream | stream nextPutAll: 'DROP TABLE '; writeSQLFor: creationTable]].
 
 	containedTables := creationTable containedTables.
 	containedTables do: [ :containedTable | containedTable removeDefinition].
@@ -928,13 +963,12 @@ SSWDBTable >> removeDefinition [
 { #category : #'db maintenance' }
 SSWDBTable >> removeRedundantContainedTables [
 
-	"Remove from the database accessed by the receiver's reStore 
-	any contained tables that are no longer contained in the receiver"
+	"Remove from the database accessed by the receiver's reStore any contained tables that are no longer contained in the receiver"
 
 	| root containedTableNames |
 
 	root := self containedTableNameRoot.
-	containedTableNames := self reStore dbTableNames select: [ :each | each beginsWith: root].
+	containedTableNames := (self reStore dbTableNamesFor: self namespace) select: [ :each | each beginsWith: root].
 
 	"Don't delete any used containedTables"
 	self containedTables do: [ :table | containedTableNames remove: table name ifAbsent: []].
@@ -1038,7 +1072,7 @@ SSWDBTable >> synchronizeDefinition [
 	creationTable := self forCreation.
 	creationTable isNil ifTrue: [^self].
 
-	(self reStore dbIncludesTableNamed: creationTable name)
+	(self reStore dbIncludesTable: creationTable)
 	ifTrue: 
 		[creationTable 
 			synchronizeFields;
@@ -1107,10 +1141,10 @@ SSWDBTable >> writeSQLDefinitionOn: aStream [
 	
 	self isDefined ifFalse: [self error: 'Cannot create a table with no fields'].
 	
-	aStream
-		nextPutAll: 'CREATE TABLE ';
-		nextPutIdentifier: self name;
-		nextPutAll: ' ('.
+	aStream nextPutAll: 'CREATE TABLE '.
+
+	self writeSQLNameOn: aStream.
+	aStream nextPutAll: ' ('.
 	
 	self idField writeSQLDefinitionOn: aStream.
 	aStream nextPutAll: ' PRIMARY KEY'.
@@ -1121,4 +1155,13 @@ SSWDBTable >> writeSQLDefinitionOn: aStream [
 		field writeSQLDefinitionOn: aStream].
 		
 	aStream nextPut: $)
+]
+
+{ #category : #output }
+SSWDBTable >> writeSQLNameOn: aStream [
+
+	self hasNamespace ifTrue: [aStream nextPutIdentifier: self namespace; nextPut: $.].
+
+	super writeSQLNameOn: aStream
+
 ]

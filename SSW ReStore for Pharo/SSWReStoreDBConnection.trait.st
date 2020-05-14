@@ -15,7 +15,7 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 
 	| names columns |
 	
-	names := self columnNamesFor: aDBTable name.
+	names := self columnNamesForTable: aDBTable.
 	names isNil ifTrue: [ ^#() ].
 
 	columns := OrderedCollection new: names size.
@@ -25,7 +25,7 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 			( SSWDBCColAttr new 
 					name: name;
 					index: index;
-					tableName: aDBTable name;
+					table: aDBTable;
 					connection: self; 
 					yourself ) ].
 				
@@ -104,6 +104,12 @@ SSWReStoreDBConnection >> connect [
 		self resetTrait]
 ]
 
+{ #category : #'db maintenance' }
+SSWReStoreDBConnection >> createNamespace: aString [
+
+	self execute: 'CREATE SCHEMA ', (self sqlDialect asIdentifier: aString)
+]
+
 { #category : #accessing }
 SSWReStoreDBConnection >> debugStream [
 	^ debugStream
@@ -137,6 +143,12 @@ SSWReStoreDBConnection >> defaultMaxColumnBytes [
 	Very large values really need the use of unbound columns and incremental (paged) put/getData, however this is not yet implemented (and is potentially less performant than bound columns)"
 
 	^"(2**17)" 131072
+]
+
+{ #category : #'db maintenance' }
+SSWReStoreDBConnection >> dropNamespace: aString [
+
+	self execute: 'DROP SCHEMA ', (self sqlDialect asIdentifier: aString)
 ]
 
 { #category : #transactions }
@@ -339,6 +351,12 @@ SSWReStoreDBConnection >> stopQueryCounting [
 	self queryCount: nil
 
 	
+]
+
+{ #category : #enquiries }
+SSWReStoreDBConnection >> tables [
+
+	^self tablesInNamespace: self sqlDialect standardNamespace
 ]
 
 { #category : #accessing }

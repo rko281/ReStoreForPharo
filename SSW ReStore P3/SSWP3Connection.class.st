@@ -28,9 +28,9 @@ SSWP3Connection >> beginTransaction [
 ]
 
 { #category : #accessing }
-SSWP3Connection >> columnNamesFor: aString [
+SSWP3Connection >> columnNamesForTable: aDBTable [
 
-	^(self query: ('select column_name from information_schema.columns where table_name = <1p>;' expandMacrosWith: aString)) data collect: [ :each | each first ]
+	^(self query: ('select column_name from information_schema.columns where table_name = <1p>;' expandMacrosWith: aDBTable name)) data collect: [ :each | each first ]
 ]
 
 { #category : #transactions }
@@ -46,22 +46,9 @@ SSWP3Connection >> dbErrorClass [
 ]
 
 { #category : #accessing }
-SSWP3Connection >> declaredColumnTypesFor: aTableName [
+SSWP3Connection >> declaredColumnTypesForTable: aDBTable [
 
-	^(self query: ('SELECT
-        pg_catalog.format_type(a.atttypid, a.atttypmod) as "Datatype"
-    FROM
-        pg_catalog.pg_attribute a
-    WHERE
-        a.attnum > 0
-        AND NOT a.attisdropped
-        AND a.attrelid = (
-            SELECT c.oid
-            FROM pg_catalog.pg_class c
-                LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-            WHERE c.relname ~ ''^(<1s>)$''
-                AND pg_catalog.pg_table_is_visible(c.oid)
-        );' expandMacrosWith: aTableName)) data collect: [ :each | each first ]
+	^(self query: ('SELECT data_type, character_maximum_length FROM information_schema.COLUMNS WHERE TABLE_NAME = <1p>;' expandMacrosWith: aDBTable name)) data collect: [ :each | each first asString, each second asString]
 ]
 
 { #category : #querying }
@@ -139,7 +126,7 @@ SSWP3Connection >> statementCache: anOrderedCollection [
 ]
 
 { #category : #accessing }
-SSWP3Connection >> tables [
+SSWP3Connection >> tablesInNamespace: aString [
 
-	^(self listTablesInSchema: 'public') asOrderedCollection
+	^(self listTablesInSchema: (aString ifNil: [self sqlDialect standardNamespace])) asOrderedCollection
 ]

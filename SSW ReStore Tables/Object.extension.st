@@ -34,7 +34,7 @@ Object class >> hasPersistentSuperclass [
 
 	self shouldInheritPersistency ifFalse: [^false].
 
-	self allSuperclasses do:
+	self allSuperclassesDo:
 		[ :sup |
 		sup = Object ifTrue: [^false].
 		sup shouldSubclassesInheritPersistency ifFalse: [^false].

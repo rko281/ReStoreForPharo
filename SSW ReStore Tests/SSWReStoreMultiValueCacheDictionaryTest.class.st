@@ -161,9 +161,10 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalOfKey [
 { #category : #'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshReplacementAtExistingKey [
 
-	| barry bill |
+	| bees barry bill |
 
-	barry := (testObject2 component at: 'b') removeFirst.
+	bees := testObject2 component at: 'b'.
+	barry := bees remove: (bees detect: [ :each | each name = 'Barry']).
 	bill := self testNamed: 'Bill'.
 	testObject2 addToMultiKeyDictionary: bill.
 	testObject2 store.
@@ -365,9 +366,10 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalOfKey [
 { #category : #'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreReplacementAtExistingKey [
 
-	| barry bill |
+	| bees barry bill |
 
-	barry := (testObject component at: 'b') removeFirst.
+	bees := testObject component at: 'b'.
+	barry := bees remove: (bees detect: [ :each | each name = 'Barry']).
 	bill := self testNamed: 'Bill'.
 	testObject addToMultiKeyDictionary: bill.
 	testObject store.

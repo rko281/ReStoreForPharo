@@ -23,7 +23,7 @@ SSWPostgreSQLDialect >> alterField: aField table: aTable in: aReStore [
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: aTable name;
+			writeSQLFor: aTable;
 			nextPutAll: ' ALTER COLUMN ';
 			nextPutIdentifier: aField name;
 			nextPutAll: ' TYPE '.
@@ -58,6 +58,12 @@ SSWPostgreSQLDialect >> defaultMaxColumnNameLength [
 SSWPostgreSQLDialect >> defaultMaxTableNameLength [
 
 	^63
+]
+
+{ #category : #constants }
+SSWPostgreSQLDialect >> defaultStandardNamespace [
+
+	^'public'
 ]
 
 { #category : #constants }
@@ -114,23 +120,11 @@ SSWPostgreSQLDialect >> renameField: oldField to: newField in: aReStore [
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: newField table name;
+			writeSQLFor: newField table;
 			nextPutAll: ' RENAME ';
 			nextPutIdentifier: oldField name;
 			nextPutAll: ' TO ';
 			nextPutIdentifier: newField name]
-]
-
-{ #category : #testing }
-SSWPostgreSQLDialect >> shouldCheckAutoCommit [
-
-	^true
-]
-
-{ #category : #testing }
-SSWPostgreSQLDialect >> shouldMaskSuccessWithInfo [
-
-	^true
 ]
 
 { #category : #datatypes }

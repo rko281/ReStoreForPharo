@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'name',
 		'index',
-		'tableName',
+		'table',
 		'connection'
 	],
 	#category : #'SSW ReStore for Pharo'
@@ -65,7 +65,7 @@ SSWDBCColAttr >> size [
 
 	| declaration stream |
 
-	declaration := (self connection declaredColumnTypesFor: self tableName) at: self index.
+	declaration := (self connection declaredColumnTypesForTable: self table) at: self index.
 	stream := declaration readStream.
 	[ stream atEnd or: [ stream peek isDigit ] ] whileFalse: [ stream next ].
 	^stream atEnd
@@ -74,11 +74,16 @@ SSWDBCColAttr >> size [
 ]
 
 { #category : #accessing }
-SSWDBCColAttr >> tableName [
-	^ tableName
+SSWDBCColAttr >> table [
+	^ table
 ]
 
 { #category : #accessing }
-SSWDBCColAttr >> tableName: anObject [
-	tableName := anObject
+SSWDBCColAttr >> table: anObject [
+	table := anObject
+]
+
+{ #category : #accessing }
+SSWDBCColAttr >> tableName [
+	^ self table name
 ]

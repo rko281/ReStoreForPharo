@@ -91,12 +91,6 @@ SSWDBFunctionField >> isEmpty [
 	^false
 ]
 
-{ #category : #accessing }
-SSWDBFunctionField >> reStore [
-
-	^self table reStore
-]
-
 { #category : #testing }
 SSWDBFunctionField >> requiresAliasing [
 

@@ -327,8 +327,7 @@ SSWReStore >> beginTransaction [
 
 	| newTransaction |
 
-	"An explicit beginTransaction is implicitly also a rollback for a dumb transaction"
-	(self hasTransaction and: [self transaction isDumb]) ifTrue: [self rollbackTransaction].
+	self softRollback.
 
 	newTransaction := self transactionClass new.
 	newTransaction beginWithin: self transaction.
@@ -687,11 +686,17 @@ SSWReStore >> dbErrorClass [
 ]
 
 { #category : #'class maintenance' }
+SSWReStore >> dbIncludesTable: aDBTable [
+
+	^(self dbTableNamesFor: aDBTable namespace) includes: aDBTable name asUppercase
+]
+
+{ #category : #'class maintenance' }
 SSWReStore >> dbIncludesTableForClass: aClass [
 
 	^(self tableForClass: aClass ifAbsent: [nil])
 		ifNil: [false]
-		ifNotNil: [ :table | self dbIncludesTableNamed: table name]
+		ifNotNil: [ :table | self dbIncludesTable: table]
 ]
 
 { #category : #testing }
@@ -703,15 +708,12 @@ SSWReStore >> dbIncludesTableNamed: aString [
 { #category : #accessing }
 SSWReStore >> dbTableNames [
 
-	"dbTableNames stores the Collection of table name Strings returned from 'self connection tables'.
+	"dbTableNames stores a Dictionary mapping database namespaces (schemas/databases, empty String for the default) to collections of table names (Strings) in that namespace'.
 	This is cached for use by client methods as it can be an expensive operation.
 
 	Lazy initialized; methods which may change the DB's table definitions should reset this to nil"
 	
-	dbTableNames == nil ifTrue: 
-		[self dbTableNames: (self connection tables collect: [ :each | each asUppercase])].
-
-	^dbTableNames
+	^dbTableNames ifNil: [dbTableNames := Dictionary new]
 ]
 
 { #category : #accessing }
@@ -723,6 +725,12 @@ SSWReStore >> dbTableNames: aCollectionOrNil [
 	Lazy initialized; methods which may change the DB's table definitions should reset this to nil"
 	
 	dbTableNames := aCollectionOrNil
+]
+
+{ #category : #'class maintenance' }
+SSWReStore >> dbTableNamesFor: aNamespaceOrNil [
+
+	^self dbTableNames at: (aNamespaceOrNil ifNil: ['']) ifAbsentPut: [(self connection tablesInNamespace: aNamespaceOrNil) collect: [ :each | each asUppercase]]
 ]
 
 { #category : #connection }
@@ -813,7 +821,7 @@ SSWReStore >> destroyAllTables [
 	this method will remove ABSOLUTELY ALL TABLES from the database"
 
 	[self evaluateAsTxn:
-		[self dbTableNames do: [ :tableName | self executeSQL: ('DROP TABLE ', tableName)].
+		[self dbTableNames do: [ :tableNames | tableNames do: [ :tableName | [self executeSQL: ('DROP TABLE ', tableName)] on: self connection dbErrorClass do: [ :exc | exc return]]].
 		true]] 
 			ensure: [self clearDBTableNames]
 ]
@@ -1636,7 +1644,7 @@ SSWReStore >> renameTable: oldTable to: newTable [
 
 	| instances |
 
-	self sqlDialect renameTableNamed: oldTable name to: newTable name in: self.
+	self sqlDialect renameTable: oldTable to: newTable in: self.
 
 	"Also update the TableRecord in the DB"
 	instances := (self instancesOf: SSWDBTableRecord) satisfying: [ :each | each tableName = oldTable name].

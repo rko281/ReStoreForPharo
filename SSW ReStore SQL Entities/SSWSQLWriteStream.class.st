@@ -185,3 +185,9 @@ SSWSQLWriteStream >> tableAliases: anIdentityDictionary [
 
 	tableAliases := anIdentityDictionary
 ]
+
+{ #category : #printing }
+SSWSQLWriteStream >> writeSQLFor: anObject [
+
+	anObject writeSQLOn: self
+]

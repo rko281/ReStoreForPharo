@@ -23,21 +23,21 @@ SSWSQLite3Connection >> basicConnect [
 	^self open
 ]
 
-{ #category : #'public API - introspection' }
-SSWSQLite3Connection >> columnNamesFor: aTableName [
+{ #category : #'as yet unclassified' }
+SSWSQLite3Connection >> columnNamesForTable: aDBTable [
 	
 	self isOpen
 		ifFalse: [ SQLite3NotOpen signal ]
 		ifTrue: [ 
 			| s tableExists |
-			s := self prepare: 'select count(*) from sqlite_master where type = "table" and tbl_name = ?'.
-			s at: 1 putString: aTableName.
+			s := self prepare: 'select count(*) from ', (self masterTableForNamespace: aDBTable namespace), ' where type = "table" and tbl_name = ?'.
+			s at: 1 putString: aDBTable name.
 	  		s basicExecute: [ :row | tableExists := ((row integerAt: 0) = 1) ].
 	  		s finalize.
 			tableExists ifTrue: [ 
 				| columns |
 				columns := OrderedCollection new.
-				s := self prepare: 'pragma table_info(', (self sqlDialect asIdentifier: aTableName), ')'.
+				s := self prepare: 'pragma table_info(', (self sqlDialect asIdentifier: aDBTable name), ')'.
 				s basicExecute: [ :row | columns add: (row stringAt: 1) ].
 				s finalize.
 				^ columns ].
@@ -45,10 +45,46 @@ SSWSQLite3Connection >> columnNamesFor: aTableName [
 		
 ]
 
+{ #category : #'db maintenance' }
+SSWSQLite3Connection >> createNamespace: aString [
+
+	"Since there is no filename given, map this to creating a temporary attached database"
+
+	^self execute: 'ATTACH DATABASE '''' AS ', (self sqlDialect asIdentifier: aString)
+]
+
 { #category : #constants }
 SSWSQLite3Connection >> dbErrorClass [
 
 	^SQLite3AbstractError
+]
+
+{ #category : #enquiries }
+SSWSQLite3Connection >> declaredColumnTypesForTable: aDBTable [
+	
+	self isOpen
+		ifFalse: [ SQLite3NotOpen signal ]
+		ifTrue: [ 
+			| s tableExists |
+			s := self prepare: 'select count(*) from ', (self masterTableForNamespace: aDBTable namespace), ' where type = "table" and tbl_name = ?'.
+			s at: 1 putString: aDBTable name.
+	  		s basicExecute: [ :row | tableExists := ((row integerAt: 0) = 1) ].
+	  		s finalize.
+			tableExists ifTrue: [ 
+				| columns |
+				columns := OrderedCollection new.
+				s := self prepare: 'pragma table_info(', aDBTable name, ')'.
+				s basicExecute: [ :row | columns add: (row stringAt: 2) ].
+				s finalize.
+				^ columns ].
+			^ nil ]
+		
+]
+
+{ #category : #'db maintenance' }
+SSWSQLite3Connection >> dropNamespace: aString [
+
+	^self execute: 'DETACH DATABASE ', (self sqlDialect asIdentifier: aString)
 ]
 
 { #category : #querying }
@@ -68,6 +104,14 @@ SSWSQLite3Connection >> initialize [
 SSWSQLite3Connection >> isConnected [
 
 	^self isOpen
+]
+
+{ #category : #enquiries }
+SSWSQLite3Connection >> masterTableForNamespace: aString [
+
+	^(aString isNil or: [aString = self sqlDialect standardNamespace])
+		ifTrue: [ 'sqlite_master' ]
+		ifFalse: [ aString, '.sqlite_master' ]
 ]
 
 { #category : #'connection open/close' }
@@ -98,8 +142,18 @@ SSWSQLite3Connection >> sqlDialectClass [
 	^SSWSQLiteDialect
 ]
 
-{ #category : #accessing }
-SSWSQLite3Connection >> tables [
+{ #category : #enquiries }
+SSWSQLite3Connection >> tablesInNamespace: aString [
 
-	^self tableNames
+	| tables s |
+	
+	self isOpen
+		ifFalse: [ SQLite3NotOpen signal ]
+		ifTrue: [ 
+			tables := OrderedCollection new.
+			s := self prepare: 'select tbl_name from ', (self masterTableForNamespace: aString), ' where type = "table"'.
+	  		s basicExecute: [ :row |
+				(row dataValuesAvailable > 0) ifTrue: [ tables add: (row stringAt: 0) ]].
+	  		s finalize.
+			^ tables ]
 ]

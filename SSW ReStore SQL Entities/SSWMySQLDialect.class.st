@@ -23,7 +23,7 @@ SSWMySQLDialect >> alterField: aField table: aTable in: aReStore [
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: aTable name;
+			writeSQLFor: aTable;
 			nextPutAll: ' MODIFY COLUMN '.
 		aField writeSQLDefinitionOn: stream]
 ]
@@ -110,17 +110,23 @@ SSWMySQLDialect >> renameField: oldField to: newField in: aReStore [
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: newField table name;
+			writeSQLFor: newField table;
 			nextPutAll: ' CHANGE ';
 			nextPutIdentifier: oldField name;
 			space.
 		newField writeSQLDefinitionOn: stream]
 ]
 
-{ #category : #testing }
-SSWMySQLDialect >> shouldMaskSuccessWithInfo [
+{ #category : #maintenance }
+SSWMySQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
-	^true
+	anSSWReStore executeSQLFrom: 
+		[ :stream | 
+		stream 
+			nextPutAll: 'ALTER TABLE ';
+			writeSQLFor: oldTable;
+			nextPutAll: ' RENAME TO ';
+			writeSQLFor: newTable]  "<-subtle difference; MySQL needs the fully-qualified new name in case of namespace qualification, or the table will move to the standard namespace"
 ]
 
 { #category : #testing }

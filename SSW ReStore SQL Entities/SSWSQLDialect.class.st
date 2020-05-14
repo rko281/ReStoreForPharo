@@ -16,7 +16,8 @@ Class {
 		'sqlFunctions',
 		'maxColumnBytes',
 		'unsizedStringSize',
-		'unsizedBlobSize'
+		'unsizedBlobSize',
+		'standardNamespace'
 	],
 	#category : #'SSW ReStore SQL Entities'
 }
@@ -89,7 +90,7 @@ SSWSQLDialect >> addFields: aCollection to: aTable in: anSSWReStore [
 		[stream := self sqlWriteStream.
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: aTable name.
+			writeSQLFor: aTable.
 		aCollection 
 			do: 
 				[ :field | 
@@ -103,7 +104,7 @@ SSWSQLDialect >> addFields: aCollection to: aTable in: anSSWReStore [
 			innerStream := self sqlWriteStream.
 			innerStream 
 				nextPutAll: 'ALTER TABLE ';
-				nextPutIdentifier: aTable name;
+				writeSQLFor: aTable;
 				nextPutAll: ' ADD '.
 			field writeSQLDefinitionOn: innerStream.
 			anSSWReStore executeSQL: innerStream contents]]
@@ -116,7 +117,7 @@ SSWSQLDialect >> alterField: aField table: aTable in: aReStore [
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: aTable name;
+			writeSQLFor: aTable;
 			nextPutAll: ' ALTER COLUMN '.
 		aField writeSQLDefinitionOn: stream]
 ]
@@ -164,14 +165,6 @@ SSWSQLDialect >> blobTypes [
 SSWSQLDialect >> boolean [
 
 	^'BOOLEAN'
-]
-
-{ #category : #testing }
-SSWSQLDialect >> canDescribeParameters [
-
-	"Does this dialect support the SQLDescribeParam function?"
-
-	^true
 ]
 
 { #category : #datatypes }
@@ -396,6 +389,12 @@ SSWSQLDialect >> defaultSQLFunctions [
 ]
 
 { #category : #constants }
+SSWSQLDialect >> defaultStandardNamespace [
+
+	^nil
+]
+
+{ #category : #constants }
 SSWSQLDialect >> defaultTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -443,7 +442,7 @@ SSWSQLDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSWReS
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: anSSWDBTable name;
+			writeSQLFor: anSSWDBTable;
 			nextPutAll: ' DROP COLUMN ';
 			nextPutIdentifier: colString]
 ]
@@ -500,7 +499,8 @@ SSWSQLDialect >> initializeFor: aDBConnection [
 		unsizedStringSize: self defaultUnsizedStringSize;
 		unsizedBlobSize: self defaultUnsizedBlobSize;
 		maxColumnNameLength: (aDBConnection maxColumnNameLength ifNil: [self defaultMaxColumnNameLength]);
-		maxTableNameLength: (aDBConnection maxTableNameLength ifNil: [self defaultMaxTableNameLength])
+		maxTableNameLength: (aDBConnection maxTableNameLength ifNil: [self defaultMaxTableNameLength]);
+		standardNamespace: self defaultStandardNamespace
 ]
 
 { #category : #accessing }
@@ -659,21 +659,22 @@ SSWSQLDialect >> renameField: oldField to: newField in: aReStore [
 ]
 
 { #category : #maintenance }
-SSWSQLDialect >> renameTableNamed: oldName to: newName in: anSSWReStore [
+SSWSQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore executeSQLFrom: 
 		[ :stream | 
 		stream 
 			nextPutAll: 'ALTER TABLE ';
-			nextPutIdentifier: oldName;
+			writeSQLFor: oldTable;
 			nextPutAll: ' RENAME TO ';
-			nextPutIdentifier: newName]
+			nextPutIdentifier: newTable name]
 ]
 
 { #category : #testing }
-SSWSQLDialect >> shouldCheckAutoCommit [
+SSWSQLDialect >> shouldExpandNamespacedAllFields [
 
-	"Return whether the DBConnection should check the status of autoCommit prior to attempting a change"
+	"Return true if the all fields * pseudo-field should be expanded into a list of fields where the table has a namspace, i.e. namespace.table.field1, namespace.table.field2 etc. instead of namespace.table.*
+	Needed to accomodate SQLite which gives an error with namespace.table.* in SELECT query"
 
 	^false
 ]
@@ -685,34 +686,6 @@ SSWSQLDialect >> shouldMapEmptyStringsToNil [
 	This can be useful for databases in which default String fields to 'Do not allow zero size (usually this attribute cannot be set via ODBC/SQL)"
 
 	^false
-]
-
-{ #category : #testing }
-SSWSQLDialect >> shouldMaskSuccessWithInfo [
-
-	"Some databases/drivers send many SQLSuccessWithInfo results.
-	shouldMaskSuccessWithInfo determines whether these go unreported (true) or are reported via a DBWarning exception (false, standard behaviour)"
-
-	^false
-]
-
-{ #category : #testing }
-SSWSQLDialect >> shouldRollbackOnQuery [
-
-	"Should the ODBC connection rollbackTxn following a query outside a Txn?"
-
-	^false
-]
-
-{ #category : #testing }
-SSWSQLDialect >> shouldUseColumnsStatement [
-
-	"Return whether this dialect should use DBColumnsStatement to interrogate the details of a table's columns (true, default) or a SELECT * query (false).
-	
-	Here primarily to satisfy a shortcoming in SQLite ODBC driver where DBColumnsStatement returns the character length for wide string columns, rather than the buffer length.
-	Column details returned from a SELECT * query report the buffer length correctly"
-
-	^true
 ]
 
 { #category : #accessing }
@@ -751,6 +724,24 @@ SSWSQLDialect >> sqlFunctions: aDictionary [
 SSWSQLDialect >> sqlWriteStream [
 
 	^SSWSQLWriteStream newIn: self
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> standardNamespace [
+
+	"standardNamespace stores the namespace (schema/database) in which unqualified (without a namespace. prefix) table names exist.
+	This is initialized to a default for this dialect - see defaultStandardNamespace - and may be nil where this is irrelevant/unnecessary"
+
+	^standardNamespace
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> standardNamespace: aString [
+
+	"standardNamespace stores the namespace (schema/database) in which unqualified (without a namespace. prefix) table names exist.
+	This is initialized to a default for this dialect - see defaultStandardNamespace - and may be nil where this is irrelevant/unnecessary"
+
+	standardNamespace := aString
 ]
 
 { #category : #testing }
