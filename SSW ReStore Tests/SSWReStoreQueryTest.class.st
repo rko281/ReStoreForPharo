@@ -776,3 +776,26 @@ SSWReStoreQueryTest >> testQueryEvaluationLocationImage [
 		[ :array |
 		self assert: array last equals: ('<1s> <2s> (IMAGE)' expandMacrosWith: array first with: array second)].
 ]
+
+{ #category : #'unit tests' }
+SSWReStoreQueryTest >> testReverse [
+
+	| forward reverse |
+
+	forward := SimplePerson storedInstancesIn: reStore.
+	reverse := forward reverse.
+
+	"Ensure reverse hasn't modified the original collection (previous error)"
+	self assert: forward isSorted not.
+
+	"Without any explicit ordering on forward we can't guarantee the ordering of reverse will be different, so just check membership"
+	self assert: (forward asSet = reverse asSet).
+
+	forward beOrdered.
+	reverse := forward reverse.
+	self assert: (forward asOrderedCollection asArray reverse = reverse asOrderedCollection asArray).
+
+	forward sortBlock: SortedCollection.
+	reverse := forward reverse.
+	self assert: (forward asOrderedCollection asArray reverse = reverse asOrderedCollection asArray)
+]

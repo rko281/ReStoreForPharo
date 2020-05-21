@@ -516,7 +516,7 @@ SSWDBInstancesCollection >> reverse [
 	reversed := self copy.
 
 	"If no explicit ordering apply ID ordering - this at least gives us something to reverse"
-	reversed isSorted ifFalse: [self beOrdered].
+	reversed isSorted ifFalse: [reversed beOrdered].
 	
 	reversed parser invertOrdering.
 
