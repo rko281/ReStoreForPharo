@@ -15,7 +15,8 @@ Class {
 		'age',
 		'test',
 		'orders',
-		'address'
+		'address',
+		'isDeceased'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -26,6 +27,7 @@ SimplePerson class >> new [
 	^super new
 		time: DateAndTime now;
 		orders: OrderedCollection new;
+		isDeceased: false;
 		yourself
 ]
 
@@ -41,6 +43,7 @@ SimplePerson class >> reStoreDefinition [
 		define: #age as: Integer;
 		define: #test as: Test;
 		define: #address as: SimpleAddress dependent;
+		define: #isDeceased as: Boolean;
 		yourself
 ]
 
@@ -228,6 +231,16 @@ SimplePerson >> isDavidAndTestIsNil [
 SimplePerson >> isDavidOrTestIsNil [
 
 	^self firstName = 'David' or: [self test isNil]
+]
+
+{ #category : #accessing }
+SimplePerson >> isDeceased [
+	^ isDeceased
+]
+
+{ #category : #accessing }
+SimplePerson >> isDeceased: anObject [
+	isDeceased := anObject
 ]
 
 { #category : #testing }
