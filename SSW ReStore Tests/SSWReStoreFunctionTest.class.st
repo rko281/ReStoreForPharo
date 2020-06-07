@@ -16,6 +16,14 @@ SSWReStoreFunctionTest class >> shouldInheritSelectors [
 	^false
 ]
 
+{ #category : #Running }
+SSWReStoreFunctionTest >> addClassesTo: aReStore [
+
+	super addClassesTo: aReStore.
+	aReStore
+		addClass: SimpleProductOrder
+]
+
 { #category : #'unit tests' }
 SSWReStoreFunctionTest >> testConditionAsFunctionReceiver [
 
@@ -27,6 +35,32 @@ SSWReStoreFunctionTest >> testConditionAsFunctionReceiver [
 	results := (SimplePerson storedInstancesIn: reStore) collect: [ :each | each || ((each age > 20) then: 'old' else: 'young')].
 
 	self assert: (results allSatisfy: [ :each | each first age > 20 ifTrue: [each last = 'old'] ifFalse: [each last = 'young']])
+]
+
+{ #category : #'unit tests' }
+SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaDateYear [
+
+	"Test a query where the result of a function is a different class to the source field"
+
+	| orders |
+
+	((2017 to: 2020) collect: [ :index | SimpleProductOrder new quantity: index; date: (Date newDay: 1 monthIndex: 2 year: index); yourself]) storeAllIn: reStore.
+
+	orders := SimpleProductOrder storedInstancesIn: reStore.
+	2017 to: 2020 do: 
+		[ :index |
+		self assert: (orders detect: [ :each | each date year = index]) quantity equals: index]
+]
+
+{ #category : #'unit tests' }
+SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaStringSize [
+
+	"Test a query where the result of a function is a different class to the source field"
+
+	| threes |
+
+	threes := (SimplePerson storedInstancesIn: reStore) select: [ :each | each firstName size = 3].
+	self assert: (threes collect: [ :each | each firstName]) asSortedCollection asArray equals: #('Jim' 'Zoe')
 ]
 
 { #category : #'unit tests' }
@@ -64,6 +98,18 @@ SSWReStoreFunctionTest >> testModelClassAsFunctionReceiverWithJoin [
 			(person friend isNil or: [person friend address isNil])
 				ifTrue: [result == person] 
 				ifFalse: [result == person friend]])
+]
+
+{ #category : #'unit tests' }
+SSWReStoreFunctionTest >> testOversizeStringAsFunctionCriteria [
+
+	"Test a query where an oversize string (compared to the originating field) is the criteria"
+
+	| daves |
+
+	"first_name field is 8 characters; query with a function whose result is 10 characters"
+	daves := (SimplePerson storedInstancesIn: reStore) select: [ :each | (each firstName, each firstName) = 'DavidDavid'].
+	self assert: (daves collect: [ :each | each firstName]) asArray equals: #('David')
 ]
 
 { #category : #'unit tests' }

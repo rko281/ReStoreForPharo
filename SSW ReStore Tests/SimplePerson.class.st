@@ -36,7 +36,7 @@ SimplePerson class >> reStoreDefinition [
 
 	^super reStoreDefinition
 		define: #surname as: (String maxSize: 100);
-		define: #firstName as: (String maxSize: 100);
+		define: #firstName as: (String maxSize: 8);
 		define: #emailAddress as: (String maxSize: 100);
 		define: #time as: DateAndTime;
 		define: #friend as: SimplePerson;

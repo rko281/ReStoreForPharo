@@ -80,9 +80,9 @@ SSWSQLServerDialect >> dialectSpecificFunctions [
 		at: #addDays: put: 'DATEADD(''d'',%2,%1)' asSQLFunction;
 		at: #addMonths: put: 'DATEADD(''m'',%2,%1)' asSQLFunction;
 		at: #addYears: put: 'DATEADD(''yyyy'',%2,%1)' asSQLFunction;
-		at: #dayOfMonth put: 'DATEPART(''d'',%1)' asSQLFunctionIntegerResult;
-		at: #monthIndex put: 'DATEPART(''m'',%1)' asSQLFunctionIntegerResult;
-		at: #year put: 'DATEPART(''yyyy'',%1)'asSQLFunctionIntegerResult;
+		at: #dayOfMonth put: 'DAY(%1)' asSQLFunctionIntegerResult;
+		at: #monthIndex put: 'MONTH(%1)' asSQLFunctionIntegerResult;
+		at: #year put: 'YEAR(%1)'asSQLFunctionIntegerResult;
 
 		"Logical functions"
 		at: #ifNil: put: 'ISNULL(%1,%2)' asSQLFunction;

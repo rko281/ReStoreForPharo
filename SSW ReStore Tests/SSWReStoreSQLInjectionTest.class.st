@@ -33,8 +33,8 @@ SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection1 [
 
 	instances := SimplePerson storedInstancesIn: reStore.
 
-	injectedName := 'John'' OR 1=1'.
-	results := instances select: [ :each | each firstName = injectedName].
+	injectedName := 'Smith'' OR 1=1'.
+	results := instances select: [ :each | each surname = injectedName].
 
 	self assert: results isEmpty
 ]

@@ -77,9 +77,9 @@ SSWPostgreSQLDialect >> dialectSpecificFunctions [
 		at: #indexOfSubCollection: put: 'POSITION(%2,%1)' asSQLFunctionIntegerResult;
 
 		"Date functions"
-		at: #dayOfMonth put: 'DATEPART(''day'',%1)' asSQLFunctionIntegerResult;
-		at: #monthIndex put: 'DATEPART(''month'',%1)' asSQLFunctionIntegerResult;
-		at: #year put: 'DATEPART(''yyyy'',%1)' asSQLFunctionIntegerResult;
+		at: #dayOfMonth put: 'EXTRACT(DAY FROM %1)' asSQLFunctionIntegerResult;
+		at: #monthIndex put: 'EXTRACT(MONTH FROM %1)' asSQLFunctionIntegerResult;
+		at: #year put: 'EXTRACT(YEAR FROM %1)' asSQLFunctionIntegerResult;
 
 		at: #ifNil: put: 'COALESCE(%1,%2)' asSQLFunction;
 		at: #ifNull: put: 'COALESCE(%1,%2)' asSQLFunction;
