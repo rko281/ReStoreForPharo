@@ -43,7 +43,7 @@ Dictionary >> _dbAdd: targetObject suggestedIndex: keyObject [
 { #category : #'*SSW ReStore Collections' }
 Dictionary >> _isMultiValue [
 
-	^self isEmpty not and: [self anyOne isKindOf: Collection]
+	^self isEmpty not and: [(self anyOne isKindOf: Collection) and: [self anyOne isString not]]
 ]
 
 { #category : #'*SSW ReStore Collections' }
