@@ -138,6 +138,35 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilOrJointCondition [
 	self assert: results size = 3
 ]
 
+{ #category : #tests }
+SSWReStoreNotNilQueryTest >> testMethodNotNilWithJoin [
+
+	"Test previously-failing case where a method invoked from the query block contains notNil in an inlined block"
+
+	| instances john results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+	john := instances detect: [ :each | each firstName = 'John'].
+	john test: (Test new name: 'jTest').
+	john store.
+
+	results := instances select: [ :each | each hasTestOrFriendHasTestBlock].
+	self assert: results size equals: 2.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('John' 'Zoe').
+
+	results := instances select: [ :each | each firstName = 'David' | each hasTestOrFriendHasTestBlock].
+	self assert: results size equals: 3.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John' 'Zoe').
+
+	results := instances select: [ :each | each hasTestOrFriendHasTestBlock | (each firstName = 'David')].
+	self assert: results size equals: 3.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John' 'Zoe').
+
+	results := instances select: [ :each | (each firstName = 'Jim') | each hasTestOrFriendHasTestBlock | (each firstName = 'David')].
+	self assert: results size equals: 4.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe').
+]
+
 { #category : #'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilAndCondition [
 

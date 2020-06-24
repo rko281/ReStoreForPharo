@@ -17,12 +17,8 @@ Class {
 		'orderingSpecs',
 		'groupByFields',
 		'activeReceiver',
-		'accumulatedConditions',
-		'currentConditions',
 		'isCollectingAssociations',
-		'fieldEncounters',
-		'accumulatedConditionsStack',
-		'isAccumulatingConditions'
+		'fieldEncounters'
 	],
 	#category : #'SSW ReStore Querying'
 }
@@ -35,15 +31,13 @@ SSWDBBlockParser class >> new [
 		qualifyingTables: SSWSQLLeftJoinedTableCollection new;
 		groupByFields: SSWSQLFieldCollection new;
 		orderingSpecs: OrderedCollection new;
-		accumulatedConditionsStack: OrderedCollection new;
-		resetConditions;
 		yourself
 ]
 
 { #category : #'instance creation' }
 SSWDBBlockParser class >> newForReStore: anSSWReStore argumentClass: aClass [
 
-	^self new
+	^self platformClass new
 		reStore: anSSWReStore;
 		argumentClass: aClass;
 		yourself
@@ -52,43 +46,26 @@ SSWDBBlockParser class >> newForReStore: anSSWReStore argumentClass: aClass [
 { #category : #'parsing - internal' }
 SSWDBBlockParser >> _parse: aOneArgBlock [
 
-	| blockArgument parseResult |
+	| blockArgument |
 
 	blockArgument := self newBlockArgument.
 	self activeReceiver: blockArgument.
 
-	parseResult := aOneArgBlock value: blockArgument.
-
-	self accumulatedConditions isEmpty ifFalse: 
-		["Accumulated conditions arise from detection of inlined logical operators (and:, or:) during the parse. Add the parseResult (final condition) to these"
-		self accumulatedConditions == self currentConditions 
-			ifTrue: [self currentConditions add: parseResult]
-			ifFalse: [self currentConditions become: parseResult].
-
-		parseResult := self accumulatedConditions.
-		self resetConditions].
-
-	^parseResult
+	^aOneArgBlock value: blockArgument
 ]
 
-{ #category : #accessing }
-SSWDBBlockParser >> accumulatedConditions [
-	^accumulatedConditions
-]
+{ #category : #'parsing - internal' }
+SSWDBBlockParser >> _parseSortBlock: aTwoArgBlock inverted: aBoolean [
 
-{ #category : #accessing }
-SSWDBBlockParser >> accumulatedConditions: anObject [
-	accumulatedConditions := anObject
-]
+	| blockArgument |
 
-{ #category : #accessing }
-SSWDBBlockParser >> accumulatedConditionsStack [
-	^accumulatedConditionsStack
-]
+	self reset.
+	blockArgument := self newBlockArgument.
+	self activeReceiver: blockArgument.
 
-{ #category : #accessing }
-SSWDBBlockParser >> accumulatedConditionsStack: anObject [
-	accumulatedConditionsStack := anObject
+	^aBoolean
+		ifTrue: [aTwoArgBlock value: SSWDBDumbArgument current value: blockArgument]
+		ifFalse: [aTwoArgBlock value: blockArgument value: SSWDBDumbArgument current]
 ]
 
 { #category : #accessing }
@@ -199,16 +176,6 @@ SSWDBBlockParser >> collectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #accessing }
-SSWDBBlockParser >> currentConditions [
-	^currentConditions
-]
-
-{ #category : #accessing }
-SSWDBBlockParser >> currentConditions: anObject [
-	currentConditions := anObject
-]
-
 { #category : #'parsing - api' }
 SSWDBBlockParser >> deleteQueryFrom: aOneArgBlock [
 
@@ -258,12 +225,6 @@ SSWDBBlockParser >> groupByFields: anObject [
 ]
 
 { #category : #testing }
-SSWDBBlockParser >> hasAccumulatedConditions [
-
-	^self accumulatedConditions isEmpty not
-]
-
-{ #category : #testing }
 SSWDBBlockParser >> hasGrouping [
 
 	^self groupByFields isEmpty not
@@ -288,16 +249,6 @@ SSWDBBlockParser >> includedTables [
 SSWDBBlockParser >> invertOrdering [
 
 	self orderingSpecs: (self orderingSpecs collect: [ :each | each inverted])
-]
-
-{ #category : #accessing }
-SSWDBBlockParser >> isAccumulatingConditions [
-	^isAccumulatingConditions
-]
-
-{ #category : #accessing }
-SSWDBBlockParser >> isAccumulatingConditions: anObject [
-	isAccumulatingConditions := anObject
 ]
 
 { #category : #accessing }
@@ -352,20 +303,9 @@ SSWDBBlockParser >> newBlockArgument [
 { #category : #'parsing - internal' }
 SSWDBBlockParser >> newCondition [
 
-	| newCondition |
-
-	newCondition := SSWDBQueryCondition new.
-	newCondition parser: self.
-
-	self hasAccumulatedConditions ifTrue: 
-		[self isAccumulatingConditions
-		ifTrue: 
-			[self isAccumulatingConditions: false. 
-			self currentConditions postCondition: newCondition]
-		ifFalse: 
-			[self pushAccumulatedConditions]].
-
-	^newCondition
+	^SSWDBQueryCondition new
+		parser: self;
+		yourself
 ]
 
 { #category : #'parsing - internal' }
@@ -500,29 +440,14 @@ SSWDBBlockParser >> parseSortBlock: aTwoArgBlock [
 	"Parse aTwoArgBlock, which should be a 'simple' sort block (see SSWDBInstancesCollection>>sortBlock)
 	returning the resulting SSWSQLConditionCollection"
 
-	| isInverted blockArgument parseResult|
-
-	self reset.
+	| isInverted parseResult|
 
 	isInverted := false.
-	blockArgument := self newBlockArgument.
-	self activeReceiver: blockArgument.
-
-	parseResult := aTwoArgBlock value: blockArgument value: SSWDBDumbArgument current.
+	parseResult := self _parseSortBlock: aTwoArgBlock inverted: isInverted.
 	parseResult == SSWDBDumbArgument current ifTrue: 
 		["Consider inverse sort block, e.g. [ :a :b | b name > a name] (NB does not work in all cases)"
 		isInverted := true.
-		self reset.
-		blockArgument := self newBlockArgument.
-		self activeReceiver: blockArgument.
-		parseResult := aTwoArgBlock value: SSWDBDumbArgument current value: blockArgument].
-
-	self accumulatedConditions isEmpty ifFalse:
-		["Accumulated conditions arise from detection of inlined tests (and:, or:) during the parse. Add the parseResult (final condition) to these"
-		self accumulatedConditions == self currentConditions 
-			ifTrue: [self currentConditions add: parseResult]
-			ifFalse: [self currentConditions become: parseResult].
-		parseResult := self accumulatedConditions].
+		parseResult := self _parseSortBlock: aTwoArgBlock inverted: isInverted].
 
 	isInverted ifTrue: [parseResult flattened do: [ :each | each operator invert]].
 
@@ -709,8 +634,6 @@ SSWDBBlockParser >> reset [
 
 	self
 		groupByFields: SSWSQLFieldCollection new;
-		resetConditions;
-		accumulatedConditionsStack: OrderedCollection new;
 		fieldEncounters: (self referencedTables joinFields collect: [ :each | each -> nil])
 ]
 
@@ -788,51 +711,19 @@ SSWDBBlockParser >> targetFieldsFrom: aOneArgBlock [
 ]
 
 { #category : #'parsing - internal' }
-SSWDBBlockParser >> unprocessedConditionsCombinedWith: aCondition [
+SSWDBBlockParser >> unprocessedConditionsCombinedForConcatenation: aBlockEvaluatorOrCondition [
 
-	"Combine any unprocessed conditions left over from inlined messages with aCondition.
-	Return the combined conditions, or aCondition if none"
-
-	| ip conditions |
-
-	"This line is obviously very sensitive to the overall implementation of the parser.
-	It could be rewritten to detect the correct frame programatically but this implementation is more efficient"
-	ip := Processor activeProcess topFrame sender sender sender sender sender ip.
-	ip < self currentConditions blockEndpoint ifTrue: [^aCondition].
-
-	"Accumulated conditions arise from detection of inlined logical operators (and:, or:) during the parse. Add the parseResult (final condition) to these"
-	self accumulatedConditions == self currentConditions 
-		ifTrue: [self currentConditions add: aCondition]
-		ifFalse: [self currentConditions become: aCondition].
-
-	conditions := self accumulatedConditions.
-	self popAccumulatedConditions.
-	^conditions
+	^aBlockEvaluatorOrCondition forConcatenation
 ]
 
 { #category : #'parsing - internal' }
 SSWDBBlockParser >> unprocessedConditionsCombinedWithArgument: aCondition [
 
-	"Combine any unprocessed conditions left over from inlined messages with aCondition, which is the argument of a combination operation (&, | or ||).
-	The argument must be combined BEFORE the receiver.
-	Return the combined conditions, or aCondition if none"
-
-	self hasAccumulatedConditions ifFalse: 
-		[self popAccumulatedConditions.
-		^aCondition].
-
-	^self unprocessedConditionsCombinedWith: aCondition
+	^aCondition
 ]
 
 { #category : #'parsing - internal' }
 SSWDBBlockParser >> unprocessedConditionsCombinedWithReceiver: aCondition [
 
-	"Combine any unprocessed conditions left over from inlined messages with aCondition, which is the receiver of a combination operation (&, | or ||).
-	Return the combined conditions, or aCondition if none"
-
-	self hasAccumulatedConditions ifFalse: [^aCondition].
-
-	aCondition == self currentConditions postCondition ifFalse: [self pushAccumulatedConditions. ^aCondition].
-
-	^self unprocessedConditionsCombinedWith: aCondition
+	^aCondition
 ]

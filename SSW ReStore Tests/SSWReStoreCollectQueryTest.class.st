@@ -16,6 +16,14 @@ SSWReStoreCollectQueryTest class >> shouldInheritSelectors [
 	^false
 ]
 
+{ #category : #testing }
+SSWReStoreCollectQueryTest >> expectedFailures [
+
+	"fail in Pharo due to incomplete handling of un-inlining of and: / or:"
+	
+	^super expectedFailures, #(#testMethodNotNilWithJoinCollectQuery)
+]
+
 { #category : #'unit tests' }
 SSWReStoreCollectQueryTest >> testComplexMathFunctionCollectQuery [
 
@@ -219,6 +227,27 @@ SSWReStoreCollectQueryTest >> testMathFunctionCollectQuery [
 	self assert: (results second = #('Jim' 35)).
 	self assert: (results third = #('John' 25)).
 	self assert: (results last = #('Zoe' 25)).
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCollectQueryTest >> testMethodNotNilWithJoinCollectQuery [
+
+	"Test previously-failing case where a method invoked from the collect block contains notNil in an inlined block"
+
+	| instances john results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+	john := instances detect: [ :each | each firstName = 'John'].
+	john test: (Test new name: 'jTest').
+	john store.
+
+	results := instances collect: [ :each | each firstName || each hasTestOrFriendHasTestBlock].
+	self assert: results size equals: 4.
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' false) #('Jim' false) #('John' true) #('Zoe' true)).
+
+	results := (instances satisfying: [ :each | each hasTestOrFriendHasTestBlock]) collect: [ :each | each firstName || each hasTestOrFriendHasTestBlock].
+	self assert: results size equals: 2.
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('John' true) #('Zoe' true))
 ]
 
 { #category : #'unit tests' }

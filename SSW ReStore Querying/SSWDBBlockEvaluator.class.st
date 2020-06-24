@@ -141,5 +141,5 @@ SSWDBBlockEvaluator >> || aBlockEvaluatorOrCondition [
 
 	"Concatenate with another block evaluator or condition (primarily for multi-field collect: and project:)"
 
-	^aBlockEvaluatorOrCondition forConcatenation concatenateWith: self forConcatenation
+	^(self parser unprocessedConditionsCombinedForConcatenation: aBlockEvaluatorOrCondition) concatenateWith: self forConcatenation
 ]

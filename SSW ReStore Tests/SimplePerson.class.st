@@ -216,6 +216,12 @@ SimplePerson >> hasTest [
 ]
 
 { #category : #testing }
+SimplePerson >> hasTestOrFriendHasTestBlock [
+
+	^self test notNil or: [self friend test notNil]
+]
+
+{ #category : #testing }
 SimplePerson >> isBrown20 [
 
 	^self surname = 'Brown' and: [self age = 20]
