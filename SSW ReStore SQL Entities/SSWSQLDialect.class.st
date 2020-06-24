@@ -203,6 +203,7 @@ SSWSQLDialect >> commonFunctions [
 	^Dictionary new
 
 		"Conversion functions"
+		at: #asString put: 'CAST(%1 AS CHAR)' asSQLFunction;
 		at: #asInteger put: 'CAST(%1 AS INTEGER)' asSQLFunctionIntegerResult;
 
 		"Numeric functions"

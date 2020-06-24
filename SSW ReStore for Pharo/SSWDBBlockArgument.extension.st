@@ -49,3 +49,16 @@ SSWDBBlockArgument >> simulateMessageSend: aMessage [
 	method isNil ifTrue: [self parseError: (self currentClass name, ' does not implement #', aMessage selector)].
 	^method valueWithReceiver: self arguments: aMessage arguments
 ]
+
+{ #category : #'*SSW ReStore for Pharo' }
+SSWDBBlockArgument >> stackFrameDetect: aBlock [
+
+	| frame |
+
+	"Skip this frame and its sender"
+	frame := thisContext sender sender. 
+
+	[(aBlock value: frame) or: [(frame := frame sender) isNil]] whileFalse.
+
+	^frame
+]

@@ -817,13 +817,13 @@ SSWReStoreQueryTest >> testReverse [
 	self assert: forward isSorted not.
 
 	"Without any explicit ordering on forward we can't guarantee the ordering of reverse will be different, so just check membership"
-	self assert: (forward asSet = reverse asSet).
+	self assert: forward asSet equals: reverse asSet.
 
 	forward beOrdered.
 	reverse := forward reverse.
-	self assert: (forward asOrderedCollection asArray reverse = reverse asOrderedCollection asArray).
+	self assert: forward asOrderedCollection asArray reverse equals: reverse asOrderedCollection asArray.
 
-	forward sortBlock: SortedCollection.
+	forward sortBlock: SortedCollection defaultSortBlock.
 	reverse := forward reverse.
-	self assert: (forward asOrderedCollection asArray reverse = reverse asOrderedCollection asArray)
+	self assert: forward asOrderedCollection asArray reverse equals: reverse asOrderedCollection asArray
 ]

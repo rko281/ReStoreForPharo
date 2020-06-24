@@ -13,10 +13,24 @@ Class {
 	#category : #'SSW ReStore Collections'
 }
 
+{ #category : #accessing }
+SSWDBCacheDictionaryEntry >> _cacheDictionaryKey_ [
+
+	"Special selector allowing interception by the block parser"
+
+	^self key
+]
+
 { #category : #actions }
 SSWDBCacheDictionaryEntry >> addTargetTo: aCollection [
 
 	aCollection at: self key put: self target
+]
+
+{ #category : #accessing }
+SSWDBCacheDictionaryEntry >> index [
+
+	^self _cacheDictionaryKey_
 ]
 
 { #category : #accessing }

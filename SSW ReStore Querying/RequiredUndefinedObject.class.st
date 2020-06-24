@@ -40,6 +40,12 @@ RequiredUndefinedObject >> isRequiredForSimilarity [
 	^true
 ]
 
+{ #category : #testing }
+RequiredUndefinedObject >> isSQLNull [
+
+	^true
+]
+
 { #category : #accessing }
 RequiredUndefinedObject >> orNilIfEmpty [
 

@@ -12,5 +12,5 @@ Class {
 { #category : #public }
 SSWReStoreOwnedBlockCacheDictionaryTest >> componentDefinition [
 
-	^Dictionary of: [ :each | String with: each name first asLowercase] -> GenericOwnedTest dependent owner: #owner
+	^Dictionary of: [ :each | each name first asLowercase asString] -> GenericOwnedTest dependent owner: #owner
 ]

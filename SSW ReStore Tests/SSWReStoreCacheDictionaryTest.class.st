@@ -29,6 +29,57 @@ SSWReStoreCacheDictionaryTest >> templateTestObject [
 	
 ]
 
+{ #category : #'unit tests' }
+SSWReStoreCacheDictionaryTest >> testIncludes [
+
+	| instances people alan dave |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	people := GenericOwnedTest storedInstancesIn: reStore.
+	alan := people detect: [ :each | each name = 'Alan'].
+	dave := self testNamed: 'Dave'.
+
+	self assert: (instances anySatisfy: [ :each | each component includes: alan]).
+	self deny: (instances anySatisfy: [ :each | each component includes: dave]).
+
+	testObject addToSingleKeyDictionary: dave.
+	testObject store.
+
+	self assert: (instances anySatisfy: [ :each | each component includes: dave])
+
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCacheDictionaryTest >> testIncludesAssociation [
+
+	| instances people alan dave |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	people := GenericOwnedTest storedInstancesIn: reStore.
+	alan := people detect: [ :each | each name = 'Alan'].
+	dave := self testNamed: 'Dave'.
+
+	self assert: (instances anySatisfy: [ :each | each component includesAssociation: ('a' -> alan)]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: ('b' -> alan)]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: ('d' -> dave)]).
+
+	testObject addToSingleKeyDictionary: dave.
+	testObject store.
+
+	self assert: (instances anySatisfy: [ :each | each component includesAssociation: ('d' -> dave)])
+
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCacheDictionaryTest >> testIncludesKey [
+
+	| instances |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	self assert: (instances anySatisfy: [ :each | each component includesKey: 'a']).
+	self deny: (instances anySatisfy: [ :each | each component includesKey: 'z'])
+]
+
 { #category : #accessing }
 SSWReStoreCacheDictionaryTest >> testNamed: aString [
 

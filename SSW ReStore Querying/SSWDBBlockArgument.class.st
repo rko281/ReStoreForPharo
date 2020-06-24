@@ -44,6 +44,20 @@ SSWDBBlockArgument >> -> aBlockEvaluator [
 ]
 
 { #category : #'parsing - internal' }
+SSWDBBlockArgument >> _cacheDictionaryKey_ [
+
+	"Special selector to locate the key for general cache dictionaries.
+	This needs to locate the current collection spec and evaluate its keyAccessor with the target object"
+
+	| frame |
+
+	frame := self stackFrameDetect: [ :each | each method ifNil: [false] ifNotNil: [ :method | method selector = #localAnySatisfy:]].
+	frame isNil ifTrue: [self parseError: 'could not locate dictionary spec'].
+
+	^frame receiver collectionSpec keyAccessor value: (self doesNotUnderstand: (Message selector: #target))
+]
+
+{ #category : #'parsing - internal' }
 SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 
 	| selector arguments field |

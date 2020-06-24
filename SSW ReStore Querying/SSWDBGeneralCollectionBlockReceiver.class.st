@@ -25,7 +25,23 @@ SSWDBGeneralCollectionBlockReceiver >> includes: anObject [
 
 	"Can be done with just the intermediate table"
 
-	^self localAnySatisfy: [ :each | each target = anObject _id]
+	^self localAnySatisfy: [ :each | each target = anObject]
+]
+
+{ #category : #'parsing-collection messages' }
+SSWDBGeneralCollectionBlockReceiver >> includesAssociation: anAssociation [
+
+	"For dictionaires - turn into an equivalent anySatisfy:"
+
+	^self localAnySatisfy: [ :each | (each index = anAssociation key) & (each target = anAssociation value)]
+]
+
+{ #category : #'parsing-collection messages' }
+SSWDBGeneralCollectionBlockReceiver >> includesKey: anObject [
+
+	"For dictionaires - turn into an equivalent anySatisfy:"
+
+	^self localAnySatisfy: [ :each | each index = anObject]
 ]
 
 { #category : #accessing }

@@ -12,5 +12,5 @@ Class {
 { #category : #public }
 SSWReStoreBlockCacheDictionaryTest >> componentDefinition [
 
-	^Dictionary of: [ :each | String with: each name first asLowercase] -> GenericOwnedTest dependent
+	^Dictionary of: [ :each | each name first asLowercase asString] -> GenericOwnedTest dependent
 ]

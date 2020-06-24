@@ -19,6 +19,12 @@ Object >> ifNull: aValue ifNotNull: otherValue [
 ]
 
 { #category : #'*SSW ReStore SQL Entities' }
+Object >> isSQLNull [
+
+	^false
+]
+
+{ #category : #'*SSW ReStore SQL Entities' }
 Object >> sqlCanBeParameterized [
 
 	"Can the SQL representation of the receiver be parameterized?"

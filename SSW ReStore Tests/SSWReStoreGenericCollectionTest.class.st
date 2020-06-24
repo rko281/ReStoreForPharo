@@ -199,3 +199,25 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnReplacement [
 
 	self componentDefinition isValueDependent ifTrue: [self _testComponentExistenceOnDependency: originalAndReplacement key]
 ]
+
+{ #category : #'unit tests' }
+SSWReStoreGenericCollectionTest >> testIncludes [
+
+	| instances existing template matches |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	existing := testObject component anyOne.
+	template := self addToCollection.
+	self assert: (instances anySatisfy: [ :each | each component includes: existing]).
+	self deny: (instances anySatisfy: [ :each | each component includes: template]).
+
+	self remove: existing fromCollection: testObject component.
+	testObject store.
+
+	self deny: (instances anySatisfy: [ :each | each component includes: existing]).
+	self assert: (instances anySatisfy: [ :each | each component includes: template]).
+
+	matches := instances select: [ :each | each component includes: template].
+	self assert: matches size equals: 1.
+	self assert: matches first == testObject
+]

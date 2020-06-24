@@ -54,3 +54,53 @@ SSWReStoreNonRelatedDictionaryTest >> templateCollection [
 		at: self templateComponent put: self templateComponent;
 		yourself
 ]
+
+{ #category : #'unit tests' }
+SSWReStoreNonRelatedDictionaryTest >> testIncludesAssociation [
+
+	| instances existingAssoc template templateKey matches |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	existingAssoc := testObject component associations anyOne.
+	template := self addToCollection.
+	templateKey := testObject component keyAtValue: template.
+	self assert: (instances anySatisfy: [ :each | each component includesAssociation: existingAssoc]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: (existingAssoc key -> template)]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: (templateKey -> existingAssoc value)]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: (templateKey -> template)]).
+
+	testObject component removeKey: existingAssoc key.
+	testObject store.
+
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: existingAssoc]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: (existingAssoc key -> template)]).
+	self deny: (instances anySatisfy: [ :each | each component includesAssociation: (templateKey -> existingAssoc value)]).
+	self assert: (instances anySatisfy: [ :each | each component includesAssociation: (templateKey -> template)]).
+
+	matches := instances select: [ :each | each component includesAssociation: (templateKey -> template)].
+	self assert: matches size equals: 1.
+	self assert: matches first == testObject
+]
+
+{ #category : #'unit tests' }
+SSWReStoreNonRelatedDictionaryTest >> testIncludesKey [
+
+	| instances existingKey template templateKey matches |
+
+	instances := GenericTest storedInstancesIn: reStore.
+	existingKey := testObject component keys anyOne.
+	template := self addToCollection.
+	templateKey := testObject component keyAtValue: template.
+	self assert: (instances anySatisfy: [ :each | each component includesKey: existingKey]).
+	self deny: (instances anySatisfy: [ :each | each component includesKey: templateKey]).
+
+	testObject component removeKey: existingKey.
+	testObject store.
+
+	self deny: (instances anySatisfy: [ :each | each component includesKey: existingKey]).
+	self assert: (instances anySatisfy: [ :each | each component includesKey: templateKey]).
+
+	matches := instances select: [ :each | each component includesKey: templateKey].
+	self assert: matches size equals: 1.
+	self assert: matches first == testObject
+]

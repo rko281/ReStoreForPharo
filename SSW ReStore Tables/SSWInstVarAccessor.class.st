@@ -128,7 +128,7 @@ SSWInstVarAccessor >> value: targetObject [
 
 	"Polymorphic with Blocks and Messages"
 
-	^self valueIn: targetObject
+	^targetObject perform: self name
 ]
 
 { #category : #updating }

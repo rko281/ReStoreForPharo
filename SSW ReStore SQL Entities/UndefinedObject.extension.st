@@ -1,6 +1,12 @@
 Extension { #name : #UndefinedObject }
 
 { #category : #'*SSW ReStore SQL Entities' }
+UndefinedObject >> isSQLNull [
+
+	^true
+]
+
+{ #category : #'*SSW ReStore SQL Entities' }
 UndefinedObject >> writeSQLOn: aStream [
 
 	aStream nextPutAll: 'NULL'

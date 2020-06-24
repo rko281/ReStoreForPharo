@@ -168,6 +168,22 @@ SSWDBCollectionBlockReceiver >> includes: anObject [
 ]
 
 { #category : #'parsing-collection messages' }
+SSWDBCollectionBlockReceiver >> includesAssociation: anAssociation [
+
+	"For dictionaires - turn into an equivalent anySatisfy:"
+
+	^self anySatisfy: [ :each | ((self collectionSpec keyAccessor value: each) = anAssociation key) & (each _id = anAssociation value)]
+]
+
+{ #category : #'parsing-collection messages' }
+SSWDBCollectionBlockReceiver >> includesKey: anObject [
+
+	"For dictionaires - turn into an equivalent anySatisfy:"
+
+	^self anySatisfy: [ :each | (self collectionSpec keyAccessor value: each) = anObject]
+]
+
+{ #category : #'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> isEmpty [
 
 	"Return an appropriate subquery condition"

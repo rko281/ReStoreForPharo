@@ -115,9 +115,9 @@ Object >> _hasChangedFrom: anObject [
 { #category : #'*SSW ReStore Main' }
 Object >> _id [
 
-	"Return the receiver's unique ID - assume the receiver is a valid persistent object"
-	
-	^self _dbProxy _id
+	"Return the receiver's unique ID or nil if not persistent"
+
+	^(self _dbProxyIfNone: [nil]) ifNotNil: [ :proxy | proxy _id]
 ]
 
 { #category : #'*SSW ReStore Main' }
