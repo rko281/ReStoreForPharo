@@ -27,6 +27,12 @@ SSWSQLParameterField >> canBeParameterized [
 	^true
 ]
 
+{ #category : #testing }
+SSWSQLParameterField >> requiresAliasing [
+
+	^true
+]
+
 { #category : #accessing }
 SSWSQLParameterField >> value [
 	^value
@@ -35,4 +41,19 @@ SSWSQLParameterField >> value [
 { #category : #accessing }
 SSWSQLParameterField >> value: anObject [
 	value := anObject
+]
+
+{ #category : #writing }
+SSWSQLParameterField >> writeAliasedSQLOn: aStream [
+
+	"For situations where duplicate field names are anticipated
+	- write the SQL of the receiver on aStream, but use aliased names to force uniqueness"
+	
+	aStream nextPutAliasedField: self
+]
+
+{ #category : #writing }
+SSWSQLParameterField >> writeSQLOn: aStream [
+
+	^self value writeSQLOn: aStream forField: self
 ]

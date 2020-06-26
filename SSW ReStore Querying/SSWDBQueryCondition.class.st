@@ -29,6 +29,20 @@ SSWDBQueryCondition >> _sqlOr: aCondition [
 	^super sqlOr: aCondition
 ]
 
+{ #category : #evaluating }
+SSWDBQueryCondition >> addLast: anObject [
+
+	"Received if the receiver is masquerading as a ConctenatedCollection"
+
+	| collection |
+
+	(collection := SSWDBQueryFieldCollection new)
+		parser: self parser;
+		add: collection; "<- will be self after become"
+		add: (SSWSQLParameterField forValue: anObject);
+		become: self
+]
+
 { #category : #converting }
 SSWDBQueryCondition >> asSQLConditions [
 
@@ -65,7 +79,7 @@ SSWDBQueryCondition >> concatenateCondition: aCondition [
 ]
 
 { #category : #evaluating }
-SSWDBQueryCondition >> concatenateWith: anObject [
+SSWDBQueryCondition >> concatenatedWith: anObject [
 
 	"Private - Double-despatch entry point"
 
@@ -144,5 +158,5 @@ SSWDBQueryCondition >> || anObject [
 
 	"Primarily for multi-field collect: and project: - concatenate with anObject, which may be aBlockEvaluator or another Condition"
 
-	^anObject forConcatenation concatenateWith: self
+	^anObject forConcatenation concatenatedWith: self
 ]

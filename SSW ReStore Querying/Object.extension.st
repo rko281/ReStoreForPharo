@@ -9,6 +9,12 @@ Object >> concatenatedWith: aConcatenatedCollection [
 ]
 
 { #category : #'*SSW ReStore Querying' }
+Object >> forConcatenation [
+
+	^self
+]
+
+{ #category : #'*SSW ReStore Querying' }
 Object >> imageDo: imageBlock databaseDo: databaseBlock [
 
 	"Allow different code to be 'evaluated' depending on whether execution is in-image or 'in' the database (in the latter case code is not actually executed but converted to SQL)"

@@ -25,6 +25,42 @@ SSWReStoreCollectQueryTest >> expectedFailures [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreCollectQueryTest >> testCollectQueryWithConstantFirst [
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances collect: [ :each | 'hello' || each firstName].
+	self assert: results size equals: 4.
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 last <= r2 last]) asArray equals: #(#('hello' 'David') #('hello' 'Jim') #('hello' 'John') #('hello' 'Zoe'))
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCollectQueryTest >> testCollectQueryWithConstantLast [
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances collect: [ :each | each firstName || 'goodbye'].
+	self assert: results size equals: 4.
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray equals: #(#('David' 'goodbye') #('Jim' 'goodbye') #('John' 'goodbye') #('Zoe' 'goodbye')).
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCollectQueryTest >> testCollectQueryWithConstantMid [
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances collect: [ :each | each firstName || '-' || each surname].
+	self assert: results size equals: 4.
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray equals: #(#('David' '-' 'Smythe') #('Jim' '-' 'Brown') #('John' '-' 'Smith') #('Zoe' '-' 'Brown')).
+]
+
+{ #category : #'unit tests' }
 SSWReStoreCollectQueryTest >> testComplexMathFunctionCollectQuery [
 
 	| instances results |

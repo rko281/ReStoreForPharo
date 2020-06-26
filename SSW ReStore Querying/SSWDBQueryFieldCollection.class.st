@@ -56,5 +56,5 @@ SSWDBQueryFieldCollection >> parser: anObject [
 { #category : #accessing }
 SSWDBQueryFieldCollection >> || anObject [
 
-	^anObject forConcatenation concatenateWith: self
+	^anObject forConcatenation concatenatedWith: self
 ]

@@ -23,6 +23,18 @@ SSWDBBlockEvaluator >> chainPerform: aCollection [
 
 ]
 
+{ #category : #'parsing - functions' }
+SSWDBBlockEvaluator >> concatenatedWith: aCollection [
+
+	| queryCollection |
+
+	(aCollection isKindOf: ConcatenatedCollection) 
+		ifTrue: [queryCollection := (SSWDBQueryFieldCollection withAll: (aCollection collect: [ :each | SSWSQLParameterField forValue: each])) parser: self parser; yourself]
+		ifFalse: [queryCollection := aCollection].
+
+	^queryCollection concatenateCondition: self forConcatenation
+]
+
 { #category : #accessing }
 SSWDBBlockEvaluator >> currentTable [
 
@@ -141,5 +153,5 @@ SSWDBBlockEvaluator >> || aBlockEvaluatorOrCondition [
 
 	"Concatenate with another block evaluator or condition (primarily for multi-field collect: and project:)"
 
-	^(self parser unprocessedConditionsCombinedForConcatenation: aBlockEvaluatorOrCondition) concatenateWith: self forConcatenation
+	^(self parser unprocessedConditionsCombinedForConcatenation: aBlockEvaluatorOrCondition) concatenatedWith: self forConcatenation
 ]

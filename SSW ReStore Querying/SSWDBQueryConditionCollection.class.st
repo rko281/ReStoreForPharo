@@ -84,7 +84,7 @@ SSWDBQueryConditionCollection >> concatenateCondition: aCondition [
 ]
 
 { #category : #evaluating }
-SSWDBQueryConditionCollection >> concatenateWith: anObject [
+SSWDBQueryConditionCollection >> concatenatedWith: anObject [
 
 	"Private - Double-despatch entry point"
 
@@ -154,5 +154,5 @@ SSWDBQueryConditionCollection >> || anObject [
 	"Primarily for multi-field collect: and project: - concatenate with anObject, which may be aBlockEvaluator or another Condition(Collection).
 	Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
 
-	^anObject forConcatenation concatenateWith: self
+	^anObject forConcatenation concatenatedWith: self
 ]
