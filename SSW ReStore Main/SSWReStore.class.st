@@ -1773,7 +1773,10 @@ SSWReStore >> rollbackTransaction [
 		self transaction: self transaction ownerTransaction.
 		self connection rollbackTxn].
 
-	rolledBack do: [ :each | each onRollback]
+	rolledBack do: [ :each | each onRollback].
+	
+	"Implementation of onRollback may cause further objects to be referenced - where this has happened invoke a softRollback to ensure all persistent objects are proxies"
+	self hasTransaction ifTrue: [self softRollback]
 ]
 
 { #category : #querying }

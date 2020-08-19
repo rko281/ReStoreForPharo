@@ -504,6 +504,15 @@ SSWDBProxy >> isDBProxy [
 	^true
 ]
 
+{ #category : #'actions-internal' }
+SSWDBProxy >> onRollback [
+
+	"Sent immediately after rollback. Normally sent direct to the rolled-back object, not via the proxy. 
+	If a proxy receives this message it has been flipped by a previous onRollback, so forward without notification"
+
+	^proxiedObject onRollback
+]
+
 { #category : #forwarding }
 SSWDBProxy >> printOn: aStream [
 

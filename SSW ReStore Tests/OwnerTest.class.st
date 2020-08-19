@@ -12,6 +12,7 @@ Class {
 		'single1',
 		'single2',
 		'single3',
+		'owned',
 		'ownedSet',
 		'ownedArray',
 		'ownedOrdered',
@@ -48,6 +49,7 @@ OwnerTest class >> reStoreDefinition [
 		define: #single1 as: Test;
 		define: #single2 as: Test dependent;
 		define: #single3 as: Test dependent;	
+		define: #owned as: OwnedTest dependent;		
 		define: #ownedSet as: 
 			(Set of: OwnedTest dependent owner: #owner);
 		define: #ownedArray as:
@@ -323,6 +325,16 @@ OwnerTest >> orderedBools: anObject [
 ]
 
 { #category : #accessing }
+OwnerTest >> owned [
+	^ owned
+]
+
+{ #category : #accessing }
+OwnerTest >> owned: anObject [
+	owned := anObject
+]
+
+{ #category : #accessing }
 OwnerTest >> ownedArray [
 	"Private - Answer the value of the receiver's ''ownedArray'' instance variable."
 
@@ -498,4 +510,10 @@ OwnerTest >> sortedNumbers: anObject [
 	"Private - Set the value of the receiver's ''sortedNumbers'' instance variable to the argument, anObject."
 
 	sortedNumbers := anObject
+]
+
+{ #category : #tests }
+OwnerTest >> testOnRollback [
+
+	self owned name
 ]

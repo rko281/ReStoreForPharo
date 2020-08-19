@@ -33,3 +33,9 @@ OwnedTest >> owner: anObject [
 
 	owner := anObject
 ]
+
+{ #category : #tests }
+OwnedTest >> testOnRollback [
+
+	self owner name
+]
