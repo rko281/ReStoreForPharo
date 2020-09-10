@@ -255,6 +255,12 @@ SimplePerson >> isJohnAndTestIsNil [
 	^self firstName = 'John' and: [self test isNil]
 ]
 
+{ #category : #testing }
+SimplePerson >> orderCount [
+
+	^self orders size
+]
+
 { #category : #accessing }
 SimplePerson >> orders [
 	^orders

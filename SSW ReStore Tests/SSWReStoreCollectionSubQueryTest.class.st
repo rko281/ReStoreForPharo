@@ -180,6 +180,20 @@ SSWReStoreCollectionSubQueryTest >> testCollectLast [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreCollectionSubQueryTest >> testCollectSize [
+
+	| results |
+
+	results := Dictionary withAll: (customers collect: [ :each | each -> each orderCount]).
+
+	self assert: results size equals: 4.
+	self assert: (results at: customer1) equals: 25.
+	self assert: (results at: customer2) equals: 20.
+	self assert: (results at: customer3) equals: 6.
+	self assert: (results at: customer4) equals: 0
+]
+
+{ #category : #'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testCollectionSize [
 
 	| matches |
@@ -206,6 +220,39 @@ SSWReStoreCollectionSubQueryTest >> testCollectionSize [
 	matches := customers select: [ :each | each orders size = 0].
 	self assert: (matches size = 1).
 	self assert: (matches first = customer4).
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSize [
+
+	"Test for a previously-failing case where a size expression in a collect: block overwrote and removed conditions expressed in an earlier satisfying: block"
+
+	| browns results jim zoe |
+
+	browns := (SimplePerson storedInstancesIn: reStore) satisfying: [ :each | each surname = 'Brown'].
+	results := browns collect: [ :each | each fullName || each orderCount].
+
+	self assert: results size equals: 2.
+
+	jim := customers detect: [ :each | each firstName = 'Jim'].
+	zoe := customers detect: [ :each | each firstName = 'Zoe'].
+	self assert: (results asSortedCollection: [ :a :b | a first <= b first]) asArray equals: {{jim fullName. jim orderCount}. {zoe fullName. zoe orderCount}}
+]
+
+{ #category : #'unit tests' }
+SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSubQuery [
+
+	"Test for a previously-erroring case where a subquery expression in a collect: block gave SSWDBStaticField MNU: #hasAggregateFunction"
+
+	| browns results jim zoe |
+
+	browns := (SimplePerson storedInstancesIn: reStore) satisfying: [ :each | each surname = 'Brown'].
+	self shouldnt: [results := browns collect: [ :each | each fullName || each orders isEmpty not]] raise: MessageNotUnderstood.
+
+	self assert: results size equals: 2.
+	jim := customers detect: [ :each | each firstName = 'Jim'].
+	zoe := customers detect: [ :each | each firstName = 'Zoe'].
+	self assert: (results asSortedCollection: [ :a :b | a first <= b first]) asArray equals: {{jim fullName. jim orderCount > 0}. {zoe fullName. zoe orderCount > 0}}
 ]
 
 { #category : #'unit tests' }

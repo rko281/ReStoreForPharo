@@ -78,7 +78,8 @@ SSWDBQueryField >> fieldNamed: aString [
 { #category : #testing }
 SSWDBQueryField >> hasAggregateFunction [
 
-	^false
+	"Defer to the field"
+	^self field hasAggregateFunction
 ]
 
 { #category : #testing }

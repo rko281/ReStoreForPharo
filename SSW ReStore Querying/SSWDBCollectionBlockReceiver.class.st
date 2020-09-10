@@ -130,7 +130,7 @@ SSWDBCollectionBlockReceiver >> currentTable [
 { #category : #accessing }
 SSWDBCollectionBlockReceiver >> finalField [
 
-	self parser qualifyingConditions: self collectionParser qualifyingConditions.
+	self parser qualifyingConditions: (self parser qualifyingConditions sqlAnd: self collectionParser qualifyingConditions).
 
 	^self finalFieldFor: self targetTableFromParser
 ]

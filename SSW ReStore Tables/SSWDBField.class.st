@@ -74,6 +74,12 @@ SSWDBField >> fieldNamed: aString [
 		ifFalse: [nil]
 ]
 
+{ #category : #testing }
+SSWDBField >> hasAggregateFunction [
+
+	^false
+]
+
 { #category : #comparing }
 SSWDBField >> hash [
 
