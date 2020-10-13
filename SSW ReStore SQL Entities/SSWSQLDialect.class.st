@@ -385,6 +385,7 @@ SSWSQLDialect >> defaultSQLFunctions [
 
 	self commonFunctions keysAndValuesDo: [ :message :sql | allDefaults at: message put: sql].
 	self dialectSpecificFunctions keysAndValuesDo: [ :message :sql | allDefaults at: message put: sql].
+	self platformSpecificFunctions keysAndValuesDo: [ :message :sql | allDefaults at: message put: sql].
 
 	^allDefaults
 ]
