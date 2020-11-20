@@ -36,7 +36,7 @@ SimplePerson class >> reStoreDefinition [
 
 	^super reStoreDefinition
 		define: #surname as: (String maxSize: 100);
-		define: #firstName as: (String maxSize: 8);
+		define: #firstName as: (String maxSize: 50);
 		define: #emailAddress as: (String maxSize: 100);
 		define: #time as: DateAndTime;
 		define: #friend as: SimplePerson;
@@ -309,86 +309,6 @@ SimplePerson >> test [
 { #category : #accessing }
 SimplePerson >> test: anObject [
 	test := anObject
-]
-
-{ #category : #testing }
-SimplePerson >> testIsNilJumpBytecodePattern1 [
-
-	"JumpIfNil to ^True"
-
-	^(self friend isNil or: [self firstName = 'John']) or: [self firstName = 'Zoe']
-]
-
-{ #category : #testing }
-SimplePerson >> testIsNilJumpBytecodePattern2 [
-
-	"JumpIfNotNil to ^False"
-
-	^self friend isNil and: [self firstName = 'John']
-]
-
-{ #category : #testing }
-SimplePerson >> testIsNilJumpBytecodePattern3a [
-
-	"JumpIfNotNil immediately followed by ^True"
-
-	^self friend isNil or: [self firstName = 'John']
-]
-
-{ #category : #testing }
-SimplePerson >> testIsNilJumpBytecodePattern3b [
-
-	"JumpIfNotNil to just after ^True"
-
-	^(self friend isNil and: [self firstName = 'John']) or: [self firstName = 'Zoe']
-]
-
-{ #category : #testing }
-SimplePerson >> testIsNilJumpBytecodePattern4 [
-
-	"JumpIfNil to non-return without ^True in jumped-over code "
-
-	^(self friend isNil or: [self test isNil]) and: [self firstName = 'Zoe']
-]
-
-{ #category : #testing }
-SimplePerson >> testNotNilJumpBytecodePattern1 [
-
-	"JumpIfNotNil to ^True"
-
-	^(self friend notNil or: [self firstName = 'Jim']) or: [self firstName = 'David']
-]
-
-{ #category : #testing }
-SimplePerson >> testNotNilJumpBytecodePattern2 [
-
-	"JumpIfNil to ^False"
-
-	^self friend notNil and: [self firstName = 'John']
-]
-
-{ #category : #testing }
-SimplePerson >> testNotNilJumpBytecodePattern3a [
-
-	"JumpIfNil immediately followed by ^True"
-
-	^self friend notNil or: [self firstName = 'Jim']
-]
-
-{ #category : #testing }
-SimplePerson >> testNotNilJumpBytecodePattern3b [
-
-	"JumpIfNil to just after ^True"
-
-	^(self friend notNil and: [self firstName = 'Jim']) or: [self firstName = 'Zoe']
-]
-
-{ #category : #testing }
-SimplePerson >> testNotNilJumpBytecodePattern4 [
-
-	"JumpIfNotNil to non-return without ^True in jumped-over code "
-
-	^(self friend notNil or: [self test isNil]) and: [self firstName = 'Zoe']
 ]
 
 { #category : #accessing }
