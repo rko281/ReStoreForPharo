@@ -666,6 +666,28 @@ SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectInlineFunction [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectOfDifferentClass [
+
+	"Previously failed; generated object of the class of the collection instead of the target object"
+
+	| instances john dave results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	john := instances detect: [ :each | each firstName = 'John'].
+	dave := instances detect: [ :each | each firstName = 'David'].
+
+	john address: (SimpleAddress new postcode: 'J1 1JJ'; yourself).
+	dave address: (SimpleAddress new postcode: 'D2 2DD'; yourself).
+
+	{john. dave} storeAll.
+
+	results := instances collect: [ :each | each address].
+
+	self assert: ((results reject: [ :each | each isNil]) collect: [ :each | each postcode]) asSortedCollection asArray equals: #('D2 2DD' 'J1 1JJ')
+]
+
+{ #category : #'unit tests' }
 SSWReStoreQueryTest >> testConcatenateQueryWithJoins [
 
 	| instances john results |

@@ -321,7 +321,7 @@ SSWDBObjectProxy >> debugPrintString [
 	"Override to test for deleted status"
 	
 	^self _isDeleted 
-		ifTrue: ['<Deleted persistent object>']
+		ifTrue: [(SSWDBDeletedObject newForClass: class id: id) printString]
 		ifFalse: [super debugPrintString]
 ]
 
@@ -355,6 +355,14 @@ SSWDBObjectProxy >> isKindOf: aClass [
 	ifFalse: 
 		[proxiedObject == nil ifTrue: [self _recoverProxiedObject].
 		proxiedObject isKindOf: aClass]
+]
+
+{ #category : #'non forwarding' }
+SSWDBObjectProxy >> isSQLNull [
+
+	"No need to bother the proxiedObject"
+	
+	^false
 ]
 
 { #category : #forwarding }
@@ -406,10 +414,15 @@ SSWDBObjectProxy >> sqlStringIn: anSSWSQLDialect [
 SSWDBObjectProxy >> unstore [
 
 	"Unstore the receiver's proxiedObject, returning the proxiedObject.
-	This message (as opposed to the private _unstore) is only sent when the receiver
-	has not yet been referenced in the current transaction. Hence reference it here"
+	This message (as opposed to the private _unstore) is only sent when the receive has not yet been referenced in the current transaction. Hence reference it here.
+
+	NB: This is also a legacy selector whose meaning was 'unstore in the active transaction'.
+	We have repurposed this to also be a direct 'unstore now' message, which begins and completes in its own transaction.
+	Accomodate both new and legacy behavior by checking if there is currently a transaction in progress"
 	
 	| me him |
+
+	reStore isTransactionInProgress ifFalse: [^self unstored store].
 
 	proxiedObject == nil ifTrue: [self _recoverProxiedObject].
 	proxiedObject isDBDeleted ifTrue: [^self].
@@ -439,6 +452,12 @@ SSWDBObjectProxy >> writeSQLOn: aStream [
 	"The SQL for a persistent object is its id"
 
 	id writeSQLOn: aStream
+]
+
+{ #category : #'non forwarding' }
+SSWDBObjectProxy >> writeSQLOn: aStream forCondition: aSQLCondition [
+
+	^self writeSQLOn: aStream forField: aSQLCondition field
 ]
 
 { #category : #'actions-internal' }

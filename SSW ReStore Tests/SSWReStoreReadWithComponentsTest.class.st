@@ -97,6 +97,17 @@ SSWReStoreReadWithComponentsTest >> addClassesTo: aReStore [
 ]
 
 { #category : #running }
+SSWReStoreReadWithComponentsTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
+
+	^aCustomer orders add: 
+		(SimpleProductOrder new 
+			product: aProduct; 
+			quantity: anInteger; 
+			customer: aCustomer; 
+			yourself)
+]
+
+{ #category : #running }
 SSWReStoreReadWithComponentsTest >> createTestData [
 
 	| orders otherCustomers |
@@ -105,21 +116,21 @@ SSWReStoreReadWithComponentsTest >> createTestData [
 
 	orders := OrderedCollection new.
 
-	1 to: 10 do: [ :index | orders add: (customer1 orders add: (SimpleProductOrder new product: widget; quantity: (index * 10); customer: customer1; yourself))].
-	1 to: 5 do: [ :index | orders add: (customer2 orders add: (SimpleProductOrder new product: widget; quantity: (index * 10); customer: customer2; yourself))].
-	1 to: 1 do: [ :index | orders add: (customer3 orders add: (SimpleProductOrder new product: widget; quantity: (index * 10); customer: customer3; yourself))].
+	1 to: 10 do: [ :index | orders add: (self addOrderFor: widget to: customer1 quantity: (index * 10))].
+	1 to: 5 do: [ :index | orders add: (self addOrderFor: widget to: customer2 quantity: (index * 10))].
+	1 to: 1 do: [ :index | orders add: (self addOrderFor: widget to: customer3 quantity: (index * 10))].
 
-	1 to: 1 do: [ :index | orders add: (customer1 orders add: (SimpleProductOrder new product: gadget; quantity: (index * 10); customer: customer1; yourself))].
-	1 to: 5 do: [ :index | orders add: (customer2 orders add: (SimpleProductOrder new product: gadget; quantity: (index * 10); customer: customer2; yourself))].
-	1 to: 10 do: [ :index | orders add: (customer3 orders add: (SimpleProductOrder new product: gadget; quantity: (index * 10); customer: customer3; yourself))].
+	1 to: 1 do: [ :index | orders add: (self addOrderFor: gadget to: customer1 quantity: (index * 10))].
+	1 to: 5 do: [ :index | orders add: (self addOrderFor: gadget to: customer2 quantity: (index * 10))].
+	1 to: 10 do: [ :index | orders add: (self addOrderFor: gadget to: customer3 quantity: (index * 10))].
 	
 	otherCustomers := (1 to: self otherCustomersSize) collect: 
 		[ :each || customer |
 		customer := SimplePerson new.
 		customer surname: each displayString; test: (Test new name: ('*<1p>*' expandMacrosWith: each)).
-		(each \\ 10) timesRepeat: [customer orders add: (SimpleProductOrder new product: wobulator; quantity: each; customer: customer; yourself)].
+		(each \\ 10) timesRepeat: [orders add: (self addOrderFor: wobulator to: customer quantity: each)].
 		customer].
-	
+
 	((OrderedCollection withAll: orders)
 		add: customer1;
 		add: customer2;
@@ -351,7 +362,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshCollection [
 
 	allCustomers := customers asOrderedCollection.
 	
-	testOrder := allCustomers first orders first.
+	testOrder := allCustomers first orders anyOne.
 	originalQuantity := testOrder quantity.
 
 	"Update directly in database"
@@ -377,7 +388,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshProxyCollection [
 	testCustomer := allCustomers first.
 	originalName := testCustomer surname.
 	newName := originalName, '_CHANGED'.
-	testOrder := (allCustomers detect: [ :each | each ~~ testCustomer and: [each orders isEmpty not]]) orders first.
+	testOrder := (allCustomers detect: [ :each | each ~~ testCustomer and: [each orders isEmpty not]]) orders anyOne.
 	originalQuantity := testOrder quantity.
 
 	"Update directly in database"
@@ -407,8 +418,8 @@ SSWReStoreReadWithComponentsTest >> testRefreshSingleObject [
 	| allCustomers test originalName newName |
 
 	allCustomers := customers asOrderedCollection.
-	
-	test := allCustomers last test.
+
+	test := (allCustomers detect: [ :each | each test notNil]) test.
 	originalName := test name.
 	newName := Time now displayString.
 

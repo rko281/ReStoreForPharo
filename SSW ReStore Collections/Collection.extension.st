@@ -39,6 +39,18 @@ Collection >> _dbAdd: anObject suggestedIndex: anInteger [
 ]
 
 { #category : #'*SSW ReStore Collections' }
+Collection >> _dbKeyUpdateClass [
+
+	^SSWDBCollectionIndexUpdate
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Collection >> _dbRemovalClass [
+
+	^SSWDBCollectionRemoval
+]
+
+{ #category : #'*SSW ReStore Collections' }
 Collection >> _fetchAll: aCollection [
 
 	"Private - ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -53,17 +65,6 @@ Collection >> _fetchAll: aCollection [
 
 	aCollection do: [ :instVar | (table componentAccessing: instVar) readAllFor: self]
 	
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _keyRemovalsIn: aCollectionOfChanges [
-
-	"Return a collection of SSWDBCollectionObjectRemovals representing those keys (indexes)
-	removed from the receiver by aCollectionOfChanges.
-
-	Default - none. Subclasses for whom this is important (i.e. have persistent indexes) should implement"
-
-	^#()
 ]
 
 { #category : #'*SSW ReStore Collections' }
@@ -84,17 +85,17 @@ Collection >> _keyedChangesFrom: aCollectionOfEntries [
 	"Locate and remove entry for each member of the receiver and check for key change"
 	self keysAndValuesDo:
 		[ :newKey :each || entry |
-		entry := (map at: each ifAbsent: [(OrderedCollection new)]) removeFirstIfAbsent:
+		entry := (map at: each ifAbsent: [OrderedCollection new]) removeFirstIfAbsent:
 			"No entry found = element has been added to the receiver" 
 			[(changes add: (SSWDBCollectionAddition added: each at: newKey)) affectedEntry].
 		entry index = newKey ifFalse: 
-			[changes add: (SSWDBCollectionIndexUpdate entry: entry newIndex: newKey)]].
+			[changes add: (self _dbKeyUpdateClass entry: entry newIndex: newKey)]].
 
 	"Any remaining entries indicate elements removed from the receiver"
 	map keysAndValuesDo:
 		[ :each :entries | 
 		entries isEmpty ifFalse:		"Minor optimisation"
-			[entries do: [ :entry | changes add: (SSWDBCollectionRemoval newWithEntry: entry)]]].
+			[entries do: [ :entry | changes add: (self _dbRemovalClass newWithEntry: entry)]]].
 
 	^changes
 ]
@@ -136,21 +137,6 @@ Collection >> _proxifyIn: aCollectionProxy [
 
 	aCollectionProxy _proxiedObject: self.
 	^self
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _valueRemovalsIn: aCollectionOfChanges [
-
-	"Return a collection of SSWDBCollectionObjectRemovals representing those values (objects)
-	removed from the receiver which are the targets of the affectedEntries of aCollectionOfChanges"
-
-	| removalChanges |
-
-	"Restrict the changes to just those that can potentially result in the removal of a value object"
-	removalChanges := aCollectionOfChanges select: [ :change | change canRemoveValue].
-
-	^(self _valuesRemovedBy: removalChanges) collect: 
-		[ :valueObject | SSWDBCollectionObjectRemoval newWithObject: valueObject]
 ]
 
 { #category : #'*SSW ReStore Collections' }

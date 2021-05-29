@@ -747,6 +747,14 @@ SSWSQLDialect >> standardNamespace: aString [
 ]
 
 { #category : #testing }
+SSWSQLDialect >> supportsDeleteWithJoin [
+
+	"Answer whether this dialect supports DELETE queries featuring JOINs"
+
+	^false
+]
+
+{ #category : #testing }
 SSWSQLDialect >> supportsImplicitTrueConditions [
 
 	"Does this dialect support implicit true conditions like IS_SOMETHING or does it require IS_SOMETHING = TRUE"

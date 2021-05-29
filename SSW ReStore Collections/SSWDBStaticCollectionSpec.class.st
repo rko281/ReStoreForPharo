@@ -8,7 +8,8 @@ Class {
 	#name : #SSWDBStaticCollectionSpec,
 	#superclass : #SSWDBGeneralCollectionSpec,
 	#instVars : [
-		'targetClass'
+		'targetClass',
+		'deleteEntriesStatement'
 	],
 	#category : #'SSW ReStore Collections'
 }
@@ -51,6 +52,63 @@ SSWDBStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 			(SSWSQLCondition field: self sourceField equalTo: aCollectionProxy _ownerID)).
 
 	^instances
+]
+
+{ #category : #'accessing-queries' }
+SSWDBStaticCollectionSpec >> deleteEntriesQuery [
+
+	^SSWSQLDeleteQuery new
+		table: self collectionTable;
+		conditions: (SSWSQLCondition field: self sourceField equalTo: SSWSQLQueryParameter);
+		yourself
+]
+
+{ #category : #accessing }
+SSWDBStaticCollectionSpec >> deleteEntriesStatement [
+
+	"Return a prepared statement for deleting the entry table entries for this collection"
+
+	^deleteEntriesStatement ifNil: [deleteEntriesStatement := self reStore prepareStatementForQuery: self deleteEntriesQuery]
+]
+
+{ #category : #'accessing-queries' }
+SSWDBStaticCollectionSpec >> deleteQuery [
+
+	^self sqlDialect supportsDeleteWithJoin
+		ifTrue: [self deleteQueryWithJoin]
+		ifFalse: [self deleteQueryWithSubQuery]
+]
+
+{ #category : #'accessing-queries' }
+SSWDBStaticCollectionSpec >> deleteQueryWithJoin [
+
+	| query |
+
+	query := SSWSQLDeleteQuery new.
+	query 
+		table: self collectionTable;
+		conditions: (SSWSQLCondition field: self sourceField equalTo: SSWSQLQueryParameter).
+
+	self isValueDependent ifTrue: [query addTable: self targetTable withAllFields joinedWithField: self targetField].
+
+	^query
+]
+
+{ #category : #'accessing-queries' }
+SSWDBStaticCollectionSpec >> deleteQueryWithSubQuery [
+
+	| subquery |
+
+	subquery := SSWSQLSelectQuery new.
+	subquery
+		field: self targetField;
+		table: self collectionTable;
+		conditions: (SSWSQLCondition field: self sourceField equalTo: SSWSQLQueryParameter).
+
+	^SSWSQLDeleteQuery new
+		table: self targetTable;
+		conditions: (SSWSQLCondition field: self targetTable idField is: (SSWSQLOperator messageSelector: #includedIn:) to: subquery asSubQuery);
+		yourself
 ]
 
 { #category : #actions }
@@ -260,7 +318,7 @@ SSWDBStaticCollectionSpec >> refreshModelClassCollectionWithContentsIfUpdatedFor
 	self reStore rowsFromStatement: statement do:
 		[ :row || entry |
 		entry := self createNonProxiedInstanceFromRow: row.
-		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (row atField: versionField)]]) ifTrue:
+		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (row lookupField: versionField)]]) ifTrue:
 			["Out-of-date target object - forget it"
 			entry target _forgetProxiedObject].
 		entry

@@ -48,11 +48,13 @@ SSWSQLite3ResultSet >> next [
 { #category : #API }
 SSWSQLite3ResultSet >> nextOfClass: aRowClass [
 
-	^(super nextOfClass: aRowClass) ifNotNil: 
-		[ :row | 
-		row
-			createFieldMapFrom: self query; 
-			yourself ]
+	| next |
+	
+	next := super nextOfClass: aRowClass.
+	
+	(next notNil and: [ self query notNil ]) ifTrue: [next createFieldMapFrom: self query].
+	
+	^next
 ]
 
 { #category : #accessing }
@@ -71,6 +73,12 @@ SSWSQLite3ResultSet >> query [
 SSWSQLite3ResultSet >> readStream [
 
 	^SSWDBForwardOnlyReadStream on: self
+]
+
+{ #category : #accessing }
+SSWSQLite3ResultSet >> results [
+
+	^self
 ]
 
 { #category : #accessing }

@@ -64,6 +64,26 @@ SSWDBProxy >> _commitChanges [
 ]
 
 { #category : #'actions-internal' }
+SSWDBProxy >> _commitChangesPhase1 [
+
+	"Commit to the reStore changes to the receiver's proxiedObject - phase 1 of 2.
+	Return a Boolean indicating success"
+
+	"Default behaviour for subclasses only requiring a single phase"
+	^self _commitChanges
+]
+
+{ #category : #'actions-internal' }
+SSWDBProxy >> _commitChangesPhase2 [
+
+	"Commit to the reStore changes to the receiver's proxiedObject - phase 2 of 2.
+	Return a Boolean indicating success"
+
+	"Subclasses only requiring a single phase should override _commitChanges"
+	^true
+]
+
+{ #category : #'actions-internal' }
 SSWDBProxy >> _commitIn: anSSWReStore [
 
 	"Add the receiver to the referenced set (if it is recovered) for subsequent commit"
@@ -255,6 +275,26 @@ SSWDBProxy >> _prepareToCommit [
 	"Prepare to commit changes to the receiver's proxiedObject"
 	
 	self subclassResponsibility
+]
+
+{ #category : #'actions-internal' }
+SSWDBProxy >> _prepareToCommitPhase1 [
+
+	"Prepare to commit changes to the receiver's proxiedObject - pass 1 of 2.
+	Answer true or false depending on whether the receiver needs phase 2 to complete its preparations"
+
+	"Default action for subclasses only needing one pass"
+	self _prepareToCommit.
+	^false
+]
+
+{ #category : #'actions-internal' }
+SSWDBProxy >> _prepareToCommitPhase2 [
+
+	"Prepare to commit changes to the receiver's proxiedObject - pass 2 of 2."
+
+	"Subclasses only requiring a single phase should override _prepareToCommit"
+	^self
 ]
 
 { #category : #accessing }

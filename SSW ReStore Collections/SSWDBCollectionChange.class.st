@@ -57,24 +57,6 @@ SSWDBCollectionChange >> applyTo: aCollectionOfEntries [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
-SSWDBCollectionChange >> canRemoveKey [
-
-	"Return a Boolean indicating whether the receiver can potentially remove a key/index from a collection.
-	Default - false"
-
-	^false
-]
-
-{ #category : #testing }
-SSWDBCollectionChange >> canRemoveValue [
-
-	"Return a Boolean indicating whether the receiver can potentially remove a value object from a collection.
-	Default - false"
-
-	^false
-]
-
 { #category : #actions }
 SSWDBCollectionChange >> commitFor: aCollectionProxy [
 

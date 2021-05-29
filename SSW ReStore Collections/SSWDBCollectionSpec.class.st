@@ -13,18 +13,11 @@ Class {
 		'isValueRelated',
 		'readStatement',
 		'refreshStatement',
-		'refreshWithContentsIfUpdatedStatement'
+		'refreshWithContentsIfUpdatedStatement',
+		'deleteStatement'
 	],
 	#category : #'SSW ReStore Collections'
 }
-
-{ #category : #actions }
-SSWDBCollectionSpec >> aboutToBeUnstored: aProxyObject [
-
-	"Also unstore member objects, if the receiver is dependent"
-
-	self isValueDependent ifTrue: [(self accessor valueIn: aProxyObject) do: [ :each | each unstore]]
-]
 
 { #category : #actions }
 SSWDBCollectionSpec >> applyTo: anObject withID: anInteger in: anSSWReStore [
@@ -102,6 +95,22 @@ SSWDBCollectionSpec >> defineAs: aSymbol in: anSSWDBTable [
 
 	^anSSWDBTable define: aSymbol asCollectionSpec: self
 
+]
+
+{ #category : #'accessing-queries' }
+SSWDBCollectionSpec >> deleteQuery [
+
+	"Return a SQL query for deleting the elements of this collection"
+
+	^self subclassResponsibility
+]
+
+{ #category : #accessing }
+SSWDBCollectionSpec >> deleteStatement [
+
+	"Return a prepared statement for deleting this collection"
+
+	^deleteStatement ifNil: [deleteStatement := self reStore prepareStatementForQuery: self deleteQuery]
 ]
 
 { #category : #'initialize/release' }

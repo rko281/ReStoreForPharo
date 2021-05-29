@@ -35,7 +35,8 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	"Iteratively commit, resolving update conflicts and retrying if all are resolved"
 	[aDBConnection beginRWTxn.
 	self preCommit.
-	conflicts := toCommit reject: [ :proxyObj | proxyObj _commitChanges].
+	conflicts := toCommit reject: [ :proxyObj | proxyObj _commitChangesPhase1].
+	conflicts addAll: (toCommit reject: [ :proxyObj | proxyObj _commitChangesPhase2]).
 	resolved := OrderedCollection new.
 	failures := OrderedCollection new.
 

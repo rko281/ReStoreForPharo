@@ -27,12 +27,6 @@ SSWDBCollectionUpdate >> applyTo: aCollection [
 	self affectedEntry target: self newTarget
 ]
 
-{ #category : #testing }
-SSWDBCollectionUpdate >> canRemoveValue [
-
-	^true
-]
-
 { #category : #'actions - api' }
 SSWDBCollectionUpdate >> commitFor: aCollectionProxy [
 
@@ -59,4 +53,12 @@ SSWDBCollectionUpdate >> newTarget: anObject [
 	associated with the receiver's entry"
 
 	newTarget := anObject
+]
+
+{ #category : #actions }
+SSWDBCollectionUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
+
+	(anSSWDBCollectionProxy _shouldUnstoreValue: self affectedEntry target) ifTrue: [self affectedEntry target unstore].
+
+	^super prepareToCommitFor: anSSWDBCollectionProxy
 ]

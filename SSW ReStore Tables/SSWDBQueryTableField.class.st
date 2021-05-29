@@ -33,7 +33,7 @@ SSWDBQueryTableField class >> forField: anSSWDBField in: anSSWDBQueryTable path:
 { #category : #comparing }
 SSWDBQueryTableField >> = anSSWDBField [
 
-	^anSSWDBField = self field
+	^self == anSSWDBField or: [anSSWDBField = self field and: [anSSWDBField table = self table]]
 ]
 
 { #category : #accessing }
@@ -55,7 +55,13 @@ SSWDBQueryTableField >> accessorPath: anObject [
 { #category : #comparing }
 SSWDBQueryTableField >> hash [
 
-	^self field hash
+	^self table hash bitXor: self name hash
+]
+
+{ #category : #testing }
+SSWDBQueryTableField >> isInlined [
+
+	^self field isInlined
 ]
 
 { #category : #output }

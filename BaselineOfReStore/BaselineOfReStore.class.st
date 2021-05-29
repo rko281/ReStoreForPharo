@@ -10,12 +10,12 @@ BaselineOfReStore >> baseline: spec [
 	spec
 		for: #common
 		do: [
+				self porpoise: spec.
 				self sqlite3: spec.
 				self p3: spec.
 				self mySQL: spec.
 				spec
-					package: 'Wolphin';
-					package: 'SSW ReStore Base Additions' with: [ spec requires: #('Wolphin') ];
+					package: 'SSW ReStore Base Additions' with: [ spec requires: #('Porpoise') ];
 					package: 'SSW ReStore SQL Entities' with: [ spec requires: #('SSW ReStore Base Additions') ];
 					package: 'SSW ReStore SQL Queries' with: [ spec requires: #('SSW ReStore SQL Entities') ];
 					package: 'SSW ReStore Tables' with: [ spec requires: #('SSW ReStore SQL Queries') ];
@@ -59,6 +59,18 @@ BaselineOfReStore >> p3: spec [
 		with: [
 			spec  
 				repository: 'github://svenvc/P3'
+		]
+]
+
+{ #category : #baselines }
+BaselineOfReStore >> porpoise: spec [
+
+	spec
+		baseline: 'Porpoise'
+		with: [
+			spec
+				repository: 'github://rko281/Porpoise';
+				loads: 'core'
 		]
 ]
 

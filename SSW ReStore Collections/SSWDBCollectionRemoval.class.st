@@ -16,21 +16,16 @@ SSWDBCollectionRemoval >> applyTo: aCollection [
 	self affectedEntry removeFrom: aCollection
 ]
 
-{ #category : #testing }
-SSWDBCollectionRemoval >> canRemoveKey [
-
-	^true
-]
-
-{ #category : #testing }
-SSWDBCollectionRemoval >> canRemoveValue [
-
-	^true
-]
-
 { #category : #'actions - api' }
 SSWDBCollectionRemoval >> commitFor: aCollectionProxy [
 
-	self affectedEntry isPersistent ifTrue: 
-		[aCollectionProxy _collectionSpec deleteEntry: self affectedEntry in: aCollectionProxy _reStore]
+	self affectedEntry isPersistent ifTrue: [aCollectionProxy _collectionSpec deleteEntry: self affectedEntry]
+]
+
+{ #category : #'actions - api' }
+SSWDBCollectionRemoval >> prepareToCommitFor: anSSWDBCollectionProxy [
+
+	(anSSWDBCollectionProxy _shouldUnstoreValue: self affectedEntry target) ifTrue: [self affectedEntry target unstore].
+
+	^super prepareToCommitFor: anSSWDBCollectionProxy
 ]

@@ -185,15 +185,21 @@ SSWDBInstancesCollection >> do: aBlock [
 ]
 
 { #category : #helpers }
-SSWDBInstancesCollection >> fetchObjectsWithQuery: aQuery into: aCollection [
+SSWDBInstancesCollection >> fetchObjectsFromTable: aDBTable withQuery: aQuery into: aCollection [
 
 	self preReadActions do: [ :each | each value].
 
-	self reStore fetchObjectsOfClass: self instancesClass withQuery: aQuery into: aCollection.
+	self reStore fetchObjectsFromTable: aDBTable withQuery: aQuery into: aCollection.
 	
 	self postReadActions do: [ :each | each value: aCollection].
 
 	^aCollection
+]
+
+{ #category : #helpers }
+SSWDBInstancesCollection >> fetchObjectsWithQuery: aQuery into: aCollection [
+
+	^self fetchObjectsFromTable: self table withQuery: aQuery into: aCollection
 ]
 
 { #category : #evaluating }
@@ -421,24 +427,21 @@ SSWDBInstancesCollection >> query: query into: aCollection [
 	"Private - Add the objects resulting from query to aCollection.
 	Return aCollection"
 
-	"If a field-based collect block e.g. [ :cd | cd title] then there will be only one query field.
-	If a 'target object' collect block e.g. [ :cd | cd] then the query field will be 'all fields in table'		"
-	query fields isAllInTable
-	ifTrue:
-		[self fetchObjectsWithQuery: query into: aCollection]
-	ifFalse:
-		[self reStore rowsFromQuery: query do: 
-			[ :row |
-			query fields size = 1
-			ifTrue:
-				[aCollection add: (query fields first convertValue: (row atIndex: 1))]
-			ifFalse:
-				[| values |
-				values := aCollection add: (Array new: query fields size).
-				query fields keysAndValuesDo:
-					[ :index :field || dbValue |
-					dbValue := row atIndex: index.
-					values at: index put: (field convertValue: dbValue)]]]].
+	"If a single object field collect block e.g. [ :person | person friend] then the query field will be 'all fields in table'	"
+	query fields isAllInTable ifTrue: [^self fetchObjectsFromTable: query fields table withQuery: query into: aCollection].
+
+	self reStore rowsFromQuery: query do: 
+		[ :row |
+		query fields size = 1
+		ifTrue:
+			[aCollection add: (query fields first convertValue: (row atIndex: 1))]
+		ifFalse:
+			[| values |
+			values := aCollection add: (Array new: query fields size).
+			query fields keysAndValuesDo:
+				[ :index :field || dbValue |
+				dbValue := row atIndex: index.
+				values at: index put: (field convertValue: dbValue)]]].
 		
 	^self parser isCollectingAssociations
 		ifTrue: [aCollection collect: [ :pair | pair first -> pair last]]

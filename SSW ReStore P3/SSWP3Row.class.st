@@ -4,21 +4,28 @@ Class {
 	#traits : 'SSWReStoreDBRow',
 	#classTraits : 'SSWReStoreDBRow classTrait',
 	#instVars : [
-		'columns',
-		'data',
-		'fieldMap'
+		'columnNames',
+		'data'
 	],
 	#category : #'SSW ReStore P3'
 }
 
 { #category : #accessing }
-SSWP3Row >> columns [
-	^ columns
+SSWP3Row >> columnNames [
+
+	^columnNames
 ]
 
 { #category : #accessing }
-SSWP3Row >> columns: anObject [
-	columns := anObject
+SSWP3Row >> columns: aCollection [
+
+	columnNames := aCollection collect: [ :each | each fieldName ]
+]
+
+{ #category : #accessing }
+SSWP3Row >> contents [
+
+	^data
 ]
 
 { #category : #accessing }

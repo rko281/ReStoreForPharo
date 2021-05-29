@@ -11,7 +11,8 @@ Class {
 		'allReferencedObjects',
 		'currentReferencedObjects',
 		'changedObjects',
-		'allocatedIDs'
+		'allocatedIDs',
+		'deletedObjects'
 	],
 	#category : #'SSW ReStore Main'
 }
@@ -23,6 +24,12 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	self currentReferencedObjects do: [ :each | each _swapReferences].
 	self endObjectCollection
+]
+
+{ #category : #actions }
+SSWDBAbstractSingleTransaction >> addDeletedObject: aDBProxy [
+
+	^self deletedObjects add: aDBProxy
 ]
 
 { #category : #accessing }
@@ -117,7 +124,8 @@ SSWDBAbstractSingleTransaction >> beginObjectCollection [
 	
 	self 
 		currentReferencedObjects: self newEmptyObjectsSet;
-		allReferencedObjects: self newEmptyObjectsSet
+		allReferencedObjects: self newEmptyObjectsSet;
+		deletedObjects: self newEmptyObjectsSet
 ]
 
 { #category : #actions }
@@ -187,6 +195,24 @@ SSWDBAbstractSingleTransaction >> currentReferencedObjects: anIdentitySet [
 	currentReferencedObjects := anIdentitySet
 ]
 
+{ #category : #accessing }
+SSWDBAbstractSingleTransaction >> deletedObjects [
+
+	"deletedObjects stores any persistent objects which have been deleted during this transaction.
+	This is used to prevent redundant duplicate deletion attempts, e.g. where an object is a member of a deleted collection"
+	
+	^deletedObjects
+]
+
+{ #category : #accessing }
+SSWDBAbstractSingleTransaction >> deletedObjects: anIdentitySet [
+
+	"deletedObjects stores any persistent objects which have been deleted during this transaction.
+	This is used to prevent redundant duplicate deletion attempts, e.g. where an object is a member of a deleted collection"
+	
+	deletedObjects := anIdentitySet
+]
+
 { #category : #initializing }
 SSWDBAbstractSingleTransaction >> endObjectCollection [
 
@@ -202,6 +228,12 @@ SSWDBAbstractSingleTransaction >> includesProxy: anSSWDBProxy [
 
 	^(self currentReferencedObjects includes: anSSWDBProxy)
 		or: [self allReferencedObjects includes: anSSWDBProxy]
+]
+
+{ #category : #testing }
+SSWDBAbstractSingleTransaction >> isAlreadyDeleted: aDBProxy [
+
+	^self deletedObjects includes: aDBProxy
 ]
 
 { #category : #evaluating }
@@ -261,8 +293,10 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 	"Pre-write validate the changed objects. This may cause other objects to be added to the transaction,
 	so repeat until no more changed objects are found"
 	[noneChanged] whileFalse:
-		[noneChanged := true.
+		[| needingPhase2 |
+		noneChanged := true.
 		currentObjects := self currentReferencedObjects.
+		needingPhase2 := self newEmptyObjectsSet.
 		self nextCollectionPhase.
 		currentObjects do: 
 			[ :proxy | 
@@ -271,10 +305,11 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 				ifTrue: 
 					[noneChanged := false.
 					changed add: proxy.
-					proxy _prepareToCommit]
+					proxy _prepareToCommitPhase1 ifTrue: [needingPhase2 add: proxy]]
 				ifFalse:
-					[self currentReferencedObjects add: proxy]]]].
-
+					[self currentReferencedObjects add: proxy]]].
+		needingPhase2 do: [ :each | each _prepareToCommitPhase2]].
+	
 	self currentReferencedObjects do: [ :proxy | proxy _swapReferences].
 	self changedObjects: (changed collect: [ :proxy | proxy _swapReferences]). 
 

@@ -781,11 +781,15 @@ SSWReStore >> deleteProxy: aProxydObject [
 
 	| query statement |
 
+	(self transaction isAlreadyDeleted: aProxydObject) ifTrue: [^self].
+
 	query := SSWSQLDeleteObjectQuery forObject: aProxydObject.
 
 	statement := aProxydObject _dbTable deleteStatementGeneratedFrom: query.
 	statement values: query values.
-	statement exec; close
+	statement exec; close.
+
+	self transaction addDeletedObject: aProxydObject
 ]
 
 { #category : #'proxy manipulation' }
@@ -1041,13 +1045,15 @@ SSWReStore >> fetchObjectOfClass: aClass withQuery: anSSWSQLQuery ifNone: aBlock
 ]
 
 { #category : #querying }
+SSWReStore >> fetchObjectsFromTable: aDBTable withQuery: anSSWSQLQuery into: aCollection [
+
+	self rowsFromQuery: anSSWSQLQuery do: [ :row | aCollection _dbAdd: (self objectFromRow: row table: aDBTable)]
+]
+
+{ #category : #querying }
 SSWReStore >> fetchObjectsOfClass: aClass withQuery: anSSWSQLQuery into: aCollection [
 
-	| table |
-		
-	table := self tableForClass: aClass.
-
-	self rowsFromQuery: anSSWSQLQuery do: [ :row | aCollection _dbAdd: (self objectFromRow: row table: table)]
+	^self fetchObjectsFromTable: (self tableForClass: aClass) withQuery: anSSWSQLQuery into: aCollection
 ]
 
 { #category : #querying }
@@ -1353,15 +1359,9 @@ SSWReStore >> objectFromRow: aDatabaseRow table: anSSWDBTable [
 	If the required proxy object is not in the cache, create it.
 	If the object is already recovered, refresh it from the row if it's not been changed in the image"
 	
-	| id |
-
-	id := aDatabaseRow atField: anSSWDBTable idField.
-
-	^id isNil
-	ifTrue:
-		[nil	"Should never happen"]
-	ifFalse:
-		[self 
+	^(aDatabaseRow lookupField: anSSWDBTable idField) ifNotNil: 
+		[ :id | 
+		self 
 			cachedObjectOfClass: (anSSWDBTable instanceClassFromRow: aDatabaseRow)
 			withID: id 
 			ifAbsent: [self createProxyForRow: aDatabaseRow fromTable: anSSWDBTable withID: id]
@@ -1620,7 +1620,7 @@ SSWReStore >> refreshProxyIfUpdated: anSSWDBObjectProxy [
 		[anSSWDBObjectProxy _proxiedObjectMissing. 
 		^true].
 
-	^(row atField: table versionControlField ifAbsent: [nil]) ~= anSSWDBObjectProxy _version 
+	^(row lookupField: table versionControlField) ~= anSSWDBObjectProxy _version 
 		ifTrue: [anSSWDBObjectProxy _forceRefresh. true] 
 		ifFalse: [false]
 ]

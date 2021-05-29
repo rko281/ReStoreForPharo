@@ -91,6 +91,11 @@ SSWP3ResultSet >> resetAndFetchFirst [
 	^self next
 ]
 
+{ #category : #accessing }
+SSWP3ResultSet >> results [ 
+	^self
+]
+
 { #category : #'initialize-release' }
 SSWP3ResultSet >> results: rCollection descriptions: dCollection data: dtCollection [
 

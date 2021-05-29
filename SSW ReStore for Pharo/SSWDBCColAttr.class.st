@@ -5,7 +5,8 @@ Class {
 		'name',
 		'index',
 		'table',
-		'connection'
+		'connection',
+		'field'
 	],
 	#category : #'SSW ReStore for Pharo'
 }
@@ -24,6 +25,24 @@ SSWDBCColAttr >> connection [
 { #category : #accessing }
 SSWDBCColAttr >> connection: anObject [
 	connection := anObject
+]
+
+{ #category : #accessing }
+SSWDBCColAttr >> field [
+
+	"field stores the SSWSQLField from a SELECT query 
+	that gave rise to this column in the resut set"
+
+	^field
+]
+
+{ #category : #accessing }
+SSWDBCColAttr >> field: anSSWSQLField [
+
+	"field stores the SSWSQLField from a SELECT query 
+	that gave rise to this column in the resut set"
+
+	field := anSSWSQLField
 ]
 
 { #category : #accessing }

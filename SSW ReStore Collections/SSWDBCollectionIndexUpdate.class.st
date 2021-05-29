@@ -35,12 +35,6 @@ SSWDBCollectionIndexUpdate >> applyTo: aCollection [
 			add: self affectedEntry afterIndex: (self newIndex - 1)]"
 ]
 
-{ #category : #testing }
-SSWDBCollectionIndexUpdate >> canRemoveKey [
-
-	^true
-]
-
 { #category : #'actions - api' }
 SSWDBCollectionIndexUpdate >> commitFor: aCollectionProxy [
 
@@ -49,12 +43,6 @@ SSWDBCollectionIndexUpdate >> commitFor: aCollectionProxy [
 			updateEntry: self affectedEntry 
 			withIndex: self newIndex
 			in: aCollectionProxy _reStore]
-]
-
-{ #category : #accessing }
-SSWDBCollectionIndexUpdate >> indexChange [
-
-	^self newIndex - self oldIndex
 ]
 
 { #category : #accessing }
@@ -82,9 +70,9 @@ SSWDBCollectionIndexUpdate >> oldIndex [
 ]
 
 { #category : #actions }
-SSWDBCollectionIndexUpdate >> prepareToCommitFor: anSSWDBCachingCollectionProxy [
+SSWDBCollectionIndexUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
 
-	self newIndex _ensureActiveIn: anSSWDBCachingCollectionProxy _reStore.
+	self newIndex _ensureActiveIn: anSSWDBCollectionProxy _reStore.
 
-	^super prepareToCommitFor: anSSWDBCachingCollectionProxy
+	^super prepareToCommitFor: anSSWDBCollectionProxy
 ]

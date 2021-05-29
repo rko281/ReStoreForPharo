@@ -7,15 +7,15 @@ Class {
 }
 
 { #category : #accessing }
-SSWSQLite3Row >> columns [
+SSWSQLite3Row >> columns: aCollection [
 
-	^columnNames collect: [ :each | SSWDBCColAttr new name: each; yourself ]
+	columns := aCollection
 ]
 
 { #category : #accessing }
-SSWSQLite3Row >> columns: aCollection [
+SSWSQLite3Row >> contents [
 
-	columnNames := aCollection
+	^self
 ]
 
 { #category : #accessing }
@@ -28,4 +28,10 @@ SSWSQLite3Row >> data [
 SSWSQLite3Row >> data: aCollection [
 
 	values := aCollection
+]
+
+{ #category : #accessing }
+SSWSQLite3Row >> values [
+
+	^values
 ]

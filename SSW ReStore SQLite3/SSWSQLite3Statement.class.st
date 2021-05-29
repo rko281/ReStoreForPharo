@@ -39,6 +39,13 @@ SSWSQLite3Statement >> parent [
 	^connection
 ]
 
+{ #category : #execution }
+SSWSQLite3Statement >> prepare: aString [
+
+	self sqlString: aString.
+	^super prepare: aString
+]
+
 { #category : #accessing }
 SSWSQLite3Statement >> valueAt: anIndex put: anObject [
 

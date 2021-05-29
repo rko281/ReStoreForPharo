@@ -34,6 +34,12 @@ SuperPerson >> firstName: a [
 	firstName := a
 ]
 
+{ #category : #accessing }
+SuperPerson >> fullName [ 
+
+	^self firstName, ' ', self surname
+]
+
 { #category : #public }
 SuperPerson >> surname [
 

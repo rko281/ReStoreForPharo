@@ -54,11 +54,16 @@ SSWDBGeneralCollectionSpec >> createCollectionTable [
 ]
 
 { #category : #'actions - api' }
-SSWDBGeneralCollectionSpec >> deleteEntry: anSSWDBCollectionEntry in: anSSWReStore [ 
+SSWDBGeneralCollectionSpec >> deleteEntry: anSSWDBCollectionEntry [
 
-	anSSWDBCollectionEntry table: self collectionTable.
+	| query |
 
-	anSSWReStore executeQuery: (SSWSQLDeleteObjectQuery forObject: anSSWDBCollectionEntry)
+	query := SSWSQLDeleteObjectQuery forObject: anSSWDBCollectionEntry.
+
+	(self collectionTable deleteStatementGeneratedFrom: query)
+		values: query values;
+		exec; 
+		close
 ]
 
 { #category : #constants }
@@ -70,9 +75,15 @@ SSWDBGeneralCollectionSpec >> entryClass [
 ]
 
 { #category : #'actions - api' }
-SSWDBGeneralCollectionSpec >> insertEntry: anSSWDBCollectionEntry in: anSSWReStore [ 
+SSWDBGeneralCollectionSpec >> insertEntry: anSSWDBCollectionEntry [
 
-	anSSWReStore executeQuery: (SSWSQLInsertQuery forObject: anSSWDBCollectionEntry)
+	| query statement |
+
+	query := SSWSQLInsertQuery forObject: anSSWDBCollectionEntry.
+
+	statement := self collectionTable insertStatementGeneratedFrom: query.
+	statement values: query values.
+	statement exec; close
 ]
 
 { #category : #constants }

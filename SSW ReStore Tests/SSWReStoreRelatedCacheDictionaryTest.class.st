@@ -9,6 +9,14 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
+{ #category : #accessing }
+SSWReStoreRelatedCacheDictionaryTest class >> allTestSelectors [
+
+	^super allTestSelectors 
+		removeAll: self multipleOccurrenceTestSelectors;
+		yourself
+]
+
 { #category : #helpers }
 SSWReStoreRelatedCacheDictionaryTest >> addToCollection: aCollection [
 

@@ -123,6 +123,37 @@ SSWReStoreTest >> createTestData [
 ]
 
 { #category : #running }
+SSWReStoreTest >> destroyAllClasses [
+
+	self shouldDestroyClasses
+		ifTrue: [reStore destroyAllClasses]
+		ifFalse: [self destroyAllData]
+]
+
+{ #category : #running }
+SSWReStoreTest >> destroyAllData [
+
+	| nextID |
+
+	nextID := (reStore tableForClass: SSWDBTableRecord) name.
+
+	reStore evaluateAsTxn: 
+		[| foundNextID count |
+		foundNextID := false.
+		reStore connection tables do: 
+			[ :each | 
+			each = nextID 
+				ifTrue: [foundNextID := true]
+				ifFalse: [reStore executeSQL: 'delete from ', each]].
+		foundNextID ifTrue: 
+			[count := (reStore instancesOf: SSWDBTableRecord) project: [ :each | each _id maximum].
+			reStore 
+				executeSQL: 'update <1s> set next_id = 1 where table_name %<> <1p>' << nextID;
+				executeSQL: 'update <1s> set next_id = <2p> where table_name = <1p>' << {nextID. count first + 1}].
+		true]
+]
+
+{ #category : #running }
 SSWReStoreTest >> initReStore: aReStore [
 
 	self initConnectionFor: aReStore
@@ -156,8 +187,18 @@ SSWReStoreTest >> setUp [
 	self initReStore: reStore.
 	reStore connect.
 	self addClassesTo: reStore.
-	reStore destroyAllClasses; synchronizeAllClasses.
+	self destroyAllClasses.
+	reStore synchronizeAllClasses.
 	self createTestData
+]
+
+{ #category : #testing }
+SSWReStoreTest >> shouldDestroyClasses [
+
+	"For efficiency with some databases we don't destroy classes (this can take a long time) but erase all data instead (see my sender).
+	However some tests may always require a fresh database, in which case return true"
+
+	^reStore sqlDialect shouldDropTablesForTestCases
 ]
 
 { #category : #running }

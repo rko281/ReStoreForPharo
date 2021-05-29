@@ -41,21 +41,21 @@ Dictionary >> _dbAdd: targetObject suggestedIndex: keyObject [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Dictionary >> _isMultiValue [
+Dictionary >> _dbKeyUpdateClass [
 
-	^self isEmpty not and: [(self anyOne isKindOf: Collection) and: [self anyOne isString not]]
+	^SSWDBCollectionKeyUpdate
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Dictionary >> _keyRemovalsIn: aCollectionOfChanges [
+Dictionary >> _dbRemovalClass [
 
-	^(aCollectionOfChanges isEmpty or: [aCollectionOfChanges first affectedEntry isKindOf: SSWDBCacheDictionaryEntry])
-	ifTrue:
-		[#()]
-	ifFalse:
-		[aCollectionOfChanges
-			select: [ :change | change canRemoveKey and: [(self includesKey: change affectedEntry index) not]]
-			thenCollect: [ :change | SSWDBCollectionObjectRemoval newWithObject: change affectedEntry index]]
+	^SSWDBCollectionRemovalWithKey
+]
+
+{ #category : #'*SSW ReStore Collections' }
+Dictionary >> _isMultiValue [
+
+	^self isEmpty not and: [(self anyOne isKindOf: Collection) and: [self anyOne isString not]]
 ]
 
 { #category : #'*SSW ReStore Collections' }

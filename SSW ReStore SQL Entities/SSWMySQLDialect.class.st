@@ -130,6 +130,14 @@ SSWMySQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 ]
 
 { #category : #testing }
+SSWMySQLDialect >> supportsDeleteWithJoin [
+
+	"Answer whether this dialect supports DELETE queries featuring JOINs"
+
+	^true
+]
+
+{ #category : #testing }
 SSWMySQLDialect >> supportsMultipleAddColumns [
 
 	^true

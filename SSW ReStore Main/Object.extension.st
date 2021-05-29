@@ -106,10 +106,12 @@ Object >> _hasChangedFrom: anObject [
 	"Return a Boolean indicating whether the receiver has changed in state from anObject.
 	Default test - is it equal? 
 	Subclasses with other definitions of 'state' should override"
+
+	self == anObject ifTrue: [^false].
 	
 	^self isValidForPersistence 
 		ifTrue: [self ~= anObject]
-		ifFalse: [self ~~ anObject]
+		ifFalse: [true]
 ]
 
 { #category : #'*SSW ReStore Main' }

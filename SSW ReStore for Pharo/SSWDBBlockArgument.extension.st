@@ -24,8 +24,8 @@ SSWDBBlockArgument >> postProcessDNU: anObject [
 	| sender node |
 
 	sender := thisContext sender sender.
-	node := sender method sourceNodeForPC: sender sswNeighborPCWithCorrectMapping.
-	node isMessage ifFalse: [^anObject ].
+	node := [sender method sourceNodeForPC: sender sswNeighborPCWithCorrectMapping] on: Error do: [ :exc | exc return: nil].
+	(node notNil and: [node isMessage]) ifFalse: [^anObject ].
 
 	"Collection>>includes: -> self>>includedIn:"
 	( node selector = #includes: and: [(anObject isKindOf: SSWDBCollectionBlockReceiver) not ]) ifTrue: 

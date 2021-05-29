@@ -4,5 +4,5 @@ Extension { #name : #SSWReStoreImplicitTrueQueryTest }
 SSWReStoreImplicitTrueQueryTest >> expectedFailures [
 
 	"Inlined variants not completely handled on Pharo"
-	^super expectedFailures, #(#testInlinedAndFirst #testInlinedAndMid #testInlinedOrFirst #testInlinedOrMid) 
+	^super expectedFailures, #(#testInlinedAndFirst #testInlinedAndMid #testInlinedOrFirst #testInlinedOrMid)
 ]

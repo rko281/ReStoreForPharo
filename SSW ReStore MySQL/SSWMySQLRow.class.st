@@ -7,9 +7,9 @@ Class {
 }
 
 { #category : #accessing }
-SSWMySQLRow >> columns [
+SSWMySQLRow >> columnNames [
 
-	^columnDescriptors
+	^columnDescriptors collect: [ :each | each name ]
 ]
 
 { #category : #accessing }

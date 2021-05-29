@@ -142,6 +142,14 @@ SSWReStoreTableTest >> setUp [
 	super setUp
 ]
 
+{ #category : #asserting }
+SSWReStoreTableTest >> shouldDestroyClasses [
+
+	"For table tests we need a fresh database"
+
+	^true
+]
+
 { #category : #'unit tests' }
 SSWReStoreTableTest >> test01VerifySetup [
 

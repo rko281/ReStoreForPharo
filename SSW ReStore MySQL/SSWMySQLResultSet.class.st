@@ -51,6 +51,12 @@ SSWMySQLResultSet >> readStream [
 ]
 
 { #category : #accessing }
+SSWMySQLResultSet >> results [
+
+	^self
+]
+
+{ #category : #accessing }
 SSWMySQLResultSet >> rows: aCollection [
 
 	(statement isNil or:[aCollection isNil]) ifTrue: [^super rows: aCollection].

@@ -16,11 +16,7 @@ Class {
 { #category : #actions }
 SSWDBStaticField >> applyValueFromRow: aDBRow to: anObject [
 
-	| dbValue |
-	
-	dbValue := aDBRow atField: self ifAbsent: [nil].
-	
-	self accessor value: (self convertValue: dbValue) in: anObject
+	self accessor value: (self convertValue: (aDBRow lookupField: self)) in: anObject
 ]
 
 { #category : #actions }
@@ -28,11 +24,7 @@ SSWDBStaticField >> applyValueIfChangedFromRow: aDBRow to: anObject [
 
 	"Return whether a change was applied"
 
-	| dbValue |
-	
-	dbValue := aDBRow atField: self ifAbsent: [nil].
-	
-	^self accessor valueIfChanged: (self convertValue: dbValue) in: anObject
+	^self accessor valueIfChanged: (self convertValue: (aDBRow lookupField: self)) in: anObject
 ]
 
 { #category : #actions }

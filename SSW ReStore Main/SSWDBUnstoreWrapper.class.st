@@ -27,7 +27,13 @@ SSWDBUnstoreWrapper >> _commitIn: anSSWReStore [
 ]
 
 { #category : #acccessing }
+SSWDBUnstoreWrapper >> _dbProxyIfNone: aBlock [
+
+	^self object _dbProxyIfNone: aBlock
+]
+
+{ #category : #acccessing }
 SSWDBUnstoreWrapper >> _reStoreIfNone: aBlock [
 
-	^SSWReStore reStoreForObject: self object ifNone: aBlock
+	^self object _reStoreIfNone: aBlock
 ]

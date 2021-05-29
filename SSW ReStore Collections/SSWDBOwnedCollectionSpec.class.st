@@ -47,6 +47,17 @@ SSWDBOwnedCollectionSpec >> dbInstancesFor: aCollectionProxy [
 		
 ]
 
+{ #category : #'accessing-queries' }
+SSWDBOwnedCollectionSpec >> deleteQuery [
+
+	self ownerField == nil ifTrue: [self setOwnerFieldFrom: self reStore].
+
+	^SSWSQLDeleteQuery new
+		table: self targetTable;
+		conditions: (SSWSQLCondition field: self ownerField equalTo: SSWSQLQueryParameter);
+		yourself
+]
+
 { #category : #accessing }
 SSWDBOwnedCollectionSpec >> elementsIn: aCollection notIn: anotherCollection [
 
@@ -214,7 +225,7 @@ SSWDBOwnedCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	statement values: (Array with: aCollectionProxy _ownerID).
 	reStore rowsFromStatement: statement do:
 		[ :row |
-		collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row atField: idField))].
+		collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row lookupField: idField))].
 	
 	collection _proxifyIn: aCollectionProxy.
 
@@ -241,7 +252,7 @@ SSWDBOwnedCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCol
 
 	statement := self refreshWithContentsIfUpdatedStatement. 
 	statement values: (Array with: aCollectionProxy _ownerID).
-	reStore rowsFromStatement: statement do: [ :row | collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row atField: idField) version: (row atField: versionField))].
+	reStore rowsFromStatement: statement do: [ :row | collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row lookupField: idField) version: (row lookupField: versionField))].
 
 	^collection _proxifyIn: aCollectionProxy
 ]

@@ -265,7 +265,7 @@ SSWReStoreObjectAPITests >> test08CantPersistCollection [
 ]
 
 { #category : #'unit tests' }
-SSWReStoreObjectAPITests >> test09Unstore [
+SSWReStoreObjectAPITests >> test09UnstoreUnproxied [
 
 	| obj1 prevName prevSingleName prevCount prevSingleCount |
 
@@ -276,6 +276,28 @@ SSWReStoreObjectAPITests >> test09Unstore [
 	prevCount := (OwnerTest storedInstances satisfying: [ :each | each name = prevName]) size.
 	prevSingleCount := (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size.
 
+	self deny: obj1 isDBProxy.
+	self assert: obj1 unstore.
+
+	self assert: (OwnerTest storedInstances satisfying: [ :each | each name = prevName]) size = (prevCount - 1).
+	self assert: (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size = (prevSingleCount - 1)
+]
+
+{ #category : #'unit tests' }
+SSWReStoreObjectAPITests >> test10UnstoreProxied [
+
+	| obj1 prevName prevSingleName prevCount prevSingleCount |
+
+	obj1 := self _testCreateObject.
+	prevName := obj1 name.
+	prevSingleName := obj1 single2 name.
+
+	prevCount := (OwnerTest storedInstances satisfying: [ :each | each name = prevName]) size.
+	prevSingleCount := (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size.
+
+	reStore softRollback.
+
+	self assert: obj1 isDBProxy.
 	self assert: obj1 unstore.
 
 	self assert: (OwnerTest storedInstances satisfying: [ :each | each name = prevName]) size = (prevCount - 1).
@@ -441,6 +463,10 @@ SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 	obj3 single2: (Test new name: 'test3').
 
 	reStore beginTransaction.
+
+	self assert: obj1 isDBProxy.
+	self assert: obj2 isDBProxy.
+
 	obj1 store.
 	obj2 unstore.
 	obj3 store.
@@ -492,6 +518,10 @@ SSWReStoreObjectAPITests >> test16StoreWithTransactionNonProxied [
 	self assert: obj1 single2 name equals: 'test1A'.
 	self assert: obj2 name equals: 'owner2'.
 
+	self deny: obj1 isDBProxy.
+	self deny: obj1 single2 isDBProxy.
+	self deny: obj2 isDBProxy.
+
 	obj1 store.
 	obj2 unstore.
 	obj3 store.
@@ -536,6 +566,10 @@ SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 	obj3 single2: (Test new name: 'test3').
 
 	reStore beginTransaction.
+
+	self assert: obj1 isDBProxy.
+	self assert: obj2 isDBProxy.
+
 	obj1 store.
 	obj2 unstore.
 	obj3 store.
@@ -583,6 +617,10 @@ SSWReStoreObjectAPITests >> test18StoreWithTransactionRollbackNonProxied [
 	self assert: obj1 name equals: 'owner1A'.
 	self assert: obj1 single2 name equals: 'test1A'.
 	self assert: obj2 name equals: 'owner2'.
+
+	self deny: obj1 isDBProxy.
+	self deny: obj1 single2 isDBProxy.
+	self deny: obj2 isDBProxy.
 
 	obj1 store.
 	obj2 unstore.

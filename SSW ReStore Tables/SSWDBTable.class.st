@@ -54,6 +54,12 @@ SSWDBTable class >> new [
 		yourself
 ]
 
+{ #category : #comparing }
+SSWDBTable >> = anSSWDBTable [
+
+	^self == anSSWDBTable or: [self species == anSSWDBTable species and: [self name = anSSWDBTable name]]
+]
+
 { #category : #defining }
 SSWDBTable >> abbreviate: aSymbol to: abbrevSymbol [
 
@@ -288,16 +294,18 @@ SSWDBTable >> createInstanceFromRow: aDBRow [
 	| object id |
 	
 	object := self instanceClass basicNew.
-	id := aDBRow atField: self idField ifAbsent: [nil].
 
 	self allDataFieldsDo:
 		[ :field |
 		field applyValueFromRow: aDBRow to: object].
-	
+
+	self collectionSpecs isEmpty ifTrue: [^object].
+
+	id := aDBRow lookupField: self idField.
 	self collectionSpecs do:
 		[ :collection |
 		collection applyTo: object withID: id in: self reStore].
-	
+		
 	^object
 ]
 
@@ -994,6 +1002,12 @@ SSWDBTable >> rootTable [
 	Standard definition - the receiver"
 
 	^self
+]
+
+{ #category : #accessing }
+SSWDBTable >> species [
+
+	^SSWDBTable
 ]
 
 { #category : #output }

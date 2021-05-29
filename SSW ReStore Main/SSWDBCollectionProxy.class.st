@@ -40,14 +40,6 @@ SSWDBCollectionProxy >> _collectionSpec: anSSWDBCollectionSpec [
 	collectionSpec := anSSWDBCollectionSpec
 ]
 
-{ #category : #'actions-internal' }
-SSWDBCollectionProxy >> _commitChanges [
-
-	"Default: no action for collections"
-	
-	^true
-]
-
 { #category : #'actions-refresh' }
 SSWDBCollectionProxy >> _forceRefresh [
 

@@ -33,6 +33,14 @@ SSWSQLSubQuery >> isWriteQuery [
 	^self query isWriteQuery
 ]
 
+{ #category : #accessing }
+SSWSQLSubQuery >> occurrencesOf: anObject [
+
+	^anObject = SSWSQLQueryParameter
+		ifTrue: [self query parameterisedFields size]
+		ifFalse: [super occurrencesOf: anObject "force MNU"]
+]
+
 { #category : #operations }
 SSWSQLSubQuery >> preExecIn: anSSWReStore [
 

@@ -7,7 +7,8 @@ Class {
 	#name : #MidPerson,
 	#superclass : #SuperPerson,
 	#instVars : [
-		'middleName'
+		'middleName',
+		'midFriend'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -17,7 +18,20 @@ MidPerson class >> reStoreDefinition [
 
 	^super reStoreDefinition
 		define: #middleName as: (String maxSize: 128);
+		define: #midFriend as: SuperPerson;
 		yourself
+]
+
+{ #category : #accessing }
+MidPerson >> midFriend [
+
+	^ midFriend
+]
+
+{ #category : #accessing }
+MidPerson >> midFriend: anObject [
+
+	midFriend := anObject
 ]
 
 { #category : #accessing }
