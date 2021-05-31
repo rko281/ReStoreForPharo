@@ -146,4 +146,4 @@ This is just a sample of what ReStore can do, with an empahsis on simplicity. Re
  - query-by-example (template queries)
  - customisable Smalltalk-to-SQL conversion
  
-Full documentation can be found [here](https://drive.google.com/file/d/1nDzLyokK8ZUAJuCh4J_H8MT_f3ZogMxy/view?usp=sharing). Please also see the included SUnits for more examples. 
+A complete user manual can be found in the [Documentation folder](Documentation) (or [view online here](https://drive.google.com/file/d/1nDzLyokK8ZUAJuCh4J_H8MT_f3ZogMxy/view?usp=sharing)). Please also see the included SUnits for more examples. 
