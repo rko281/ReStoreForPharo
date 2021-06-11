@@ -28,7 +28,7 @@ Object >> _commitIn: aReStore [
 	"...however if the object is encountered multiple times during a commitObjects: operation, its proxy will have flipped to the object"
 	(aReStore isInCurrentTransaction: self) ifFalse: 
 		"isValidForPersistence test excludes base object types (String, Number etc.)"
-		[self isValidForPersistence ifFalse: [self storeIn: aReStore]]
+		[self isValidForPersistence ifFalse: [self storeInAnsweringProxy: aReStore]]
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -58,7 +58,7 @@ Object >> _dbProxyIn: aReStore [
 { #category : #'*SSW ReStore Main' }
 Object >> _dbProxyIn: aReStore ifNone: aBlock [
 	
-	^aReStore actualProxyForObject: self ifNone: aBlock
+	^aReStore activeProxyForObject: self ifNone: aBlock
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -76,10 +76,10 @@ Object >> _ensureActiveIn: anSSWReStore [
 { #category : #'*SSW ReStore Main' }
 Object >> _ensurePersistentIn: anSSWReStore [
 
-	"Ensure that the receiver is persistent in the given ReStore"
+	"Ensure that the receiver is persistent in the given ReStore.
+	When received by a non-proxy object, the receiver is either non-persistent (store it) or already in the current transaction (do nothing)"
 
-	self isValidForPersistence ifFalse:
-		[anSSWReStore locateProxyForObject: self ifNone: [self storeIn: anSSWReStore]]
+	(self isValidForPersistence or: [anSSWReStore isInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -481,13 +481,9 @@ Object >> storeInAnsweringProxy: anSSWReStore [
 	"Store the receiver object as a new persistent object in anSSWReStore.
 	Return the new proxy (intended for privileged code only)"
 	
-	| proxy |
-
-	proxy := anSSWReStore createProxyForNewObject: self.
-
-	proxy _referenced.
-
-	^proxy
+	^(anSSWReStore createProxyForNewObject: self)
+		_referenced;
+		yourself
 ]
 
 { #category : #'*SSW ReStore Main' }

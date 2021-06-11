@@ -129,7 +129,7 @@ SSWReStore class >> proxyForObject: anObject ifNone: aBlock [
 		[ :aReStore | 
 		"Only interrogate aReStore if it stores instances of the class of anObject"
 		((aReStore tableCache includesKey: anObject class) or: [anObject isKindOf: Collection]) ifTrue:
-			[(aReStore actualProxyForObject: anObject ifNone: [nil]) ifNotNil: [ :proxy | ^proxy]]].
+			[(aReStore activeProxyForObject: anObject ifNone: [nil]) ifNotNil: [ :proxy | ^proxy]]].
 
 	^aBlock value
 ]
@@ -183,20 +183,15 @@ SSWReStore >> abandonTransaction [
 ]
 
 { #category : #'proxy manipulation' }
-SSWReStore >> actualProxyForObject: anObject ifNone: aBlock [
+SSWReStore >> activeProxyForObject: anObject ifNone: aBlock [
 
-	"Locate within the receiver's proxyCache the proxy object wrapping anObject.
-	Ensure that we return a proxy (not a reference-swapped real object)"
+	"Locate and return the proxy object wrapping anObject, or the result of a Block if none"
 
 	"Base types (String, Number etc.) - these are never proxified"
 	anObject class isPersistentBaseClass ifTrue: [^aBlock value].
 
-	(self tableForClass: anObject class ifAbsent: [nil]) notNil ifTrue:
-		[(self locateProxyForObject: anObject ifNone: [nil])
-			ifNil: [^aBlock value]
-			ifNotNil: [ :proxy | proxy isDBProxy ifTrue: [^proxy]]].
-
-	"Check in the active transaction"
+	"We only need to lookup proxies if they are active in the current transaction (since all external references to the proxy will have swapped to its proxied object).
+	Therefor we only need to check in the active transaction"
 	^self transaction
 		ifNil: [aBlock value]
 		ifNotNil: [ :trans | trans proxyForObject: anObject ifNone: aBlock]
@@ -1217,7 +1212,7 @@ SSWReStore >> isConnected [
 { #category : #'transaction management' }
 SSWReStore >> isInCurrentTransaction: anObject [
 
-	^(self transaction proxyForObject: anObject ifNone: [nil]) notNil
+	^self transaction includesProxiedObject: anObject
 ]
 
 { #category : #testing }
@@ -1298,7 +1293,7 @@ SSWReStore >> nextIDForTable: anSSWDBTable [
 	nextID := directTableRecord nextID + 1.
 
 	statement := self nextIDStatement.
-	statement values: (Array with: nextID with: directTableRecord _id with: directTableRecord nextID); exec.
+	statement values: (Array with: nextID with: tableRecord _id with: directTableRecord nextID); exec.
 	statement rowsAffected = 1 ifTrue: [^nextID].
 
 	"Refresh and try again"

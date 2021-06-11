@@ -8,7 +8,8 @@ Class {
 	#name : #SSWDBObjectWithComponents,
 	#superclass : #SSWDBWrapper,
 	#instVars : [
-		'exclusions'
+		'exclusions',
+		'originatingComponent'
 	],
 	#category : #'SSW ReStore Main'
 }
@@ -115,7 +116,9 @@ SSWDBObjectWithComponents >> componentsIn: aReStore do: aBlock visited: visitedS
 			[ :component |
 			component componentsOf: self object do: 
 				[ :each | 
-				each withComponents withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
+				each withComponents 
+					originatingComponent: component;
+					withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
 ]
 
 { #category : #accessing }
@@ -126,6 +129,18 @@ SSWDBObjectWithComponents >> exclusions [
 { #category : #accessing }
 SSWDBObjectWithComponents >> exclusions: anObject [
 	exclusions := anObject
+]
+
+{ #category : #accessing }
+SSWDBObjectWithComponents >> originatingComponent [
+
+	^ originatingComponent
+]
+
+{ #category : #accessing }
+SSWDBObjectWithComponents >> originatingComponent: anObject [
+
+	originatingComponent := anObject
 ]
 
 { #category : #accessing }

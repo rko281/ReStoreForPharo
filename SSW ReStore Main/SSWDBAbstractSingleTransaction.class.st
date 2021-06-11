@@ -10,6 +10,7 @@ Class {
 	#instVars : [
 		'allReferencedObjects',
 		'currentReferencedObjects',
+		'activeProxiesMap',
 		'changedObjects',
 		'allocatedIDs',
 		'deletedObjects'
@@ -24,6 +25,22 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	self currentReferencedObjects do: [ :each | each _swapReferences].
 	self endObjectCollection
+]
+
+{ #category : #accessing }
+SSWDBAbstractSingleTransaction >> activeProxiesMap [
+
+	"activeProxiesMap stores an IdentityDictionary mapping objects active in this transaction to their proxy"
+
+	^activeProxiesMap
+]
+
+{ #category : #accessing }
+SSWDBAbstractSingleTransaction >> activeProxiesMap: anIdentityDictionary [
+
+	"activeProxiesMap stores an IdentityDictionary mapping objects active in this transaction to their proxy"
+
+	activeProxiesMap := anIdentityDictionary
 ]
 
 { #category : #actions }
@@ -114,6 +131,7 @@ SSWDBAbstractSingleTransaction >> begin [
 	
 	self
 		allocatedIDs: (IdentityDictionary new: 64);
+		activeProxiesMap: (IdentityDictionary new: 128);
 		beginObjectCollection
 ]
 
@@ -167,7 +185,7 @@ SSWDBAbstractSingleTransaction >> commitAllocatedIDs [
 		directTableRecord := tableRecord _proxiedObject.
 		nextID := directTableRecord nextID + ids size.
 		statement := tableRecord _reStore nextIDStatement.
-		statement values: (Array with: nextID with: directTableRecord _id with: directTableRecord nextID); exec.
+		statement values: (Array with: nextID with: tableRecord _id with: directTableRecord nextID); exec.
 		statement rowsAffected = 1] whileFalse: 
 			["Update clash; refresh and try again"
 			tableRecord _recoverProxiedObject]]
@@ -221,6 +239,12 @@ SSWDBAbstractSingleTransaction >> endObjectCollection [
 	self 
 		allReferencedObjects: nil;
 		currentReferencedObjects: self newEmptyObjectsSet
+]
+
+{ #category : #testing }
+SSWDBAbstractSingleTransaction >> includesProxiedObject: anObject [
+
+	^self activeProxiesMap includesKey: anObject
 ]
 
 { #category : #testing }
@@ -317,19 +341,18 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 ]
 
 { #category : #'proxy tracking' }
-SSWDBAbstractSingleTransaction >> proxy: aProxydObject forwarded: aMessage [
+SSWDBAbstractSingleTransaction >> proxy: aDBProxy forwarded: aMessage [
 
-	"Add aProxydObject to the collection of potentially-changed objects
-	(the receiver performs no checking on the message sent)"
+	"Add aDBProxy to the collection of poten Variable or expression expected ->tially-changed objects (the receiver performs no checking on the message sent)"
 
-	self currentReferencedObjects add: aProxydObject
+	self activeProxiesMap at: aDBProxy _proxiedObject put: aDBProxy.
+	self currentReferencedObjects add: aDBProxy
 ]
 
 { #category : #'proxy tracking' }
 SSWDBAbstractSingleTransaction >> proxyForObject: anObject ifNone: aBlock [
 
-	^self currentReferencedObjects detect: [ :each | each _proxiedObject == anObject] ifNone:
-		[self allReferencedObjects detect: [ :each | each _proxiedObject == anObject] ifNone: aBlock]
+	^self activeProxiesMap at: anObject ifAbsent: aBlock
 ]
 
 { #category : #'proxy tracking' }

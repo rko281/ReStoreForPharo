@@ -19,7 +19,9 @@ SSWDBObjectWithRelatedComponents >> componentsIn: aReStore do: aBlock visited: v
 			[ :component |
 			component relatedComponentsOf: self object do: 
 				[ :each | 
-				each withRelatedComponents withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
+				each withRelatedComponents 
+					originatingComponent: component;
+					withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
 ]
 
 { #category : #accessing }
