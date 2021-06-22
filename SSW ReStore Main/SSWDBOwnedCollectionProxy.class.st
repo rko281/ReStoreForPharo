@@ -134,7 +134,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 		[removed do: 
 			[ :each |
 			collectionSpec ownerAccessor value: nil in: each.
-			each isDBProxy ifTrue: [each _referenced]]]
+			each _ensureActiveIn: reStore]]
 ]
 
 { #category : #accessing }

@@ -241,6 +241,15 @@ SSWDBAbstractSingleTransaction >> endObjectCollection [
 		currentReferencedObjects: self newEmptyObjectsSet
 ]
 
+{ #category : #actions }
+SSWDBAbstractSingleTransaction >> ensureIsActive: anObject [
+
+	"Ensure anObject is currently active (i.e.is in the currentReferencedObjects set) if it is already present in this transaction.
+	Return whether anObject exists in this transaction"
+
+	^(self activeProxiesMap at: anObject ifPresent: [ :proxy | self currentReferencedObjects add: proxy]) notNil
+]
+
 { #category : #testing }
 SSWDBAbstractSingleTransaction >> includesProxiedObject: anObject [
 
@@ -309,16 +318,15 @@ SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 { #category : #actions }
 SSWDBAbstractSingleTransaction >> prepareToCommit [
 
-	| changed noneChanged currentObjects |
+	| changed unchanged currentObjects |
 
 	changed := self newEmptyObjectsSet: (self currentReferencedObjects size // 2).
-	noneChanged := false.
+	unchanged := self newEmptyObjectsSet: (self currentReferencedObjects size // 2).
 
 	"Pre-write validate the changed objects. This may cause other objects to be added to the transaction,
 	so repeat until no more changed objects are found"
-	[noneChanged] whileFalse:
+	[self currentReferencedObjects isEmpty] whileFalse:
 		[| needingPhase2 |
-		noneChanged := true.
 		currentObjects := self currentReferencedObjects.
 		needingPhase2 := self newEmptyObjectsSet.
 		self nextCollectionPhase.
@@ -327,15 +335,14 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 			(changed includes: proxy) ifFalse:
 				[proxy _hasChanged 
 				ifTrue: 
-					[noneChanged := false.
-					changed add: proxy.
+					[changed add: proxy.
 					proxy _prepareToCommitPhase1 ifTrue: [needingPhase2 add: proxy]]
 				ifFalse:
-					[self currentReferencedObjects add: proxy]]].
+					[unchanged add: proxy]]].
 		needingPhase2 do: [ :each | each _prepareToCommitPhase2]].
 	
-	self currentReferencedObjects do: [ :proxy | proxy _swapReferences].
 	self changedObjects: (changed collect: [ :proxy | proxy _swapReferences]). 
+	unchanged do: [ :each | each isDBProxy ifTrue: [each _swapReferences]].
 
 	self endObjectCollection
 ]
@@ -343,9 +350,9 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 { #category : #'proxy tracking' }
 SSWDBAbstractSingleTransaction >> proxy: aDBProxy forwarded: aMessage [
 
-	"Add aDBProxy to the collection of poten Variable or expression expected ->tially-changed objects (the receiver performs no checking on the message sent)"
+	"Add aDBProxy to the collection of potentially-changed objects (the receiver performs no checking on the message sent)"
 
-	self activeProxiesMap at: aDBProxy _proxiedObject put: aDBProxy.
+	aDBProxy _proxiedObject ifNotNil: [ :object | self activeProxiesMap at: object put: aDBProxy].
 	self currentReferencedObjects add: aDBProxy
 ]
 

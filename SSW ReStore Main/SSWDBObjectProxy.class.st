@@ -277,7 +277,9 @@ SSWDBObjectProxy >> _unstore [
 	self _dbTable aboutToBeUnstored: proxiedObject.
 	proxiedObject onAboutToUnstore.
 
-	self _isPersistent ifFalse: [reStore deregisterProxy: self; removeFromTransaction: self].
+	self _isPersistent 
+		ifTrue: [self __referenced]
+		ifFalse: [reStore deregisterProxy: self; removeFromTransaction: self].
 
 	"Separate loops to cope with potential reference swap"
 	collectionProxies do: [ :each | each __ensureActive].

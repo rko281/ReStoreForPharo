@@ -67,10 +67,9 @@ Object >> _ensureActiveIn: anSSWReStore [
 	"Ensure that the receiver is 'active' in the given ReStore 
 	'active' means persistent in anSSWReStore, and present in the current transaction.
 
-	If this message is received by a real object it is either not persistent, or persistent and active.
-	Hence - only need to ensure persistence"
-	
-	self _ensurePersistentIn: anSSWReStore
+	If this message is received by a real object it is either persistent and active, or not yet persistent"
+
+	(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
 { #category : #'*SSW ReStore Main' }

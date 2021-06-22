@@ -28,6 +28,12 @@ SSWDBProxy >> __ensureActive [
 	(reStore transaction includesProxy: self) ifFalse: [self _referenced]
 ]
 
+{ #category : #'actions-internal' }
+SSWDBProxy >> __referenced [
+
+	reStore proxy: self forwarded: ##(Message selector: #_referenced)
+]
+
 { #category : #accessing }
 SSWDBProxy >> _changedObjectsIn: aReStore [
 
@@ -353,7 +359,7 @@ SSWDBProxy >> _referenced [
 		ifTrue: [me := self _swapReferences]
 		ifFalse: [me := self].
 
-	me _reStore proxy: me forwarded: (Message selector: #_referenced).
+	me __referenced.
 	
 	^me
 ]

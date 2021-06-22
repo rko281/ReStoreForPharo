@@ -903,6 +903,12 @@ SSWReStore >> ensureCanChangeTransactionMode [
 	self isConnected ifTrue: [self error: 'Cannot change transaction mode whilst connected']
 ]
 
+{ #category : #'proxy manipulation' }
+SSWReStore >> ensureIsActiveInCurrentTransaction: anObject [
+
+	^self transaction ensureIsActive: anObject
+]
+
 { #category : #'transaction management' }
 SSWReStore >> ensureNoActiveTransaction [
 
