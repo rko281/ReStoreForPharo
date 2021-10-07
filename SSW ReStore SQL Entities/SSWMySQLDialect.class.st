@@ -34,7 +34,7 @@ SSWMySQLDialect >> blobTypes [
 	"Full use of MEDIUMBLOB and LONGBLOB will require increasing the default maxColumnBytes (unrealistically so for LONGBLOB)"
 
 	^OrderedCollection new
-		add: (255 "((2 raisedTo: 8) - 1)" -> 'TINYBLOB');
+		add: (self maxVarchar "same as max VARBINARY" -> 'VARBINARY(<1p>)');
 		add: (65535 "((2 raisedTo: 16) - 1)" -> 'BLOB');
 		add: (16777215 "((2 raisedTo: 24) - 1)" -> 'MEDIUMBLOB');
 		add: (4294967295 "((2 raisedTo: 32) - 1)" -> 'LONGBLOB');
@@ -153,4 +153,10 @@ SSWMySQLDialect >> unsizedStringTypes [
 		add: (16777215 "((2 raisedTo: 24) - 1)" -> 'MEDIUMTEXT');
 		add: (4294967295 "((2 raisedTo: 32) - 1)" -> 'LONGTEXT');
 		yourself
+]
+
+{ #category : #datatypes }
+SSWMySQLDialect >> uuid [
+
+	^'BINARY(16)'
 ]

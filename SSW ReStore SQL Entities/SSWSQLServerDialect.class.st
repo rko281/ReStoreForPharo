@@ -148,3 +148,9 @@ SSWSQLServerDialect >> unsizedBlob [
 
 	^'varbinary(max)'
 ]
+
+{ #category : #datatypes }
+SSWSQLServerDialect >> uuid [
+
+	^'UNIQUEIDENTIFIER'
+]

@@ -25,6 +25,12 @@ SSWSQLite3ResultSet >> first [
 ]
 
 { #category : #initialization }
+SSWSQLite3ResultSet >> free [
+
+	statement free
+]
+
+{ #category : #initialization }
 SSWSQLite3ResultSet >> initialize [ 
 
 	super initialize.

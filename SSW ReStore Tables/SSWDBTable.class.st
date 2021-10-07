@@ -283,7 +283,7 @@ SSWDBTable >> createIDField [
 	field
 		table: self;
 		accessor: SSWDBIDAccessor new;
-		targetClass: Integer.
+		targetClass: self instanceClass reStoreIDClass.
 	
 	self idField: field
 ]

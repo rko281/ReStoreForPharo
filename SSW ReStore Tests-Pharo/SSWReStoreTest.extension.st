@@ -1,12 +1,6 @@
 Extension { #name : #SSWReStoreTest }
 
 { #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreTest >> countQueries [
-
-	self resetQueryCount.
-]
-
-{ #category : #'*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> debugStream [
 
 	^nil
@@ -46,25 +40,7 @@ SSWReStoreTest class >> listModelOn: aCollection [
 ]
 
 { #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreTest >> queryCount [
-
-	^reStore connection queryCount
-]
-
-{ #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreTest >> resetQueryCount [
-
-	^reStore connection resetQueryCount
-]
-
-{ #category : #'*SSW ReStore Tests-Pharo' }
 SSWReStoreTest class >> shouldInheritSelectors [ 
 
 	^true
-]
-
-{ #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreTest >> stopQueryCounting [
-
-	reStore connection stopQueryCounting
 ]

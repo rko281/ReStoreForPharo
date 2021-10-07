@@ -529,6 +529,44 @@ SSWSQLDialect >> integer [
 	^'INTEGER'
 ]
 
+{ #category : #constants }
+SSWSQLDialect >> integerMaximum [
+
+	"Typically 4 byte signed"
+
+	^(2 ** 31) - 1
+]
+
+{ #category : #constants }
+SSWSQLDialect >> integerMinimum [
+
+	"Typically 4 byte signed"
+
+	^(2 ** 31) negated
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> largeInteger [
+
+	^'BIGINT'
+]
+
+{ #category : #constants }
+SSWSQLDialect >> largeIntegerMaximum [
+
+	"Typically 8 byte signed"
+
+	^(2 ** 63) - 1
+]
+
+{ #category : #constants }
+SSWSQLDialect >> largeIntegerMinimum [
+
+	"Typically 8 byte signed"
+
+	^(2 ** 63) negated
+]
+
 { #category : #datatypes }
 SSWSQLDialect >> longText [
 
@@ -932,6 +970,12 @@ SSWSQLDialect >> updateDelaySeconds [
 	This is primarily for SUnit purposes but may be useful elsewhere"
 
 	^0
+]
+
+{ #category : #datatypes }
+SSWSQLDialect >> uuid [
+
+	^(self blobTypeForSize: 16) expandMacrosWith: 16
 ]
 
 { #category : #datatypes }

@@ -29,6 +29,12 @@ SSWReStoreTest >> addClassesTo: aReStore [
 ]
 
 { #category : #running }
+SSWReStoreTest >> countQueries [
+
+	self resetQueryCount.
+]
+
+{ #category : #running }
 SSWReStoreTest >> countQueriesDuring: aBlock [
 
 	self countQueries.
@@ -166,6 +172,12 @@ SSWReStoreTest >> performTest [
 	^super performTest
 ]
 
+{ #category : #running }
+SSWReStoreTest >> queryCount [
+
+	^reStore connection queryCount
+]
+
 { #category : #accessing }
 SSWReStoreTest >> refreshDelay [
 
@@ -178,6 +190,12 @@ SSWReStoreTest >> releaseReStore: aReStore [
 	aReStore isConnected ifTrue: [aReStore disconnect].
 
 	aReStore clearTableCache
+]
+
+{ #category : #running }
+SSWReStoreTest >> resetQueryCount [
+
+	^reStore connection resetQueryCount
 ]
 
 { #category : #running }
@@ -199,6 +217,12 @@ SSWReStoreTest >> shouldDestroyClasses [
 	However some tests may always require a fresh database, in which case return true"
 
 	^reStore sqlDialect shouldDropTablesForTestCases
+]
+
+{ #category : #running }
+SSWReStoreTest >> stopQueryCounting [
+
+	reStore connection stopQueryCounting
 ]
 
 { #category : #running }

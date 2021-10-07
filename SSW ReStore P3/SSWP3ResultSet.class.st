@@ -35,6 +35,10 @@ SSWP3ResultSet >> first [
 		ifFalse: [self rowWith: data first]
 ]
 
+{ #category : #'initialize-release' }
+SSWP3ResultSet >> free [
+]
+
 { #category : #accessing }
 SSWP3ResultSet >> last [
 

@@ -17,6 +17,7 @@ Class {
 		'largeBlob',
 		'unsizedBlob',
 		'integer',
+		'largeInteger',
 		'float',
 		'decimal',
 		'date',
@@ -25,7 +26,8 @@ Class {
 		'timeWithMilliseconds',
 		'datetimeWithMilliseconds',
 		'trueBoolean',
-		'falseBoolean'
+		'falseBoolean',
+		'uuid'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -46,6 +48,7 @@ TypeTest class >> reStoreDefinition [
 		define: #unsizedBlob as: ByteArray;
 
 		define: #integer as: Integer;
+		define: #largeInteger as: LargeInteger;
 		define: #float as: Float;
 		define: #decimal as: (ScaledDecimal withPrecision: 20 scale: 4);
 
@@ -56,6 +59,8 @@ TypeTest class >> reStoreDefinition [
 
 		define: #trueBoolean as: Boolean;
 		define: #falseBoolean as: Boolean;
+		
+		define: #uuid as: GUID;
 
 		yourself
 ]
@@ -179,6 +184,18 @@ TypeTest >> largeBlob: anObject [
 ]
 
 { #category : #accessing }
+TypeTest >> largeInteger [
+
+	^ largeInteger
+]
+
+{ #category : #accessing }
+TypeTest >> largeInteger: anObject [
+
+	largeInteger := anObject
+]
+
+{ #category : #accessing }
 TypeTest >> largeText [
 	"Private - Answer the value of the receiver's ''largeText'' instance variable."
 
@@ -276,6 +293,18 @@ TypeTest >> unsizedText: anObject [
 	"Private - Set the value of the receiver's ''unsizedText'' instance variable to the argument, anObject."
 
 	unsizedText := anObject
+]
+
+{ #category : #accessing }
+TypeTest >> uuid [
+
+	^ uuid
+]
+
+{ #category : #accessing }
+TypeTest >> uuid: anObject [
+
+	uuid := anObject
 ]
 
 { #category : #accessing }

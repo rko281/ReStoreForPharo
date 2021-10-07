@@ -78,6 +78,26 @@ Object class >> reStoreDefinition [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+Object class >> reStoreIDClass [
+
+	"Return the class used as a unique ID in ReStore.
+	Default is Integer, which ReStore auto-allocates if not explicitly set by application code (usually where unique ID is also application data).
+	Other classes are supported; see instance method reStoreNewUniqueID"
+
+	^Integer
+]
+
+{ #category : #'*SSW ReStore Tables' }
+Object class >> reStoreNewUnique [
+
+	"Return a new unique instance of the receiver to be used as a ReStore unique ID.
+	See instance method reStoreNewUniqueID"
+
+	"If we end up here something is wrong - see other implementors"
+	^self shouldNotImplement
+]
+
+{ #category : #'*SSW ReStore Tables' }
 Object class >> reStoreTableClass [
 
 	"Deduce and return the correct class to use for the receiver's ReStore Table"

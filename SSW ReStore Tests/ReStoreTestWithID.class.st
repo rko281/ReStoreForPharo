@@ -33,6 +33,12 @@ ReStoreTestWithID class >> reStoreDefinition [
 		yourself
 ]
 
+{ #category : #public }
+ReStoreTestWithID class >> shouldSubclassesInheritPersistency [
+
+	^false
+]
+
 { #category : #accessing }
 ReStoreTestWithID >> name [
 	^name

@@ -117,7 +117,7 @@ SSWMySQLConnection >> sqlDialectClass [
 { #category : #accessing }
 SSWMySQLConnection >> tablesInNamespace: aString [
 
-	^((aString isNil or: [aString = self sqlDialect standardNamespace])
+	^(((aString isNil or: [aString = self sqlDialect standardNamespace])
 		ifTrue: [ self execute: 'SHOW TABLES' ]
-		ifFalse: [ self execute: 'SHOW TABLES IN ', (self sqlDialect asIdentifier: aString) ]) collect: [ :row | row first ]
+		ifFalse: [ self execute: 'SHOW TABLES IN ', (self sqlDialect asIdentifier: aString) ]) collect: [ :row | row first ]) asOrderedCollection
 ]

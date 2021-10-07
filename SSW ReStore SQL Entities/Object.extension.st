@@ -58,7 +58,7 @@ Object >> writeSQLOn: aStream forField: aField [
 { #category : #'*SSW ReStore SQL Entities' }
 Object class >> writeSQLTypeOn: aStream using: anSQLDialect [
 
-	"If not overriden, assume a persistent class with an Integer ID"
+	"If not overriden, assume a persistent class with a unique ID"
 	
-	Integer writeSQLTypeOn: aStream using: anSQLDialect
+	self reStoreIDClass writeSQLTypeOn: aStream using: anSQLDialect
 ]

@@ -132,3 +132,9 @@ SSWPostgreSQLDialect >> unsizedBlob [
 
 	^'bytea'
 ]
+
+{ #category : #datatypes }
+SSWPostgreSQLDialect >> uuid [
+
+	^'uuid'
+]

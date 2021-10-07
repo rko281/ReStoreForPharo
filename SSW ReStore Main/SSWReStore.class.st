@@ -263,7 +263,7 @@ SSWReStore >> affiliations [
 { #category : #'cache management' }
 SSWReStore >> allocateIDFor: anObject in: aDBTable [
 
-	^self transaction allocateIDFor: anObject tableRecord: (self tableRecordFor: aDBTable)
+	^anObject reStoreNewUniqueID ifNil: [self transaction allocateIDFor: anObject tableRecord: (self tableRecordFor: aDBTable)]
 ]
 
 { #category : #'class maintenance' }
@@ -348,25 +348,25 @@ SSWReStore >> cachedInstancesOf: aClass [
 ]
 
 { #category : #'cache management' }
-SSWReStore >> cachedObjectOfClass: aClass withID: anID ifAbsent: aBlock [
+SSWReStore >> cachedObjectOfClass: aClass withID: aRawID ifAbsent: aBlock [
 
-	"Return the cached object (actually a proxy) of the given class with the given unique ID.
+	"Return the cached object (actually a proxy) of the given class with the given unique ID (raw value as read from database; may need reifying).
 	If none is found, evaluate aBlock"
 	
-	^(self classCacheFor: aClass) at: anID ifAbsent: aBlock
+	^(self classCacheFor: aClass) at: (aClass reStoreIDClass instanceFromDBValue: aRawID in: self) ifAbsent: aBlock
 ]
 
 { #category : #'cache management' }
-SSWReStore >> cachedObjectOfClass: aClass withID: anID 
+SSWReStore >> cachedObjectOfClass: aClass withID: aRawID 
 	ifAbsent: absentBlock ifUnrecovered: unrecoveredBlock ifUntouched: untouchedBlock [
 
-	"Return the cached object (which may actually a proxy) of the given class with the given unique ID.
+	"Return the cached object (which may actually a proxy) of the given class with the given unique ID (raw value as read from database; may need reifying).
 	If none is found, evaluate absentBlock.
 	If an unrecovered proxy, evaluate unrecoveredBlock with it.
 	If a recovered but not 'touched' proxy, evaluate untouchedBlock with it.
 	A proxy is considered 'touched' if it has been sent a message since the last abort"
 	
-	^(self cachedObjectOfClass: aClass withID: anID ifAbsent: [nil])
+	^(self cachedObjectOfClass: aClass withID: aRawID ifAbsent: [nil])
 	ifNil:
 		[absentBlock value]
 	ifNotNil:
@@ -441,7 +441,7 @@ SSWReStore >> classCacheFor: aClass [
 	"Proxies are cached under the registerClass of their associated table"
 	^self proxyCache 
 		at: (self tableForClass: aClass) registerClass 
-		ifAbsentPut: [WeakIdentityDictionary new: 128]
+		ifAbsentPut: [WeakValueDictionary new: 128]
 ]
 
 { #category : #'cache management' }

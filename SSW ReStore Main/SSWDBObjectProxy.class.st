@@ -25,12 +25,12 @@ SSWDBObjectProxy class >> _forNewObject: anObject withID: anInteger inReStore: a
 ]
 
 { #category : #'instance creation' }
-SSWDBObjectProxy class >> _forObjectOfClass: aClass withID: anInteger  inReStore: aReStore [
+SSWDBObjectProxy class >> _forObjectOfClass: aClass withID: anObject inReStore: aReStore [
 
 	^self new
 		_reStore: aReStore;
 		_class: aClass;
-		_id: anInteger;
+		_id: (aClass reStoreIDClass instanceFromDBValue: anObject in: aReStore);
 		yourself
 ]
 

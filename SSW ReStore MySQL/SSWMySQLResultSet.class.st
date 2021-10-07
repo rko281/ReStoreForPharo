@@ -25,6 +25,12 @@ SSWMySQLResultSet >> first [
 		ifFalse: [ rows first ]
 ]
 
+{ #category : #'initialize-release' }
+SSWMySQLResultSet >> free [
+
+	statement free
+]
+
 { #category : #accessing }
 SSWMySQLResultSet >> last [
 

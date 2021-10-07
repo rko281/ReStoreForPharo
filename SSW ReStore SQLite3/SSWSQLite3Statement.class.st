@@ -9,10 +9,27 @@ Class {
 	#category : #'SSW ReStore SQLite3'
 }
 
+{ #category : #bindings }
+SSWSQLite3Statement >> at: anIndex putUUID: aUUID [
+
+	^self at: anIndex putByteArray: (ByteArray withAll: aUUID)
+]
+
 { #category : #'initialize-release' }
 SSWSQLite3Statement >> cursoredFetch: aBoolean [
 
 	"Always enabled"
+]
+
+{ #category : #bindings }
+SSWSQLite3Statement >> dataTypeForObject: anObject [	
+	
+	| typeSelector |
+	typeSelector := super dataTypeForObject: anObject. 
+
+	^(typeSelector = #at:putByteArray: and: [ anObject isKindOf: UUID])
+		ifTrue: [ #at:putUUID: ]
+		ifFalse: [ typeSelector ]
 ]
 
 { #category : #execution }
@@ -44,6 +61,14 @@ SSWSQLite3Statement >> prepare: aString [
 
 	self sqlString: aString.
 	^super prepare: aString
+]
+
+{ #category : #accessing }
+SSWSQLite3Statement >> stringAt: aColumn [
+
+	"Convert from UTF8"
+	
+	^ZnUTF8Encoder default decodeBytes: (self byteArrayAt: aColumn)
 ]
 
 { #category : #accessing }

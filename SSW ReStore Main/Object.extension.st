@@ -352,6 +352,15 @@ Object class >> preferredObjectProxyClass [
 ]
 
 { #category : #'*SSW ReStore Main' }
+Object >> reStoreNewUniqueID [
+
+	"Return a new unique ID object to use for newly-persistent instances of the receiver.
+	Default - ask this class's reStoreIDClass to allocate one"
+
+	^self class reStoreIDClass reStoreNewUnique
+]
+
+{ #category : #'*SSW ReStore Main' }
 Object >> reStoreValue [
 
 	"Return an object to use to represent the receiver in ReStore.

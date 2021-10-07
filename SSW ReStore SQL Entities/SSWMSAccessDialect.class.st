@@ -86,6 +86,26 @@ SSWMSAccessDialect >> dialectSpecificFunctions [
 ]
 
 { #category : #datatypes }
+SSWMSAccessDialect >> largeInteger [
+
+	"Not supported"
+
+	^self integer
+]
+
+{ #category : #constants }
+SSWMSAccessDialect >> largeIntegerMaximum [ 
+
+	^self integerMaximum 
+]
+
+{ #category : #constants }
+SSWMSAccessDialect >> largeIntegerMinimum [  
+
+	^self integerMinimum 
+]
+
+{ #category : #datatypes }
 SSWMSAccessDialect >> longText [
 
 	^'LONGTEXT'

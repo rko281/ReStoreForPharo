@@ -42,7 +42,9 @@ SSWMySQLRow >> data: aCollection [
 		[ :index :value | 
 		(value isKindOf: String) 
 		ifTrue: 
-			[ columnValues at: index put: (ZnUTF8Encoder default decodeBytesIntoWideString: value asByteArray) ]
+			[ (columnDescriptors at: index) charSet = 63 
+				ifTrue: [ columnValues at: index put: value asByteArray ]
+				ifFalse: [columnValues at: index put: (ZnUTF8Encoder default decodeBytesIntoWideString: value asByteArray) ] ]
 		ifFalse: 
 			[ ((value isKindOf: ByteArray) and: [ (columnDescriptors at: index) charSet ~= 63]) ifTrue: 
 					[columnValues at: index put: (ZnUTF8Encoder default decodeBytesIntoWideString: value ) ] ] ]
