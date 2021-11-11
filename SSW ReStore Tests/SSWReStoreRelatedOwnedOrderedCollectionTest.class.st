@@ -56,6 +56,31 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> templateCollection [
 ]
 
 { #category : #tests }
+SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithDirectCollectionStore [
+
+	"Verify that an element removed from the collection is stored correctly when the collection (rather than its owner) is stored.
+	Tests a previously-erroring case where elements removed from a depenent owned collection were not unstored if the collection owner was not in the transaction"
+
+	| size element id cls |
+
+	size := collection size.
+	element := collection anyOne. 
+	id := element _id.
+	cls := element class.
+
+	collection remove: element.
+	collection store.
+
+	reStore simulateReconnect.
+	self fetchTestObjects.
+
+	self assert: collection size equals: size - 1.
+	((cls storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) ifNotNil: [ :elem | self deny: (collection includes: elem)].
+
+	self _testComponentExistenceOnDependency: element
+]
+
+{ #category : #tests }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithNilBackpointer [
 
 	"Verify that an element removed from the collection is stored correctly even if the backpointer is manually nil'd out"

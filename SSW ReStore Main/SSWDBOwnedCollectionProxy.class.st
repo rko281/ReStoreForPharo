@@ -114,17 +114,17 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 
 	"Prepare to 'commit' the receiver by ensuring that elements removed from the receiver have their backpointer nil'd, or are deleted if dependent"
 
-	| removed ownerObject |
+	| removed potentialOwners |
 
 	self _isDeleted
 	ifTrue: 
 		[removed := copyCollection.
-		ownerObject := owner _copyObject]
+		potentialOwners := Array with: owner _copyObject]
 	ifFalse: 
 		[removed := collectionSpec elementsIn: copyCollection notIn: proxiedObject.
-		ownerObject := owner _proxiedObject].
+		potentialOwners := Array with: owner with: owner _proxiedObject].
 
-	removed := removed reject: [ :each | each isNil or: [(collectionSpec ownerAccessor valueIn: each) ifNil: ["manually nil'd out" false] ifNotNil: [ :eachOwner | eachOwner ~~ ownerObject]]].
+	removed := removed reject: [ :each | each isNil or: [(collectionSpec ownerAccessor valueIn: each) ifNil: ["manually nil'd out" false] ifNotNil: [ :eachOwner | (potentialOwners identityIncludes: eachOwner) not]]].
 
 	collectionSpec isValueDependent
 	ifTrue:
