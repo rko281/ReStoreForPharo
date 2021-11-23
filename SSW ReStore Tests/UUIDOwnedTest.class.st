@@ -1,6 +1,6 @@
 Class {
 	#name : #UUIDOwnedTest,
-	#superclass : #OwnedTest,
+	#superclass : #GenericOwnedTest,
 	#category : #'SSW ReStore Tests'
 }
 

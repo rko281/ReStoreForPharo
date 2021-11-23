@@ -17,10 +17,11 @@ Class {
 { #category : #initializing }
 SSWDBStaticCollectionSpec >> createCollectionTable [
 
-	"Intercept to set the Class of the target field in the collection table"
+	"Intercept to set the Class of the source and target fields in the collection table"
 		
 	super createCollectionTable.
 
+	self sourceField targetClass: self table instanceClass reStoreIDClass.
 	self targetField targetClass: self targetClass
 ]
 

@@ -11,7 +11,8 @@ Class {
 		'component'
 	],
 	#classInstVars : [
-		'componentDefinition'
+		'componentDefinition',
+		'reStoreIDClass'
 	],
 	#category : #'SSW ReStore Tests'
 }
@@ -31,6 +32,16 @@ GenericTest class >> reStoreDefinition [
 		define: #name as: (String maxSize: 128);
 		define: #component as: componentDefinition;
 		yourself
+]
+
+{ #category : #accessing }
+GenericTest class >> reStoreIDClass [
+	^reStoreIDClass ifNil: [super reStoreIDClass]
+]
+
+{ #category : #accessing }
+GenericTest class >> reStoreIDClass: anObject [
+	reStoreIDClass := anObject
 ]
 
 { #category : #comparing }
