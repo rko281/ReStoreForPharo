@@ -3,5 +3,5 @@ Extension { #name : #SSWSQLParameterField }
 { #category : #'*SSW ReStore for Pharo' }
 SSWSQLParameterField >> asParameterColumn: anInteger for: aStatement [
 
-	^self value asParameterColumn
+	^(aStatement describeParam: anInteger) ifNil: [self value asParameterColumn]
 ]

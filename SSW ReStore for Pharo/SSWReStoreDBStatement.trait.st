@@ -23,6 +23,12 @@ SSWReStoreDBStatement >> closeAfter: aBlock [
 	^[ aBlock value: self ] ensure: [ self close ]
 ]
 
+{ #category : #accessing }
+SSWReStoreDBStatement >> describeParam: anInteger [
+
+	^nil
+]
+
 { #category : #querying }
 SSWReStoreDBStatement >> exec [
 

@@ -13,12 +13,6 @@ Class {
 	#category : #'SSW ReStore SQL Entities'
 }
 
-{ #category : #accessing }
-SSWSQLParameterField class >> dbMaxFieldSize [
-
-	^nil
-]
-
 { #category : #'instance creation' }
 SSWSQLParameterField class >> forValue: anObject [
 
