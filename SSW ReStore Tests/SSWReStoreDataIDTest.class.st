@@ -67,7 +67,7 @@ SSWReStoreDataIDTest >> test3Update [
 
 	reStore connection
 		beginRWTxn;
-		exec: 'update re_store_test_with_id set other = 9 where nmbr = 2';
+		exec: ('update <1s> set other = 9 where nmbr = 2' expandMacrosWith: (reStore tableForClass: self testClass) name);
 		commitTxn.
 
 	reStore simulateReconnect.
@@ -141,7 +141,7 @@ SSWReStoreDataIDTest >> test7VerifyAssignedID [
 
 	| newObj recoveredObj |
 
-	self assert: (reStore evaluateAsTxn: [(reStore connection exec: 'update next_id set next_id = 99 where table_name like ''re_store_test_with_id''') numRows = 1]).
+	self assert: (reStore evaluateAsTxn: [(reStore connection exec: (('update next_id set next_id = 99 where table_name like <1p>') expandMacrosWith: (reStore tableForClass: self testClass) name)) numRows = 1]).
 
 	"Verify ID is fully assigned to new instances"
 	newObj := self testClass new name: 'assign_test_1'.

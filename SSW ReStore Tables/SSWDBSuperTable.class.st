@@ -23,6 +23,11 @@ SSWDBSuperTable >> forCreation [
 		name: self name;
 		fullName: self fullName;
 		namespace: self namespace.
+	self idDataField ifNotNil: 
+		[ :field | 
+		tableForCreation 
+			idField: field; 
+			idDataField: field].
 	tableForCreation initializeIn: self reStore.
 	self instanceClass addClassDefinitionTo: tableForCreation.
 	
