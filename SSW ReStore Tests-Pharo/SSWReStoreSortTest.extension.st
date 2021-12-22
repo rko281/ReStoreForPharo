@@ -1,9 +1,7 @@
 Extension { #name : #SSWReStoreSortTest }
 
 { #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreSortTest >> isExpectedFailure [ 
+SSWReStoreSortTest class >> compiler [
 
-	"Block variants not supported on Pharo"
-
-	^super isExpectedFailure or: [ '*WithBlocks*' match: self selector ]
+	^ super compiler options: #(- optionInlineAndOr)
 ]

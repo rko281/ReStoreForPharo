@@ -16,14 +16,6 @@ SSWReStoreCollectQueryTest class >> shouldInheritSelectors [
 	^false
 ]
 
-{ #category : #testing }
-SSWReStoreCollectQueryTest >> expectedFailures [
-
-	"fail in Pharo due to incomplete handling of un-inlining of and: / or:"
-	
-	^super expectedFailures, #(#testMethodNotNilWithJoinCollectQuery)
-]
-
 { #category : #'unit tests' }
 SSWReStoreCollectQueryTest >> testCollectQueryWithConstantFirst [
 

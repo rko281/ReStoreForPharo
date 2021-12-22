@@ -97,12 +97,6 @@ SSWDBQueryCondition >> doesNotUnderstand: aMessage [
 	^super doesNotUnderstand: aMessage
 ]
 
-{ #category : #converting }
-SSWDBQueryCondition >> forConcatenation [
-
-	^self
-]
-
 { #category : #accessing }
 SSWDBQueryCondition >> newCollection [
 

@@ -14,12 +14,6 @@ Class {
 }
 
 { #category : #public }
-SSWReStoreIsNilQueryTest class >> defaultCompilationFlags [
-
-	^0
-]
-
-{ #category : #public }
 SSWReStoreIsNilQueryTest class >> shouldInheritSelectors [
 
 	^false

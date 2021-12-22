@@ -1,8 +1,7 @@
 Extension { #name : #SSWReStoreImplicitTrueQueryTest }
 
 { #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreImplicitTrueQueryTest >> expectedFailures [
+SSWReStoreImplicitTrueQueryTest class >> compiler [
 
-	"Inlined variants not completely handled on Pharo"
-	^super expectedFailures, #(#testInlinedAndFirst #testInlinedAndMid #testInlinedOrFirst #testInlinedOrMid)
+	^ super compiler options: #(- optionInlineAndOr)
 ]

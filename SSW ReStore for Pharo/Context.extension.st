@@ -1,6 +1,21 @@
 Extension { #name : #Context }
 
 { #category : #'*SSW ReStore for Pharo' }
+Context >> sswFollowingPc [ 
+
+	"Context>>followingPc does not exist in Pharo 10.
+	Implement a cross-version implementation for ReStore"
+
+	^self sswInstructionStream followingPc
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
+Context >> sswInstructionStream [ 
+
+	^self instructionStream
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
 Context >> sswNeighborPCWithCorrectMapping [
 
 	"Copy of neighborPCWithCorrectMapping in Pharo 7.

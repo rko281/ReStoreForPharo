@@ -100,12 +100,6 @@ SSWDBQueryConditionCollection >> copyLikeOfSize: anInteger [
 
 ]
 
-{ #category : #converting }
-SSWDBQueryConditionCollection >> forConcatenation [
-
-	^true
-]
-
 { #category : #accessing }
 SSWDBQueryConditionCollection >> parser [
 	^parser

@@ -1,9 +1,7 @@
 Extension { #name : #SSWReStoreQueryTest }
 
 { #category : #'*SSW ReStore Tests-Pharo' }
-SSWReStoreQueryTest >> expectedFailures [
+SSWReStoreQueryTest class >> compiler [
 
-	"testIncludesInQueryBlockEmptyCriteria fails due to block usage"
-
-	^super expectedFailures, #(#testIncludesInQueryBlockEmptyCriteria)
+	^ super compiler options: #(- optionInlineAndOr)
 ]
