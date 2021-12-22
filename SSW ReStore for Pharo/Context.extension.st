@@ -6,13 +6,7 @@ Context >> sswFollowingPc [
 	"Context>>followingPc does not exist in Pharo 10.
 	Implement a cross-version implementation for ReStore"
 
-	^self sswInstructionStream followingPc
-]
-
-{ #category : #'*SSW ReStore for Pharo' }
-Context >> sswInstructionStream [ 
-
-	^self instructionStream
+	^self instructionStream followingPc
 ]
 
 { #category : #'*SSW ReStore for Pharo' }

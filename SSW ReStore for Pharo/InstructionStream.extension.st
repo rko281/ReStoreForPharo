@@ -1,7 +1,7 @@
 Extension { #name : #InstructionStream }
 
 { #category : #'*SSW ReStore for Pharo' }
-InstructionStream >> sswInstructionStream [
+InstructionStream >> instructionStream [
 
 	"For Pharo 9/10 cross-compatibility"
 
