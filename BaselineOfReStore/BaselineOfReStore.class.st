@@ -39,7 +39,7 @@ BaselineOfReStore >> baseline: spec [
 					group: 'Pharo MySQL' with: #(#'SSW ReStore MySQL');
 					group: 'Pharo ODBC' with: #(#'SSW ReStore ODBC');
 					group: 'Examples' with: #(#'SSW ReStore Examples');
-					group: 'all' with: #('Tests' 'Examples' 'P3 PostgreSQL' 'Pharo MySQL' 'Pharo ODBC');
+					group: 'all' with: #('Tests' 'Examples' 'P3 PostgreSQL' 'Pharo MySQL');
 					group: 'default' with: #('Tests' 'Examples')]
 ]
 
