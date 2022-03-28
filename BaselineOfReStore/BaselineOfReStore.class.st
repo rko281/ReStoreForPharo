@@ -50,7 +50,7 @@ BaselineOfReStore >> mySQL: spec [
 		baseline: 'MySQL'
 		with: [
 			spec
-				repository: 'github://pharo-rdbms/Pharo-MySQL/src'
+				repository: 'github://pharo-rdbms/Pharo-MySQL'
 		]
 ]
 
