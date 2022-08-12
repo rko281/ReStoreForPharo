@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreDataIDTest,
@@ -10,7 +9,7 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : #running }
 SSWReStoreDataIDTest >> createTestData [
 	
 	"Write data with assigned id"
@@ -67,7 +66,7 @@ SSWReStoreDataIDTest >> test3Update [
 
 	reStore connection
 		beginRWTxn;
-		exec: ('update <1s> set other = 9 where nmbr = 2' expandMacrosWith: (reStore tableForClass: self testClass) name);
+		exec: 'update <1s> set other = 9 where nmbr = 2' << (reStore tableForClass: self testClass) name;
 		commitTxn.
 
 	reStore simulateReconnect.
@@ -141,7 +140,7 @@ SSWReStoreDataIDTest >> test7VerifyAssignedID [
 
 	| newObj recoveredObj |
 
-	self assert: (reStore evaluateAsTxn: [(reStore connection exec: (('update next_id set next_id = 99 where table_name like <1p>') expandMacrosWith: (reStore tableForClass: self testClass) name)) numRows = 1]).
+	self assert: (reStore evaluateAsTxn: [(reStore connection exec: ('update next_id set next_id = 99 where table_name like <1p>') << (reStore tableForClass: self testClass) name) numRows = 1]).
 
 	"Verify ID is fully assigned to new instances"
 	newObj := self testClass new name: 'assign_test_1'.
@@ -171,6 +170,33 @@ SSWReStoreDataIDTest >> test7VerifyAssignedID [
 	self assert: newObj nmbr isNil.
 	self assert: (newObj storeIn: reStore).
 	self assert: newObj nmbr equals: 101
+]
+
+{ #category : #'unit tests' }
+SSWReStoreDataIDTest >> test8CheckForKnownDuplicateID [
+
+	"Check for an attempt to persist an object with the already-allocated ID of an object known to ReStore (i.e. in the image) - this is most likely to arise from a copy.
+	This should fail with a sensible message prior to DB insertion (i.e. failure shouldn't be from a unique key violation in the database)"
+
+	| obj2 id |
+
+	obj2 := self testInstances detect: [:each | each name = 'dave'].
+	id := (reStore tableForClass: self testClass) idField accessor valueIn: obj2.
+	
+	self assert: ([obj2 copy storeIn: reStore. false] on: Error do: [ :exc | self assert: exc description equals: ('<1s>attempt to store object of class <2d> with duplicate ID <3p>' << {self errorPrefix. obj2 class. id}). exc return: true])
+]
+
+{ #category : #'unit tests' }
+SSWReStoreDataIDTest >> test9CheckForUnknownDuplicateID [
+
+	"Check for an attempt to persist an object with the already-allocated ID of an object not known to ReStore (i.e not in the image).
+	This should fail with a unique key violation in the database"
+
+	| obj2 |
+
+	obj2 := self testClass name: 'dave' nmbr: 2.
+	
+	self should: [obj2 copy storeIn: reStore. false] raise: Error
 ]
 
 { #category : #constants }

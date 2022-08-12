@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBIntermediateTable,
@@ -28,8 +27,7 @@ SSWDBIntermediateTable >> _classCondition [
 { #category : #'instance creation' }
 SSWDBIntermediateTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	
-	"Redirect to the relevant concrete class. Also set the class of the proxy to the actual class of object.
-	(since this may be one of the receiver's instanceClass' subclasses)"
+	"Redirect to the relevant concrete class"
 	
 	| class |
 	
@@ -37,10 +35,7 @@ SSWDBIntermediateTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProx
 
 	class = self instanceClass
 		ifTrue: [super recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy]
-		ifFalse: [(self reStore tableForClass: class) 
-				recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy].
-	
-	anSSWDBObjectProxy _class: anSSWDBObjectProxy _proxiedObject class
+		ifFalse: [(self reStore tableForClass: class) recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy]
 ]
 
 { #category : #evaluating }

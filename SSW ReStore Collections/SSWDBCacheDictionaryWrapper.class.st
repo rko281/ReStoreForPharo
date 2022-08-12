@@ -22,7 +22,7 @@ SSWDBCacheDictionaryWrapper >> _dbAdd: targetObject suggestedIndex: ignore [
 	^self _dbAdd: targetObject
 ]
 
-{ #category : #helpers }
+{ #category : #'restore-internal' }
 SSWDBCacheDictionaryWrapper >> _proxifyIn: aCollectionProxy [
 
 	aCollectionProxy _proxiedObject: self dictionary.
@@ -31,7 +31,7 @@ SSWDBCacheDictionaryWrapper >> _proxifyIn: aCollectionProxy [
 
 { #category : #accessing }
 SSWDBCacheDictionaryWrapper >> dictionary [
-	^ dictionary
+	^dictionary
 ]
 
 { #category : #accessing }
@@ -41,7 +41,7 @@ SSWDBCacheDictionaryWrapper >> dictionary: anObject [
 
 { #category : #accessing }
 SSWDBCacheDictionaryWrapper >> keyAccessor [
-	^ keyAccessor
+	^keyAccessor
 ]
 
 { #category : #accessing }

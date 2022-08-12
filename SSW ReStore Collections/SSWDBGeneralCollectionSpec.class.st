@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBGeneralCollectionSpec,
@@ -14,6 +13,25 @@ Class {
 	],
 	#category : #'SSW ReStore Collections'
 }
+
+{ #category : #'change detection' }
+SSWDBGeneralCollectionSpec >> allAdditionsTo: aCollection [
+
+	"Return an OrderedCollection of SSWDBCollectionAdditions representing the addition of all aCollection's elements to itself, starting when empty"
+
+	"Must return an OrderedCollection, so don't use collect:"
+	^aCollection inject: (OrderedCollection new: aCollection size) into: [ :all :each | all add: (SSWDBCollectionAddition added: each); yourself]
+]
+
+{ #category : #'change detection' }
+SSWDBGeneralCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
+
+	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
+
+	^self shouldCompareChangesByEquality
+		ifTrue: [self equalityChangesTo: aCollection from: aCollectionOfEntries]
+		ifFalse: [self identityChangesTo: aCollection from: aCollectionOfEntries]
+]
 
 { #category : #accessing }
 SSWDBGeneralCollectionSpec >> collectionTable [
@@ -74,6 +92,22 @@ SSWDBGeneralCollectionSpec >> entryClass [
 	^SSWDBCollectionEntry
 ]
 
+{ #category : #'change detection' }
+SSWDBGeneralCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOfEntries [
+
+	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via equality (=)"
+
+	^self subclassResponsibility
+]
+
+{ #category : #'change detection' }
+SSWDBGeneralCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
+
+	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via identity (==)"
+
+	^self subclassResponsibility
+]
+
 { #category : #'actions - api' }
 SSWDBGeneralCollectionSpec >> insertEntry: anSSWDBCollectionEntry [
 
@@ -92,6 +126,15 @@ SSWDBGeneralCollectionSpec >> queryClass [
 	"Return the class of select query appropriate for the receiver"
 	
 	^SSWSQLSelectQuery
+]
+
+{ #category : #'change detection' }
+SSWDBGeneralCollectionSpec >> shouldCompareChangesByEquality [
+
+	"Generally, directly-persisted objects are compared by equality, and persistent object stored in their own table are compared by identity.
+	The former could be slightly optimised for e.g. collections of Symbols"
+
+	^self targetClass isDirectlyPersisted
 ]
 
 { #category : #accessing }

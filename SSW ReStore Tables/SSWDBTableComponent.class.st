@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBTableComponent,
@@ -21,9 +20,9 @@ SSWDBTableComponent class >> new [
 ]
 
 { #category : #actions }
-SSWDBTableComponent >> aboutToBeUnstored: anObject [
+SSWDBTableComponent >> aboutToBeUnstored: anSSWDBProxy [
 
-	"anObject (which originated in the receiver's table) is about to be removed from the DB.
+	"anSSWDBProxy (which originated in the receiver's table) is about to be removed from the DB.
 	Carry out any necessary actions"
 
 	"Default - no action"

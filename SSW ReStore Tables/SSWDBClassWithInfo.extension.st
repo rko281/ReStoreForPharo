@@ -13,6 +13,18 @@ SSWDBClassWithInfo >> defineAs: aSymbol in: anSSWDBTable [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+SSWDBClassWithInfo >> reStoreInstVarAccessorIn: aSQLDialect [
+
+	^self infoClass reStoreInstVarAccessorIn: aSQLDialect
+]
+
+{ #category : #'*SSW ReStore Tables' }
+SSWDBClassWithInfo >> reStoreValueClass [
+
+	^self infoClass reStoreValueClass
+]
+
+{ #category : #'*SSW ReStore Tables' }
 SSWDBClassWithInfo >> shouldInlinePersistency [
 
 	^false

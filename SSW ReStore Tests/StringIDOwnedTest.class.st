@@ -4,13 +4,13 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #persistence }
+{ #category : #public }
 StringIDOwnedTest class >> reStoreIDClass [
 
 	^String maxSize: 32
 ]
 
-{ #category : #persistence }
+{ #category : #public }
 StringIDOwnedTest >> reStoreNewUniqueID [
 
 	(Delay forMilliseconds: 1) wait.

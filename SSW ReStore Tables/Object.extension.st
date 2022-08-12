@@ -28,6 +28,14 @@ Object >> dependent [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+Object class >> hasOwnReStoreDefinition [
+
+	"Return whether the receiver specifies a reStoreDefinition itself (i.e. not just inherited)"
+
+	^(self class includesSelector: #reStoreDefinition) or: ["Backwards compatibility" self class includesSelector: #addClassDefinitionTo:]
+]
+
+{ #category : #'*SSW ReStore Tables' }
 Object class >> hasPersistentSuperclass [
 
 	"Return whether the receiver has a superclass from which it inherits some elements of persistence"
@@ -38,8 +46,8 @@ Object class >> hasPersistentSuperclass [
 		[ :sup |
 		sup = Object ifTrue: [^false].
 		sup shouldSubclassesInheritPersistency ifFalse: [^false].
-		sup reStoreDefinition isEmpty ifFalse: [^true]].
-		
+		sup hasOwnReStoreDefinition ifTrue: [^true]].
+
 	^false
 ]
 
@@ -88,6 +96,23 @@ Object class >> reStoreIDClass [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+Object class >> reStoreInstVarAccessor [
+
+	"Return a new inst var accessor to be used to access instances of this class in another object"
+
+	^SSWInstVarAccessor new
+]
+
+{ #category : #'*SSW ReStore Tables' }
+Object class >> reStoreInstVarAccessorIn: aSQLDialect [
+
+	"Return a new inst var accessor to be used to access instances of this class in another object, in aSQLDialect"
+
+	"Default - dialect is irrelevant"
+	^self reStoreInstVarAccessor
+]
+
+{ #category : #'*SSW ReStore Tables' }
 Object class >> reStoreNewUnique [
 
 	"Return a new unique instance of the receiver to be used as a ReStore unique ID.
@@ -111,6 +136,16 @@ Object class >> reStoreTableClass [
 		[self isPersistencyInherited
 			ifTrue: [SSWDBSuperTable]
 			ifFalse: [SSWDBTable]]
+]
+
+{ #category : #'*SSW ReStore Tables' }
+Object class >> reStoreValueClass [
+
+	"Return the class of object used to represent an instance of the receiver in the database, i.e. the class of the instance's reStoreValue"
+
+	^self isPersistentBaseClass
+		ifTrue: [self] "Usually"
+		ifFalse: [self reStoreIDClass]
 ]
 
 { #category : #'*SSW ReStore Tables' }

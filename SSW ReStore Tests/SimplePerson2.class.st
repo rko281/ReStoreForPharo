@@ -114,6 +114,12 @@ SimplePerson2 class >> useNotes: aBoolean [
 	useNotes := aBoolean
 ]
 
+{ #category : #comparing }
+SimplePerson2 >> = aDetailedPerson [
+
+	^self fullName = aDetailedPerson fullName
+]
+
 { #category : #accessing }
 SimplePerson2 >> bestFriend [
 	^bestFriend
@@ -122,6 +128,12 @@ SimplePerson2 >> bestFriend [
 { #category : #accessing }
 SimplePerson2 >> bestFriend: anObject [
 	bestFriend := anObject
+]
+
+{ #category : #displaying }
+SimplePerson2 >> displayOn: aStream [
+
+	aStream display: self firstName; space; display: self surname
 ]
 
 { #category : #accessing }
@@ -177,6 +189,20 @@ SimplePerson2 >> friend: anObject [
 ]
 
 { #category : #accessing }
+SimplePerson2 >> fullName [
+
+	^SimplePerson2 useForename 
+		ifTrue: [self forename, ' ', self surname]
+		ifFalse: [self firstName, ' ', self surname]
+]
+
+{ #category : #comparing }
+SimplePerson2 >> hash [
+
+	^self fullName hash
+]
+
+{ #category : #accessing }
 SimplePerson2 >> notes [
 	^notes
 ]
@@ -184,6 +210,16 @@ SimplePerson2 >> notes [
 { #category : #accessing }
 SimplePerson2 >> notes: anObject [
 	notes := anObject
+]
+
+{ #category : #displaying }
+SimplePerson2 >> printOn: aStream [
+	"Answer the name of the receiver as a developer would wish to see it ."
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+	self displayOn: aStream.
+	aStream nextPut: $).
 ]
 
 { #category : #accessing }

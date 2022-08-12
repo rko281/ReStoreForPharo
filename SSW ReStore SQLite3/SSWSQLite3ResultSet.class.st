@@ -37,6 +37,18 @@ SSWSQLite3ResultSet >> initialize [
 	self rowClass: SSWSQLite3Row 
 ]
 
+{ #category : #private }
+SSWSQLite3ResultSet >> keysAndValuesDo: aBlock [
+
+	| index |
+	
+	index := 1.
+
+	[self next
+		ifNil: [ false ]
+		ifNotNil: [ :next | aBlock value: index value: next. index := index + 1. true]] whileTrue
+]
+
 { #category : #accessing }
 SSWSQLite3ResultSet >> last [
 

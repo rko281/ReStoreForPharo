@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBAllocatedID,
@@ -52,6 +51,12 @@ SSWDBAllocatedID >> offset [
 { #category : #accessing }
 SSWDBAllocatedID >> offset: anObject [
 	offset := anObject
+]
+
+{ #category : #'*SSW ReStore P3' }
+SSWDBAllocatedID >> p3PrintUsing: delegate on: stream [
+	
+	self asInteger p3PrintUsing: delegate on: stream
 ]
 
 { #category : #operations }

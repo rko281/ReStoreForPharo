@@ -36,7 +36,7 @@ GenericOwnedTest >> deepTest: anObject [
 
 { #category : #accessing }
 GenericOwnedTest >> key [
-	^ key
+	^key
 ]
 
 { #category : #accessing }

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLParameterField,
@@ -43,7 +42,7 @@ SSWSQLParameterField >> value: anObject [
 	value := anObject
 ]
 
-{ #category : #writing }
+{ #category : #printing }
 SSWSQLParameterField >> writeAliasedSQLOn: aStream [
 
 	"For situations where duplicate field names are anticipated
@@ -52,7 +51,7 @@ SSWSQLParameterField >> writeAliasedSQLOn: aStream [
 	aStream nextPutAliasedField: self
 ]
 
-{ #category : #writing }
+{ #category : #printing }
 SSWSQLParameterField >> writeSQLOn: aStream [
 
 	^self value writeSQLOn: aStream forField: self

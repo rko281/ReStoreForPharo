@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreAbstractQueryTest,
@@ -51,6 +50,12 @@ SSWReStoreAbstractQueryTest >> createTestData [
 			storeIn: reStore.
 
 		john friend: david]
+]
+
+{ #category : #accessing }
+SSWReStoreAbstractQueryTest >> john [
+
+	^(SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'John']
 ]
 
 { #category : #constants }

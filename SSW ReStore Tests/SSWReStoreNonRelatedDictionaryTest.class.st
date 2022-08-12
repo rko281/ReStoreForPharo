@@ -1,6 +1,6 @@
 "
 ReStore
-¬©2020 John Aspinall
+©2020 John Aspinall
 https://github.com/rko281/ReStore
 "
 Class {
@@ -55,7 +55,7 @@ SSWReStoreNonRelatedDictionaryTest >> templateCollection [
 		yourself
 ]
 
-{ #category : #'unit tests' }
+{ #category : #public }
 SSWReStoreNonRelatedDictionaryTest >> testDependencyDeleteOnRepeatedRemoval [
 
 	"Check that non-dependent collection contents are or are not deleted when removed, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not).

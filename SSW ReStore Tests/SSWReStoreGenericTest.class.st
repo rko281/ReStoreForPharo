@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreGenericTest,
@@ -78,7 +77,7 @@ SSWReStoreGenericTest >> setUp [
 	testObject2 := (GenericTest storedInstancesIn: reStore2) first
 ]
 
-{ #category : #running }
+{ #category : #accessing }
 SSWReStoreGenericTest >> templateComponent [
 
 	"Ensure unique name"

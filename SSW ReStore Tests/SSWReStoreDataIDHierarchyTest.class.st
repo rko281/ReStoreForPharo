@@ -4,7 +4,7 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #adding }
+{ #category : #running }
 SSWReStoreDataIDHierarchyTest >> addClassesTo: aReStore [
 
 	aReStore addClassWithSubclasses: ReStoreTestWithIDOnly
@@ -16,7 +16,7 @@ SSWReStoreDataIDHierarchyTest >> testClass [
 	^ReStoreTestWithIDSubclass
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreDataIDHierarchyTest >> testClassWithIDOnly [
 
 	"Test a previous failure case where the table for a class containing only a data ID field was regarded as undefined"

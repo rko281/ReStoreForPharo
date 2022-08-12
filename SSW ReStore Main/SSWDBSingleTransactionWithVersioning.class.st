@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBSingleTransactionWithVersioning,
@@ -51,7 +50,7 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	failures isEmpty and: [resolved isEmpty not]] whileTrue.
 
 	"currentReferencedObjects usually empty, but could contain objects ref'd during conflict resolution"
-	self currentReferencedObjects do: [ :obj | obj _swapReferences].
+	self currentReferencedObjects do: [ :obj | obj _unswap].
 	self beginObjectCollection.
 
 	self proxyCommitFailures: failures.
@@ -59,7 +58,7 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	ifTrue: 
 		[aDBConnection rollbackTxn.
 		self freeStatements.
-		self currentReferencedObjects: (self changedObjects collect: [ :obj | obj _swapReferences])]
+		self currentReferencedObjects: (self changedObjects collect: [ :obj | obj _swap])]
 	ifFalse: 
 		[aDBConnection commitTxn.
 		self postCommit].
@@ -122,7 +121,7 @@ SSWDBSingleTransactionWithVersioning >> rollbackAndRefresh [
 	self proxyCommitFailures do: 
 		[ :proxyObj | 
 		self currentReferencedObjects remove: proxyObj.
-		proxyObj _swapReferences _forgetProxiedObject].
+		proxyObj _unswap _forgetProxiedObject].
 
 	self rollback
 ]

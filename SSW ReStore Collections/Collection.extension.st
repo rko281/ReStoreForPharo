@@ -1,26 +1,6 @@
 Extension { #name : #Collection }
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> _changesFrom: aCollectionOfEntries [
-
-	"Return the changes made to the receiver compared to aCollectionOf(SSWDBCollection)Entries,
-	as a collection of SSWDBCollectionChanges"
-
-	^self subclassResponsibility
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _collectionAdditions [
-
-	"Return an collection of SSWDBCollectionAdditions representing the addition of 
-	all the receiver's elements to an empty collection.
-	Default - defer to _nonKeyedCollectionAdditions (assume receiver does not support keys). 
-	Collections with keys/indexes should reimplement to include key/index information"
-
-	^self _nonKeyedCollectionAdditions
-]
-
-{ #category : #'*SSW ReStore Collections' }
 Collection >> _dbAdd: anObject [
 
 	"For use when instantiating a collection from the database.
@@ -39,18 +19,6 @@ Collection >> _dbAdd: anObject suggestedIndex: anInteger [
 ]
 
 { #category : #'*SSW ReStore Collections' }
-Collection >> _dbKeyUpdateClass [
-
-	^SSWDBCollectionIndexUpdate
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _dbRemovalClass [
-
-	^SSWDBCollectionRemoval
-]
-
-{ #category : #'*SSW ReStore Collections' }
 Collection >> _fetchAll: aCollection [
 
 	"Private - ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -64,72 +32,8 @@ Collection >> _fetchAll: aCollection [
 	table := reStore tableForClass: any class.
 
 	aCollection do: [ :instVar | (table componentAccessing: instVar) readAllFor: self]
+
 	
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _keyedChangesFrom: aCollectionOfEntries [
-
-	"Return the changes made to the receiver compared to aCollectionOf(Collection)Entries.
-	For keyed changes, must consider additions, removals and changes of key"
-
-	| changes map |
-
-	changes := OrderedCollection new: (self size // 10).
-	map := IdentityDictionary new: aCollectionOfEntries size.
-
-	"Make a map of each element (as was) to its entry(s)"
-	aCollectionOfEntries do: 
-		[ :each | (map at: each target ifAbsentPut: [OrderedCollection new: 1]) addLast: each].
-
-	"Locate and remove entry for each member of the receiver and check for key change"
-	self keysAndValuesDo:
-		[ :newKey :each || entry |
-		entry := (map at: each ifAbsent: [OrderedCollection new]) removeFirstIfAbsent:
-			"No entry found = element has been added to the receiver" 
-			[(changes add: (SSWDBCollectionAddition added: each at: newKey)) affectedEntry].
-		entry index = newKey ifFalse: 
-			[changes add: (self _dbKeyUpdateClass entry: entry newIndex: newKey)]].
-
-	"Any remaining entries indicate elements removed from the receiver"
-	map keysAndValuesDo:
-		[ :each :entries | 
-		entries isEmpty ifFalse:		"Minor optimisation"
-			[entries do: [ :entry | changes add: (self _dbRemovalClass newWithEntry: entry)]]].
-
-	^changes
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _keyedCollectionAdditions [
-
-	"Return a collection of SSWDBCollectionAdditions representing the addition of 
-	all the receiver's elements to an empty collection. 
-	Include the key of each element (as used by keysAndValuesDo:)"
-
-	| additions |
-
-	additions := OrderedCollection new.
-
-	self keysAndValuesDo: [ :key :each | additions add: (SSWDBCollectionAddition added: each at: key)].
-
-	^additions
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _nonKeyedCollectionAdditions [
-
-	"Return an collection of SSWDBCollectionAdditions representing the addition of 
-	all the receiver's elements to an empty collection.
-	The SSWDBCollectionAdditions do not contain key information"
-
-	| additions |
-
-	additions := OrderedCollection new.
-
-	self do: [ :each | additions add: (SSWDBCollectionAddition added: each)].
-
-	^additions
 ]
 
 { #category : #'*SSW ReStore Collections' }
@@ -137,18 +41,6 @@ Collection >> _proxifyIn: aCollectionProxy [
 
 	aCollectionProxy _proxiedObject: self.
 	^self
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> _valuesRemovedBy: aCollectionOfChanges [
-
-	"Return those values (objects) completely removed from the receiver by aCollectionOfChanges"
-
-	| affectedObjects |
-
-	affectedObjects := aCollectionOfChanges collect: [ :change | change affectedEntry target].
-
-	^affectedObjects asIdentitySet reject: [ :object | self identityIncludes: object]
 ]
 
 { #category : #'*SSW ReStore Collections' }
@@ -171,13 +63,6 @@ Collection >> fetchAll: aCollection [
 
 { #category : #'*SSW ReStore Collections' }
 Collection >> isOrdered [
-
-	^false
-
-]
-
-{ #category : #'*SSW ReStore Collections' }
-Collection >> isSortedCollection [
 
 	^false
 

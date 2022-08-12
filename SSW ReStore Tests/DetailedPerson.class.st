@@ -45,6 +45,12 @@ DetailedPerson class >> useDateOfBirth [
 	^DetailedPerson2 useDateOfBirth
 ]
 
+{ #category : #comparing }
+DetailedPerson >> = aDetailedPerson [
+
+	^self fullName = aDetailedPerson fullName
+]
+
 { #category : #accessing }
 DetailedPerson >> bestFriend [
 	^bestFriend
@@ -65,6 +71,12 @@ DetailedPerson >> dateOfBirth: anObject [
 	dateOfBirth := anObject
 ]
 
+{ #category : #displaying }
+DetailedPerson >> displayOn: aStream [
+
+	aStream display: self firstName; space; display: self surname
+]
+
 { #category : #accessing }
 DetailedPerson >> dob [
 	^dob
@@ -83,4 +95,20 @@ DetailedPerson >> friend [
 { #category : #accessing }
 DetailedPerson >> friend: anObject [
 	friend := anObject
+]
+
+{ #category : #comparing }
+DetailedPerson >> hash [
+
+	^self fullName hash
+]
+
+{ #category : #displaying }
+DetailedPerson >> printOn: aStream [
+	"Answer the name of the receiver as a developer would wish to see it ."
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+	self displayOn: aStream.
+	aStream nextPut: $).
 ]

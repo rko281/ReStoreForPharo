@@ -4,7 +4,7 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #testing }
+{ #category : #public }
 SSWReStoreAlternativeIDTest class >> isAbstract [
 
 	^self == SSWReStoreAlternativeIDTest
@@ -18,7 +18,7 @@ SSWReStoreAlternativeIDTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #asserting }
+{ #category : #testing }
 SSWReStoreAlternativeIDTest >> shouldDestroyClasses [
 
 	^true
@@ -100,7 +100,7 @@ SSWReStoreAlternativeIDTest >> testSourceIDCollection [
 	"Ensure collections work with a source object with a non-Integer ID"
 
 	GenericTest reStoreIDClass: GUID.
-	[reStore debugTo:Transcript. self testForeignIDCollection] ensure: [GenericTest reStoreIDClass: nil]
+	[self testForeignIDCollection] ensure: [GenericTest reStoreIDClass: nil]
 ]
 
 { #category : #'unit tests' }

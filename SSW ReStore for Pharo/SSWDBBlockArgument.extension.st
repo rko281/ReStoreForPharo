@@ -71,13 +71,9 @@ SSWDBBlockArgument >> postProcessDNU: anObject [
 ]
 
 { #category : #'*SSW ReStore for Pharo' }
-SSWDBBlockArgument >> simulateMessageSend: aMessage [
+SSWDBBlockArgument >> simulateMethod: aCompiledMethod withArguments: anArray [
 
-	| method |
-
-	method := self currentClass lookupSelector: aMessage selector.
-	method isNil ifTrue: [self parseError: (self currentClass name, ' does not implement #', aMessage selector)].
-	^method valueWithReceiver: self arguments: aMessage arguments
+	^aCompiledMethod valueWithReceiver: self arguments: anArray
 ]
 
 { #category : #'*SSW ReStore for Pharo' }

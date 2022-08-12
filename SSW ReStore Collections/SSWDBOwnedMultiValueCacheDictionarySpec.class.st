@@ -1,8 +1,7 @@
 "
 ReStore
 ©2020 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBOwnedMultiValueCacheDictionarySpec,
@@ -10,7 +9,7 @@ Class {
 	#category : #'SSW ReStore Collections'
 }
 
-{ #category : #accessing }
+{ #category : #testing }
 SSWDBOwnedMultiValueCacheDictionarySpec >> allElementsIn: aDictionary [
 
 	^aDictionary inject: OrderedCollection new into: [ :all :each | all addAll: each; yourself]
@@ -56,7 +55,7 @@ SSWDBOwnedMultiValueCacheDictionarySpec >> hasCollection: updatedCollection anyA
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : #helpers }
 SSWDBOwnedMultiValueCacheDictionarySpec >> newCollectionWrapper [
 
 	^SSWDBMultiValueCacheDictionaryWrapper new

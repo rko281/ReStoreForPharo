@@ -1,6 +1,14 @@
 Extension { #name : #Object }
 
 { #category : #'*SSW ReStore Base Additions' }
+Object >> _instVarAt: anInteger [
+
+	"Make the receiver polymorphic with proxies"
+	
+	^self instVarAt: anInteger
+]
+
+{ #category : #'*SSW ReStore Base Additions' }
 Object >> _instVarAt: anInteger put: anObject [
 
 	"Make the receiver polymorphic with proxies"
@@ -24,6 +32,26 @@ Object >> includedIn: aCollection [
 	"Reciprocal of Collection>>includes: "
 
 	^aCollection includes: self
+]
+
+{ #category : #'*SSW ReStore Base Additions' }
+Object class >> isDirectlyPersisted [
+
+	"Return whether the receiver class is directly persisted in the database, i.e. has a representation that it stored in a single database column.
+	Default - the persistent base classes. 
+
+	Other classes which can provide such a representation of themselves can return true but must also implement certain other methods
+	- see SSWDBDirectlyPersistedObject which may be used as a superclass for such classes"
+
+	^self isPersistentBaseClass
+]
+
+{ #category : #'*SSW ReStore Base Additions' }
+Object class >> isDirectlyPersistedNonBaseClass [
+
+	"Return whether the receiver class is directly persisted in the database, i.e. has a representation that it stored in a single database column BUT is not one of the persistent base classes"
+
+	^self isPersistentBaseClass not and: [self isDirectlyPersisted]
 ]
 
 { #category : #'*SSW ReStore Base Additions' }

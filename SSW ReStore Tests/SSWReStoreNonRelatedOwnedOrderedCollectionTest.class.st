@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreNonRelatedOwnedOrderedCollectionTest,
@@ -18,7 +17,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest class >> allTestSelectors [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : #public }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> _testCollectionElementTransferOf: element from: collection1 to: collection2 ownerBy: template2 [
 
 	collection1 remove: element.
@@ -55,7 +54,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh, even when the original collection is deleted"
@@ -77,7 +76,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElem
 	self assert: element owner equals: template2
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh.

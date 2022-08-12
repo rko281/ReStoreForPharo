@@ -62,23 +62,31 @@ Object >> _dbProxyIn: aReStore ifNone: aBlock [
 ]
 
 { #category : #'*SSW ReStore Main' }
+Object >> _dbProxyReStore [
+
+	"If this message is received , a proxy was swapped to its proxied object by a higher-priority process, immediately at the start of its implemention of doesNotUnderstand:.
+	In SSWDBProxy this method would return lookup the proxy's owning reStore, to which it would immediately send transactionCritical: with the proxy swap handler block.
+	Since we are here, the proxy is already swapped therefore no further action is needed. Return nil, which is checked for prior to the transactionCritical:"
+
+	^nil
+]
+
+{ #category : #'*SSW ReStore Main' }
 Object >> _ensureActiveIn: anSSWReStore [
 
 	"Ensure that the receiver is 'active' in the given ReStore 
-	'active' means persistent in anSSWReStore, and present in the current transaction.
+	'active' means persistent in anSSWReStore, and present and active in the current transaction"
 
-	If this message is received by a real object it is either persistent and active, or not yet persistent"
-
-	(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
+	^self _ensurePersistentIn: anSSWReStore
 ]
 
 { #category : #'*SSW ReStore Main' }
 Object >> _ensurePersistentIn: anSSWReStore [
 
 	"Ensure that the receiver is persistent in the given ReStore.
-	When received by a non-proxy object, the receiver is either non-persistent (store it) or already in the current transaction (do nothing)"
+	When received by a non-proxy object, the receiver is either non-persistent (store it) or already in the current transaction (ensure it is active, otherwise do nothing)"
 
-	(self isValidForPersistence or: [anSSWReStore isInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
+	(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -237,7 +245,9 @@ Object >> hasChanged [
 
 	"Return whether the receiver or its related objects have changed in the image since loading from the ReStore instance in which they reside"
 
-	^(self _reStoreIfNone: ["Not (yet) persistent" ^true]) hasChanged: self withRelatedComponents
+	^(self _reStoreIfNone: [nil]) 
+		ifNil: ["Not (yet) persistent" true]
+		ifNotNil: [ :reStore | reStore hasChanged: self withRelatedComponents]
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -276,9 +286,9 @@ Object >> isPersistent [
 Object >> isValidForPersistence [
 
 	"Return a Boolean indicating whether the receiver is a valid object for persistent storage.
-	Default - the basic types (Numbers, Strings etc.) are so valid"
+	Default - instances of directly-persisted classes"
 	
-	^self class isPersistentBaseClass
+	^self class isDirectlyPersisted
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -319,6 +329,13 @@ Object >> onAboutToUnstore [
 	"The receiver is about to be unstored from its ReStore container - carry out any necessary actions.
 	Note in the event of a commit failure (e.g. update clash) the unstore may be rolled back.
 	Use onUnstored for definite confirmation of a completed unstore"
+]
+
+{ #category : #'*SSW ReStore Main' }
+Object >> onRecovered [
+
+	"Carry out any actions necessary following recovering this Object from the database.
+	Default - do nothing"
 ]
 
 { #category : #'*SSW ReStore Main' }
@@ -518,13 +535,9 @@ Object >> unstore [
 	NB: This is also a legacy selector whose meaning was 'unstore in the active transaction'.
 	We have repurposed this to also be a direct 'unstore now' message, which begins and completes in its own transaction.
 
-	Accomodate both new and legacy behavior by checking if there is currently a transaction in progress"
+	Accomodate both new and legacy behavior by checking if there is currently a transaction in progress (this is all now done in SSWDBObjectProxy>>unstore)"
 
-	^(self _dbProxyIfNone: [nil]) ifNotNil: 
-		[ :proxy |
-		proxy _reStore isTransactionInProgress 
-			ifTrue: [proxy _unstore "Legacy"]
-			ifFalse: [self unstored store] "New behavior"]
+	^(self _dbProxyIfNone: [nil]) ifNotNil: [ :proxy | proxy unstore]
 ]
 
 { #category : #'*SSW ReStore Main' }

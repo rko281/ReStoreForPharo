@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLFieldAssignmentCollection,
@@ -15,6 +14,12 @@ Class {
 SSWSQLFieldAssignmentCollection >> applyTo: anObject [
 
 	self do: [ :fieldAssignment | fieldAssignment applyTo: anObject]
+]
+
+{ #category : #actions }
+SSWSQLFieldAssignmentCollection >> copyTo: anObject [
+
+	self do: [ :fieldAssignment | fieldAssignment copyTo: anObject]
 ]
 
 { #category : #output }

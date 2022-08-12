@@ -93,6 +93,14 @@ SSWSQLite3Connection >> execute: aString [
 	^(self prepare: aString) execute
 ]
 
+{ #category : #'public API - operating' }
+SSWSQLite3Connection >> finalize: aStatementHandle [
+
+	^dbHandle isNil 
+		ifTrue: [ library apiFinalize: aStatementHandle ]
+		ifFalse: [ super finalize: aStatementHandle ]
+]
+
 { #category : #initialization }
 SSWSQLite3Connection >> initialize [
 	

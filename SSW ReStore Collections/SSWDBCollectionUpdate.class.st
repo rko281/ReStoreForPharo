@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCollectionUpdate,
@@ -55,7 +54,7 @@ SSWDBCollectionUpdate >> newTarget: anObject [
 	newTarget := anObject
 ]
 
-{ #category : #actions }
+{ #category : #'actions - api' }
 SSWDBCollectionUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
 
 	(anSSWDBCollectionProxy _shouldUnstoreValue: self affectedEntry target) ifTrue: [self affectedEntry target unstore].

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLSelectQuery,
@@ -77,11 +76,18 @@ SSWSQLSelectQuery >> fieldNamed: aString [
 	"Return the field with the given name (which must be an alias if the receiver has fieldAliases)"
 
 	^self fieldAliases isNil
-	ifTrue: 
-		[self actualFields fieldNamed: aString]
-	ifFalse: 
-		[self fieldAliases keysAndValuesDo: [ :field :alias | alias = aString ifTrue: [^field]].
-		nil]
+		ifTrue: [self actualFields fieldNamed: aString]
+		ifFalse: [self fieldWithAlias: aString]
+]
+
+{ #category : #'accessing - derived' }
+SSWSQLSelectQuery >> fieldWithAlias: aString [
+
+	"Return the field with the given name (which must be an alias if the receiver has fieldAliases)"
+
+	self fieldAliases keysAndValuesDo: [ :field :alias | alias = aString ifTrue: [^field]].
+
+	^nil
 ]
 
 { #category : #accessing }

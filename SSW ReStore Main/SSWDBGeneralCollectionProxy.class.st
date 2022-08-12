@@ -1,27 +1,17 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBGeneralCollectionProxy,
 	#superclass : #SSWDBCollectionProxy,
 	#instVars : [
 		'collectionEntries',
-		'changes',
-		'isDeleted'
+		'changes'
 	],
 	#category : #'SSW ReStore Main'
 }
-
-{ #category : #'instance creation' }
-SSWDBGeneralCollectionProxy class >> new [
-
-	^super new
-		_isDeleted: false;
-		yourself
-]
 
 { #category : #accessing }
 SSWDBGeneralCollectionProxy >> _changes [
@@ -46,7 +36,7 @@ SSWDBGeneralCollectionProxy >> _checkHasChanged [
 
 	| changed |
 
-	self _isDeleted ifTrue: [^true].
+	(self _isDeleted or: [self _isPersistent not]) ifTrue: [^true].
 
 	self _setChanges.
 	changed := changes isEmpty not.
@@ -72,10 +62,11 @@ SSWDBGeneralCollectionProxy >> _collectionEntries: aCollection [
 	"The receiver automatically detects changes to its proxiedObject collection
 	by keeping a copy of the SSWDBCollectionEntry records that define the colleciton in the DB"
 	
-	collectionEntries := aCollection
+	collectionEntries := aCollection.
+	collectionSpec preserveCollectionEntries: aCollection
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBGeneralCollectionProxy >> _commitChanges [
 
 	changes do: [ :change | change commitFor: self].
@@ -104,50 +95,36 @@ SSWDBGeneralCollectionProxy >> _commitChanges [
 	^true
 ]
 
+{ #category : #'actions-internal' }
+SSWDBGeneralCollectionProxy >> _forgetProxiedObject [
+
+	collectionEntries := nil.
+	super _forgetProxiedObject
+]
+
 { #category : #testing }
 SSWDBGeneralCollectionProxy >> _hasChanged [
 
-	"Unlike _checkHasChanged, do not clear out the changes
-	 - prepareToCommit will use them"
+	"Unlike _checkHasChanged, do not clear out the changes - prepareToCommit will use them"
 	
 	self _setChanges.
 
-	^self _isDeleted or: [changes isEmpty not]
+	^self _isDeleted or: [self _isPersistent not or: [changes isEmpty not]]
 ]
 
-{ #category : #accessing }
-SSWDBGeneralCollectionProxy >> _isDeleted [
-
-	"The receiver stores its deleted status as a Boolean"
-
-	^isDeleted
-]
-
-{ #category : #accessing }
-SSWDBGeneralCollectionProxy >> _isDeleted: aBoolean [
-
-	"The receiver stores its deleted status as a Boolean"
-
-	isDeleted := aBoolean
-]
-
-{ #category : #testing }
-SSWDBGeneralCollectionProxy >> _isPersistent [
-
-	^collectionEntries ~~ nil or: [self _isRecovered not]
-]
-
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBGeneralCollectionProxy >> _postCommitChanges [
 
 	self _isPersistent 
 		ifTrue: [changes do: [ :change | change applyTo: collectionEntries]]
-		ifFalse: [collectionEntries := changes collect: [ :change | change affectedEntry]].
-	
-	self _resetChanges
+		ifFalse: [self _collectionEntries: (changes collect: [ :change | change affectedEntry])].
+
+	self 
+		_setPersistent;
+		_resetChanges
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBGeneralCollectionProxy >> _prepareToCommit [
 
 	"The receiver is guaranteed to be sent _hasChanged prior to this method,
@@ -155,35 +132,13 @@ SSWDBGeneralCollectionProxy >> _prepareToCommit [
 	changes do: [ :change | change prepareToCommitFor: self]
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBGeneralCollectionProxy >> _resetChanges [
 
 	changes := nil
 ]
 
-{ #category : #actions }
-SSWDBGeneralCollectionProxy >> _rollbackChanges [
-
-	"Rollback any changes made by reinstantiating from the collectionEntries.
-	Also transfer any events associated with the collection"
-
-	| rollbackCollection me |
-
-	self _checkHasChanged
-	ifTrue:
-		[rollbackCollection := collectionSpec newCollection.
-		collectionEntries do: [ :entry | entry addTargetTo: rollbackCollection].
-		proxiedObject getEvents ifNotNil: [ :events | rollbackCollection setEvents: events]]
-	ifFalse:
-		[rollbackCollection := self	"Will be proxiedObject after the swap"].
-
-	me := proxiedObject.
-	self _swapReferences.
-
-	me _proxiedObject: rollbackCollection
-]
-
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBGeneralCollectionProxy >> _setChanges [
 
 	self _isPersistent
@@ -195,15 +150,15 @@ SSWDBGeneralCollectionProxy >> _setChanges [
 				[collectionEntries do: 
 					[ :each |
 					(collectionSpec isKeyDependent and: [each index isDBProxy]) ifTrue: 
-						[reStore transaction addDeletedObject: each index _proxiedObject.
+						[reStore transaction addDeletedObject: each index.
 						each index unstore].
 					(collectionSpec isValueDependent and: [each target isDBProxy]) ifTrue: 
-						[reStore transaction addDeletedObject: each target _proxiedObject.
+						[reStore transaction addDeletedObject: each target.
 						each target unstore]]]]
 		ifFalse: 
-			[changes := proxiedObject _changesFrom: collectionEntries]]
+			[changes := collectionSpec changesTo: proxiedObject from: collectionEntries]]
 	ifFalse: 
-		[changes := proxiedObject _collectionAdditions]
+		[changes := collectionSpec allAdditionsTo: proxiedObject]
 ]
 
 { #category : #testing }
@@ -218,10 +173,17 @@ SSWDBGeneralCollectionProxy >> _shouldUnstoreValue: anObject [
 	^self _collectionSpec isValueDependent and: [(self _proxiedObject identityIncludes: anObject) not]
 ]
 
-{ #category : #actions }
-SSWDBGeneralCollectionProxy >> _unstore [
+{ #category : #accessing }
+SSWDBGeneralCollectionProxy >> _unchangedCollection [
 
-	self _isPersistent 
-		ifTrue: [isDeleted := true]
-		ifFalse: [reStore removeFromTransaction: self]
+	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"
+
+	| unchangedCollection |
+
+	self _checkHasChanged ifFalse: [^proxiedObject].
+
+	unchangedCollection := collectionSpec newCollection.
+	collectionEntries notNil ifTrue: [collectionEntries do: [ :entry | entry addTargetTo: unchangedCollection]].
+	
+	^unchangedCollection
 ]

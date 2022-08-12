@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBQueryField,
@@ -23,12 +22,6 @@ SSWDBQueryField >> accessor [
 SSWDBQueryField >> accessorPath [
 
 	^self field path
-]
-
-{ #category : #converting }
-SSWDBQueryField >> asSQLFields [
-
-	^self
 ]
 
 { #category : #testing }
@@ -124,12 +117,23 @@ SSWDBQueryField >> table [
 	^self field table
 ]
 
-{ #category : #evaluating }
+{ #category : #accessing }
 SSWDBQueryField >> targetClass [
 
 	"Forward to the real field"
 	
 	^self field targetClass
+]
+
+{ #category : #accessing }
+SSWDBQueryField >> targetClass: aClass [
+	
+	aClass = self targetClass ifFalse: 
+		[self field: 
+			(self field withFunction: 
+				('%1' asSQLFunction
+					staticResultClass: aClass;
+					yourself))]
 ]
 
 { #category : #evaluating }

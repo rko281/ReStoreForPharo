@@ -9,13 +9,11 @@ Class {
 
 { #category : #accessing }
 ReStoreTestWithStringID class >> counter [
-
-	^ counter
+	^counter
 ]
 
 { #category : #accessing }
 ReStoreTestWithStringID class >> counter: anObject [
-
 	counter := anObject
 ]
 
@@ -35,7 +33,7 @@ ReStoreTestWithStringID class >> reStoreIDClass [
 	^String maxSize: 32
 ]
 
-{ #category : #persistence }
+{ #category : #public }
 ReStoreTestWithStringID >> reStoreNewUniqueID [
 
 	self class counter: self class counter + 1.

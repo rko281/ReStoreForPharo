@@ -1,6 +1,6 @@
 "
 ReStore
-¬©2020 John Aspinall
+©2020 John Aspinall
 https://github.com/rko281/ReStore
 "
 Class {
@@ -16,8 +16,8 @@ SSWReStoreDependentKeyDictionaryTest >> _testComponentExistenceOnDependency: val
 
 	| component |
 
-	"The keys are dependent, so we need to find the key for the removed object and check this"
-	component := inverseDictionary at: value.
+	"value is the removed key"
+	component := value.
 
 	self assert: (component _dbProxyIn: reStore ifNone: [nil]) isNil.
 

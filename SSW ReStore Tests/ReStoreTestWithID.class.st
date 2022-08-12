@@ -23,7 +23,7 @@ ReStoreTestWithID class >> name: aString nmbr: anInteger [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : #persistency }
 ReStoreTestWithID class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -33,7 +33,7 @@ ReStoreTestWithID class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : #persistency }
 ReStoreTestWithID class >> shouldSubclassesInheritPersistency [
 
 	^false

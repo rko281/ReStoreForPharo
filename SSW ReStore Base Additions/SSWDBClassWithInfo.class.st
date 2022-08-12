@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBClassWithInfo,
@@ -44,10 +43,30 @@ SSWDBClassWithInfo >> infoClass [
 ]
 
 { #category : #testing }
+SSWDBClassWithInfo >> isDirectlyPersisted [
+
+	^self infoClass isDirectlyPersisted
+]
+
+{ #category : #testing }
+SSWDBClassWithInfo >> isDirectlyPersistedNonBaseClass [
+
+	^self infoClass isDirectlyPersistedNonBaseClass
+]
+
+{ #category : #testing }
 SSWDBClassWithInfo >> isPersistentBaseClass [
 
 	^self infoClass isPersistentBaseClass
 
+]
+
+{ #category : #'methods-accessing' }
+SSWDBClassWithInfo >> lookupMethod: aSymbol [
+
+	"Required class-like behavior"
+
+	^self infoClass lookupMethod: aSymbol
 ]
 
 { #category : #'instance creation' }

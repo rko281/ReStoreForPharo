@@ -241,7 +241,7 @@ SimplePerson >> isDavidOrTestIsNil [
 
 { #category : #accessing }
 SimplePerson >> isDeceased [
-	^ isDeceased
+	^isDeceased
 ]
 
 { #category : #accessing }
@@ -255,7 +255,7 @@ SimplePerson >> isJohnAndTestIsNil [
 	^self firstName = 'John' and: [self test isNil]
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 SimplePerson >> orderCount [
 
 	^self orders size

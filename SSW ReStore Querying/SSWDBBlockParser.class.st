@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBBlockParser,
@@ -456,19 +455,6 @@ SSWDBBlockParser >> parseSortBlock: aTwoArgBlock [
 	^parseResult
 ]
 
-{ #category : #'parsing - internal' }
-SSWDBBlockParser >> popAccumulatedConditions [
-
-	| popped |
-
-	self accumulatedConditionsStack isEmpty ifTrue: [^self resetConditions].
-
-	popped := self accumulatedConditionsStack removeLast.
-	self 
-		accumulatedConditions: popped key;
-		currentConditions: popped value
-]
-
 { #category : #copying }
 SSWDBBlockParser >> postCopy [
 
@@ -497,13 +483,6 @@ SSWDBBlockParser >> projectQueryFrom: aOneArgBlock [
 		tables: self includedTables;
 		conditions: self qualifyingConditions;
 		yourself
-]
-
-{ #category : #'parsing - internal' }
-SSWDBBlockParser >> pushAccumulatedConditions [
-
-	self accumulatedConditionsStack addLast: (self accumulatedConditions -> self currentConditions).
-	self resetConditions
 ]
 
 { #category : #'parsing - api' }
@@ -635,15 +614,6 @@ SSWDBBlockParser >> reset [
 	self
 		groupByFields: SSWSQLFieldCollection new;
 		fieldEncounters: (self referencedTables joinFields collect: [ :each | each -> nil])
-]
-
-{ #category : #'parsing - internal' }
-SSWDBBlockParser >> resetConditions [
-
-	self
-		currentConditions: self newConditionCollection;
-		accumulatedConditions: self currentConditions;
-		isAccumulatingConditions: false
 ]
 
 { #category : #'parsing - api' }

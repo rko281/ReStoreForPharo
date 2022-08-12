@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCacheDictionaryEntry,
@@ -13,7 +12,7 @@ Class {
 	#category : #'SSW ReStore Collections'
 }
 
-{ #category : #accessing }
+{ #category : #private }
 SSWDBCacheDictionaryEntry >> _cacheDictionaryKey_ [
 
 	"Special selector allowing interception by the block parser"
@@ -27,7 +26,7 @@ SSWDBCacheDictionaryEntry >> addTargetTo: aCollection [
 	aCollection at: self key put: self target
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 SSWDBCacheDictionaryEntry >> index [
 
 	^self _cacheDictionaryKey_

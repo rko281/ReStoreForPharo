@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBObjectWithComponents,
@@ -131,15 +130,13 @@ SSWDBObjectWithComponents >> exclusions: anObject [
 	exclusions := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 SSWDBObjectWithComponents >> originatingComponent [
-
-	^ originatingComponent
+	^originatingComponent
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 SSWDBObjectWithComponents >> originatingComponent: anObject [
-
 	originatingComponent := anObject
 ]
 

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBSuperTable,
@@ -65,20 +64,6 @@ SSWDBSuperTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 				recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy].
 	
 	anSSWDBObjectProxy _class: anSSWDBObjectProxy _proxiedObject class
-]
-
-{ #category : #'instance creation' }
-SSWDBSuperTable >> refreshProxy: aProxy fromRow: aDBRow [
-
-	"Redirect to the relevant concrete class"
-	
-	| class |
-	
-	class := self instanceClassFromRow: aDBRow.
-
-	class = self instanceClass
-		ifTrue: [super refreshProxy: aProxy fromRow: aDBRow]
-		ifFalse: [(self reStore tableForClass: class) refreshProxy: aProxy fromRow: aDBRow]
 ]
 
 { #category : #'instance creation' }

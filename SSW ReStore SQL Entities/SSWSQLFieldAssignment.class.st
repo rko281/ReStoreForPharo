@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLFieldAssignment,
@@ -25,6 +24,18 @@ SSWSQLFieldAssignment >> applyTo: anObject [
 	ASSERT: anObject class = self field table instanceClass"
 	
 	self field accessor value: self value in: anObject
+]
+
+{ #category : #actions }
+SSWSQLFieldAssignment >> copyTo: anObject [
+
+	"The receiver relates a field (which relates to an instance var) to a value (Smalltalk object).
+	Copy the receiver assignment to anObject by assigning its value to its field's inst var.
+	This may necessiate a copy of anObject, as determined by the accessor.
+	
+	ASSERT: anObject class = self field table instanceClass"
+
+	self field accessor copyValue: self value in: anObject
 ]
 
 { #category : #output }

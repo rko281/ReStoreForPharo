@@ -40,6 +40,12 @@ SSWInlinedInstVarAccessor >> accessesShallowly: aSymbol [
 	^super accesses: aSymbol
 ]
 
+{ #category : #updating }
+SSWInlinedInstVarAccessor >> copyValue: valueObject in: targetObject [
+
+	^self inlinedAccessor copyValue: valueObject in: (self inlinedValueIn: targetObject)
+]
+
 { #category : #evaluating }
 SSWInlinedInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 
@@ -88,6 +94,14 @@ SSWInlinedInstVarAccessor >> inlinedClassDeeply [
 		ifFalse: [self inlinedClass]
 ]
 
+{ #category : #updating }
+SSWInlinedInstVarAccessor >> inlinedValueIn: targetObject [
+
+	"Private - Return the inlined object in targetObject, creating and assigning it if necessary"
+
+	^(self shallowValueIn: targetObject) ifNil: [self shallowValue: self inlinedClass new in: targetObject]
+]
+
 { #category : #testing }
 SSWInlinedInstVarAccessor >> isInlined [
 
@@ -109,15 +123,7 @@ SSWInlinedInstVarAccessor >> shallowValueIn: targetObject [
 { #category : #updating }
 SSWInlinedInstVarAccessor >> value: valueObject in: targetObject [
 
-	| inlined |
-
-	inlined := self shallowValueIn: targetObject.
-
-	inlined isNil ifTrue: 
-		[inlined := self inlinedClass new.
-		self shallowValue: inlined in: targetObject].
-
-	^self inlinedAccessor value: valueObject in: inlined
+	^self inlinedAccessor value: valueObject in: (self inlinedValueIn: targetObject)
 ]
 
 { #category : #updating }

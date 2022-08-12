@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCollectionIndexUpdate,
@@ -69,7 +68,7 @@ SSWDBCollectionIndexUpdate >> oldIndex [
 	^self affectedEntry index
 ]
 
-{ #category : #actions }
+{ #category : #'actions - api' }
 SSWDBCollectionIndexUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
 
 	self newIndex _ensureActiveIn: anSSWDBCollectionProxy _reStore.

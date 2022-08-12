@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLTableAllFields,
@@ -90,7 +89,7 @@ SSWSQLTableAllFields >> writeAliasedSQLOn: aStream [
 
 { #category : #output }
 SSWSQLTableAllFields >> writeSQLOn: aStream [
-
+	
 	"Use an empty (i.e. 'all') field collection to handle the SQL representation of 'all'"
-	(SSWSQLFieldCollection new) writeSQLOn: aStream
+	SSWSQLFieldCollection new writeSQLOn: aStream
 ]

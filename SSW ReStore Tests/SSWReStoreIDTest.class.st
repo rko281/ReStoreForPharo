@@ -4,19 +4,19 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : #public }
 SSWReStoreIDTest class >> allTestSelectors [
 
 	^super allTestSelectors reject: [ :each | #(#testClass #testInstances) includes: each]
 ]
 
-{ #category : #testing }
+{ #category : #public }
 SSWReStoreIDTest class >> isAbstract [
 
 	^self == SSWReStoreIDTest
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 SSWReStoreIDTest class >> testSelectors [
 
 	^super testSelectors reject: [ :each | #(#testClass #testInstances) includes: each]

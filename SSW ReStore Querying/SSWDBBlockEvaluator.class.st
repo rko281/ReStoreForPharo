@@ -1,12 +1,11 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBBlockEvaluator,
-	#superclass : #ProtoObject,
+	#superclass : #SSWDBProtoObject,
 	#instVars : [
 		'parser'
 	],
@@ -107,20 +106,24 @@ SSWDBBlockEvaluator >> path [
 	^#()
 ]
 
+{ #category : #'parsing - internal' }
+SSWDBBlockEvaluator >> printOn: aStream [
+
+	aStream nextPutAll: 'an '; print: self basicClass
+]
+
+{ #category : #'parsing - internal' }
+SSWDBBlockEvaluator >> printString [
+
+	^'an ', self basicClass name
+]
+
 { #category : #accessing }
 SSWDBBlockEvaluator >> reStore [
 
 	"reStore stores the SSWReStore for which the receiver parses blocks"
 	
 	^self parser reStore
-]
-
-{ #category : #helpers }
-SSWDBBlockEvaluator >> subclassResponsibility [
-
-	"Private - Just here to prevent code warnings"
-
-	^nil subclassResponsibility
 ]
 
 { #category : #'parsing - functions' }

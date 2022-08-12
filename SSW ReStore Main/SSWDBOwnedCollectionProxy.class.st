@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBOwnedCollectionProxy,
@@ -13,7 +12,7 @@ Class {
 	#category : #'SSW ReStore Main'
 }
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _acquireCopyCollection [
 
 	copyCollection := collectionSpec copyCollection: proxiedObject
@@ -25,14 +24,14 @@ SSWDBOwnedCollectionProxy >> _checkHasChanged [
 	^self _isDeleted or: [self _isPersistent not or: [collectionSpec hasCollection: proxiedObject anyAdditionsOrRemovalsFrom: copyCollection]]
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _commitChangesPhase1 [
 
 	"The only collection-level change is deletion of the entire collection; this is done in phase 2"
 	^true
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _commitChangesPhase2 [
 
 	"Deletion of dependent collection elements - done as part of phase 2 to allow moved elements to first have their owner pointer updated"
@@ -62,25 +61,22 @@ SSWDBOwnedCollectionProxy >> _copyCollection: aCollection [
 	copyCollection := aCollection
 ]
 
-{ #category : #testing }
-SSWDBOwnedCollectionProxy >> _isDeleted [
+{ #category : #'actions-internal' }
+SSWDBOwnedCollectionProxy >> _forgetProxiedObject [
 
-	^proxiedObject == nil and: [copyCollection ~~ nil]
+	copyCollection := nil.
+	super _forgetProxiedObject
 ]
 
-{ #category : #testing }
-SSWDBOwnedCollectionProxy >> _isPersistent [
-
-	^copyCollection ~~ nil or: [self _isRecovered not]
-]
-
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _postCommitChanges [
 
-	self _acquireCopyCollection
+	self 
+		_setPersistent;
+		_acquireCopyCollection
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _prepareToCommitPhase1 [
 
 	"Prepare to 'commit' the receiver by ensuring that all elements added to the	proxiedObject point back to the owner.
@@ -109,7 +105,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase1 [
 	^self _isPersistent
 ]
 
-{ #category : #actions }
+{ #category : #'actions-internal' }
 SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 
 	"Prepare to 'commit' the receiver by ensuring that elements removed from the receiver have their backpointer nil'd, or are deleted if dependent"
@@ -119,7 +115,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 	self _isDeleted
 	ifTrue: 
 		[removed := copyCollection.
-		potentialOwners := Array with: owner _copyObject]
+		potentialOwners := Array with: owner _proxiedObject]
 	ifFalse: 
 		[removed := collectionSpec elementsIn: copyCollection notIn: proxiedObject.
 		potentialOwners := Array with: owner with: owner _proxiedObject].
@@ -128,7 +124,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 
 	collectionSpec isValueDependent
 	ifTrue:
-		[self _isDeleted ifTrue: [removed do: [ :each | each isDBProxy ifTrue: [reStore transaction addDeletedObject: each _proxiedObject]]].
+		[self _isDeleted ifTrue: [removed do: [ :each | each isDBProxy ifTrue: [reStore transaction addDeletedObject: each]]].
 		removed do: [ :each | each unstore]]
 	ifFalse:
 		[removed do: 
@@ -146,42 +142,11 @@ SSWDBOwnedCollectionProxy >> _proxiedObject: aCollection [
 	self _acquireCopyCollection
 ]
 
-{ #category : #actions }
-SSWDBOwnedCollectionProxy >> _rollbackChanges [
+{ #category : #accessing }
+SSWDBOwnedCollectionProxy >> _unchangedCollection [
 
-	"Forget any changes by instantiating from the copyCollection.
-	Also transfer over any events registered against the current proxiedObject"
+	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"
 
-	| wasDeleted me him spec |
-
-	"Reinstate the proxiedObject if the receiver was deleted"
-	self _isDeleted 
-	ifTrue: 
-		[proxiedObject := copyCollection.
-		copyCollection := proxiedObject copy.
-		wasDeleted := true]
-	ifFalse:
-		[wasDeleted := false].
-
-	me := proxiedObject.
-	him := self.
-	spec := collectionSpec.
-	self _swapReferences.
-
-	wasDeleted ifFalse:
-		[me _proxiedObject: (spec copyCollection: me _copyCollection).
-		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
-]
-
-{ #category : #actions }
-SSWDBOwnedCollectionProxy >> _unstore [
-
-	"Point references to the proxiedObject to the copyCollection
-	 - this enables identity to be preserved in the event of a rollback"
-
-	self _isPersistent
-		ifTrue: [copyCollection := proxiedObject become: copyCollection]
-		ifFalse: [reStore removeFromTransaction: self].
-
-	proxiedObject := nil
+	"Need to return a copy"
+	^collectionSpec copyCollection: copyCollection
 ]

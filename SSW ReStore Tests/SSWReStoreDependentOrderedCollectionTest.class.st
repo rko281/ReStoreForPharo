@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreDependentOrderedCollectionTest,
@@ -13,7 +12,7 @@ Class {
 { #category : #helpers }
 SSWReStoreDependentOrderedCollectionTest >> _testComponentExistenceOnDependency: component [
 
-	"collection is dependent at this level, so replaced/removed/cascade-deleted component should no longer exist"
+	"Private - collection is dependent at this level, so replaced/removed/cascade-deleted component should no longer exist"
 
 	self assert: (component _dbProxyIn: reStore ifNone: [nil]) isNil.
 

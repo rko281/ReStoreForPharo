@@ -24,13 +24,11 @@ MidPerson class >> reStoreDefinition [
 
 { #category : #accessing }
 MidPerson >> midFriend [
-
-	^ midFriend
+	^midFriend
 ]
 
 { #category : #accessing }
 MidPerson >> midFriend: anObject [
-
 	midFriend := anObject
 ]
 

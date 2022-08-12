@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreQueryTest,
@@ -350,7 +349,7 @@ SSWReStoreQueryTest >> testCollectQueryWithActualObject [
 	self assert: (testCount = 5)
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithBooleanFunction [
 
 	"Test a condition which previously caused an error - non-first component in collect query having a Boolean function gave error due to incorrect implementation of peekFinalField"

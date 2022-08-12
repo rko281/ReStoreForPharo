@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreGenericNonRelatedCollectionTest,
@@ -269,12 +268,12 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentRemoval [
 
 	reStore refresh: testObject.
 	self assert: collection size equals: originalSize.
-	self assert: (collection includes: component).
+	self assert: (self includes: component).
 
 	reStore refresh: testObject withComponents.
 	self assert: collection size equals: (originalSize - 1).
-	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
-	self deny: (collection includes: component)
+	self assert: (self allSatisfy: [ :each | each name ~= removed name]).
+	self deny: (self includes: component)
 ]
 
 { #category : #public }

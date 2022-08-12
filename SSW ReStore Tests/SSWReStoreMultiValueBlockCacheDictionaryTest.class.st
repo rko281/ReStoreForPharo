@@ -1,6 +1,6 @@
 "
 ReStore
-¬©2020 John Aspinall
+©2020 John Aspinall
 https://github.com/rko281/ReStore
 "
 Class {

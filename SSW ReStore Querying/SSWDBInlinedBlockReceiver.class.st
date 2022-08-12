@@ -19,7 +19,7 @@ SSWDBInlinedBlockReceiver >> _doesNotUnderstand: aMessage [
 
 	| result matchingFields |
 
-	^aMessage arguments size > 0
+	^aMessage argumentCount > 0 
 	ifTrue: 
 		[(aMessage selector last = $: and: [aMessage arguments size = 1])
 		ifTrue:
@@ -91,6 +91,14 @@ SSWDBInlinedBlockReceiver >> inlinedInstVar [
 { #category : #accessing }
 SSWDBInlinedBlockReceiver >> inlinedInstVar: anObject [
 	inlinedInstVar := anObject
+]
+
+{ #category : #accessing }
+SSWDBInlinedBlockReceiver >> peekFinalField [
+
+	^self hasFinalField
+		ifTrue: [self inlinedFields first]
+		ifFalse: [nil]
 ]
 
 { #category : #parsing }
