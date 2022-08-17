@@ -53,12 +53,6 @@ SSWDBAllocatedID >> offset: anObject [
 	offset := anObject
 ]
 
-{ #category : #'*SSW ReStore P3' }
-SSWDBAllocatedID >> p3PrintUsing: delegate on: stream [
-	
-	self asInteger p3PrintUsing: delegate on: stream
-]
-
 { #category : #operations }
 SSWDBAllocatedID >> postCommit [
 

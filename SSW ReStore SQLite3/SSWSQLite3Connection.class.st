@@ -147,7 +147,7 @@ SSWSQLite3Connection >> prepareToClose [
 { #category : #constants }
 SSWSQLite3Connection >> sqlDialectClass [
 
-	^SSWSQLiteDialect
+	^SSWSQLiteNativeDialect
 ]
 
 { #category : #enquiries }

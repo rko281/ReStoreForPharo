@@ -168,7 +168,7 @@ SSWReStoreTypeTest >> testExtendedANSI [
 	"Test a String containing an extended ANSI character"
 
 	"SQLite Native in Dolphin deals purely in UTF8"
-	reStore sqlDialect class name = #SSWSQLiteNativeDialect ifTrue: [self skip].
+	(self isDolphin and: [reStore sqlDialect class name = #SSWSQLiteNativeDialect]) ifTrue: [self skip].
 
 	self testStrings: #[99 97 102 233] asAnsiString "café"
 ]

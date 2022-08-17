@@ -272,7 +272,7 @@ SSWReStoreProcessSafetyTest >> testQueryingDuringTransaction [
 	john storeIn: reStore.
 
 	"Execution resumes here once the higher priority process has terminated"
-	self assert: process isTerminated.
+	self assert: (process isTerminated or: [ (Delay forMilliseconds: 100) wait. process isTerminated ]).
 	self deny: wasTransactionInProgress
 ]
 

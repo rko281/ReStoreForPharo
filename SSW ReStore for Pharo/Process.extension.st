@@ -3,7 +3,7 @@ Extension { #name : #Process }
 { #category : #'*SSW ReStore for Pharo' }
 Process >> isExpectedToResumePromptly [
 
-	^self isActiveProcess or: [ self isSuspended ]
+	^self isActiveProcess or: [ self suspendingList notNil ]
 ]
 
 { #category : #'*SSW ReStore for Pharo' }

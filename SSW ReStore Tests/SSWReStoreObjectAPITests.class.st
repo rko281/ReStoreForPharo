@@ -9,6 +9,115 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
+{ #category : #'unit tests' }
+SSWReStoreObjectAPITests >> _test05CommitFailureRefreshAndRollbackDirectedToProxy: aBoolean [
+
+	"Private - aBoolean controls whether the store message is directed to the real object or the proxy.
+	Direct to the proxy previously failed to raise a StoreFailure exception, leaving a transaction in an open state"
+
+	| obj1 obj1A oldName oldSingleName newName newSingleName failureRaised |
+
+	obj1 := self _testCreateObject.
+
+	"Update in the other session"
+	self refreshDelay.
+	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
+	obj1A single2 name: 'BLOCK UPDATE'.
+	self assert: obj1A store.
+
+	self refreshDelay.
+
+	"Blocked clashing update should fail"
+	oldName := obj1 name.
+	oldSingleName := obj1 single2 name.
+	newName := oldName, 'AAA'.
+	newSingleName := oldSingleName, 'AAA'.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+
+	aBoolean ifTrue: [reStore abandonTransaction].
+	self deny: obj1 store.
+
+	"Default handling abandons the transaction but leaves objects in the changed state"
+	self deny: ReStore isTransactionInProgress.
+	self assert: obj1 name = newName.
+	self assert: obj1 single2 name = newSingleName.
+
+	aBoolean ifTrue: [reStore abandonTransaction].
+	failureRaised := false.
+
+	"Retry with commit failure handling to rollback and refresh"
+	[obj1 store] on: StoreFailure do: 
+		[ :failedTransaction | 
+		failureRaised := true.
+		self assert: failedTransaction failedObjects asArray = {obj1 single2}.
+		failedTransaction rollbackAndRefresh].
+
+	self assert: failureRaised.
+
+	"We should now be in the same state as the other session"
+	self assert: obj1 name = obj1A name.
+	self assert: obj1 single2 name = obj1A single2 name
+]
+
+{ #category : #'unit tests' }
+SSWReStoreObjectAPITests >> _test06StoreFailureRefreshAndRollforwardDirectedToProxy: aBoolean [
+
+	"Private - aBoolean controls whether the store message is directed to the real object or the proxy.
+	Direct to the proxy previously failed to raise a StoreFailure exception, leaving a transaction in an open state"
+
+	| obj1 obj1A oldName oldSingleName newName newSingleName failureRaised |
+
+	obj1 := self _testCreateObject.
+
+	"Update in the other session"
+	self refreshDelay.
+	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
+	obj1A single2 name: 'BLOCK UPDATE'.
+	self assert: obj1A store.
+
+	oldName := obj1 name.
+	oldSingleName := obj1 single2 name.
+	newName := oldName, 'AAA'.
+	newSingleName := oldSingleName, 'AAA'.
+
+	"Blocked clashing update should fail"
+	self refreshDelay.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+
+	aBoolean ifTrue: [reStore abandonTransaction].
+	self deny: obj1 store.
+
+	"Default handling abandons the transaction but leaves objects in the changed state"
+	self deny: ReStore isTransactionInProgress.
+	self assert: obj1 name = newName.
+	self assert: obj1 single2 name = newSingleName.
+
+	aBoolean ifTrue: [reStore abandonTransaction].
+	failureRaised := false.
+
+	"Retry with failure handling to refresh and rollforward"
+	[obj1 store] on: StoreFailure do: 
+		[ :failedTransaction | 
+		failureRaised := true.
+		self assert: failedTransaction failedObjects asArray = {obj1 single2}.
+		failedTransaction refreshAndRollforward.
+		self assert: failedTransaction commit].
+
+	self assert: failureRaised.
+
+	self assert: obj1 name = newName.
+	self assert: obj1 single2 name = newSingleName.
+
+	"Verify in the other session"
+	self refreshDelay.
+	obj1A refresh.
+
+	self assert: obj1A name = newName.
+	self assert: obj1A single2 name = newSingleName
+]
+
 { #category : #running }
 SSWReStoreObjectAPITests >> _testCreateObject [
 
@@ -167,88 +276,25 @@ SSWReStoreObjectAPITests >> test04HasChanged [
 { #category : #'unit tests' }
 SSWReStoreObjectAPITests >> test05CommitFailureRefreshAndRollback [
 
-	| obj1 obj1A oldName oldSingleName newName newSingleName |
+	self _test05CommitFailureRefreshAndRollbackDirectedToProxy: false
+]
 
-	obj1 := self _testCreateObject.
+{ #category : #'unit tests' }
+SSWReStoreObjectAPITests >> test05CommitFailureRefreshAndRollbackDirectedToProxy [
 
-	"Update in the other session"
-	self refreshDelay.
-	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
-	obj1A single2 name: 'BLOCK UPDATE'.
-	self assert: obj1A store.
-
-	self refreshDelay.
-
-	"Blocked clashing update should fail"
-	oldName := obj1 name.
-	oldSingleName := obj1 single2 name.
-	newName := oldName, 'AAA'.
-	newSingleName := oldSingleName, 'AAA'.
-	obj1 name: newName.
-	obj1 single2 name: newSingleName.
-	self deny: obj1 store.
-
-	"Default handling abandons the transaction but leaves objects in the changed state"
-	self deny: ReStore isTransactionInProgress.
-	self assert: obj1 name = newName.
-	self assert: obj1 single2 name = newSingleName.
-
-	"Retry with commit failure handling to rollback and refresh"
-	[obj1 store] on: StoreFailure do: 
-		[ :failedTransaction | 
-		self assert: failedTransaction failedObjects asArray = {obj1 single2}.
-		failedTransaction rollbackAndRefresh].
-
-	"We should now be in the same state as the other session"
-	self assert: obj1 name = obj1A name.
-	self assert: obj1 single2 name = obj1A single2 name
+	self _test05CommitFailureRefreshAndRollbackDirectedToProxy: true
 ]
 
 { #category : #'unit tests' }
 SSWReStoreObjectAPITests >> test06StoreFailureRefreshAndRollforward [
 
-	| obj1 obj1A oldName oldSingleName newName newSingleName |
+	self _test06StoreFailureRefreshAndRollforwardDirectedToProxy: false
+]
 
-	obj1 := self _testCreateObject.
+{ #category : #'unit tests' }
+SSWReStoreObjectAPITests >> test06StoreFailureRefreshAndRollforwardDirectedToProxy [
 
-	"Update in the other session"
-	self refreshDelay.
-	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
-	obj1A single2 name: 'BLOCK UPDATE'.
-	self assert: obj1A store.
-
-	oldName := obj1 name.
-	oldSingleName := obj1 single2 name.
-	newName := oldName, 'AAA'.
-	newSingleName := oldSingleName, 'AAA'.
-
-	"Blocked clashing update should fail"
-	self refreshDelay.
-	obj1 name: newName.
-	obj1 single2 name: newSingleName.
-	self deny: obj1 store.
-
-	"Default handling abandons the transaction but leaves objects in the changed state"
-	self deny: ReStore isTransactionInProgress.
-	self assert: obj1 name = newName.
-	self assert: obj1 single2 name = newSingleName.
-
-	"Retry with failure handling to refresh and rollforward"
-	[obj1 store] on: StoreFailure do: 
-		[ :failedTransaction | 
-		self assert: failedTransaction failedObjects asArray = {obj1 single2}.
-		failedTransaction refreshAndRollforward.
-		self assert: failedTransaction commit].
-
-	self assert: obj1 name = newName.
-	self assert: obj1 single2 name = newSingleName.
-
-	"Verify in the other session"
-	self refreshDelay.
-	obj1A refresh.
-
-	self assert: obj1A name = newName.
-	self assert: obj1A single2 name = newSingleName
+	self _test06StoreFailureRefreshAndRollforwardDirectedToProxy: true
 ]
 
 { #category : #'unit tests' }
