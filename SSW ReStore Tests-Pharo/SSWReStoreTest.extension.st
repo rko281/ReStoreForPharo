@@ -64,7 +64,7 @@ SSWReStoreTest >> removeSelector: aSymbol fromClass: aClass [
 { #category : #'*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> should: aBlock raise: anErrorClass matching: errorBlock [
 
-	^self should: aBlock raise: anErrorClass  withExceptionDo: errorBlock
+	self assert: ([aBlock value. false] on: anErrorClass do: [  :exc | exc return: (errorBlock value: exc) ])
 ]
 
 { #category : #'*SSW ReStore Tests-Pharo' }

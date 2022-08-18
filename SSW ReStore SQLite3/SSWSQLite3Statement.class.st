@@ -47,7 +47,8 @@ SSWSQLite3Statement >> execute: bindings [
 { #category : #'connection open/close' }
 SSWSQLite3Statement >> free [
 
-	handle isNil ifFalse: [self finalize]
+	"It appears statements can raise errors when being free'd so add an error check for the case seen in test runs - a statement which previously raised a constraint violation raises it again when free'd"
+	handle isNil ifFalse: [[self finalize] on: SQLite3ConstraintViolation do: [ :exc | exc return]]
 ]
 
 { #category : #accessing }

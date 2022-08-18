@@ -47,7 +47,9 @@ SSWReStoreDataIDTest >> test2DuplicateCheck [
 	"Check can't update to a duplicate assigned ID"
 
 	reStore connection beginRWTxn.
-	self should: [reStore connection exec: 'update re_store_test_with_id set nmbr = 7 where nmbr = 2'] raise: reStore dbErrorClass.
+
+	"Depending on database this query will either generate an error or return zero rows affected"
+	self assert: ([(reStore connection exec: 'update re_store_test_with_id set nmbr = 7 where nmbr = 2') rowsAffected] on: reStore dbErrorClass do: [ :exc | exc return: 0]) equals: 0.
 	reStore connection rollbackTxn
 ]
 

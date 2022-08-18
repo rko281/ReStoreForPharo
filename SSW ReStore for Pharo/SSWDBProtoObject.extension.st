@@ -1,6 +1,15 @@
 Extension { #name : #SSWDBProtoObject }
 
 { #category : #'*SSW ReStore for Pharo' }
+SSWDBProtoObject >> basicClass [
+	"Primitive. Answer the object which is the receiver's class. Essential. See 
+	Object documentation whatIsAPrimitive."
+
+	<primitive: 111>
+	self primitiveFailed
+]
+
+{ #category : #'*SSW ReStore for Pharo' }
 SSWDBProtoObject >> debugPrintString [ 
 
 	^'a ', self class name

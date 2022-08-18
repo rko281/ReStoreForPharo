@@ -1,7 +1,7 @@
 Class {
 	#name : #SSWSQLiteNativeDialect,
 	#superclass : #SSWSQLiteDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#category : #'SSW ReStore SQLite3'
 }
 
 { #category : #constants }

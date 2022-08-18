@@ -1217,6 +1217,7 @@ SSWReStore >> hardDisconnect [
 	"Disconnect from the database and clear all caches"
 	
 	self 
+		preDisconnect;
 		softDisconnect;
 		postDisconnect
 ]
@@ -1571,6 +1572,14 @@ SSWReStore >> postDisconnect [
 	self clearAllCaches.
 
 	self class deactivated: self
+]
+
+{ #category : #connection }
+SSWReStore >> preDisconnect [
+
+	"Statements may need an active connection in order to be free'd correctly, so this is done pre-disconnect"
+
+	self clearStatementCache
 ]
 
 { #category : #connection }

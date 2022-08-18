@@ -89,7 +89,10 @@ SSWDBStaticDictionarySpec >> deleteQueryWithJoin [
 
 	query := super deleteQueryWithJoin.
 
-	self isKeyDependent ifTrue: [query addTable: self keyTable withAllFields joinedWithField: self indexField].
+	self isKeyDependent ifTrue: 
+		[query 
+			isMultiTableDelete: true;
+			addTable: self keyTable withAllFields joinedWithField: self indexField].
 
 	^query
 ]
