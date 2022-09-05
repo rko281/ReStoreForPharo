@@ -4,6 +4,12 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
+{ #category : #accessing }
+SSWReStoreBaseCollectionTest class >> allTestSelectors [
+
+	^super allTestSelectors reject: [ :each | #(#testReadAllStatementNilled) includes: each]
+]
+
 { #category : #helpers }
 SSWReStoreBaseCollectionTest >> _testCommit: aTestObject [
 

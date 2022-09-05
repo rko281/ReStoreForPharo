@@ -91,3 +91,19 @@ SSWReStoreGenericTest >> templateTestObject [
 
 	^self subclassResponsibility
 ]
+
+{ #category : #tests }
+SSWReStoreGenericTest >> testReadAllStatementNilled [
+
+	"Verify the cached readAllStatement is nilled when necessary (previously omitted for non-collections)"
+
+	| persons table |
+
+	persons := (GenericTest storedInstancesIn: reStore) asOrderedCollection.
+	persons fetchAll: #(#component).
+
+	reStore reconnect.
+
+	table := reStore tableForClass: GenericTest.
+	self assert: (table componentAccessing: #component) _readAllStatement isNil
+]

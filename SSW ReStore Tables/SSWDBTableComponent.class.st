@@ -57,6 +57,14 @@ SSWDBTableComponent >> componentsOf: anObject do: aBlock [
 	aBlock value: (self accessor valueIn: anObject)
 ]
 
+{ #category : #'initialize/release' }
+SSWDBTableComponent >> freePreparedStatements [
+
+	readAllStatement notNil ifTrue: 
+		[readAllStatement free.
+		readAllStatement := nil]
+]
+
 { #category : #'accessing-queries' }
 SSWDBTableComponent >> newReadAllParameters [
 
