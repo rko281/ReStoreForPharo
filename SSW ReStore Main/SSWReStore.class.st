@@ -613,34 +613,15 @@ SSWReStore >> commitTransaction [
 	self isTransactionInProgress ifFalse: [self error: 'No transaction in progress'].
 
 	^self transactionCritical:
-		[| success error |
+		[| success |
 
-		error := nil.
-
-		[self transaction prepareToCommit] on: Error do: 
-			[ :exc |
-			self isDebugging ifTrue: [exc pass].
-			self transaction autoRecoverPreCommitIn: self.
-			error := exc.
-			exc return].
-
-		error isNil ifFalse: [self error: ('An error occured during pre-commit: ', error description)].
+		[self transaction prepareToCommit] on: Error do: [ :exc | SSWDBTransactionPreCommitError signalWith: exc in: self].
 
 		success := 
 			[self transaction commitTo: self connection.
-			self transaction hasFailedCommit not] 
-				on: Error do: 
-					[ :exc |
-					self isDebugging ifTrue: [exc pass].
-					[self connection rollbackTxn] on: Error do: [ :txnExc | txnExc return].
-					self transaction autoRecoverCommitIn: self.
-					error := exc.
-					exc return: false].
-		success 
-		ifTrue: 
-			[self transaction: self transaction ownerTransaction]
-		ifFalse:
-			[error isNil ifFalse: [self error: ('An error occured during commit: ', error description)]].
+			self transaction hasFailedCommit not] on: Error do: [ :exc | SSWDBTransactionCommitError signalWith: exc in: self].
+
+		success ifTrue: [self transaction: self transaction ownerTransaction].
 	
 		success]
 ]
