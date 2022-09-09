@@ -39,6 +39,12 @@ SSWP3ResultSet >> first [
 SSWP3ResultSet >> free [
 ]
 
+{ #category : #enumerating }
+SSWP3ResultSet >> keysAndValuesDo: aBlock [
+
+	data keysAndValuesDo: [ :index :vals | aBlock value: index value: (self rowWith: vals)]
+]
+
 { #category : #accessing }
 SSWP3ResultSet >> last [
 

@@ -31,6 +31,12 @@ SSWMySQLResultSet >> free [
 	statement free
 ]
 
+{ #category : #enumerating }
+SSWMySQLResultSet >> keysAndValuesDo: aBlock [
+
+	self rows keysAndValuesDo: aBlock
+]
+
 { #category : #accessing }
 SSWMySQLResultSet >> last [
 
