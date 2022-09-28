@@ -23,7 +23,14 @@ SSWReStoreTest >> errorPrefix [
 { #category : #'*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> initConnectionFor: aReStore [
 
-	aReStore connection: (SSWP3Connection new url: 'psql://testclient:abcd@192.168.1.104:5432/test')
+	"Use SQLite in memory"
+	aReStore connection: (SSWSQLite3Connection on: 'file::memory:?cache=shared')
+	
+	"Templates for other connectors:
+	aReStore connection: (SSWODBCConnection new dsn: 'YourDSN')
+	aReStore connection: (SSWODBCConnection new connectString: 'DRIVER={};etc.')
+	aReStore connection: (SSWP3Connection new url: 'psql://user:pwd@192.168.1.234:5432/database')
+	aReStore connection: (SSWMySQLConnection new connectionSpec: (MySQLDriverSpec new db: 'database'; host: '192.168.1.234'; port: 3306; user: 'user'; password: 'pwd'; yourself); yourself)"
 ]
 
 { #category : #'*SSW ReStore Tests-Pharo' }

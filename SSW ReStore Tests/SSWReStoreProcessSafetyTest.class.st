@@ -7,10 +7,34 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
+{ #category : #helpers }
+SSWReStoreProcessSafetyTest >> critical: aBlock [
+
+	"For when the receiver is pretending to be a locked Mutex with a nil owner"
+
+	^aBlock value
+]
+
+{ #category : #helpers }
+SSWReStoreProcessSafetyTest >> critical: aBlock ifLocked: lockedBlock [
+
+	"For when the receiver is pretending to be a locked Mutex with a nil owner"
+
+	^lockedBlock value
+]
+
 { #category : #accessing }
 SSWReStoreProcessSafetyTest >> firstActiveReStore [
 
 	^SSWReStore activeReStores do: [ :each | ^each]
+]
+
+{ #category : #helpers }
+SSWReStoreProcessSafetyTest >> owner [
+
+	"For when the receiver is pretending to be a locked Mutex with a nil owner"
+
+	^nil
 ]
 
 { #category : #running }
@@ -234,6 +258,30 @@ SSWReStoreProcessSafetyTest >> testProxyLookupDuringTransaction [
 	self assert: proxy isDBProxy.
 	self deny: wasTransactionInProgress.
 	self assert: proxy _version equals: (version + 1).
+]
+
+{ #category : #'unit tests' }
+SSWReStoreProcessSafetyTest >> testProxyLookupWhenLockedWithoutOwner [
+
+	"Verify proxy lookup works (in particular, does not enter an infinite loop) when the transaction mutex owner is nil"
+
+	| john mutex process proxy wasTerminated |
+
+	john := self john.
+	john firstName.
+	self deny: john isDBProxy.
+
+	mutex := reStore transactionMutex.
+	reStore transactionMutex: self.
+	[process := [proxy := john _dbProxyIn: reStore ifNone: [nil]] forkAt: Processor activeProcess priority - 1.
+	(Delay forMilliseconds: 10) wait.
+
+	wasTerminated := process isTerminated.
+	wasTerminated ifFalse: [process terminate]] ensure: [reStore transactionMutex: mutex].
+
+	self assert: wasTerminated.
+	self assert: proxy isDBProxy.
+	self assert: proxy _proxiedObject identicalTo: john
 ]
 
 { #category : #'unit tests' }
