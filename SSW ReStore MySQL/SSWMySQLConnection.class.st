@@ -18,7 +18,10 @@ SSWMySQLConnection >> basicClose [
 { #category : #'connection open/close' }
 SSWMySQLConnection >> basicConnect [
 
-	self connect: self connectionSpec
+	| result |
+
+	result := self connect: self connectionSpec.
+	result isError ifTrue: [ result signalError ]
 ]
 
 { #category : #transactions }
@@ -94,8 +97,13 @@ SSWMySQLConnection >> isConnected [
 { #category : #accessing }
 SSWMySQLConnection >> prepare: queryString [
 
-	^(SSWMySQLStatement onConnection: self)
-		stmtId: (super prepare: queryString) prepareOkay stmtHandlerId; 
+	| response |
+
+	response := super prepare: queryString.
+	response isError ifTrue: [ response signalError ].
+
+	^ (SSWMySQLStatement onConnection: self)
+		stmtId: response prepareOkay stmtHandlerId;
 		sqlString: queryString;
 		cursoredFetch: false;
 		typeMapResults: false;
