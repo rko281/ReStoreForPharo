@@ -52,6 +52,14 @@ SSWDBProxy >> __ensureActive [
 	(reStore transaction includesProxy: self) ifFalse: [self _referenced]
 ]
 
+{ #category : #accessing }
+SSWDBProxy >> __proxiedObject: anObject [
+
+	"Private - Guaranteed direct assignment with no additional functionality - do not override"
+	
+	proxiedObject := anObject
+]
+
 { #category : #'actions-internal' }
 SSWDBProxy >> __referenced [
 
