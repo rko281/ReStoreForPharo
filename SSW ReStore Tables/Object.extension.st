@@ -100,7 +100,9 @@ Object class >> reStoreInstVarAccessor [
 
 	"Return a new inst var accessor to be used to access instances of this class in another object"
 
-	^SSWInstVarAccessor new
+	^self isMutableDirectlyPersistedNonBaseClass
+		ifTrue: [SSWMutableInstVarAccessor new]
+		ifFalse: [SSWInstVarAccessor new]
 ]
 
 { #category : #'*SSW ReStore Tables' }

@@ -30,6 +30,24 @@ SSWDBKeyedCollectionEntry >> addTargetTo: aCollection [
 	aCollection _dbAdd: self target suggestedIndex: self index
 ]
 
+{ #category : #actions }
+SSWDBKeyedCollectionEntry >> copyTargetTo: aCollection [
+
+	self hasMutableIndex 
+	ifTrue: 
+		[self hasMutableTarget
+			ifTrue: [aCollection _dbAdd: self target copy suggestedIndex: self index copy]
+			ifFalse: [aCollection _dbAdd: self target suggestedIndex: self index copy]]
+	ifFalse:
+		[aCollection _dbAdd: self target copy suggestedIndex: self index]
+]
+
+{ #category : #testing }
+SSWDBKeyedCollectionEntry >> hasMutableIndex [
+
+	^self index class isMutableDirectlyPersistedNonBaseClass
+]
+
 { #category : #accessing }
 SSWDBKeyedCollectionEntry >> index [
 

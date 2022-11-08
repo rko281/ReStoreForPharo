@@ -84,7 +84,15 @@ SSWReStoreDirectlyPersistedTest >> _testCollectionMutationRollback: aSymbol [
 
 	owner rollback.
 
-	self _testCollection: aSymbol
+	self _testCollection: aSymbol.
+
+	"And again to verify the rollback makes a full copy"
+	collection do: [ :each | each bitSet: 8].
+
+	owner rollback.
+
+	self _testCollection: aSymbol.
+
 ]
 
 { #category : #'unit tests' }
@@ -132,6 +140,17 @@ SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionRollback: aSymbol 
 
 	collection := owner perform: aSymbol.
 
+	collection removeFirst; removeFirst; removeLast; removeLast.
+	collection last value: 99.
+	self assert: collection size equals: 4.
+	self assert: (collection collect: [ :each | each value]) asArray equals: #(3 4 5 99).
+	self assert: collection asArray equals: (#(3 4 5 99) collect: [ :each | TestBitmask value: each]).
+
+	owner rollback.
+
+	self _testCollection: aSymbol.
+
+	"And again to verify the rollback makes a full copy"
 	collection removeFirst; removeFirst; removeLast; removeLast.
 	collection last value: 99.
 	self assert: collection size equals: 4.
@@ -485,8 +504,16 @@ SSWReStoreDirectlyPersistedTest >> testMutationRollback [
 	self assert: owner bitmask value equals: 0.
 
 	owner bitmask bitSet: 2.
-	owner rollback.
+	self assert: owner bitmask value equals: 2.
 
+	owner rollback.
+	self assert: owner bitmask value equals: 0.
+
+	"And again to verify the rollback makes a full copy"
+	owner bitmask bitSet: 2.
+	self assert: owner bitmask value equals: 2.
+
+	owner rollback.
 	self assert: owner bitmask value equals: 0
 ]
 

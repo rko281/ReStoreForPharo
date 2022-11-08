@@ -138,7 +138,7 @@ SSWDBCollectionProxy >> _rollbackChanges [
 	changedCollection := self.
 	self _unswap.
 
-	me _proxiedObject: unchangedCollection.
+	me _setProxiedObject: unchangedCollection.
 	changedCollection getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]
 ]
 

@@ -273,7 +273,7 @@ SSWDBCachingObjectProxy >> _rollbackUpdates [
 	self _unswap.
 
 	me _checkHasChanged ifTrue: 
-		[me __proxiedObject: me _copyObject shallowCopy. 
+		[me _setProxiedObject: (me _dbTable copyForProxy: me _copyObject).
 		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
 ]
 

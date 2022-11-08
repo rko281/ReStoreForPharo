@@ -180,10 +180,12 @@ SSWDBGeneralCollectionProxy >> _unchangedCollection [
 
 	| unchangedCollection |
 
-	self _checkHasChanged ifFalse: [^proxiedObject].
+	(collectionSpec hasMutableElements or: [self _checkHasChanged]) ifFalse: [^proxiedObject].
 
 	unchangedCollection := collectionSpec newCollection.
-	collectionEntries notNil ifTrue: [collectionEntries do: [ :entry | entry addTargetTo: unchangedCollection]].
+	collectionSpec hasMutableElements
+		ifTrue: [collectionEntries notNil ifTrue: [collectionEntries do: [ :entry | entry copyTargetTo: unchangedCollection]]]
+		ifFalse: [collectionEntries notNil ifTrue: [collectionEntries do: [ :entry | entry addTargetTo: unchangedCollection]]].
 	
 	^unchangedCollection
 ]

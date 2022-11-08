@@ -139,12 +139,6 @@ SSWDBStaticCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOfE
 	^changes
 ]
 
-{ #category : #testing }
-SSWDBStaticCollectionSpec >> hasMutableTargetInstances [
-
-	^self targetClass isDirectlyPersisted and: [self targetClass isPersistentBaseClass not and: [self targetClass hasMutablePersistentInstances]]
-]
-
 { #category : #'change detection' }
 SSWDBStaticCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
 
@@ -166,7 +160,7 @@ SSWDBStaticCollectionSpec >> preserveCollectionEntries: aCollection [
 
 	"Private - If the collection stored mutatable directly-persisted objects then we must use a shallowCopy of these for change detection"
 
-	self hasMutableTargetInstances ifTrue: [aCollection do: [ :each | each target: each target shallowCopy]]
+	self targetClass isMutableDirectlyPersistedNonBaseClass ifTrue: [aCollection do: [ :each | each target: each target shallowCopy]]
 ]
 
 { #category : #actions }

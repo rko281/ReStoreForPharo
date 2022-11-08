@@ -100,6 +100,12 @@ SSWDBGeneralCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOf
 	^self subclassResponsibility
 ]
 
+{ #category : #testing }
+SSWDBGeneralCollectionSpec >> hasMutableElements [
+
+	^self targetClass isMutableDirectlyPersistedNonBaseClass
+]
+
 { #category : #'change detection' }
 SSWDBGeneralCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
 

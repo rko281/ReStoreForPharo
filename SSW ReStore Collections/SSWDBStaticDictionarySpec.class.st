@@ -105,6 +105,12 @@ SSWDBStaticDictionarySpec >> elementRemovalClass [
 	^SSWDBCollectionRemovalWithKey
 ]
 
+{ #category : #testing }
+SSWDBStaticDictionarySpec >> hasMutableElements [
+
+	^super hasMutableElements or: [self keyClass isMutableDirectlyPersistedNonBaseClass]
+]
+
 { #category : #'initialize/release' }
 SSWDBStaticDictionarySpec >> initialize [
 

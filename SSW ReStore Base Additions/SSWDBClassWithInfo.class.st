@@ -55,6 +55,12 @@ SSWDBClassWithInfo >> isDirectlyPersistedNonBaseClass [
 ]
 
 { #category : #testing }
+SSWDBClassWithInfo >> isMutableDirectlyPersistedNonBaseClass [
+
+	^self infoClass isMutableDirectlyPersistedNonBaseClass
+]
+
+{ #category : #testing }
 SSWDBClassWithInfo >> isPersistentBaseClass [
 
 	^self infoClass isPersistentBaseClass

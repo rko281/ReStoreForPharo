@@ -12,14 +12,6 @@ SSWDBDirectlyPersistedObject class >> fromReStoreValue: aValue [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
-SSWDBDirectlyPersistedObject class >> hasMutablePersistentInstances [
-
-	"Are instances of this class mutable (at least from the database's point of view)"
-
-	^false
-]
-
 { #category : #'instance creation' }
 SSWDBDirectlyPersistedObject class >> instanceFromDBValue: aValue in: aReStore [
 
@@ -33,14 +25,6 @@ SSWDBDirectlyPersistedObject class >> instanceFromDBValue: aValue in: aReStore [
 SSWDBDirectlyPersistedObject class >> isDirectlyPersisted [
 
 	^true
-]
-
-{ #category : #persistency }
-SSWDBDirectlyPersistedObject class >> reStoreInstVarAccessor [
-
-	^self hasMutablePersistentInstances
-		ifTrue: [SSWMutableInstVarAccessor new]
-		ifFalse: [super reStoreInstVarAccessor]
 ]
 
 { #category : #accessing }
