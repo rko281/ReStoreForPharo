@@ -84,6 +84,18 @@ SSWReStoreGenericCollectionTest >> detect: aBlock ifNone: absentBlock [
 	^collection detect: aBlock ifNone: absentBlock
 ]
 
+{ #category : #helpers }
+SSWReStoreGenericCollectionTest >> duplicateInCollection [
+
+	^self duplicateInCollection: collection
+]
+
+{ #category : #helpers }
+SSWReStoreGenericCollectionTest >> duplicateInCollection: aCollection [
+
+	"optional - implement where necessary" 
+]
+
 { #category : #public }
 SSWReStoreGenericCollectionTest >> fetchTestObjects [
 

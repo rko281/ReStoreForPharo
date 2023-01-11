@@ -51,6 +51,12 @@ SSWSQLite3Statement >> free [
 	handle isNil ifFalse: [[self finalize] on: SQLite3ConstraintViolation do: [ :exc | exc return]]
 ]
 
+{ #category : #testing }
+SSWSQLite3Statement >> isFreed [
+
+	^handle isNil
+]
+
 { #category : #accessing }
 SSWSQLite3Statement >> parent [
 

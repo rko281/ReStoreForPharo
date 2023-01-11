@@ -27,6 +27,19 @@ SSWMySQLStatement >> execute [
 	^super execute ifNotNil: [ :resultSet | resultSet asSSWMySQLResultSet ]
 ]
 
+{ #category : #'initialize-release' }
+SSWMySQLStatement >> free [
+
+	super close.
+	stmtId := nil
+]
+
+{ #category : #testing }
+SSWMySQLStatement >> isFreed [ 
+
+	^stmtId isNil
+]
+
 { #category : #accessing }
 SSWMySQLStatement >> parent [
 

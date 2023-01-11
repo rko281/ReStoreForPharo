@@ -28,9 +28,7 @@ SSWDBGeneralCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries 
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
 
-	^self shouldCompareChangesByEquality
-		ifTrue: [self equalityChangesTo: aCollection from: aCollectionOfEntries]
-		ifFalse: [self identityChangesTo: aCollection from: aCollectionOfEntries]
+	^self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -92,26 +90,10 @@ SSWDBGeneralCollectionSpec >> entryClass [
 	^SSWDBCollectionEntry
 ]
 
-{ #category : #'change detection' }
-SSWDBGeneralCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOfEntries [
-
-	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via equality (=)"
-
-	^self subclassResponsibility
-]
-
 { #category : #testing }
 SSWDBGeneralCollectionSpec >> hasMutableElements [
 
 	^self targetClass isMutableDirectlyPersistedNonBaseClass
-]
-
-{ #category : #'change detection' }
-SSWDBGeneralCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
-
-	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via identity (==)"
-
-	^self subclassResponsibility
 ]
 
 { #category : #'actions - api' }

@@ -11,6 +11,14 @@ Class {
 	#category : #'SSW ReStore SQLite3'
 }
 
+{ #category : #initialization }
+SSWSQLite3ResultSet >> close [
+	" closing a cursor is not the same as closing the statement - we may reuse a prepared statement"
+	statement ifNotNil: [ statement reset ].
+	"Compared to the superclass we want to keep the statement"
+	mutators := nil.
+]
+
 { #category : #private }
 SSWSQLite3ResultSet >> do: aBlock [
 

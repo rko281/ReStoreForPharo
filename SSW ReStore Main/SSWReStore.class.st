@@ -1063,7 +1063,7 @@ SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
 		statement := self connection executeQuery: anSSWSQLQuery cursoredFetch: aBoolean.
 		anSSWSQLQuery isReadQuery
 			ifTrue: [statement results]
-			ifFalse: [statement rowsAffected]]
+			ifFalse: [[statement rowsAffected] ensure: [statement free]]]
 ]
 
 { #category : #connection }
@@ -1930,7 +1930,7 @@ SSWReStore >> rowFromQuery: anSSWSQLQuery [
 
 	row := results first.
 		
-	results close.
+	results free.
 	
 	^row
 ]
@@ -1942,9 +1942,9 @@ SSWReStore >> rowsFromQuery: anSSWSQLQuery do: aBlock [
 		
 	results := self executeQuery: anSSWSQLQuery.
 
-	 results 
+	results 
 		do: [ :row | aBlock value: row];
-		close
+		free
 ]
 
 { #category : #querying }

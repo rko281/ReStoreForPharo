@@ -1,6 +1,6 @@
 Class {
 	#name : #SSWDBStaticIdentitySetSpec,
-	#superclass : #SSWDBStaticCollectionSpec,
+	#superclass : #SSWDBHashedStaticCollectionSpec,
 	#category : #'SSW ReStore Collections'
 }
 

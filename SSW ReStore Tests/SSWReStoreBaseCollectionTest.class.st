@@ -106,6 +106,18 @@ SSWReStoreBaseCollectionTest >> testCommit [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreBaseCollectionTest >> testDuplicateEntries [
+
+	"Ensure duplicate entries are handled correctly"
+
+	testObject component at: 1 put: (testObject component at: 3).
+
+	"This should just involve an update of the value of the first entry.
+	Previously this would update the third entry's key to 1, add a new third entry and delete the original third entry"
+	self assert: (self countQueriesDuring: [testObject store]) equals: 1
+]
+
+{ #category : #'unit tests' }
 SSWReStoreBaseCollectionTest >> testHasChanged [
 
 	| key |

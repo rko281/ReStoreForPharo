@@ -27,10 +27,10 @@ SSWDBReadStream >> basicNext [
 { #category : #actions }
 SSWDBReadStream >> close [
 
-	"Close the DBResultSet (and hence the DBStatement).
+	"Free the DBResultSet (and hence the DBStatement).
 	Not essential as finalization will do this, but it is good practice"
 	
-	collection close
+	collection free
 ]
 
 { #category : #evaluating }

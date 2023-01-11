@@ -39,6 +39,11 @@ SSWP3Statement >> execute [
 
 ]
 
+{ #category : #testing }
+SSWP3Statement >> isFreed [ 
+	^client isNil
+]
+
 { #category : #accessing }
 SSWP3Statement >> parent [
 

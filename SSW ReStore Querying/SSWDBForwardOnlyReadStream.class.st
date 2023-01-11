@@ -4,6 +4,15 @@ Class {
 	#category : #'SSW ReStore Querying'
 }
 
+{ #category : #evaluating }
+SSWDBForwardOnlyReadStream >> evaluatePostReadActionsFor: aCollection [
+
+	"We can't back-up so if we're at the end free things up"
+	self atEnd ifTrue: [self close].
+
+	^super evaluatePostReadActionsFor: aCollection
+]
+
 { #category : #positioning }
 SSWDBForwardOnlyReadStream >> position: anInteger [
 

@@ -13,28 +13,31 @@ Class {
 }
 
 { #category : #'change detection' }
-SSWDBSortedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries comparisonMap: aDictionary [
+SSWDBSortedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
 
-	| changes |
+	| changes map |
 
 	changes := OrderedCollection new: (aCollection size // 10).
 
 	"Make a map of each element (as was) to its entry(s)"
-	aCollectionOfEntries do: 
-		[ :each | (aDictionary at: (each target ifNil: [NilCookie]) ifAbsentPut: [OrderedCollection new: 1]) addLast: each].
+	self shouldCompareChangesByEquality
+		ifTrue: [map := Dictionary new: aCollectionOfEntries size]
+		ifFalse: [map := IdentityDictionary new: aCollectionOfEntries size].
+
+	aCollectionOfEntries do: [ :each | (map at: (each target ifNil: [NilCookie]) ifAbsentPut: [OrderedCollection new: 1]) addLast: each].
 
 	"Locate and remove entry for each member of the receiver"
-	aCollection keysAndValuesDo:
-		[ :newIndex :each |
-		(aDictionary at: (each ifNil: [NilCookie]) ifAbsent: [OrderedCollection new]) removeFirstIfAbsent:
+	aCollection do:
+		[ :each |
+		(map at: (each ifNil: [NilCookie]) ifAbsent: [OrderedCollection new]) removeFirstIfAbsent:
 			"No entry found = element has been added to the receiver" 
 			[changes add: (SSWDBCollectionAddition added: each)]].
 
 	"Any remaining entries indicate elements removed from the receiver"
-	aDictionary keysAndValuesDo:
-		[ :each :entries | 
+	map do:
+		[ :entries | 
 		entries isEmpty ifFalse:		"Minor optimisation"
 			[entries do: [ :entry | changes add: (SSWDBCollectionRemoval newWithEntry: entry)]]].
 
@@ -52,22 +55,6 @@ SSWDBSortedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 	instances parser orderingSpecs: self orderingSpecs.
 
 	^instances
-]
-
-{ #category : #'change detection' }
-SSWDBSortedStaticCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOfEntries [
-
-	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via equality (=)"
-
-	^self changesTo: aCollection from: aCollectionOfEntries comparisonMap: (Dictionary new: aCollectionOfEntries size)
-]
-
-{ #category : #'change detection' }
-SSWDBSortedStaticCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
-
-	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via identity (==)"
-
-	^self changesTo: aCollection from: aCollectionOfEntries comparisonMap: (IdentityDictionary new: aCollectionOfEntries size)
 ]
 
 { #category : #accessing }

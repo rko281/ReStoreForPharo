@@ -489,6 +489,20 @@ SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John')
 ]
 
+{ #category : #'unit tests' }
+SSWReStoreTableTest >> test22VerifyUnderscoreFormat [
+
+	"General testing of sswInUnderscoreFormat"
+
+	self assert: #basic sswInUnderscoreFormat equals: 'basic'.
+	self assert: #basicOne sswInUnderscoreFormat equals: 'basic_one'.
+	self assert: #basicOneTwo sswInUnderscoreFormat equals: 'basic_one_two'.
+
+	self assert: #basic1 sswInUnderscoreFormat equals: 'basic1'.
+	self assert: #basic1two sswInUnderscoreFormat equals: 'basic1two'.
+	self assert: #basic1Two sswInUnderscoreFormat equals: 'basic1_two'
+]
+
 { #category : #public }
 SSWReStoreTableTest >> test30VerifySpecifiedFieldNames [
 

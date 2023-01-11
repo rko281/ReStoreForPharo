@@ -58,6 +58,7 @@ SSWDBCollectionUpdate >> newTarget: anObject [
 SSWDBCollectionUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
 
 	(anSSWDBCollectionProxy _shouldUnstoreValue: self affectedEntry target) ifTrue: [self affectedEntry target unstore].
+	self newTarget _ensureActiveIn: anSSWDBCollectionProxy _reStore.
 
 	^super prepareToCommitFor: anSSWDBCollectionProxy
 ]

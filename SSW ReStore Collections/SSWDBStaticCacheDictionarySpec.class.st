@@ -5,7 +5,7 @@ https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBStaticCacheDictionarySpec,
-	#superclass : #SSWDBStaticCollectionSpec,
+	#superclass : #SSWDBHashedStaticCollectionSpec,
 	#instVars : [
 		'keyAccessor'
 	],

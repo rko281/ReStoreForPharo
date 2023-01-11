@@ -15,6 +15,12 @@ SSWReStoreRelatedOrderedCollectionTest >> componentDefinition [
 	^OrderedCollection of: GenericOwnedTest related
 ]
 
+{ #category : #helpers }
+SSWReStoreRelatedOrderedCollectionTest >> duplicateInCollection: aCollection [
+
+	^aCollection at: 1 put: aCollection last
+]
+
 { #category : #public }
 SSWReStoreRelatedOrderedCollectionTest >> replaceInCollection: aCollection [
 
@@ -77,6 +83,18 @@ SSWReStoreRelatedOrderedCollectionTest >> testCommitComponentSwap [
 	self assert: (collection first name = last name).
 	self assert: (collection last name = first name).
 
+]
+
+{ #category : #'unit tests' }
+SSWReStoreRelatedOrderedCollectionTest >> testDuplicateEntries [
+
+	"Ensure duplicate entries are handled correctly"
+
+	self duplicateInCollection.
+
+	"This should just involve an update of the value of the entry to which the duplicate has been assigned.
+	Previously this would update the duplicated entry's key, add a new entry for the original and delete the original entry"
+	self assert: (self countQueriesDuring: [testObject store]) equals: (1 "for the update" + (self componentDefinition isValueDependent ifTrue: [1] ifFalse: [0]) "1 for the deletion of the overwritten item (if dependent)")
 ]
 
 { #category : #'unit tests' }

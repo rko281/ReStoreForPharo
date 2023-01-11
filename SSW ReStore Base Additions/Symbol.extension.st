@@ -7,20 +7,17 @@ Symbol >> sswInUnderscoreFormat [
 	e.g. the underscore form of the symbol #dateOfBirth would be 'date_of_birth'.
 
 	NB - previously this method returned all-uppercase strings; it now returns all-lowercase"
-	
-	| readStream writeStream wasLowercase |
-	
-	readStream := ReadStream on: self.
-	writeStream := WriteStream on: (String new: self size).
-	wasLowercase := false.
 
-	[readStream atEnd] whileFalse: 
-		[| char |
-		char := readStream next.
-		(char isUppercase and: [wasLowercase])
-			ifTrue: [writeStream nextPut: $_; nextPut: char asLowercase]
-			ifFalse: [writeStream nextPut: char asLowercase].
-		wasLowercase := char isLowercase].
-			
+	| writeStream last |
+
+	"Leave some room for underscores to avoid growing the stream.
+	We'll make a copy in #contents regardless, so overshooting isn't a problem."
+	writeStream := String writeStream: self size + 3.
+	last := self first.
+	self do: 
+		[ :char |
+		(char isUppercase and: [last isUppercase not]) ifTrue: [writeStream nextPut: $_].
+		writeStream nextPut: char asLowercase.
+		last := char].
 	^writeStream contents
 ]

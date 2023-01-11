@@ -6,9 +6,6 @@ https://github.com/rko281/ReStore
 Class {
 	#name : #SSWDBOrderedStaticCollectionSpec,
 	#superclass : #SSWDBKeyedStaticCollectionSpec,
-	#instVars : [
-		'updateTargetStatement'
-	],
 	#category : #'SSW ReStore Collections'
 }
 

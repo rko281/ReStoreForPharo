@@ -30,6 +30,12 @@ SSWSQLUpdateQuery >> fieldUpdates: anSSWSQLFieldCollection [
 	fieldUpdates := anSSWSQLFieldCollection 
 ]
 
+{ #category : #testing }
+SSWSQLUpdateQuery >> isWriteQuery [
+
+	^true
+]
+
 { #category : #evaluating }
 SSWSQLUpdateQuery >> parameterisedFields [
 

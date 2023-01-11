@@ -172,14 +172,6 @@ SSWDBStaticDictionarySpec >> keyTableForRefresh [
 	^keyTableForRefresh
 ]
 
-{ #category : #'change detection' }
-SSWDBStaticDictionarySpec >> keyUpdateClass [
-
-	"Return the class of change object representing a key update for the type of collection modelled by the receiver"
-
-	^SSWDBCollectionKeyUpdate
-]
-
 { #category : #'actions-internal' }
 SSWDBStaticDictionarySpec >> readAllEntriesFor: ids [
 

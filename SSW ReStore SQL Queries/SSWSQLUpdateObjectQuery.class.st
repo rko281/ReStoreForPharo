@@ -45,7 +45,7 @@ SSWSQLUpdateObjectQuery >> parameterisedFields [
 
 	^self updatedFields
 		add: self table idField;
-		addAll: self table controlFields;
+		addAll: (self table controlFields reject: [ :each | (each accessor valueIn: self object) isNil]);
 		yourself
 ]
 
@@ -83,7 +83,7 @@ SSWSQLUpdateObjectQuery >> values [
 	parameterisedValues := self updatedValues.
 
 	parameterisedValues add: self object _id.
-	self objectControlConditions do: [ :each | parameterisedValues add: each value].
+	self objectControlConditions do: [ :each | each value ifNotNil: [ :value | parameterisedValues add: value]].
 
 	^parameterisedValues
 ]
