@@ -30,8 +30,9 @@ SSWMySQLStatement >> execute [
 { #category : #'initialize-release' }
 SSWMySQLStatement >> free [
 
-	super close.
-	stmtId := nil
+	stmtId isNil ifFalse: 
+		[super close.
+		stmtId := nil]
 ]
 
 { #category : #testing }

@@ -11,8 +11,7 @@ SSWDBReadStream >> errorEndOfStream [
 { #category : #'*SSW ReStore for Pharo' }
 SSWDBReadStream >> nextAvailable [
 
-	"Pharo does not error on #next at end of stream, so nextAvailable = next"	
-	^self next
+	^self atEnd ifFalse: [self next]
 ]
 
 { #category : #'*SSW ReStore for Pharo' }

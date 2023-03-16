@@ -144,6 +144,12 @@ SSWSQLite3Connection >> prepareToClose [
 	SmalltalkImage current garbageCollectMost
 ]
 
+{ #category : #querying }
+SSWSQLite3Connection >> query: aString [
+
+	^self execute: aString
+]
+
 { #category : #constants }
 SSWSQLite3Connection >> sqlDialectClass [
 

@@ -112,6 +112,20 @@ SSWReStoreFunctionTest >> testOversizeStringAsFunctionCriteria [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreFunctionTest >> testScaledDecimalArgument [
+
+	"Test a query where the argument to a function is a ScaledDecimal - previously caused an error"
+
+	| results |
+
+	SimpleProduct new description: 'scaled decimal test'; retailPrice: 1.23s2; storeIn: reStore.
+
+	results := (SimpleProduct storedInstancesIn: reStore) collect: [ :each | each retailPrice + 4.56s2].
+	self assert: results size equals: 1.
+	self assert: results first equals: 5.79s2
+]
+
+{ #category : #'unit tests' }
 SSWReStoreFunctionTest >> testStaticValueAsFunctionResult [
 
 	"Test where the result of a function is a fixed value, not a field"

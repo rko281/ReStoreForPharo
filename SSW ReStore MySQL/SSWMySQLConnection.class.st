@@ -85,7 +85,7 @@ SSWMySQLConnection >> error: aString [
 { #category : #running }
 SSWMySQLConnection >> execute: aString [
 
-	^(self query: aString) asSSWMySQLResultSet
+	^self query: aString
 ]
 
 { #category : #testing }
@@ -108,6 +108,12 @@ SSWMySQLConnection >> prepare: queryString [
 		cursoredFetch: false;
 		typeMapResults: false;
 		yourself
+]
+
+{ #category : #running }
+SSWMySQLConnection >> query: aString [
+
+	^(super query: aString) asSSWMySQLResultSet
 ]
 
 { #category : #transactions }
