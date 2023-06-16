@@ -233,7 +233,7 @@ SSWReStoreDBConnection >> isDebug [
 { #category : #querying }
 SSWReStoreDBConnection >> logQueryExecution: aString [
 
-	self debugStream ifNotNil: [ :stream | stream cr; show: aString].
+	self debugStream ifNotNil: [ :stream | stream cr; nextPutAll: aString].
 	self incrementQueryCount
 ]
 
