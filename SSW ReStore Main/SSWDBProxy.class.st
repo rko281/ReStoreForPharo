@@ -254,6 +254,16 @@ SSWDBProxy >> _forgetProxiedObject [
 	proxiedObject := nil
 ]
 
+{ #category : #accessing }
+SSWDBProxy >> _frontFace [
+	"Private - Answer the 'front face' identity associated with the receiver--the identity that should be referenced by other persisted objects.
+	When the receiver is swapped, this is the proxiedObject.
+	
+	N.B. Must be called in a critical section."
+
+	^self _isSwapped ifTrue: [self _proxiedObject] ifFalse: [self].
+]
+
 { #category : #testing }
 SSWDBProxy >> _hasChanged [
 
