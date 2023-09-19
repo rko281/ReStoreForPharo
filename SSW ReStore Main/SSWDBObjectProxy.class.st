@@ -526,10 +526,12 @@ SSWDBObjectProxy >> _unstore [
 
 { #category : #'actions-internal' }
 SSWDBObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
+	"Assign the correct collection proxy for <aCollectionSpec> to the proxied object. Return the collection proxy.
+	Note that we may actually assign the proxied collection itself, if the collection proxy is swapped--what is important
+	is that we assign the correct *identity* so everything works out."
 
-	"Return the collection proxy"
-
-	^aCollectionSpec accessor value: (collectionProxies at: aCollectionSpec) in: proxiedObject
+	^aCollectionSpec accessor value: (collectionProxies at: aCollectionSpec) _frontFace
+		in: proxiedObject.
 ]
 
 { #category : #accessing }

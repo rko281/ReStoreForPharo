@@ -673,6 +673,29 @@ SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 			removeSelector: #onRollback fromClass: OwnerTest]
 ]
 
+{ #category : #'unit tests' }
+SSWReStoreRefreshTest >> testSwapCollectionProxyBeforeFaultInParentAfterRefresh [
+	| owner coll |
+	owner := (OwnerTest storedInstancesIn: reStore) first.
+	coll := owner ownedOrdered.
+	"Sanity checks:"
+	self deny: owner isDBProxy.
+	self assert: coll isDBProxy.
+	"Must be a lazy refresh as a force refresh will link everything up before any proxies can be swapped"
+	reStore lazyRefresh: owner.
+	self assert: owner isDBProxy.
+	self deny: owner _isRecovered.
+	"Swap the collection proxy before triggering fault-in of the owner. In practice this can happen due to process contention, where the collection is on the stack of another process, rather than someone explicitly holding a reference to the collection."
+	coll first.
+	self deny: coll isDBProxy.
+	self assert: owner isDBProxy.
+	self deny: owner _isRecovered.
+	"Now trigger fault-in of the owner. If the 'back face' identity is mistakenly assigned this will fail"
+	self assert: coll identicalTo: owner ownedOrdered.
+	"Or, more practically, we should not get a 'Trying to swap already-swapped proxy' error here:"
+	self shouldnt: [owner ownedOrdered first] raise: Error.
+]
+
 { #category : #running }
 SSWReStoreRefreshTest >> usesVersioning [
 
