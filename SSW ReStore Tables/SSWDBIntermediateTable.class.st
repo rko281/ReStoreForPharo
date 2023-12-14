@@ -24,20 +24,6 @@ SSWDBIntermediateTable >> _classCondition [
 	^conditions
 ]
 
-{ #category : #'instance creation' }
-SSWDBIntermediateTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
-	
-	"Redirect to the relevant concrete class"
-	
-	| class |
-	
-	class := self instanceClassFromRow: aDBRow.
-
-	class = self instanceClass
-		ifTrue: [super recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy]
-		ifFalse: [(self reStore tableForClass: class) recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy]
-]
-
 { #category : #evaluating }
 SSWDBIntermediateTable >> subclasses [
 

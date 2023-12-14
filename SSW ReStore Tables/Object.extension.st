@@ -69,6 +69,16 @@ Object class >> persistencyRootClass [
 ]
 
 { #category : #'*SSW ReStore Tables' }
+Object >> related [
+
+	"Return a related version of the receiver"
+
+	^SSWDBRelatedWrapper on: self
+
+
+]
+
+{ #category : #'*SSW ReStore Tables' }
 Object class >> reStoreDefinition [
 
 	"Return anSSWDBClassDefinition setting out the details of how the receiver is to be persisted.
@@ -148,16 +158,6 @@ Object class >> reStoreValueClass [
 	^self isPersistentBaseClass
 		ifTrue: [self] "Usually"
 		ifFalse: [self reStoreIDClass]
-]
-
-{ #category : #'*SSW ReStore Tables' }
-Object >> related [
-
-	"Return a related version of the receiver"
-
-	^SSWDBRelatedWrapper on: self
-
-
 ]
 
 { #category : #'*SSW ReStore Tables' }

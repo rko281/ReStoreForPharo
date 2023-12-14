@@ -68,16 +68,6 @@ SSWDBAbstractSubTable >> isRootTable [
 	^false
 ]
 
-{ #category : #'instance creation' }
-SSWDBAbstractSubTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
-	
-	"Set the class of the proxy to the actual class of object, since this may be one of the receiver's instanceClass' subclasses"
-	
-	super recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy.
-	
-	anSSWDBObjectProxy _class: anSSWDBObjectProxy _proxiedObject class
-]
-
 { #category : #evaluating }
 SSWDBAbstractSubTable >> registerClass [
 

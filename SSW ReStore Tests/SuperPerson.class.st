@@ -7,46 +7,63 @@ Class {
 	#name : #SuperPerson,
 	#superclass : #Object,
 	#instVars : [
-		'surname',
-		'firstName'
+		'firstName',
+		'superFlags',
+		'surname'
 	],
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #public }
-SuperPerson class >> reStoreDefinition [
-
-	^super reStoreDefinition
-		define: #surname as: (String maxSize: 255);
-		define: #firstName as: (String maxSize: 255);
-		yourself
+{ #category : #constants }
+SuperPerson class >> mutableAspects [
+	^#(#superFlags).
 ]
 
 { #category : #public }
+SuperPerson class >> reStoreDefinition [
+	^super reStoreDefinition
+		define: #surname as: (String maxSize: 255);
+		define: #firstName as: (String maxSize: 255);
+		define: #superFlags as: TestBitmask;
+		yourself.
+]
+
+{ #category : #accessing }
 SuperPerson >> firstName [
 
 	^firstName
 ]
 
-{ #category : #public }
+{ #category : #accessing }
 SuperPerson >> firstName: a [
 
 	firstName := a
 ]
 
-{ #category : #public }
+{ #category : #accessing }
 SuperPerson >> fullName [
 
 	^self firstName, ' ', self surname
 ]
 
-{ #category : #public }
+{ #category : #initialization }
+SuperPerson >> initialize [
+	super initialize.
+	superFlags := TestBitmask new.
+]
+
+{ #category : #accessing }
+SuperPerson >> superFlags [
+	^superFlags.
+]
+
+{ #category : #accessing }
 SuperPerson >> surname [
 
 	^surname
 ]
 
-{ #category : #public }
+{ #category : #accessing }
 SuperPerson >> surname: a [
 
 	surname := a
