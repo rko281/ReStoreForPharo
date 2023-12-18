@@ -80,9 +80,7 @@ SSWDBInheritedTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 
 	| class |
 	class := self instanceClassFromRow: aDBRow.
-	self assert: (class includesBehavior: self instanceClass)
-		description: 
-			['Proxy for ' , self instanceClass name , ' retrieved a ' , class name , ' from the database.'].
+	(class includesBehavior: self instanceClass) ifFalse: [self error:  'Proxy for <1d> retrieved a <2d> from the database.' << {self instanceClass. class}].
 	anSSWDBObjectProxy _class: class.
 	(class = self instanceClass ifTrue: [self] ifFalse: [self reStore tableForClass: class])
 		recoverExactClassInstanceFromRow: aDBRow

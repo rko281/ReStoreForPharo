@@ -51,8 +51,8 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	self assert: proxy _class equals: aClass.
 
 	"Check that all declared mutable properties have been properly copied"
-	aClass mutableAspects withIndexDo: 
-			[:sym :i |
+	aClass mutableAspects keysAndValuesDo: 
+			[:i :sym |
 			self deny: (proxy _proxiedObject perform: sym) == (proxy _copyObject perform: sym).
 			self deny: ((owner midFriend perform: sym) isBitSet: i).	"Sanity check, bitmask initializes with 0"
 			(owner midFriend perform: sym) bitSet: i].
@@ -60,7 +60,7 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	reStore simulateReconnect.
 	owner := (MidPerson storedInstancesIn: reStore) detect: [:each | each firstName = 'owner'].
 	aClass mutableAspects
-		withIndexDo: [:sym :i | self assert: ((owner midFriend perform: sym) isBitSet: i)].
+		keysAndValuesDo: [:i :sym | self assert: ((owner midFriend perform: sym) isBitSet: i)]
 ]
 
 { #category : #running }
@@ -335,10 +335,12 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
 	| detailedID midID |
 	midID := (reStore instancesOf: MidPerson) first _id.
-	detailedID := (DetailedPerson1 new storeIn: reStore) _id.
+	DetailedPerson1 new storeIn: reStore.
+	detailedID := (reStore instancesOf: DetailedPerson1) first _id.
 	reStore simulateReconnect.
+
 	"Attempt to retrieve what is actually a DetailedPerson as if it were a MidPerson (siblings)"
-	self should: [(reStore deferredObjectOfClass: MidPerson withID: detailedID) firstName] raise: Error.
+	self should: [(reStore deferredObjectOfClass: MidPerson withID: detailedID) firstName] raise: Error description: 'Proxy for MidPerson retrieved a DetailedPerson1 from the database.'.
 	"As above, but parent of the declared class"
-	self should: [(reStore deferredObjectOfClass: SubPerson withID: midID) firstName] raise: Error.
+	self should: [(reStore deferredObjectOfClass: SubPerson withID: midID) firstName] raise: Error description: 'Proxy for SubPerson retrieved a MidPerson from the database.'
 ]
