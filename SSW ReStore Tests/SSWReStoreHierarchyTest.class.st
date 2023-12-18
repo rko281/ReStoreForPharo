@@ -11,10 +11,11 @@ Class {
 
 { #category : #'unit tests' }
 SSWReStoreHierarchyTest >> _testClassOfProxyOfIndirectInstanceOf: aClass [
+	"Verify that, even when recovered via a second path, and without specifying the class as part of the retrieval,
+	the class of the proxy of an object from a persistent hierarchy is set correctly (previously not the case for leaf classes)"
 
-	"Verify that, even when recovered via a second path, the class of the proxy of an object from a persistent hierarchy is set correctly (previously not the case for leaf classes)"
-
-	self _testClassOfProxyOfInstanceOf: aClass recoveredBy: [ :proxy | (reStore instancesOf: aClass) asOrderedCollection collect: [ :each | each firstName]]
+	self _testClassOfProxyOfInstanceOf: aClass
+		recoveredBy: [:proxy | (reStore instancesOf: SuperPerson) asOrderedCollection collect: [:each | each firstName]].
 ]
 
 { #category : #'unit tests' }
@@ -25,29 +26,41 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass [
 
 { #category : #'unit tests' }
 SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aBlock [
+	"Verify that, when recovered using aBlock after initially being an unrecovered proxy,
+	the class of the proxy of an object from a persistent hierarchy is set correctly.
+	Also verify that any mutable fields have been correctly copied and change-detection functions correctly."
 
-	"Verify that, when recovered using aBlock after initially being an unrecovered proxy, the class of the proxy of an object from a persistent hierarchy is set correctly"
-
-	| owner |
-
+	| owner proxy |
 	"Just using MidPerson here for its reference to SuperPerson in its midFriend inst var"
 	owner := MidPerson new firstName: 'owner'.
-	owner midFriend: ((aClass storedInstancesIn: reStore) first).
+	owner midFriend: (aClass storedInstancesIn: reStore) first.
 	owner storeIn: reStore.
-
 	reStore simulateReconnect.
 
 	"Read the owner; at this stage midFriend will just be an unrecovered proxy"
-	owner := (MidPerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'owner'].
+	owner := (MidPerson storedInstancesIn: reStore) detect: [:each | each firstName = 'owner'].
 	self assert: owner midFriend isDBProxy.
 	self assert: owner midFriend _proxiedObject isNil.
-	self assert: owner midFriend _class equals: SuperPerson. "at this stage - proxied object has not been read"
+	self assert: owner midFriend _class equals: SuperPerson.	"at this stage - proxied object has not been read"
 
 	"Recover it"
 	aBlock value: owner midFriend.
 	self deny: owner midFriend isDBProxy.
 	self assert: owner midFriend class equals: aClass.
-	self assert: (owner midFriend _dbProxyIn: reStore) _class equals: aClass
+	proxy := owner midFriend _dbProxyIn: reStore.
+	self assert: proxy _class equals: aClass.
+
+	"Check that all declared mutable properties have been properly copied"
+	aClass mutableAspects withIndexDo: 
+			[:sym :i |
+			self deny: (proxy _proxiedObject perform: sym) == (proxy _copyObject perform: sym).
+			self deny: ((owner midFriend perform: sym) isBitSet: i).	"Sanity check, bitmask initializes with 0"
+			(owner midFriend perform: sym) bitSet: i].
+	owner midFriend storeIn: reStore.
+	reStore simulateReconnect.
+	owner := (MidPerson storedInstancesIn: reStore) detect: [:each | each firstName = 'owner'].
+	aClass mutableAspects
+		withIndexDo: [:sym :i | self assert: ((owner midFriend perform: sym) isBitSet: i)].
 ]
 
 { #category : #running }
@@ -199,31 +212,6 @@ SSWReStoreHierarchyTest >> testClassOfProxyOfIndirectSuperInstance [
 ]
 
 { #category : #'unit tests' }
-SSWReStoreHierarchyTest >> testClassOfProxyOfInstanceOf: aClass [
-
-	| owner |
-
-	"Just using MidPerson here for its reference to SuperPerson in its midFriend inst var"
-	owner := MidPerson new firstName: 'owner'.
-	owner midFriend: ((aClass storedInstancesIn: reStore) first).
-	owner storeIn: reStore.
-
-	reStore simulateReconnect.
-
-	"Read the owner; at this stage midFriend will just be an unrecovered proxy"
-	owner := (MidPerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'owner'].
-	self assert: owner midFriend isDBProxy.
-	self assert: owner midFriend _proxiedObject isNil.
-	self assert: owner midFriend _class equals: SuperPerson. "at this stage - proxied object has not been read"
-
-	"Read via its own class"
-	(reStore instancesOf: aClass) asOrderedCollection collect: [ :each | each firstName].
-	self deny: owner midFriend isDBProxy.
-	self assert: owner midFriend class equals: aClass.
-	self assert: (owner midFriend _dbProxyIn: reStore) _class equals: aClass
-]
-
-{ #category : #'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfMidInstance [
 
 	self _testClassOfProxyOfInstanceOf: MidPerson
@@ -341,4 +329,16 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 			removeKey: #shouldSubclassesInheritPersistency;
 			removeKey: #addClassDefinitionTo:.
 		AbstractB class flushMethodCache]
+]
+
+{ #category : #'unit tests' }
+SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
+	| detailedID midID |
+	midID := (reStore instancesOf: MidPerson) first _id.
+	detailedID := (DetailedPerson1 new storeIn: reStore) _id.
+	reStore simulateReconnect.
+	"Attempt to retrieve what is actually a DetailedPerson as if it were a MidPerson (siblings)"
+	self should: [(reStore deferredObjectOfClass: MidPerson withID: detailedID) firstName] raise: Error.
+	"As above, but parent of the declared class"
+	self should: [(reStore deferredObjectOfClass: SubPerson withID: midID) firstName] raise: Error.
 ]
