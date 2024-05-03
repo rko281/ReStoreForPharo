@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCollectionSpec,
@@ -116,13 +115,13 @@ SSWDBCollectionSpec >> deleteStatement [
 { #category : #'initialize/release' }
 SSWDBCollectionSpec >> freePreparedStatements [
 
+	super freePreparedStatements.
+
 	readStatement notNil ifTrue: [readStatement free].
-	readAllStatement notNil ifTrue: [readAllStatement free].
 	refreshStatement notNil ifTrue: [refreshStatement free].
 	refreshWithContentsIfUpdatedStatement notNil ifTrue: [refreshWithContentsIfUpdatedStatement free].
 
 	readStatement := nil.
-	readAllStatement := nil.
 	refreshStatement := nil.
 	refreshWithContentsIfUpdatedStatement := nil
 ]
@@ -195,6 +194,7 @@ SSWDBCollectionSpec >> newProxydCollectionFor: aProxyObject [
 		_reStore: aProxyObject _reStore;
 		_owner: aProxyObject;
 		_collectionSpec: self;
+		_setNewNonPersistent;
 		yourself
 ]
 

@@ -4,13 +4,13 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : #running }
 SSWReStoreUUIDTest >> testClass [
 
 	^UUIDOwnedTest
 ]
 
-{ #category : #running }
+{ #category : #'unit tests' }
 SSWReStoreUUIDTest >> testQueryUUID_ID [
 
 	| obj id |
@@ -22,7 +22,7 @@ SSWReStoreUUIDTest >> testQueryUUID_ID [
 	self assert: (self testInstances detect: [:each | each _id = GUID newUnique] ifNone: [nil]) equals: nil
 ]
 
-{ #category : #running }
+{ #category : #'unit tests' }
 SSWReStoreUUIDTest >> testVerifyIDIsUUID [
 
 	| obj id |

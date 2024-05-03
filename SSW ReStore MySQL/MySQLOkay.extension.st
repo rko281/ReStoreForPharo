@@ -1,6 +1,6 @@
-Extension { #name : #MySQLOkay }
+Extension { #name : 'MySQLOkay' }
 
-{ #category : #'*SSW ReStore MySQL' }
+{ #category : '*SSW ReStore MySQL' }
 MySQLOkay >> asSSWMySQLResultSet [ 
 
 	^SSWMySQLResultSet new

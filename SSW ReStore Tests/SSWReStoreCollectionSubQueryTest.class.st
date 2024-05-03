@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreCollectionSubQueryTest,
@@ -239,7 +238,7 @@ SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSize [
 	self assert: (results asSortedCollection: [ :a :b | a first <= b first]) asArray equals: {{jim fullName. jim orderCount}. {zoe fullName. zoe orderCount}}
 ]
 
-{ #category : #'unit tests' }
+{ #category : #public }
 SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSubQuery [
 
 	"Test for a previously-erroring case where a subquery expression in a collect: block gave SSWDBStaticField MNU: #hasAggregateFunction"

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBUnstoreWrapper,
@@ -26,13 +25,13 @@ SSWDBUnstoreWrapper >> _commitIn: anSSWReStore [
 	self object unstore
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 SSWDBUnstoreWrapper >> _dbProxyIfNone: aBlock [
 
 	^self object _dbProxyIfNone: aBlock
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 SSWDBUnstoreWrapper >> _reStoreIfNone: aBlock [
 
 	^self object _reStoreIfNone: aBlock

@@ -4,13 +4,13 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #persistence }
+{ #category : #public }
 UUIDOwnedTest class >> reStoreIDClass [
 
 	^GUID
 ]
 
-{ #category : #persistence }
+{ #category : #public }
 UUIDOwnedTest class >> shouldInheritPersistency [
 
 	^false

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreTest,
@@ -31,7 +30,7 @@ SSWReStoreTest >> addClassesTo: aReStore [
 { #category : #running }
 SSWReStoreTest >> countQueries [
 
-	self resetQueryCount.
+	self resetQueryCount
 ]
 
 { #category : #running }
@@ -162,6 +161,7 @@ SSWReStoreTest >> destroyAllData [
 { #category : #running }
 SSWReStoreTest >> initReStore: aReStore [
 
+	aReStore isDebugging: false.
 	self initConnectionFor: aReStore
 ]
 
@@ -172,7 +172,7 @@ SSWReStoreTest >> performTest [
 	^super performTest
 ]
 
-{ #category : #running }
+{ #category : #accessing }
 SSWReStoreTest >> queryCount [
 
 	^reStore connection queryCount
@@ -195,7 +195,7 @@ SSWReStoreTest >> releaseReStore: aReStore [
 { #category : #running }
 SSWReStoreTest >> resetQueryCount [
 
-	^reStore connection resetQueryCount
+	reStore connection resetQueryCount
 ]
 
 { #category : #running }
@@ -222,7 +222,7 @@ SSWReStoreTest >> shouldDestroyClasses [
 { #category : #running }
 SSWReStoreTest >> stopQueryCounting [
 
-	reStore connection stopQueryCounting
+	reStore connection resetQueryCount
 ]
 
 { #category : #running }
@@ -232,7 +232,7 @@ SSWReStoreTest >> tearDown [
 
 	reStore isNil ifFalse: 
 		[reStore reconnect.
-		reStore destroyAllClasses.
+		self destroyAllClasses.
 		self releaseReStore: reStore.
 		reStore := nil]
 ]

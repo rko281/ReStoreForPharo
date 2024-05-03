@@ -78,6 +78,17 @@ SimplePerson >> <=> aPerson [
 ]
 
 { #category : #accessing }
+SimplePerson >> _instVarAt: anInteger [
+
+	anInteger = 1 ifTrue: 
+		[firstName = '<ERROR>' ifTrue: [firstName := '<done>'. self error: firstName].
+		firstName = '<ERROR ON COMMIT 1>' ifTrue: [firstName := '<ERROR>'].
+		firstName = '<ERROR ON COMMIT>' ifTrue: [firstName := '<ERROR ON COMMIT 1>']].
+
+	^super _instVarAt: anInteger
+]
+
+{ #category : #accessing }
 SimplePerson >> address [
 	^address
 ]
@@ -241,7 +252,7 @@ SimplePerson >> isDavidOrTestIsNil [
 
 { #category : #accessing }
 SimplePerson >> isDeceased [
-	^ isDeceased
+	^isDeceased
 ]
 
 { #category : #accessing }
@@ -255,7 +266,7 @@ SimplePerson >> isJohnAndTestIsNil [
 	^self firstName = 'John' and: [self test isNil]
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 SimplePerson >> orderCount [
 
 	^self orders size

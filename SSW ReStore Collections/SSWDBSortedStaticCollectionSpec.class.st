@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBSortedStaticCollectionSpec,
@@ -12,6 +11,38 @@ Class {
 	],
 	#category : #'SSW ReStore Collections'
 }
+
+{ #category : #'change detection' }
+SSWDBSortedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
+
+	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
+
+	| changes map |
+
+	changes := OrderedCollection new: (aCollection size // 10).
+
+	"Make a map of each element (as was) to its entry(s)"
+	self shouldCompareChangesByEquality
+		ifTrue: [map := Dictionary new: aCollectionOfEntries size]
+		ifFalse: [map := IdentityDictionary new: aCollectionOfEntries size].
+
+	aCollectionOfEntries do: [ :each | (map at: (each target ifNil: [NilCookie]) ifAbsentPut: [OrderedCollection new: 1]) addLast: each].
+
+	"Locate and remove entry for each member of the receiver"
+	aCollection do:
+		[ :each |
+		(map at: (each ifNil: [NilCookie]) ifAbsent: [OrderedCollection new]) removeFirstIfAbsent:
+			"No entry found = element has been added to the receiver" 
+			[changes add: (SSWDBCollectionAddition added: each)]].
+
+	"Any remaining entries indicate elements removed from the receiver"
+	map do:
+		[ :entries | 
+		entries isEmpty ifFalse:		"Minor optimisation"
+			[entries do: [ :entry | changes add: (SSWDBCollectionRemoval newWithEntry: entry)]]].
+
+	^changes
+]
 
 { #category : #'accessing:derived' }
 SSWDBSortedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
@@ -67,7 +98,7 @@ SSWDBSortedStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 
 	query := super selectQueryIn: anSSWReStore.
 
-	self targetClass isPersistentBaseClass
+	self targetClass isDirectlyPersisted
 	ifTrue:
 		[(self orderingSpecs isEmpty or: [self orderingSpecs first isAscending])
 			ifTrue: [query orderAscendingBy: self targetField]

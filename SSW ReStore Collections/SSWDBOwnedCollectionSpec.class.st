@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBOwnedCollectionSpec,
@@ -22,7 +21,7 @@ SSWDBOwnedCollectionSpec >> allElementsIn: aCollection [
 	^aCollection
 ]
 
-{ #category : #initializing }
+{ #category : #actions }
 SSWDBOwnedCollectionSpec >> copyCollection: aCollection [
 
 	^aCollection copy
@@ -307,13 +306,9 @@ SSWDBOwnedCollectionSpec >> selectQueryIn: anSSWReStore [
 { #category : #initializing }
 SSWDBOwnedCollectionSpec >> setOrderingSpecs [
 
-	self templateCollection isSortedCollection
-	ifTrue: 
-		[self orderingSpecs: (self templateCollection orderingSpecsFor: self targetClass in: self reStore)]
-	ifFalse: 
-		[self templateCollection isOrdered
-			ifTrue: [self orderingSpecs: (Array with: (SSWDBOrderingSpec ascending: self targetTable idField))]
-			ifFalse: [self orderingSpecs: #()]]
+	^self templateCollection isOrdered
+		ifTrue: [self orderingSpecs: (Array with: (SSWDBOrderingSpec ascending: self targetTable idField))]
+		ifFalse: [self orderingSpecs: #()]
 ]
 
 { #category : #initializing }

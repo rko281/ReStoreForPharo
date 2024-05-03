@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLFieldCollection,
@@ -16,10 +15,7 @@ SSWSQLFieldCollection >> fieldNamed: aString [
 
 	"Return the individual field with the given name"
 
-	self do: 
-		[ :field || match |
-		match := field fieldNamed: aString.
-		match notNil ifTrue: [^match]].
+	1 to: self size do: [ :index | ((self at: index) fieldNamed: aString) ifNotNil: [ :match | ^match]].
 
 	^nil
 ]

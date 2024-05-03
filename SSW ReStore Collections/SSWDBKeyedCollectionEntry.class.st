@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBKeyedCollectionEntry,
@@ -29,6 +28,24 @@ SSWDBKeyedCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 SSWDBKeyedCollectionEntry >> addTargetTo: aCollection [
 
 	aCollection _dbAdd: self target suggestedIndex: self index
+]
+
+{ #category : #actions }
+SSWDBKeyedCollectionEntry >> copyTargetTo: aCollection [
+
+	self hasMutableIndex 
+	ifTrue: 
+		[self hasMutableTarget
+			ifTrue: [aCollection _dbAdd: self target copy suggestedIndex: self index copy]
+			ifFalse: [aCollection _dbAdd: self target suggestedIndex: self index copy]]
+	ifFalse:
+		[aCollection _dbAdd: self target copy suggestedIndex: self index]
+]
+
+{ #category : #testing }
+SSWDBKeyedCollectionEntry >> hasMutableIndex [
+
+	^self index class isMutableDirectlyPersistedNonBaseClass
 ]
 
 { #category : #accessing }

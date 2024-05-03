@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBField,
@@ -23,11 +22,11 @@ SSWDBField >> = anSSWDBField [
 ]
 
 { #category : #actions }
-SSWDBField >> aboutToBeUnstored: anObject [
+SSWDBField >> aboutToBeUnstored: anSSWDBProxy [
 
-	"Delete the component of anObject referenced by the receiver, if dependent"
+	"Delete the components of anSSWDBProxy referenced by the receiver, if dependent"
 
-	self isDependent ifTrue: [(self accessor valueIn: anObject) unstore]
+	self isDependent ifTrue: [(anSSWDBProxy _valuesForAccessor: self accessor) do: [ :each | each unstore]]
 
 ]
 

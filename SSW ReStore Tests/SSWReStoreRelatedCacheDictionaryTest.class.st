@@ -1,6 +1,6 @@
 "
 ReStore
-¬©2020 John Aspinall
+©2020 John Aspinall
 https://github.com/rko281/ReStore
 "
 Class {
@@ -18,13 +18,15 @@ SSWReStoreRelatedCacheDictionaryTest class >> allTestSelectors [
 ]
 
 { #category : #helpers }
-SSWReStoreRelatedCacheDictionaryTest >> addToCollection: aCollection [
+SSWReStoreRelatedCacheDictionaryTest >> addToCollectionAnsweringAssociation: aCollection [
 
 	| component |
 
 	component := self templateComponent.
 
-	^aCollection at: component key put: component
+	aCollection at: component key put: component.
+
+	^component key -> component
 ]
 
 { #category : #accessing }

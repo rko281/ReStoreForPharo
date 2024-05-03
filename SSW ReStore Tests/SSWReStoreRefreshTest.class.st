@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreRefreshTest,
@@ -621,13 +620,37 @@ SSWReStoreRefreshTest >> testOwnedCollectionRefreshQueryCount [
 ]
 
 { #category : #'unit tests' }
+SSWReStoreRefreshTest >> testRefreshOfCopyObject [
+
+	| inst1 inst2 |
+
+	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
+	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
+
+	"Update in one session"
+	self assert: (reStore evaluateAsTransaction: [inst1 number: 11]).
+
+	self assert: inst1 number equals: 11.
+	self assert: inst2 number equals: 123.
+	self refreshDelay.
+
+	inst2 refresh.
+
+	self assert: inst2 isDBProxy.
+	self assert: inst2 _proxiedObject number equals: 11.
+	self assert: inst2 _copyObject number equals: 11.
+
+]
+
+{ #category : #'unit tests' }
 SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 
 	"Test previously-failing case where refreshing an object with an onRollback implementation which references an also-refreshed linked persistent object caused incorrect proxy swapping"
 
 	"Add an appropriate implementation of onRollback to both classes involved in the test since ordering of objects in transaction varies"
-	OwnedTest methodDictionary at: #onRollback put: (OwnedTest>>#testOnRollback).
-	OwnerTest methodDictionary at: #onRollback put: (OwnerTest>>#testOnRollback).
+	self 
+		addMethod: OwnedTest>>#testOnRollback withSelector: #onRollback toClass: OwnedTest;
+		addMethod: OwnerTest>>#testOnRollback withSelector: #onRollback toClass: OwnerTest.
 
 	[| owner owned |
 
@@ -645,8 +668,32 @@ SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 	self assert: owned isDBProxy.
 
 	] ensure: 
-		[OwnedTest methodDictionary removeKey: #onRollback.
-		OwnerTest methodDictionary removeKey: #onRollback]
+		[self 
+			removeSelector: #onRollback fromClass: OwnedTest;
+			removeSelector: #onRollback fromClass: OwnerTest]
+]
+
+{ #category : #'unit tests' }
+SSWReStoreRefreshTest >> testSwapCollectionProxyBeforeFaultInParentAfterRefresh [
+	| owner coll |
+	owner := (OwnerTest storedInstancesIn: reStore) first.
+	coll := owner ownedOrdered.
+	"Sanity checks:"
+	self deny: owner isDBProxy.
+	self assert: coll isDBProxy.
+	"Must be a lazy refresh as a force refresh will link everything up before any proxies can be swapped"
+	reStore lazyRefresh: owner.
+	self assert: owner isDBProxy.
+	self deny: owner _isRecovered.
+	"Swap the collection proxy before triggering fault-in of the owner. In practice this can happen due to process contention, where the collection is on the stack of another process, rather than someone explicitly holding a reference to the collection."
+	coll first.
+	self deny: coll isDBProxy.
+	self assert: owner isDBProxy.
+	self deny: owner _isRecovered.
+	"Now trigger fault-in of the owner. If the 'back face' identity is mistakenly assigned this will fail"
+	self assert: coll identicalTo: owner ownedOrdered.
+	"Or, more practically, we should not get a 'Trying to swap already-swapped proxy' error here:"
+	self shouldnt: [owner ownedOrdered first] raise: Error.
 ]
 
 { #category : #running }

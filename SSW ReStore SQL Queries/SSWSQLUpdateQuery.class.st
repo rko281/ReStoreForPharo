@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLUpdateQuery,
@@ -29,6 +28,12 @@ SSWSQLUpdateQuery >> fieldUpdates: anSSWSQLFieldCollection [
 	define the updates to be written by the receiver"
 	
 	fieldUpdates := anSSWSQLFieldCollection 
+]
+
+{ #category : #testing }
+SSWSQLUpdateQuery >> isWriteQuery [
+
+	^true
 ]
 
 { #category : #evaluating }

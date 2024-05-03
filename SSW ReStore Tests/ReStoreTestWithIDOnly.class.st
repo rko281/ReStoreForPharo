@@ -17,12 +17,10 @@ ReStoreTestWithIDOnly class >> reStoreDefinition [
 
 { #category : #accessing }
 ReStoreTestWithIDOnly >> nmbr [
-
-	^ nmbr
+	^nmbr
 ]
 
 { #category : #accessing }
 ReStoreTestWithIDOnly >> nmbr: anObject [
-
 	nmbr := anObject
 ]

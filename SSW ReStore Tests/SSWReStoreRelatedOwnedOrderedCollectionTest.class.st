@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreRelatedOwnedOrderedCollectionTest,
@@ -40,7 +39,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> componentDefinition [
 	^OrderedCollection of: GenericOwnedTest related owner: #owner
 ]
 
-{ #category : #public }
+{ #category : #helpers }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> replaceInCollection: aCollection [
 
 	^(aCollection at: aCollection size) -> (aCollection at: aCollection size put: self templateComponent)
@@ -55,7 +54,29 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
+SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElementTransfer [
+
+	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh, even when the original collection is deleted"
+
+	| collection1 element template2 collection2 |
+
+	collection1 := collection.
+	element := collection1 anyOne. 
+
+	template2 := self templateTestObject storeIn: reStore; yourself.
+	collection2 := template2 component.
+
+	collection1 remove: element.
+	collection2 add: element.
+
+	{testObject unstored. template2} storeAll.
+
+	element refresh.
+	self assert: element owner equals: template2
+]
+
+{ #category : #'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithDirectCollectionStore [
 
 	"Verify that an element removed from the collection is stored correctly when the collection (rather than its owner) is stored.
@@ -80,7 +101,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithD
 	self _testComponentExistenceOnDependency: element
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithNilBackpointer [
 
 	"Verify that an element removed from the collection is stored correctly even if the backpointer is manually nil'd out"
@@ -105,7 +126,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithN
 	self _testComponentExistenceOnDependency: element
 ]
 
-{ #category : #tests }
+{ #category : #'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh.

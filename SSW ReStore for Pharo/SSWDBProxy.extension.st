@@ -1,19 +1,19 @@
-Extension { #name : #SSWDBProxy }
+Extension { #name : 'SSWDBProxy' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> _proxyClass [
 
 	^super class
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> _proxyInstVarAt: index [
 
 	<primitive: 173 error: ec>
 	self primitiveFailed
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> _proxyInstVarAt: index put: value [
 
 	<primitive: 174 error: ec>
@@ -22,37 +22,37 @@ SSWDBProxy >> _proxyInstVarAt: index put: value [
 			ifFalse: [ ^ nil errorSubscriptBounds: index ]
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> asCollectionElement [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> asSetElement [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> enclosedElement [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> enclosedSetElement [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> gtDisplayString [
 
 	^self debugPrintString 
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> gtInspectorActions [
 
 	"Prevent unstubbing or errors"
@@ -60,7 +60,7 @@ SSWDBProxy >> gtInspectorActions [
 	^#()
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> gtInspectorPresentationsIn: composite inContext: aGTInspector [
 
 	"Prevent unstubbing or errors"
@@ -68,13 +68,13 @@ SSWDBProxy >> gtInspectorPresentationsIn: composite inContext: aGTInspector [
 	self gtInspectorPresentationsFromPragmas: #() In: composite inContext: aGTInspector
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> notNil [
 
 	^true
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> printStringLimitedTo: anInteger [
 
 	| string |

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWInstVarAccessor,
@@ -34,16 +33,17 @@ SSWInstVarAccessor >> access: aSymbol in: aClass [
 
 	"Configure the receiver to access the inst var of aClass which is named aSymbol"
 	
-	| instVarSlot |
+	| instVarName instVarSlot |
 
 	"Veirfy a valid inst var slot"
-	instVarSlot := aClass allInstVarNames indexOf: aSymbol asString.
+	instVarName := aSymbol asInstVarName. "in case aSymbol is something else (e.g. SSWDBInstVarWithFieldName)"
+	instVarSlot := aClass allInstVarNames indexOf: instVarName asString.
 	instVarSlot < 1 ifTrue: [self error: ('Undefined instance variable ', aSymbol)].
 
 	self 
 		ownerClass: aClass;
 		slot: instVarSlot;
-		name: aSymbol
+		name: instVarName
 ]
 
 { #category : #testing }
@@ -56,6 +56,17 @@ SSWInstVarAccessor >> accesses: aSymbol [
 SSWInstVarAccessor >> accessesDeeply: aSymbol [
 
 	^false
+]
+
+{ #category : #updating }
+SSWInstVarAccessor >> copyValue: valueObject in: targetObject [
+
+	"Set the instance variable of targetObject represented by the receiver to valueObject.
+	Compared to value:in: the implication here is that valueObject may need copying to make an independent object.
+
+	Default action - copying is not needed"
+
+	^self value: valueObject in: targetObject
 ]
 
 { #category : #evaluating }
@@ -136,7 +147,7 @@ SSWInstVarAccessor >> value: valueObject in: targetObject [
 
 	"Set the instance variable of targetObject represented by the receiver to valueObject"
 
-	targetObject _instVarAt: self slot put: valueObject
+	^targetObject _instVarAt: self slot put: valueObject
 ]
 
 { #category : #evaluating }
@@ -144,5 +155,5 @@ SSWInstVarAccessor >> valueIn: targetObject [
 
 	"Return the value of the instance variable of targetObject represented by the receiver"
 
-	^targetObject instVarAt: self slot
+	^targetObject _instVarAt: self slot
 ]

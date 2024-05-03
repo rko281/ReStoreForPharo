@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreTableTest,
@@ -120,18 +119,12 @@ SSWReStoreTableTest >> renameDetailedClass [
 ]
 
 { #category : #constants }
-SSWReStoreTableTest >> renamedTableName [
-
-	^'SIMPLE_PERSON2'
-]
-
-{ #category : #constants }
 SSWReStoreTableTest >> sampleSize [
 
 	^10
 ]
 
-{ #category : #Running }
+{ #category : #running }
 SSWReStoreTableTest >> setUp [
 
 	DetailedPerson2 
@@ -142,7 +135,7 @@ SSWReStoreTableTest >> setUp [
 	super setUp
 ]
 
-{ #category : #asserting }
+{ #category : #testing }
 SSWReStoreTableTest >> shouldDestroyClasses [
 
 	"For table tests we need a fresh database"
@@ -494,4 +487,59 @@ SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 
 	self assert: (((DetailedPerson1 storedInstancesIn: reStore) select: [ :e | 'Jon*' match: e friend2 surname]) size = 1).
 	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John')
+]
+
+{ #category : #'unit tests' }
+SSWReStoreTableTest >> test22VerifyUnderscoreFormat [
+
+	"General testing of sswInUnderscoreFormat"
+
+	self assert: #basic sswInUnderscoreFormat equals: 'basic'.
+	self assert: #basicOne sswInUnderscoreFormat equals: 'basic_one'.
+	self assert: #basicOneTwo sswInUnderscoreFormat equals: 'basic_one_two'.
+
+	self assert: #basic1 sswInUnderscoreFormat equals: 'basic1'.
+	self assert: #basic1two sswInUnderscoreFormat equals: 'basic1two'.
+	self assert: #basic1Two sswInUnderscoreFormat equals: 'basic1_two'
+]
+
+{ #category : #public }
+SSWReStoreTableTest >> test30VerifySpecifiedFieldNames [
+
+	| table instances |
+
+	"Verify standard transformations first"
+	FieldNameTest shouldUseAlternativeNames: false.
+	reStore 
+		addClass: FieldNameTest; 
+		destroyAllClasses;
+		synchronizeAllClasses.
+
+	table := reStore tableForClass: FieldNameTest.
+	self assert: (table fieldAccessing: #id) name equals: 'id'.
+	self assert: (table fieldAccessing: #name) name equals: 'name'.
+	self assert: (table fieldAccessing: #description) name equals: 'description'.
+	self assert: ((reStore connection _columnsInTable: table) collect: [ :each | each name]) asSortedCollection asArray equals: #('description' 'id' 'name' 'version_').
+
+	"Now check specified transformations"
+	FieldNameTest shouldUseAlternativeNames: true.
+	reStore 
+		addClass: FieldNameTest; 
+		destroyAllClasses;
+		synchronizeAllClasses.
+
+	table := reStore tableForClass: FieldNameTest.
+	self assert: (table fieldAccessing: #id) name equals: 'my_id'.
+	self assert: (table fieldAccessing: #name) name equals: 'my_name'.
+	self assert: (table fieldAccessing: #description) name equals: 'detailed_description'.
+	self assert: ((reStore connection _columnsInTable: table) collect: [ :each | each name]) asSortedCollection asArray equals: #('detailed_description' 'my_id' 'my_name' 'version_').
+
+	"Do some simple database interaction to check everything is OK"
+	#('andy' 'brian' 'colette' 'daisy') keysAndValuesDo: [ :index :name | FieldNameTest new id: index * 10; name: name; description: 'a person named ', name; storeIn: reStore].
+	reStore simulateReconnect.
+	instances := FieldNameTest storedInstancesIn: reStore.
+	self assert: instances size equals: 4.
+	self assert: (instances detect: [ :each | each id = 30]) name equals: 'colette'.
+	self assert: (instances collect: [ :each | each name]) asSortedCollection asArray equals: #('andy' 'brian' 'colette' 'daisy').
+	self assert: (instances collect: [ :each | each description]) asSortedCollection asArray equals: #('a person named andy' 'a person named brian' 'a person named colette' 'a person named daisy').
 ]

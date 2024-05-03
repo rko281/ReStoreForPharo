@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBIDAccessor,
@@ -68,7 +67,8 @@ SSWDBIDAccessor >> value: valueObject in: targetObject [
 	Instead, it's instanceAccessor may set the ID within the persistent object itself"
 	
 	self instanceAccessor ~~ nil ifTrue: 
-		[self instanceAccessor value: valueObject in: targetObject _proxiedObject]
+		[self instanceAccessor value: valueObject in: targetObject _proxiedObject].
+	^valueObject
 ]
 
 { #category : #evaluating }

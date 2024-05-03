@@ -1,8 +1,7 @@
 "
 ReStore
 ©2020 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBOwnedCacheDictionarySpec,
@@ -39,7 +38,7 @@ SSWDBOwnedCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 		ifFalse: [self keyAccessor: aSymbolOrBlock]
 ]
 
-{ #category : #evaluating }
+{ #category : #helpers }
 SSWDBOwnedCacheDictionarySpec >> newCollection [
 
 	^self newCollectionWrapper
@@ -48,7 +47,7 @@ SSWDBOwnedCacheDictionarySpec >> newCollection [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : #helpers }
 SSWDBOwnedCacheDictionarySpec >> newCollectionWrapper [
 
 	^SSWDBCacheDictionaryWrapper new

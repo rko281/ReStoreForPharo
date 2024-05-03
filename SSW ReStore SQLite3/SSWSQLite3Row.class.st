@@ -1,36 +1,37 @@
 Class {
-	#name : #SSWSQLite3Row,
-	#superclass : #SQLite3Row,
+	#name : 'SSWSQLite3Row',
+	#superclass : 'SQLite3Row',
 	#traits : 'SSWReStoreDBRow',
 	#classTraits : 'SSWReStoreDBRow classTrait',
-	#category : #'SSW ReStore SQLite3'
+	#category : 'SSW ReStore SQLite3',
+	#package : 'SSW ReStore SQLite3'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3Row >> columns: aCollection [
 
 	columns := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3Row >> contents [
 
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3Row >> data [
 
 	^values
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3Row >> data: aCollection [
 
 	values := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3Row >> values [
 
 	^values

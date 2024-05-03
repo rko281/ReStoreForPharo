@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBBlockArgument,
@@ -26,10 +25,10 @@ SSWDBBlockArgument class >> new [
 { #category : #'parsing - implicit true' }
 SSWDBBlockArgument >> & aValue [
 
-	"Only sent in case of an implicit '= true' expression (or an error)"
+	"Sent in case of an implicit '= true' expression, or possibly Integer bit manipulation"
 
 	^self implicitEqualsTrue 
-		ifNil: [self]
+		ifNil: [self doesNotUnderstand: (MessageSend receiver: self selector: #& argument: aValue)]
 		ifNotNil: [ :result | result & aValue]
 ]
 
@@ -60,7 +59,7 @@ SSWDBBlockArgument >> _cacheDictionaryKey_ [
 { #category : #'parsing - internal' }
 SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 
-	| selector arguments field |
+	| selector arguments |
 
 	selector := aMessage selector.
 	arguments := aMessage arguments.
@@ -72,14 +71,14 @@ SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 
 	^arguments isEmpty
 	ifTrue:
-		[field := self currentTable fieldAccessing: selector.
-		field isNil 
-		ifTrue: 
+		[(self currentTable fieldAccessing: selector) 
+		ifNil: 
 			[(self currentTable collectionAccessing: selector)
 				ifNil: [self simulateMessageSend: aMessage]
 				ifNotNil: [ :collection | self newCollectionReceiverFor: collection]]
-		ifFalse: 
-			[field isInlined "Need explicit check for inlined fields"
+		ifNotNil: 
+			[ :field |
+			field isInlined "Need explicit check for inlined fields"
 			ifTrue: 
 				[self newInlinedReceiverFor: selector] 
 			ifFalse: 
@@ -87,14 +86,13 @@ SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 					ifTrue: [self newReceiverFor: field]
 					ifFalse: [self finalField: (self queryFieldFor: field)]]]]
 	ifFalse:
-		[arguments size > 1 ifTrue: [self parseError: 'Cannot support more than one comparison argument'].
+		["arguments size > 1 ifTrue: [self parseError: 'Cannot support more than one comparison argument']."
 		(self hasFinalField not and: [self currentClass isPersistentBaseClass not and: [arguments last == SSWDBDumbArgument current]]) ifTrue: 
 			["Sort block parsing"
 			^self simulateMessageSend: aMessage].
 		selector last = $: ifTrue: 
 			["Check for 'assignment' in modify: block"
-			field := self currentTable fieldAccessing: selector allButLast asSymbol.
-			field notNil ifTrue: [^(self forModify perform: selector allButLast asSymbol) value: arguments first]].
+			(self currentTable fieldAccessing: selector allButLast asSymbol) isNil ifFalse: [^(self forModify perform: selector allButLast asSymbol) value: arguments first]].
 		self sqlConditionFor: aMessage]
 ]
 
@@ -444,14 +442,6 @@ SSWDBBlockArgument >> peekFinalField [
 ]
 
 { #category : #'parsing - internal' }
-SSWDBBlockArgument >> printOn: aStream [
-
-	"Overriden due to 'odd' behaviour of #class in the receiver"
-
-	^'a SSWDBBlockEvaluator'
-]
-
-{ #category : #'parsing - internal' }
 SSWDBBlockArgument >> queryFieldFor: aField [
 
 	^SSWDBQueryTableField forField: aField in: self currentTable path: self path
@@ -467,6 +457,49 @@ SSWDBBlockArgument >> replaceFrom: start to: stop with: replacementElements star
 	length := (stop - start) + 1.
 	
 	^self replaceFrom: start length: length with: (replacementElements copyFrom: startAt to: ((startAt + length) - 1))
+]
+
+{ #category : #helpers }
+SSWDBBlockArgument >> simulateMessageSend: aMessage [
+
+	"Attempt to simulate the method named aSymbol in the current class's methodDictionary, turning it into equivalent SQL function(s).
+	Limitations - the method (and any methods it invokes) must NOT directly access inst vars, other than simple getter accessor methods.
+	Also any messages sent my the method must map to SQL functions in the current dialect.
+	If any of these do not hold true a parseError will occur (or possibly something weirder)"
+
+	self hasFinalField ifTrue: [(self simulateMessageSendToFinalField: aMessage) ifNotNil: [ :result | ^result]].
+
+	^(self currentClass lookupMethod: aMessage selector)
+		ifNil: [self parseError: '<1d> does not implement <2p>' << {self currentClass. aMessage selector}]
+		ifNotNil: [ :method | self simulateMethod: method withArguments: aMessage arguments]
+]
+
+{ #category : #helpers }
+SSWDBBlockArgument >> simulateMessageSendToFinalField: aMessage [
+
+	"Private - Attempt to simulate sending aMessage to the targetClass of the receiver's finalField.
+	Only simulate messages implemented by and in directly-persisted non-base classes (e.g. implementations in Object are ignored).
+	Return nil if no method is simulated, otherwise the result of the simulated send"
+
+	| field targetClass reStoreValueMethod messages method |
+
+	field := self peekFinalField.
+	targetClass := field targetClass.
+	targetClass isDirectlyPersistedNonBaseClass ifFalse: [^nil].
+
+	method := targetClass lookupMethod: aMessage selector.
+	(method isNil or: [method methodClass isDirectlyPersistedNonBaseClass not]) ifTrue: [^nil].
+
+	"Check if aMessage is the sole message sent by the implementation of #reStoreValue - shortcut this to reStoreValue"
+	reStoreValueMethod  := targetClass lookupMethod: #reStoreValue.
+	reStoreValueMethod isNil ifTrue: [self parseError: '<1d> does not implement #reStoreValue' << targetClass].
+
+	messages := reStoreValueMethod messages.
+	(messages size = 1 and: [messages anyOne = aMessage selector]) ifTrue: 
+		[field targetClass: targetClass reStoreValueClass.
+		^self].
+
+	^self simulateMethod: method withArguments: aMessage arguments
 ]
 
 { #category : #'parsing - implicit true' }
@@ -492,6 +525,9 @@ SSWDBBlockArgument >> sqlAndWithCondition: anSQLCondition [
 SSWDBBlockArgument >> sqlConditionFor: aMessage [
 
 	| argument |
+
+	"Check for a method in a non-base directly-persisted class"
+	(self simulateMessageSendToFinalField: aMessage) ifNotNil: [ :result | ^result].
 
 	argument := aMessage arguments first.
 	(argument isKindOf: SSWDBBlockEvaluator) ifTrue: [argument := argument finalField].
@@ -542,7 +578,9 @@ SSWDBBlockArgument >> writeSQLOn: aStream [
 { #category : #'parsing - implicit true' }
 SSWDBBlockArgument >> | aValue [
 
-	"Only sent in case of an implicit '= true' expression (or an error)"
+	"Sent in case of an implicit '= true' expression, or possibly Integer bit manipulation"
 
-	^self implicitEqualsTrue | aValue
+	^self implicitEqualsTrue 
+		ifNil: [self doesNotUnderstand: (MessageSend receiver: self selector: #| argument: aValue)]
+		ifNotNil: [ :result | result | aValue]
 ]

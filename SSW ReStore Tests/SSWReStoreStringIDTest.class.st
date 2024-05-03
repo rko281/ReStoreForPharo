@@ -4,7 +4,7 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : #constants }
 SSWReStoreStringIDTest >> testClass [
 
 	^StringIDOwnedTest

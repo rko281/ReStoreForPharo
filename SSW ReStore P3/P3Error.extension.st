@@ -1,6 +1,6 @@
-Extension { #name : #P3Error }
+Extension { #name : 'P3Error' }
 
-{ #category : #'*SSW ReStore P3' }
+{ #category : '*SSW ReStore P3' }
 P3Error >> isRecordDeletedError [
 
 	^false

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreSpeedTest,
@@ -66,7 +65,7 @@ SSWReStoreSpeedTest >> test2Read [
 	self assert: (time < (self sampleSize // 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #public }
+{ #category : #'unit tests' }
 SSWReStoreSpeedTest >> test3Update [
 
 	| people time |
@@ -100,7 +99,62 @@ SSWReStoreSpeedTest >> test3Update [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #public }
+{ #category : #'unit tests' }
+SSWReStoreSpeedTest >> test3UpdateViaTransactionNoChange [
+
+	| people time |
+
+	self sampleSet storeAllIn: reStore.
+
+	reStore simulateReconnect; beginTransaction.
+
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
+	people do: [ :person | person firstName].
+
+	Transcript 
+		cr; 
+		show: 'Updating '; print: self sampleSize; show: ' objects via transaction; no change... ';
+		show:  (time := Time millisecondsToRun: [reStore commitTransaction]) displayString;
+		show: ' ms'.
+
+	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
+]
+
+{ #category : #'unit tests' }
+SSWReStoreSpeedTest >> test3UpdateViaTransactionWithChange [
+
+	| people time |
+
+	self sampleSet storeAllIn: reStore.
+
+	reStore simulateReconnect; beginTransaction.
+
+	people := (SimplePerson storedInstancesIn: reStore) asOrderedCollection.
+	people do: 
+		[ :person || id |
+		id := person _id.
+		id odd 
+			ifTrue: [person firstName: (person firstName, id displayString)] 
+			ifFalse: [person surname: (person surname, id displayString)]].
+
+	Transcript 
+		cr; 
+		show: 'Updating '; print: self sampleSize; show: ' objects via transaction; with change... ';
+		show:  (time := Time millisecondsToRun: [reStore commitTransaction]) displayString;
+		show: ' ms'.
+
+	reStore simulateReconnect.
+	(SimplePerson storedInstancesIn: reStore) asOrderedCollection do: 
+		[ :person || id |
+		id := person _id.
+		id odd 
+			ifTrue: [self assert: person firstName equals: ('John', id displayString)] 
+			ifFalse: [self assert: person surname equals: ('Smith', id displayString)]].
+
+	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
+]
+
+{ #category : #'unit tests' }
 SSWReStoreSpeedTest >> test4RefreshNoChange [
 
 	| people time |
@@ -120,7 +174,7 @@ SSWReStoreSpeedTest >> test4RefreshNoChange [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #public }
+{ #category : #'unit tests' }
 SSWReStoreSpeedTest >> test5RefreshWithChange [
 
 	| people time |
@@ -154,7 +208,7 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 	self assert: (time < (self sampleSize * 3)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #public }
+{ #category : #'unit tests' }
 SSWReStoreSpeedTest >> test9Delete [
 
 	| people time |

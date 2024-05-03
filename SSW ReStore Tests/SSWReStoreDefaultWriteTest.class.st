@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreDefaultWriteTest,
@@ -442,13 +441,13 @@ SSWReStoreDefaultWriteTest >> testUnstoreInstancesCollection [
 	personCount := SimplePerson storedInstances size.
 	addressCount := SimpleAddress storedInstances size.
 
-	instances := SimplePerson storedInstances satisfying: [ :each | (each fullName = 'Zoe Brown') | (each fullName = 'John Smith') ].
-	self assert: instances class equals: SSWDBInstancesCollection.
+	instances := SimplePerson storedInstances satisfying: [ :each | (each fullName = 'Zoe Brown') | (each fullName = 'John Smith')].
+	self assert: instances class = SSWDBInstancesCollection.
 
 	instances unstoreAll.
 
-	self assert: SimplePerson storedInstances size equals: (personCount - 2).
-	self assert: SimpleAddress storedInstances size equals: addressCount. "This unstore method ignores dependency"
+	self assert: SimplePerson storedInstances size = (personCount - 2).
+	self assert: SimpleAddress storedInstances size = addressCount. "This unstore method ignores dependency"
 
 	self assert: (SimplePerson storedInstances select: [ :each | each fullName = 'Zoe Brown']) isEmpty.
 	self assert: (SimplePerson storedInstances select: [ :each | each fullName = 'John Smith']) isEmpty

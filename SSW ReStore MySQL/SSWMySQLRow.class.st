@@ -1,30 +1,31 @@
 Class {
-	#name : #SSWMySQLRow,
-	#superclass : #MySQLBinaryRowData,
+	#name : 'SSWMySQLRow',
+	#superclass : 'MySQLBinaryRowData',
 	#traits : 'SSWReStoreDBRow',
 	#classTraits : 'SSWReStoreDBRow classTrait',
-	#category : #'SSW ReStore MySQL'
+	#category : 'SSW ReStore MySQL',
+	#package : 'SSW ReStore MySQL'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLRow >> columnNames [
 
 	^columnDescriptors collect: [ :each | each name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLRow >> columns: aCollection [
 
 	columnDescriptors := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLRow >> data [
 
 	^columnValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLRow >> data: aCollection [
 
 	columnValues := aCollection.
@@ -50,7 +51,7 @@ SSWMySQLRow >> data: aCollection [
 					[columnValues at: index put: (ZnUTF8Encoder default decodeBytesIntoWideString: value ) ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLRow >> first [
 
 	^self atIndex: 1

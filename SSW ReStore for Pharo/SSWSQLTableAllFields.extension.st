@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLTableAllFields }
+Extension { #name : 'SSWSQLTableAllFields' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWSQLTableAllFields >> size [
 
 	^0

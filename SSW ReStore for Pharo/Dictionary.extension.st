@@ -1,6 +1,6 @@
-Extension { #name : #Dictionary }
+Extension { #name : 'Dictionary' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 Dictionary >> _superValuesRemovedBy: aCollectionOfChanges [
 
 	"Pass-thru to default implementation of _valuesRemovedBy: for benefit of non-Set subclasses

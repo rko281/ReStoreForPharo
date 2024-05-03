@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBStaticDictionarySpec,
@@ -90,9 +89,26 @@ SSWDBStaticDictionarySpec >> deleteQueryWithJoin [
 
 	query := super deleteQueryWithJoin.
 
-	self isKeyDependent ifTrue: [query addTable: self keyTable withAllFields joinedWithField: self indexField].
+	self isKeyDependent ifTrue: 
+		[query 
+			isMultiTableDelete: true;
+			addTable: self keyTable withAllFields joinedWithField: self indexField].
 
 	^query
+]
+
+{ #category : #'change detection' }
+SSWDBStaticDictionarySpec >> elementRemovalClass [
+
+	"Return the class of change object representing the removal of an element for the type of collection modelled by the receiver"
+
+	^SSWDBCollectionRemovalWithKey
+]
+
+{ #category : #testing }
+SSWDBStaticDictionarySpec >> hasMutableElements [
+
+	^super hasMutableElements or: [self keyClass isMutableDirectlyPersistedNonBaseClass]
 ]
 
 { #category : #'initialize/release' }
@@ -166,13 +182,13 @@ SSWDBStaticDictionarySpec >> readAllEntriesFor: ids [
 
 	"Lazy initialization of readAllStatement may be needed before tables are valid"
 	statement := self readAllStatement.
-	self targetClass isPersistentBaseClass ifFalse: [targetTable := self targetTable].
-	self keyClass isPersistentBaseClass ifFalse: [keyTable := self keyTableForRead].
+	self targetClass isDirectlyPersisted ifFalse: [targetTable := self targetTable].
+	self keyClass isDirectlyPersisted ifFalse: [keyTable := self keyTableForRead].
 		
 	[stream atEnd] whileFalse: 
 		[statement readValuesFrom: stream.
-		self targetClass isPersistentBaseClass ifFalse: [targetTable := self targetTable].
-		self keyClass isPersistentBaseClass ifFalse: [keyTable := self keyTableForRead].
+		self targetClass isDirectlyPersisted ifFalse: [targetTable := self targetTable].
+		self keyClass isDirectlyPersisted ifFalse: [keyTable := self keyTableForRead].
 		self reStore rowsFromStatement: self readAllStatement do: 
 			[ :row || entry |
 			entry := allEntries add: (self createNonProxiedInstanceFromRow: row).
@@ -221,7 +237,7 @@ SSWDBStaticDictionarySpec >> readQuery [
 	| query |
 
 	query := super readQuery.
-	self keyClass isPersistentBaseClass ifFalse: [keyTableForRead := (query addTable: self keyTable withAllFields joinedWithField: self indexField) last].
+	self keyClass isDirectlyPersisted ifFalse: [keyTableForRead := (query addTable: self keyTable withAllFields joinedWithField: self indexField) last].
 
 	^query
 ]
@@ -237,8 +253,8 @@ SSWDBStaticDictionarySpec >> recoverCollectionForProxy: aCollectionProxy [
 	statement := self readStatement.
 	collection := self newCollection.
 	entries := OrderedCollection new.
-	self keyClass isPersistentBaseClass ifFalse: [keyTable := self keyTableForRead].
-	self targetClass isPersistentBaseClass ifFalse: [targetTable := self targetTable].
+	self keyClass isDirectlyPersisted ifFalse: [keyTable := self keyTableForRead].
+	self targetClass isDirectlyPersisted ifFalse: [targetTable := self targetTable].
 
 	statement values: (Array with: aCollectionProxy _ownerID).
 	self reStore rowsFromStatement: statement do:
@@ -278,7 +294,7 @@ SSWDBStaticDictionarySpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 	self reStore supportsVersioning ifFalse: [^self refreshCollectionWithContentsForProxy: aCollectionProxy].
 
 	"No persistent class - just read"
-	(self targetClass isPersistentBaseClass and: [self keyClass isPersistentBaseClass]) ifTrue: [^self recoverBaseClassCollectionForProxy: aCollectionProxy].
+	(self targetClass isDirectlyPersisted and: [self keyClass isDirectlyPersisted]) ifTrue: [^self recoverBaseClassCollectionForProxy: aCollectionProxy].
 
 	"Key or Value is persistent class - refresh as opposed to read - just fetch the IDs"
 	collection := self newCollection.
@@ -287,8 +303,8 @@ SSWDBStaticDictionarySpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 	statement := self refreshWithContentsIfUpdatedStatement.
 	statement values: (Array with: aCollectionProxy _ownerID).
 
-	self keyClass isPersistentBaseClass ifFalse: [keyVersionField := self keyTableForRefresh versionControlField].
-	self targetClass isPersistentBaseClass ifFalse: [valueVersionField := self targetTable versionControlField].
+	self keyClass isDirectlyPersisted ifFalse: [keyVersionField := self keyTableForRefresh versionControlField].
+	self targetClass isDirectlyPersisted ifFalse: [valueVersionField := self targetTable versionControlField].
 
 	self reStore rowsFromStatement: statement do:
 		[ :row || entry |
@@ -316,7 +332,7 @@ SSWDBStaticDictionarySpec >> refreshWithContentsIfUpdatedQuery [
 	| query |
 
 	query := super refreshWithContentsIfUpdatedQuery.
-	self keyClass isPersistentBaseClass ifFalse: [keyTableForRefresh := (query addTable: self keyTable withIDAndVersionFields joinedWithField: self indexField) last].
+	self keyClass isDirectlyPersisted ifFalse: [keyTableForRefresh := (query addTable: self keyTable withIDAndVersionFields joinedWithField: self indexField) last].
 
 	^query
 ]
@@ -328,4 +344,10 @@ SSWDBStaticDictionarySpec >> setKeyClass: aClass [
 	
 	aClass beKeyClassOf: self
 
+]
+
+{ #category : #'change detection' }
+SSWDBStaticDictionarySpec >> shouldCompareKeysByEquality [
+
+	^self keyClass isDirectlyPersisted
 ]

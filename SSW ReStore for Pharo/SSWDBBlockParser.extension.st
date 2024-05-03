@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBBlockParser }
+Extension { #name : 'SSWDBBlockParser' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockParser class >> platformClass [
 
 	^SSWDBBlockParser

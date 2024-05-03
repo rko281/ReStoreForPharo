@@ -1,1 +1,1 @@
-Package { #name : #'SSW ReStore SQLite3' }
+Package { #name : 'SSW ReStore SQLite3' }

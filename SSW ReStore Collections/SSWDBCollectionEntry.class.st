@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCollectionEntry,
@@ -73,6 +72,12 @@ SSWDBCollectionEntry >> addTo: aCollectionOfEntries [
 	aCollectionOfEntries add: self
 ]
 
+{ #category : #actions }
+SSWDBCollectionEntry >> copyTargetTo: aCollection [
+
+	aCollection _dbAdd: self target copy
+]
+
 { #category : #accessing }
 SSWDBCollectionEntry >> entryID [
 
@@ -87,6 +92,12 @@ SSWDBCollectionEntry >> entryID: anInteger [
 	"entryID stores the unique ID of this particular entry object"
 	
 	entryID := anInteger
+]
+
+{ #category : #testing }
+SSWDBCollectionEntry >> hasMutableTarget [
+
+	^self target class isMutableDirectlyPersistedNonBaseClass
 ]
 
 { #category : #testing }

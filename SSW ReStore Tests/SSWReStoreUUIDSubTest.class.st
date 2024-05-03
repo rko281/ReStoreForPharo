@@ -4,13 +4,13 @@ Class {
 	#category : #'SSW ReStore Tests'
 }
 
-{ #category : #tests }
+{ #category : #running }
 SSWReStoreUUIDSubTest >> addClassesTo: aReStore [
 
 	aReStore addClassWithSubclasses: UUIDOwnedTest
 ]
 
-{ #category : #tests }
+{ #category : #running }
 SSWReStoreUUIDSubTest >> testClass [
 
 	^UUIDOwnedSubTest

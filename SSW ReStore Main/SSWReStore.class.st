@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStore,
@@ -20,11 +19,13 @@ Class {
 		'transactionMutex',
 		'supportsFullTableRecords',
 		'readAllBatchSize',
-		'affiliations'
+		'affiliations',
+		'isDebugging'
 	],
 	#classInstVars : [
 		'globalDefault',
-		'activeReStores'
+		'activeReStores',
+		'isDebugging'
 	],
 	#category : #'SSW ReStore Main'
 }
@@ -40,8 +41,6 @@ SSWReStore class >> activated: anSSWReStore [
 SSWReStore class >> activeReStores [
 
 	"activeReStores stores a WeakIdentitySet of all instances of the receiver that are active (have allocated proxies)"
-
-	activeReStores == nil ifTrue: [activeReStores := WeakIdentitySet new].
 
 	^activeReStores
 ]
@@ -82,6 +81,16 @@ SSWReStore class >> default [
 ]
 
 { #category : #accessing }
+SSWReStore class >> enterDebugMode [
+
+	"Activate debugging for all active and future instances"
+
+	self 
+		isDebugging: true;
+		setDebugMode
+]
+
+{ #category : #accessing }
 SSWReStore class >> globalDefault [
 
 	"Private - Return the global default ReStore instance (i.e. the default for all processes not requiring their own private default), creating it if necessary. 
@@ -94,13 +103,43 @@ SSWReStore class >> globalDefault [
 SSWReStore class >> initialize [
 
 	SessionManager current when: #sessionStarted send: #onStartup to: self.
-	self reset
+	self 
+		reset;
+		resetActive
 ]
 
 { #category : #'initialize/release' }
 SSWReStore class >> initializeReStoreGlobal [
 
 	self class environment at: #ReStore put: self globalDefault
+]
+
+{ #category : #accessing }
+SSWReStore class >> isDebugging [
+
+	"Default setting for isDebugging status of instances.
+	See instance implementation for further details"
+
+	^isDebugging ifNil: [false]
+]
+
+{ #category : #accessing }
+SSWReStore class >> isDebugging: aBoolean [
+
+	"Default setting for isDebugging status of instances.
+	See instance implementation for further details"
+
+	isDebugging := aBoolean
+]
+
+{ #category : #accessing }
+SSWReStore class >> leaveDebugMode [
+
+	"Deactivate debugging for all active and future instances"
+
+	self 
+		isDebugging: false;
+		setDebugMode
 ]
 
 { #category : #'instance creation' }
@@ -110,6 +149,7 @@ SSWReStore class >> new [
 		clearProxyCache;
 		clearDBTableNames;
 		clearTableCache;
+		setDefaultDebugMode;
 		yourself
 ]
 
@@ -117,21 +157,6 @@ SSWReStore class >> new [
 SSWReStore class >> onStartup [
 
 	self activeReStores do: [ :each | each onStartup]
-]
-
-{ #category : #accessing }
-SSWReStore class >> proxyForObject: anObject ifNone: aBlock [
-
-	"Locate and return the proxy wrapping anObject in the receiver's activeReStores.
-	If none found, return the result of evaluating aBlock"
-	
-	self activeReStores do:
-		[ :aReStore | 
-		"Only interrogate aReStore if it stores instances of the class of anObject"
-		((aReStore tableCache includesKey: anObject class) or: [anObject isKindOf: Collection]) ifTrue:
-			[(aReStore activeProxyForObject: anObject ifNone: [nil]) ifNotNil: [ :proxy | ^proxy]]].
-
-	^aBlock value
 ]
 
 { #category : #accessing }
@@ -161,7 +186,31 @@ SSWReStore class >> reset [
 { #category : #'initialize/release' }
 SSWReStore class >> resetActive [
 
-	activeReStores := nil
+	activeReStores := WeakIdentitySet new
+]
+
+{ #category : #'initialize/release' }
+SSWReStore class >> setDebugMode [
+
+	"Private - Put all active instances into the current debug mode"
+	self activeReStores do: [ :each | each setDefaultDebugMode]
+]
+
+{ #category : #'proxy manipulation' }
+SSWReStore >> _activeProxyForObject: anObject ifNone: aBlock [
+
+	"Private - Locate and return the proxy object wrapping anObject, or the result of a Block if none"
+
+	^anObject isDBProxy 
+	ifTrue: 
+		["Possibly flipped whilst waiting for the lock" 
+		anObject]
+	ifFalse: 
+		["We only need to lookup proxies if they are active in the current transaction (since all external references to the proxy will have swapped to its proxied object).
+		Therefor we only need to check in the active transaction"
+		self transaction
+			ifNil: [aBlock value]
+			ifNotNil: [ :trans | trans proxyForObject: anObject ifNone: aBlock]]
 ]
 
 { #category : #'transaction management' }
@@ -187,14 +236,16 @@ SSWReStore >> activeProxyForObject: anObject ifNone: aBlock [
 
 	"Locate and return the proxy object wrapping anObject, or the result of a Block if none"
 
-	"Base types (String, Number etc.) - these are never proxified"
-	anObject class isPersistentBaseClass ifTrue: [^aBlock value].
-
-	"We only need to lookup proxies if they are active in the current transaction (since all external references to the proxy will have swapped to its proxied object).
-	Therefor we only need to check in the active transaction"
-	^self transaction
-		ifNil: [aBlock value]
-		ifNotNil: [ :trans | trans proxyForObject: anObject ifNone: aBlock]
+	"Directly-persisted objects are never proxified"
+	anObject class isDirectlyPersisted ifTrue: [aBlock value].
+	
+	^self 
+		transactionCritical: [self _activeProxyForObject: anObject ifNone: aBlock]
+		ifLocked:
+			["Prevent lock-ups when in debugger or otherwise semi-permanently blocked"
+			(self transactionMutex owner ifNil: [true] ifNotNil: [ :process | process isExpectedToResumePromptly])
+				ifTrue: ["Wait" self transactionCritical: [self _activeProxyForObject: anObject ifNone: aBlock]]
+				ifFalse: ["Bypass" self _activeProxyForObject: anObject ifNone: aBlock]]
 ]
 
 { #category : #'class maintenance' }
@@ -309,6 +360,15 @@ SSWReStore >> applyUpdates: anSSWSQLCollection toObject: anSSWDBObjectProxy [
 	^statement rowsAffected = 1
 ]
 
+{ #category : #connection }
+SSWReStore >> attachTo: aConnection [
+
+	"Attach the receiver to aConnection (probably, but not necessarily, already-connected)"
+
+	self connection: aConnection.
+	self connect
+]
+
 { #category : #'transaction management' }
 SSWReStore >> beginDumbTransaction [
 
@@ -320,14 +380,13 @@ SSWReStore >> beginDumbTransaction [
 { #category : #'transaction api' }
 SSWReStore >> beginTransaction [
 
-	| newTransaction |
+	self transactionCritical: 
+		[self softRollback.
 
-	self softRollback.
-
-	newTransaction := self transactionClass new.
-	newTransaction beginWithin: self transaction.
-
-	self transaction: newTransaction
+		self transaction: 
+			(self transactionClass new
+				beginWithin: self transaction;
+				yourself)]
 ]
 
 { #category : #'cache management' }
@@ -353,7 +412,7 @@ SSWReStore >> cachedObjectOfClass: aClass withID: aRawID ifAbsent: aBlock [
 	"Return the cached object (actually a proxy) of the given class with the given unique ID (raw value as read from database; may need reifying).
 	If none is found, evaluate aBlock"
 	
-	^(self classCacheFor: aClass) at: (aClass reStoreIDClass instanceFromDBValue: aRawID in: self) ifAbsent: aBlock
+	^self transactionCritical: [(self classCacheFor: aClass) at: (aClass reStoreIDClass instanceFromDBValue: aRawID in: self) ifAbsent: aBlock]
 ]
 
 { #category : #'cache management' }
@@ -366,17 +425,17 @@ SSWReStore >> cachedObjectOfClass: aClass withID: aRawID
 	If a recovered but not 'touched' proxy, evaluate untouchedBlock with it.
 	A proxy is considered 'touched' if it has been sent a message since the last abort"
 	
-	^(self cachedObjectOfClass: aClass withID: aRawID ifAbsent: [nil])
-	ifNil:
-		[absentBlock value]
-	ifNotNil:
-		[ :proxy |
-		proxy isDBProxy ifTrue:
-			[proxy _isRecovered 
-				ifTrue: [untouchedBlock value: proxy]
-				ifFalse: [unrecoveredBlock value: proxy]].
-		proxy]
-
+	^self transactionCritical:
+		[(self cachedObjectOfClass: aClass withID: aRawID ifAbsent: [nil])
+		ifNil:
+			[absentBlock value]
+		ifNotNil:
+			[ :proxy |
+			proxy isDBProxy ifTrue:
+				[proxy _isRecovered 
+					ifTrue: [untouchedBlock value: proxy]
+					ifFalse: [unrecoveredBlock value: proxy]].
+			proxy]]
 ]
 
 { #category : #'class maintenance' }
@@ -441,7 +500,18 @@ SSWReStore >> classCacheFor: aClass [
 	"Proxies are cached under the registerClass of their associated table"
 	^self proxyCache 
 		at: (self tableForClass: aClass) registerClass 
-		ifAbsentPut: [WeakValueDictionary new: 128]
+		ifAbsentPut: [WeakLookupTable new: 128]
+]
+
+{ #category : #'cache management' }
+SSWReStore >> clearAllCaches [
+
+	self
+		clearProxyCache;
+		clearNextIDCache;
+		clearTransaction;
+		clearDBTableNames;
+		clearStatementCache
 ]
 
 { #category : #'cache management' }
@@ -488,6 +558,14 @@ SSWReStore >> clearTransaction [
 ]
 
 { #category : #connection }
+SSWReStore >> clearTxn [
+
+	"Clear down any active database txn (transaction)"
+
+	[self connection rollbackTxn] on: Error do: [ :exc | exc return: nil]
+]
+
+{ #category : #connection }
 SSWReStore >> columnsForFields: aCollectionOfDBFields [
 
 	^self connection columnsForFields: aCollectionOfDBFields
@@ -529,32 +607,15 @@ SSWReStore >> commitTransaction [
 	self isTransactionInProgress ifFalse: [self error: 'No transaction in progress'].
 
 	^self transactionCritical:
-		[| success errorDescription |
+		[| success |
 
-		errorDescription := nil.
-
-		[self transaction prepareToCommit] on: Error do: 
-			[ :exc |
-			self transaction autoRecoverPreCommitIn: self.
-			errorDescription := exc description.
-			exc return].
-
-		errorDescription isNil ifFalse: [self error: ('An error occured during pre-commit: ', errorDescription)].
+		[self transaction prepareToCommit] on: Error do: [ :exc | SSWDBTransactionPreCommitError signalWith: exc in: self].
 
 		success := 
 			[self transaction commitTo: self connection.
-			self transaction hasFailedCommit not] 
-				on: Error do: 
-					[ :exc |
-					[self connection rollbackTxn] on: Error do: [ :txnExc | txnExc return].
-					self transaction autoRecoverCommitIn: self.
-					errorDescription := exc.
-					exc return: false].
-		success 
-		ifTrue: 
-			[self transaction: self transaction ownerTransaction]
-		ifFalse:
-			[errorDescription isNil ifFalse: [self error: ('An error occured during commit: ', errorDescription description)]].
+			self transaction hasFailedCommit not] on: Error do: [ :exc | SSWDBTransactionCommitError signalWith: exc in: self].
+
+		success ifTrue: [self transaction: self transaction ownerTransaction].
 	
 		success]
 ]
@@ -564,24 +625,11 @@ SSWReStore >> connect [
 
 	"Connect to the database, initializing the receiver"
 
-	self isConnected ifTrue: [self error: 'already connected'].
-
 	self objectProxyClass isNil ifTrue: [self setDefaultTransactionMode].
 
-	"Reinitializate the mutex"
-	self transactionMutex: Mutex new.
+	self isConnected ifFalse: [self openConnection].
 
-	[self connection connect] on: self dbErrorClass do:
-		[ :exc |
-		self connection free.
-		exc signal].
-
-	self class activated: self.
-	self connection willAutoCommit: false.
-	self connection postConnect.
-
-	"Must reset system classes after login to use current dialect's name transformation strategy"
-	self persistentSystemClasses do: [ :each | self addClass: each]
+	self postConnect
 ]
 
 { #category : #accessing }
@@ -616,8 +664,11 @@ SSWReStore >> createProxyForNewObject: anObject [
 	table := self tableForClass: anObject class.
 	id := table idDataField ifNotNil: [ :idDataField | idDataField accessor valueIn: anObject].
 	id isNil 
-		ifTrue: [proxy _id: (self allocateIDFor: anObject in: table)]
-		ifFalse: [proxy _id: id].
+	ifTrue: 
+		[proxy _id: (self allocateIDFor: anObject in: table)]
+	ifFalse: 
+		[((self classCacheFor: anObject class) includesKey: id) ifTrue: [self error: 'attempt to store object of class <1d> with duplicate ID <2p>' << {anObject class. id}].
+		proxy _id: id].
 
 	proxy _intern.
 
@@ -680,7 +731,7 @@ SSWReStore >> dbErrorClass [
 	^self connection dbErrorClass
 ]
 
-{ #category : #'class maintenance' }
+{ #category : #testing }
 SSWReStore >> dbIncludesTable: aDBTable [
 
 	^(self dbTableNamesFor: aDBTable namespace) includes: aDBTable name asUppercase
@@ -692,12 +743,6 @@ SSWReStore >> dbIncludesTableForClass: aClass [
 	^(self tableForClass: aClass ifAbsent: [nil])
 		ifNil: [false]
 		ifNotNil: [ :table | self dbIncludesTable: table]
-]
-
-{ #category : #testing }
-SSWReStore >> dbIncludesTableNamed: aString [
-
-	^self dbTableNames includes: aString asUppercase
 ]
 
 { #category : #accessing }
@@ -714,7 +759,7 @@ SSWReStore >> dbTableNames [
 { #category : #accessing }
 SSWReStore >> dbTableNames: aCollectionOrNil [
 
-	"dbTableNames stores the Collection of table name Strings returned from 'self connection tables'.
+	"dbTableNames stores a Dictionary mapping database namespaces (schemas/databases, empty String for the default) to collections of table names (Strings) in that namespace'.
 	This is cached for use by client methods as it can be an expensive operation.
 
 	Lazy initialized; methods which may change the DB's table definitions should reset this to nil"
@@ -851,6 +896,27 @@ SSWReStore >> destroyTable: aTable [
 		true]] ensure: [self clearDBTableNames]
 ]
 
+{ #category : #connection }
+SSWReStore >> detach [
+
+	"Detach the receiver from its connection, returning the connection.
+	The connection is left connected for potential reuse"
+
+	| oldConnection |
+
+	self mustBeConnected.
+
+	oldConnection := self connection.
+
+	self 
+		clearTxn;
+		debugTo: nil;
+		connection: nil;
+		postDisconnect.
+
+	^oldConnection
+]
+
 { #category : #'initialize/release' }
 SSWReStore >> disaffiliateWith: anObject [
 
@@ -862,18 +928,9 @@ SSWReStore >> disconnect [
 
 	"Disconnect from the database and clear all caches"
 	
-	self isConnected ifFalse: [self error: 'Not connected'].
+	self mustBeConnected.
 
-	self
-		clearProxyCache;
-		clearNextIDCache;
-		clearTransaction;
-		clearDBTableNames;
-		clearStatementCache.
-
-	self connection close.
-
-	self class deactivated: self
+	self hardDisconnect
 ]
 
 { #category : #'class maintenance' }
@@ -916,6 +973,12 @@ SSWReStore >> ensureNoActiveTransaction [
 		[self transaction isDumb
 			ifTrue: [self rollbackTransaction]
 			ifFalse: [self error: 'Active transaction - cannot proceed']]
+]
+
+{ #category : #debugging }
+SSWReStore >> enterDebugMode [
+
+	self isDebugging: true
 ]
 
 { #category : #'transaction api' }
@@ -995,13 +1058,12 @@ SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
 	If it is a read query, return the DBResultSet (client code should close this when done); aBoolean controls whether the result set is cursored (incremental read)
 	If it is a write query, return the number of rows affected"
 
-	| statement |
-
-	statement := self connection executeQuery: anSSWSQLQuery cursoredFetch: aBoolean.
-
-	^anSSWSQLQuery isReadQuery
-		ifTrue: [statement results]
-		ifFalse: [statement rowsAffected]
+	^self transactionCritical:
+		[| statement |
+		statement := self connection executeQuery: anSSWSQLQuery cursoredFetch: aBoolean.
+		anSSWSQLQuery isReadQuery
+			ifTrue: [statement results]
+			ifFalse: [[statement rowsAffected] ensure: [statement free]]]
 ]
 
 { #category : #connection }
@@ -1060,17 +1122,13 @@ SSWReStore >> fetchObjectsOfClass: aClass withQuery: anSSWSQLQuery into: aCollec
 { #category : #querying }
 SSWReStore >> fetchObjectsOfClass: aClass withStatement: aDBPreparedStatement into: aCollection [
 
-	| table index |
+	| table |
 		
 	table := self tableForClass: aClass.
-	index := 1.
 
 	self 
 		rowsFromStatement: aDBPreparedStatement 
-		do: 
-			[ :row |
-			aCollection _dbAdd: (self objectFromRow: row table: table) suggestedIndex: index.
-			index := index + 1]
+		keysAndValuesDo: [ :index :row | aCollection _dbAdd: (self objectFromRow: row table: table) suggestedIndex: index]
 ]
 
 { #category : #connection }
@@ -1117,6 +1175,26 @@ SSWReStore >> fullTableRecordFor: anSSWDBTable [
 		record isNil
 			ifTrue: [nil]
 			ifFalse: [self nextIDCache at: anSSWDBTable put: record]]
+]
+
+{ #category : #debugging }
+SSWReStore >> halt [
+
+	"Put the receiver into debug mode first"
+
+	self enterDebugMode.
+	super halt
+]
+
+{ #category : #connection }
+SSWReStore >> hardDisconnect [
+
+	"Disconnect from the database and clear all caches"
+	
+	self 
+		preDisconnect;
+		softDisconnect;
+		postDisconnect
 ]
 
 { #category : #testing }
@@ -1215,6 +1293,32 @@ SSWReStore >> isConnected [
 	^self hasConnection and: [self connection isConnected]
 ]
 
+{ #category : #accessing }
+SSWReStore >> isDebugging [
+
+	"When isDebugging is true the receiver will adjust its behaviour to facilitate easier debugging within ReStore code. 
+
+	Principally, when the receiver's transactionMutex is locked, if debugging is enabled the mutex will check the current execution stack when an attempt is made to enter a critical section.
+	If the current execution stack is adjudged to have originated from a Debugger, Inspector or other development tool, the lock will be bypassed.
+	
+	Additionally, proxies adjust their response to instVarAt: to enable their internal state to be shown in the Debugger variables list"
+
+	^isDebugging
+]
+
+{ #category : #accessing }
+SSWReStore >> isDebugging: aBoolean [
+
+	"When isDebugging is true the receiver will adjust its behaviour to facilitate easier debugging within ReStore code. 
+
+	Principally, when the receiver's transactionMutex is locked, if debugging is enabled the mutex will check the current execution stack when an attempt is made to enter a critical section.
+	If the current execution stack is adjudged to have originated from a Debugger, Inspector or other development tool, the lock will be bypassed.
+	
+	Additionally, proxies adjust their response to instVarAt: to enable their internal state to be shown in the Debugger variables list"
+
+	isDebugging := aBoolean
+]
+
 { #category : #'transaction management' }
 SSWReStore >> isInCurrentTransaction: anObject [
 
@@ -1251,17 +1355,16 @@ SSWReStore >> lazyRefreshAll: aCollection [
 		aCollection do: [ :each | each _lazyRefreshIn: self]]
 ]
 
-{ #category : #'proxy manipulation' }
-SSWReStore >> locateProxyForObject: anObject ifNone: aBlock [
+{ #category : #debugging }
+SSWReStore >> leaveDebugMode [
 
-	"Locate within the receiver's proxyCache the proxy object wrapping anObject.
-	If none found, return the result of evaluating aBlock"
+	self isDebugging: false
+]
+
+{ #category : #connection }
+SSWReStore >> mustBeConnected [
 	
-	^(self classCacheFor: anObject class) detect: 
-		[ :proxyOrObject | 
-		proxyOrObject isDBProxy
-			ifTrue: [proxyOrObject _proxiedObject == anObject]
-			ifFalse: [proxyOrObject == anObject]] ifNone: aBlock
+	self isConnected ifFalse: [self error: 'Not connected']
 ]
 
 { #category : #accessing }
@@ -1404,18 +1507,54 @@ SSWReStore >> onStartup [
 	self clearStatementCache
 ]
 
+{ #category : #connection }
+SSWReStore >> openConnection [
+
+	"Open the receiver's connection to the database"
+
+	[self connection connect] on: self dbErrorClass do:
+		[ :exc |
+		self connection free.
+		exc pass].
+
+	self connection willAutoCommit: false.
+	self connection postConnect
+]
+
 { #category : #'class maintenance' }
 SSWReStore >> persistentSystemClasses [
 
 	"Private - Return all ReStore system classes that exist in the database"
 
-	^(Array with: SSWDBTableRecord)
+	^Array with: SSWDBTableRecord
 ]
 
-{ #category : #'read/write objects' }
-SSWReStore >> preWriteValidate: anObject [
+{ #category : #connection }
+SSWReStore >> postConnect [
 
-	(self tableForClass: anObject class) storeNonPersistentComponentsOf: anObject
+	"Reinitializate the mutex"
+	self transactionMutex: Mutex new.
+
+	"Must reset system classes after login to use current dialect's name transformation strategy"
+	self persistentSystemClasses do: [ :each | self addClass: each].
+
+	self class activated: self
+]
+
+{ #category : #connection }
+SSWReStore >> postDisconnect [
+
+	self clearAllCaches.
+
+	self class deactivated: self
+]
+
+{ #category : #connection }
+SSWReStore >> preDisconnect [
+
+	"Statements may need an active connection in order to be free'd correctly, so this is done pre-disconnect"
+
+	self clearStatementCache
 ]
 
 { #category : #connection }
@@ -1775,7 +1914,7 @@ SSWReStore >> rollbackTransaction [
 		self connection rollbackTxn].
 
 	rolledBack do: [ :each | each onRollback].
-	
+
 	"Implementation of onRollback may cause further objects to be referenced - where this has happened invoke a softRollback to ensure all persistent objects are proxies"
 	self hasTransaction ifTrue: [self softRollback]
 ]
@@ -1791,7 +1930,7 @@ SSWReStore >> rowFromQuery: anSSWSQLQuery [
 
 	row := results first.
 		
-	results close.
+	results free.
 	
 	^row
 ]
@@ -1803,9 +1942,9 @@ SSWReStore >> rowsFromQuery: anSSWSQLQuery do: aBlock [
 		
 	results := self executeQuery: anSSWSQLQuery.
 
-	 results 
+	results 
 		do: [ :row | aBlock value: row];
-		close
+		free
 ]
 
 { #category : #querying }
@@ -1813,9 +1952,15 @@ SSWReStore >> rowsFromStatement: aDBPreparedStatement do: aBlock [
 
 	aDBPreparedStatement exec.
 
-	aDBPreparedStatement results do: [ :row | aBlock value: row].
+	[aDBPreparedStatement results do: [ :row | aBlock value: row]] ensure: [aDBPreparedStatement close]
+]
 
-	aDBPreparedStatement close
+{ #category : #querying }
+SSWReStore >> rowsFromStatement: aDBPreparedStatement keysAndValuesDo: aBlock [
+
+	aDBPreparedStatement exec.
+
+	[aDBPreparedStatement results keysAndValuesDo: [ :index :row | aBlock value: index value: row]] ensure: [aDBPreparedStatement close]
 ]
 
 { #category : #'transaction management' }
@@ -1827,9 +1972,24 @@ SSWReStore >> selectChanged: aCollection [
 ]
 
 { #category : #'initialize/release' }
+SSWReStore >> setDefaultDebugMode [
+
+	self isDebugging: SSWReStore isDebugging
+]
+
+{ #category : #'initialize/release' }
 SSWReStore >> setDefaultTransactionMode [
 
 	self useTransactionsWithVersioning
+]
+
+{ #category : #connection }
+SSWReStore >> softDisconnect [
+
+	"Disconnect from the DB but do not clear the proxy cache"
+
+	self clearTxn.
+	self connection close.
 ]
 
 { #category : #'transaction api' }
@@ -2016,7 +2176,12 @@ SSWReStore >> transactionCritical: aBlock [
 
 	"Evaluate aBlock under the guard of the transactionMutex"
 
-	^self transactionMutex critical: aBlock
+	self isDebugging ifFalse: [^self transactionMutex critical: aBlock].
+
+	^self transactionMutex critical: aBlock ifLocked: 
+		[Processor activeProcess isInIDECallStack
+			ifTrue: [aBlock value]
+			ifFalse: [self transactionMutex critical: aBlock]]
 ]
 
 { #category : #'transaction management' }

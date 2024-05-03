@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBVersionAccessor,
@@ -30,7 +29,8 @@ SSWDBVersionAccessor >> value: valueObject in: targetObject [
 	"The receiver accesses the version number of objects.
 	targetObject should be DBproxy-wrapped"
 	
-	targetObject _version: valueObject
+	targetObject _version: valueObject.
+	^valueObject
 ]
 
 { #category : #evaluating }

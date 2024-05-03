@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBCachingObjectProxy,
@@ -14,31 +13,7 @@ Class {
 }
 
 { #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _aquireCollectionProxiesUsing: collectionSpecs [
-
-	"Cache the proxiedObject's collection proxies, and set the backwards owner reference.
-	The CollectionSpecs identifying the collections (equivalent to self _dbTable collectionSpecs) 
-	are passed in as an optimisation"
-
-	"If refreshing an existing object, we may already have the collections"
-	collectionProxies isNil 
-	ifTrue:
-		[collectionProxies := IdentityDictionary new: collectionSpecs size.
-
-		collectionSpecs do:
-			[ :spec |
-			(collectionProxies at: spec put: (spec accessor valueIn: proxiedObject))
-				_owner: self]]
-	ifFalse:
-		[collectionSpecs do:
-			[ :spec |
-			spec accessor value: (collectionProxies at: spec) in: proxiedObject.
-			copyObject notNil ifTrue: 
-				[spec accessor value: (collectionProxies at: spec) in: copyObject]]]
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _aquireCopyObject [
+SSWDBCachingObjectProxy >> _acquireCopyObject [
 
 	copyObject := self _dbTable copyForProxy: proxiedObject
 ]
@@ -55,56 +30,6 @@ SSWDBCachingObjectProxy >> _checkHasChanged [
 				accessor := field accessor.
 				current := accessor valueIn: proxiedObject.
 				current _hasChangedFrom: (accessor valueIn: copyObject)]]]
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _commitChanges [
-
-	"Return a Boolean indicating whether the commit succeeds"
-
-	^self _isPersistent
-	ifTrue:
-		[self _isDeleted
-			ifTrue: [self _commitUnstore]
-			ifFalse: [self _commitUpdates]]
-	ifFalse:
-		[self _commitStore]
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _commitStore [
-
-	"Private - Return a Boolean indicating whether the commit succeeds"
-
-	reStore insertProxy: self.
-
-	"Assumed to always succeed"
-	^true
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _commitUnstore [
-
-	"Private - Return a Boolean indicating whether the commit succeeds"
-
-	reStore deleteProxy: self. 
-
-	"Assumed to always succeed"
-	^true
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _commitUpdates [
-
-	"Private - Return a Boolean indicating whether the commit succeeds"
-
-	| updates |
-
-	updates := self _fieldUpdates.
-	
-	^updates isEmpty 
-		ifTrue: [true]
-		ifFalse: [reStore applyUpdates: updates toObject: self]
 ]
 
 { #category : #accessing }
@@ -125,7 +50,7 @@ SSWDBCachingObjectProxy >> _copyObject: anObject [
 	copyObject := anObject
 ]
 
-{ #category : #evaluating }
+{ #category : #'accessing:derived' }
 SSWDBCachingObjectProxy >> _fieldUpdates [
 
 	"Use the copy object to determine these"
@@ -148,25 +73,6 @@ SSWDBCachingObjectProxy >> _forgetProxiedObject [
 	^super _forgetProxiedObject
 ]
 
-{ #category : #testing }
-SSWDBCachingObjectProxy >> _isDeleted [
-
-	"Return a Boolean indicating whether the receiver has been marked as deleted..
-	Deleted proxies have a copyObject, but no proxiedObject"
-	
-	^copyObject ~~ nil and: [proxiedObject == nil]
-]
-
-{ #category : #testing }
-SSWDBCachingObjectProxy >> _isPersistent [
-
-	"Return a Boolean indicating whether the receiver is persistent.
-	Persistent proxies always have a copyObject, if they are recovered.
-	Unrecovered proxies are persistent by definition"
-	
-	^copyObject ~~ nil or: [self _isRecovered not]
-]
-
 { #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _matchStateOf: aProxy [
 
@@ -176,55 +82,10 @@ SSWDBCachingObjectProxy >> _matchStateOf: aProxy [
 ]
 
 { #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _postCommitChanges [
-
-	"The receiver's changes have successfully been committed.
-	Complete follow-on work"
-
-	^self _isPersistent
-	ifTrue:
-		[self _isDeleted
-			ifTrue: [self _postCommitUnstore]
-			ifFalse: [self _postCommitUpdates]]
-	ifFalse:
-		[self _postCommitStore]
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _postCommitDelete [
-
-	"The receiver has been successfully deleted from the database.
-	Complete follow-on work and notify interest parties"
-
-	reStore uncacheObject: self. 
-
-	proxiedObject onUnstored.
-
-	copyObject := proxiedObject := SSWDBDeletedObject newForClass: class id: id.
-]
-
-{ #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _postCommitStore [
 
-	"Private - The receiver has been inserted into the database.
-	Complete follow-on work"
-
-	self _dbTable idDataField ifNotNil: [ :idDataField | idDataField accessor value: id in: proxiedObject].
-	self _aquireCopyObject.
-	self _intern	"Re-register"
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _postCommitUnstore [
-
-	"Private - The receiver has been successfully deleted from the database.
-	Complete follow-on work and notify interest parties"
-
-	reStore uncacheObject: self. 
-
-	proxiedObject onUnstored.
-
-	copyObject := proxiedObject := SSWDBDeletedObject newForClass: class id: id
+	super _postCommitStore.
+	self _acquireCopyObject
 ]
 
 { #category : #'actions-internal' }
@@ -234,7 +95,7 @@ SSWDBCachingObjectProxy >> _postCommitUpdates [
 
 	updates := self _fieldUpdates.
 	
-	updates isEmpty ifFalse: [updates applyTo: copyObject]
+	updates isEmpty ifFalse: [updates copyTo: copyObject]
 ]
 
 { #category : #'actions-internal' }
@@ -264,7 +125,7 @@ SSWDBCachingObjectProxy >> _proxiedObject: anObject [
 	"Overriden to set the copyObject"
 	
 	super _proxiedObject: anObject.
-	self _aquireCopyObject
+	self _acquireCopyObject
 ]
 
 { #category : #'actions-internal' }
@@ -332,7 +193,7 @@ SSWDBCachingObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 	^(super _refreshFromRow: aDatabaseRow table: aDBTable)
 	ifTrue: 
 		["Update the copyObject"
-		self _aquireCopyObject]
+		self _acquireCopyObject]
 	ifFalse:
 		[false]
 ]
@@ -399,35 +260,6 @@ SSWDBCachingObjectProxy >> _resolveUpdateConflictsWith: currentProxyObject [
 ]
 
 { #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _rollbackChanges [
-
-	self _isPersistent
-	ifTrue:
-		[self _isDeleted
-			ifTrue: [self _rollbackUnstore]
-			ifFalse: [self _rollbackUpdates]]
-	ifFalse:
-		[self _rollbackStore]
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _rollbackStore [
-
-	"Private - The receiver was a newly-persisted object - deregister from the reStore"
-
-	reStore deregisterProxy: self.
-	self _swapReferences
-]
-
-{ #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _rollbackUnstore [
-
-	self 
-		_proxiedObject: copyObject;
-		_swapReferences
-]
-
-{ #category : #'actions-internal' }
 SSWDBCachingObjectProxy >> _rollbackUpdates [
 
 	"Private - Forget any updates by instantiating from the copyObject.
@@ -438,29 +270,38 @@ SSWDBCachingObjectProxy >> _rollbackUpdates [
 	me := proxiedObject.
 	him := self.
 
-	self _swapReferences.
+	self _unswap.
 
 	me _checkHasChanged ifTrue: 
-		[me _proxiedObject: me _copyObject shallowCopy. 
+		[me _setProxiedObject: (me _dbTable copyForProxy: me _copyObject).
 		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
 ]
 
 { #category : #'actions-internal' }
-SSWDBCachingObjectProxy >> _unstore [
+SSWDBCachingObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
 
-	"Intercept this message in order to point references to the proxiedObject
-	to the copyObject - this enables identity to be preserved in the event of a rollback"
+	| collectionProxy |
 
-	| object |
+	collectionProxy := super _updateCollectionProxyUsing: aCollectionSpec.
+	copyObject notNil ifTrue: [aCollectionSpec accessor value: collectionProxy in: copyObject].
 
-	self _isPersistent ifTrue: [object := proxiedObject].	
-	super _unstore.
+	^collectionProxy
+]
 
-	object isNil ifFalse:
-		["Temporarily reset the proxiedObject to swap refs"
-		proxiedObject := object.
-		copyObject := proxiedObject become: copyObject.
-		proxiedObject := nil]
+{ #category : #accessing }
+SSWDBCachingObjectProxy >> _valuesForAccessor: anInstVarAccessor [
+
+	"Return the value(s) in the receiver's proxy object(s) which could be accessed by anInstVarAccessor.
+	Also need to consider the copyObject"
+
+	| proxyValue copyValue |
+
+	proxyValue := proxiedObject ifNotNil: [anInstVarAccessor valueIn: proxiedObject].
+	copyValue := copyObject ifNotNil: [anInstVarAccessor valueIn: copyObject].
+
+	^proxyValue == copyValue 
+		ifTrue: [Array with: proxyValue]
+		ifFalse: [Array with: proxyValue with: copyValue]
 ]
 
 { #category : #forwarding }

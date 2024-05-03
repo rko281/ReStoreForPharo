@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreGenericRelatedCollectionTest,
@@ -21,7 +20,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeDee
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -41,7 +40,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeFro
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 	component name: changedName.
@@ -59,7 +58,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeDeeplyFrom: 
 
 	| component originalName changedName oldTestObject anObject2 |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -74,15 +73,15 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeDeeplyFrom: 
 		ifTrue: [anObject2 := testObject]
 		ifFalse: [anObject2 := collection].
 
-	component := collection detect: [ :each | each deepTest name = originalName] ifNone: [nil].
+	component := self detect: [ :each | each deepTest name = originalName] ifNone: [nil].
 	self assert: component notNil.
 
 	"...but does withRelated/DependentComponents"
 	component deepTest name: changedName.
 	reStore commit: anObject2 withRelatedComponents.
 	self fetchTestObjects.
-	self assert: (collection anySatisfy: [ :each | each deepTest ifNil: [false] ifNotNil: [ :dt | dt name = changedName]]).
-	self deny: (collection anySatisfy: [ :each | each deepTest ifNil: [false] ifNotNil: [ :dt | dt name = originalName]])
+	self assert: (self anySatisfy: [ :each | each deepTest ifNil: [false] ifNotNil: [ :dt | dt name = changedName]]).
+	self deny: (self anySatisfy: [ :each | each deepTest ifNil: [false] ifNotNil: [ :dt | dt name = originalName]])
 ]
 
 { #category : #private }
@@ -91,7 +90,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeFrom: anObje
 	| component originalName changedName oldTestObject anObject2 |
 
 	"Commit of just the owner does not commit the change to the component of the collection"
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 	component name: changedName.
@@ -103,15 +102,15 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeFrom: anObje
 		ifTrue: [anObject2 := testObject]
 		ifFalse: [anObject2 := collection].
 
-	component := collection detect: [ :each | each name = originalName].
+	component := self detect: [ :each | each name = originalName].
 	self assert: (component name = originalName).
 
 	"...but does withRelated/DependentComponents"
 	component name: changedName.
 	reStore commit: anObject2 withRelatedComponents.
 	self fetchTestObjects.
-	self assert: (collection anySatisfy: [ :each | each name = changedName]).
-	self deny: (collection anySatisfy: [ :each | each name = originalName]).
+	self assert: (self anySatisfy: [ :each | each name = changedName]).
+	self deny: (self anySatisfy: [ :each | each name = originalName]).
 
 
 ]
@@ -121,7 +120,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeDeeplyFrom:
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -141,7 +140,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeFrom: anObj
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 
@@ -160,7 +159,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedDe
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -180,7 +179,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedFr
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 
@@ -199,7 +198,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeWithExclusi
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 
@@ -219,7 +218,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDee
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -239,7 +238,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDee
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -259,7 +258,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeFro
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 	component name: changedName.
@@ -279,7 +278,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeIfU
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 	component name: changedName.
@@ -299,7 +298,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeDeeplyFrom
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := 'deep test'.
 	changedName := originalName, '_changed'.
 	reStore evaluateAsTransaction: [component deepTest: (Test new name: originalName; yourself)].
@@ -319,7 +318,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeFrom: anOb
 
 	| component originalName changedName |
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalName := component name.
 	changedName := originalName, '_changed'.
 	component name: changedName.
@@ -481,7 +480,7 @@ SSWReStoreGenericRelatedCollectionTest >> testCommitComponentAddition [
 	added := self addToCollection.
 	reStore commit: testObject withRelatedComponents.
 	self fetchTestObjects.
-	self assert: (collection includes: added)
+	self assert: (self includes: added)
 
 ]
 
@@ -506,15 +505,15 @@ SSWReStoreGenericRelatedCollectionTest >> testCommitComponentRemoval [
 	originalAndReplacement := self replaceInCollection.
 	reStore commit: testObject.
 	self fetchTestObjects.
-	self assert: (collection includes: originalAndReplacement key).
-	self deny: (collection includes: originalAndReplacement value).
+	self assert: (self includes: originalAndReplacement key).
+	self deny: (self includes: originalAndReplacement value).
 
 	"...but does withRelatedComponents"
 	originalAndReplacement := self replaceInCollection.
 	reStore commit: testObject withRelatedComponents.
 	self fetchTestObjects.
-	self deny: (collection includes: originalAndReplacement key).
-	self assert: (collection includes: originalAndReplacement value).
+	self deny: (self includes: originalAndReplacement key).
+	self assert: (self includes: originalAndReplacement value).
 
 ]
 
@@ -534,7 +533,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentAddition [
 
 	reStore refresh: testObject withRelatedComponents.
 	self assert: collection size equals: (originalSize + 1).
-	self assert: (collection select: [ :each | each name = added name]) size equals: 1
+	self assert: (self select: [ :each | each name = added name]) size equals: 1
 ]
 
 { #category : #'unit tests' }
@@ -548,7 +547,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeAndRemoval [
 
 	| component originalSize originalName changedName removed | 
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalSize := collection size.
 	originalName := component name.
 
@@ -562,15 +561,15 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeAndRemoval [
 	"No change without withRelatedComponents"
 	reStore refresh: testObject.
 	self assert: collection size equals: originalSize.
-	self assert: (collection includes: component).
+	self assert: (self includes: component).
 	self assert: component name equals: originalName.
 
 	"Now withRelatedComponents"
 	reStore refresh: testObject withRelatedComponents.
 	self assert: collection size equals: (originalSize - 1).
-	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
-	self deny: (collection includes: component).
-	self componentDefinition isValueDependent 
+	self assert: (self allSatisfy: [ :each | each name ~= removed name]).
+	self deny: (self includes: component).
+	self componentDefinitionIsDependent 
 		ifTrue: [self assert: component isDBDeleted]
 		ifFalse: [self assert: component name equals: changedName]
 ]
@@ -604,7 +603,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentRemoval [
 
 	| component originalSize originalName changedName removed | 
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalSize := collection size.
 	originalName := component name.
 
@@ -617,15 +616,15 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentRemoval [
 	"No change without withRelatedComponents"
 	reStore refresh: testObject.
 	self assert: collection size equals: originalSize.
-	self assert: (collection includes: component).
+	self assert: (self includes: component).
 	self assert: component name equals: changedName.
 
 	"Now withRelatedComponents"
 	reStore refresh: testObject withRelatedComponents.
 	self assert: collection size equals: (originalSize - 1).
-	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
-	self deny: (collection includes: component).
-	self componentDefinition isValueDependent 
+	self assert: (self allSatisfy: [ :each | each name ~= removed name]).
+	self deny: (self includes: component).
+	self componentDefinitionIsDependent
 		ifTrue: [self assert: component isDBDeleted]
 		ifFalse: [self assert: component name equals: originalName]
 ]
@@ -645,13 +644,13 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentReplace [
 
 	reStore refresh: testObject.
 	self assert: (collection size = originalSize).
-	self assert: (collection select: [ :each | each name = original name]) size = 1.
-	self assert: (collection select: [ :each | each name = replacement name]) size = 0.
+	self assert: (self select: [ :each | each name = original name]) size = 1.
+	self assert: (self select: [ :each | each name = replacement name]) size = 0.
 
 	reStore refresh: testObject withRelatedComponents.
 	self assert: (collection size = originalSize).
-	self assert: (collection select: [ :each | each name = original name]) size = 0.
-	self assert: (collection select: [ :each | each name = replacement name]) size = 1.
+	self assert: (self select: [ :each | each name = original name]) size = 0.
+	self assert: (self select: [ :each | each name = replacement name]) size = 1.
 
 ]
 
@@ -660,7 +659,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshIfUpdatedComponentChangeAnd
 
 	| component originalSize originalName changedName removed | 
 
-	component := collection anyOne.
+	component := self anyOne.
 	originalSize := collection size.
 	originalName := component name.
 
@@ -674,15 +673,15 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshIfUpdatedComponentChangeAnd
 	"No change without withRelatedComponents"
 	reStore refreshIfUpdated: testObject.
 	self assert: collection size equals: originalSize.
-	self assert: (collection includes: component).
+	self assert: (self includes: component).
 	self assert: component name equals: originalName.
 
 	"Now withRelatedComponents"
 	reStore refreshIfUpdated: testObject withRelatedComponents.
 	self assert: collection size equals: (originalSize - 1).
-	self assert: (collection allSatisfy: [ :each | each name ~= removed name]).
-	self deny: (collection includes: component).
-	self componentDefinition isValueDependent ifFalse: [self assert: component name equals: changedName]
+	self assert: (self allSatisfy: [ :each | each name ~= removed name]).
+	self deny: (self includes: component).
+	self componentDefinitionIsDependent ifFalse: [self assert: component name equals: changedName]
 ]
 
 { #category : #'unit tests' }
@@ -698,7 +697,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRefreshesComponentChange [
 
 	testObject refresh.
 
-	self deny: (collection includes: added).
+	self deny: (self includes: added).
 	self assert: (added name = originalName)
 ]
 
@@ -712,12 +711,12 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentAddition [
 
 	"Refresh of just the owner does not revert the change to the collection"
 	reStore refresh: testObject.
-	self assert: (collection includes: added).
+	self assert: (self includes: added).
 	self assert: (collection size = (original size + 1)).
 
 	"...but does withRelatedComponents"
 	reStore refresh: testObject withRelatedComponents.
-	self deny: (collection includes: added).
+	self deny: (self includes: added).
 	self assert: (collection size = original size).
 
 ]
@@ -756,12 +755,12 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentRemoval [
 
 	"Refresh of just the owner does not revert the change to the collection"
 	reStore refresh: testObject.
-	self deny: (collection includes: removed).
+	self deny: (self includes: removed).
 	self assert: (collection size = (original size - 1)).
 
 	"...but does withRelatedComponents"
 	reStore refresh: testObject withRelatedComponents.
-	self assert: (collection includes: removed).
+	self assert: (self includes: removed).
 	self assert: (collection size = original size)
 ]
 
@@ -774,13 +773,13 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentReplace [
 
 	"Refresh of just the owner does not revert the change to the collection"
 	reStore refresh: testObject.
-	self deny: (collection includes: originalAndReplacement key).
-	self assert: (collection includes: originalAndReplacement value).
+	self deny: (self includes: originalAndReplacement key).
+	self assert: (self includes: originalAndReplacement value).
 
 	"...but does withRelatedComponents"
 	reStore refresh: testObject withRelatedComponents.
-	self assert: (collection includes: originalAndReplacement key).
-	self deny: (collection includes: originalAndReplacement value)
+	self assert: (self includes: originalAndReplacement key).
+	self deny: (self includes: originalAndReplacement value)
 ]
 
 { #category : #'unit tests' }
@@ -793,12 +792,12 @@ SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentAddition [
 
 	"Rollback of just the owner does not revert the change to the collection"
 	reStore rollback: testObject.
-	self assert: (collection includes: added).
+	self assert: (self includes: added).
 	self assert: (collection size = (original size + 1)).
 
 	"...but does withRelatedComponents"
 	reStore rollback: testObject withRelatedComponents.
-	self deny: (collection includes: added).
+	self deny: (self includes: added).
 	self assert: (collection size = original size).
 
 ]
@@ -825,12 +824,12 @@ SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentRemoval [
 
 	"Rollback of just the owner does not revert the change to the collection"
 	reStore rollback: testObject.
-	self deny: (collection includes: removed).
+	self deny: (self includes: removed).
 	self assert: (collection size = (original size - 1)).
 
 	"...but does withRelatedComponents"
 	reStore rollback: testObject withRelatedComponents.
-	self assert: (collection includes: removed).
+	self assert: (self includes: removed).
 	self assert: (collection size = original size)
 ]
 
@@ -843,11 +842,11 @@ SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentReplace [
 
 	"Rollback of just the owner does not revert the change to the collection"
 	reStore rollback: testObject.
-	self deny: (collection includes: originalAndReplacement key).
-	self assert: (collection includes: originalAndReplacement value).
+	self deny: (self includes: originalAndReplacement key).
+	self assert: (self includes: originalAndReplacement value).
 
 	"...but does withRelatedComponents"
 	reStore rollback: testObject withRelatedComponents.
-	self assert: (collection includes: originalAndReplacement key).
-	self deny: (collection includes: originalAndReplacement value)
+	self assert: (self includes: originalAndReplacement key).
+	self deny: (self includes: originalAndReplacement value)
 ]

@@ -7,17 +7,23 @@ Class {
 	#name : #SubPerson,
 	#superclass : #MidPerson,
 	#instVars : [
-		'age'
+		'age',
+		'subFlags'
 	],
 	#category : #'SSW ReStore Tests'
 }
 
+{ #category : #constants }
+SubPerson class >> mutableAspects [
+	^super mutableAspects copyWith: #subFlags.
+]
+
 { #category : #public }
 SubPerson class >> reStoreDefinition [
-
 	^super reStoreDefinition
 		define: #age as: Integer;
-		yourself
+		define: #subFlags as: TestBitmask;
+		yourself.
 ]
 
 { #category : #accessing }
@@ -28,4 +34,15 @@ SubPerson >> age [
 { #category : #accessing }
 SubPerson >> age: anObject [
 	age := anObject
+]
+
+{ #category : #initializing }
+SubPerson >> initialize [
+	super initialize.
+	subFlags := TestBitmask new.
+]
+
+{ #category : #accessing }
+SubPerson >> subFlags [
+	^subFlags.
 ]

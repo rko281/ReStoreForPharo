@@ -1,12 +1,11 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBStaticCacheDictionarySpec,
-	#superclass : #SSWDBStaticCollectionSpec,
+	#superclass : #SSWDBHashedStaticCollectionSpec,
 	#instVars : [
 		'keyAccessor'
 	],
@@ -25,9 +24,8 @@ SSWDBStaticCacheDictionarySpec >> createNonProxiedInstanceFromRow: aDBRow [
 
 { #category : #constants }
 SSWDBStaticCacheDictionarySpec >> entryClass [
-
 	"Return the class of collection entry appropriate for the receiver"
-	
+
 	^SSWDBCacheDictionaryEntry
 ]
 

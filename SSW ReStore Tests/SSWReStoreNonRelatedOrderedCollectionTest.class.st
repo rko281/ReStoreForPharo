@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreNonRelatedOrderedCollectionTest,
@@ -14,6 +13,12 @@ Class {
 SSWReStoreNonRelatedOrderedCollectionTest >> componentDefinition [
 
 	^OrderedCollection of: GenericOwnedTest
+]
+
+{ #category : #helpers }
+SSWReStoreNonRelatedOrderedCollectionTest >> duplicateInCollection: aCollection [
+
+	^aCollection at: 1 put: aCollection last
 ]
 
 { #category : #public }
@@ -79,6 +84,18 @@ SSWReStoreNonRelatedOrderedCollectionTest >> testCommitComponentSwap [
 	self assert: (collection first name = last name).
 	self assert: (collection last name = first name).
 
+]
+
+{ #category : #'unit tests' }
+SSWReStoreNonRelatedOrderedCollectionTest >> testDuplicateEntries [
+
+	"Ensure duplicate entries are handled correctly"
+
+	self duplicateInCollection.
+
+	"This should just involve an update of the value of the entry to which the duplicate has been assigned.
+	Previously this would update the duplicated entry's key, add a new entry for the original and delete the original entry"
+	self assert: (self countQueriesDuring: [testObject store]) equals: (1 "for the update" + (self componentDefinition isValueDependent ifTrue: [1] ifFalse: [0]) "1 for the deletion of the overwritten item (if dependent)")
 ]
 
 { #category : #'unit tests' }

@@ -4,7 +4,7 @@ Class {
 	#category : #'SSW ReStore Base Additions'
 }
 
-{ #category : #constants }
+{ #category : #public }
 SSWDBByteArrayWithInfo >> infoClass [
 
 	^ByteArray

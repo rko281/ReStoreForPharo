@@ -4,7 +4,7 @@ Class {
 	#category : #'SSW ReStore Collections'
 }
 
-{ #category : #actions }
+{ #category : #'actions - api' }
 SSWDBCollectionRemovalWithKey >> prepareToCommitFor: anSSWDBCollectionProxy [
 
 	(anSSWDBCollectionProxy _shouldUnstoreKey: self affectedEntry index) ifTrue: [self affectedEntry index unstore].

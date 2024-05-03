@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBQueryTable,
@@ -74,7 +73,7 @@ SSWDBQueryTable >> hasNamespace [
 	^self table hasNamespace
 ]
 
-{ #category : #evaluating }
+{ #category : #testing }
 SSWDBQueryTable >> hasStaticConditions [
 
 	"Forward to the real table"

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreReadWithComponentsTest,
@@ -152,7 +151,7 @@ SSWReStoreReadWithComponentsTest >> createTestData [
 	self deny: customer4 isDBProxy
 ]
 
-{ #category : #running }
+{ #category : #constants }
 SSWReStoreReadWithComponentsTest >> otherCustomersSize [
 
 	^105
@@ -268,7 +267,7 @@ SSWReStoreReadWithComponentsTest >> testProxyCollectionMultipleRead [
 
 	"Read and touch the orders"
 	allCustomers := (customers include: #orders) asOrderedCollection.
-	allCustomers do: [ :each | each orders size].
+	allCustomers do: [ :each | each orders _deproxify].
 
 	"Reading again should only take one query for the collection itself"
 	self resetQueryCount.
@@ -418,7 +417,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshSingleObject [
 	| allCustomers test originalName newName |
 
 	allCustomers := customers asOrderedCollection.
-
+	
 	test := (allCustomers detect: [ :each | each test notNil]) test.
 	originalName := test name.
 	newName := Time now displayString.

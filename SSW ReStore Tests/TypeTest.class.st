@@ -59,7 +59,7 @@ TypeTest class >> reStoreDefinition [
 
 		define: #trueBoolean as: Boolean;
 		define: #falseBoolean as: Boolean;
-		
+
 		define: #uuid as: GUID;
 
 		yourself
@@ -185,13 +185,11 @@ TypeTest >> largeBlob: anObject [
 
 { #category : #accessing }
 TypeTest >> largeInteger [
-
-	^ largeInteger
+	^largeInteger
 ]
 
 { #category : #accessing }
 TypeTest >> largeInteger: anObject [
-
 	largeInteger := anObject
 ]
 
@@ -297,13 +295,11 @@ TypeTest >> unsizedText: anObject [
 
 { #category : #accessing }
 TypeTest >> uuid [
-
-	^ uuid
+	^uuid
 ]
 
 { #category : #accessing }
 TypeTest >> uuid: anObject [
-
 	uuid := anObject
 ]
 

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWAccessor,
@@ -46,7 +45,8 @@ SSWAccessor >> name [
 { #category : #updating }
 SSWAccessor >> value: valueObject in: targetObject [
 
-	"Set the attribute of targetObject which the receiver accesses to valueObject"
+	"Set the attribute of targetObject which the receiver accesses to valueObject.
+	Return the valueObject"
 	
 	self subclassResponsibility
 ]

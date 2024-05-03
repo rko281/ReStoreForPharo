@@ -1,24 +1,24 @@
-Extension { #name : #SSWDBBlockEvaluator }
+Extension { #name : 'SSWDBBlockEvaluator' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> _class [
 
 	^super class
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> debugPrintString [
 
 	^'<ReStore block evaluator>'
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> gtDisplayString [
 
 	^self debugPrintString
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> perform: aSymbol [ 
 	"Send the unary selector, aSymbol, to the receiver.
 	Fail if the number of arguments expected by the selector is not zero.
@@ -29,7 +29,7 @@ SSWDBBlockEvaluator >> perform: aSymbol [
 	^ self perform: aSymbol withArguments: (Array new: 0)
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> perform: aSymbol with: anObject [ 
 	"Send the selector, aSymbol, to the receiver with anObject as its argument.
 	Fail if the number of arguments expected by the selector is not one.
@@ -40,7 +40,7 @@ SSWDBBlockEvaluator >> perform: aSymbol with: anObject [
 	^ self perform: aSymbol withArguments: (Array with: anObject)
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> perform: selector withArguments: argArray [ 
 	"Send the selector, aSymbol, to the receiver with arguments in argArray.
 	Fail if the number of arguments expected by the selector 
@@ -52,7 +52,7 @@ SSWDBBlockEvaluator >> perform: selector withArguments: argArray [
 	^ self perform: selector withArguments: argArray inSuperclass: self _class
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> perform: selector withArguments: argArray inSuperclass: lookupClass [
 	"NOTE:  This is just like perform:withArguments:, except that
 	the message lookup process begins, not with the receivers's class,
@@ -71,7 +71,7 @@ SSWDBBlockEvaluator >> perform: selector withArguments: argArray inSuperclass: l
 	self primitiveFailed
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> printStringLimitedTo: anInteger [
 
 	| string |
@@ -83,7 +83,7 @@ SSWDBBlockEvaluator >> printStringLimitedTo: anInteger [
 		ifFalse: [ string ]
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockEvaluator >> yourself [
 
 	^self

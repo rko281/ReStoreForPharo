@@ -1,6 +1,6 @@
-Extension { #name : #SSWMySQLDialect }
+Extension { #name : 'SSWMySQLDialect' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWMySQLDialect >> platformSpecificFunctions [
 
 	^Dictionary new

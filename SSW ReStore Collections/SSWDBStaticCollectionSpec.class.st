@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBStaticCollectionSpec,
@@ -11,8 +10,17 @@ Class {
 		'targetClass',
 		'deleteEntriesStatement'
 	],
+	#classVars : [
+		'NilCookie'
+	],
 	#category : #'SSW ReStore Collections'
 }
+
+{ #category : #initializing }
+SSWDBStaticCollectionSpec class >> initialize [
+
+	NilCookie := Object new
+]
 
 { #category : #initializing }
 SSWDBStaticCollectionSpec >> createCollectionTable [
@@ -90,7 +98,10 @@ SSWDBStaticCollectionSpec >> deleteQueryWithJoin [
 		table: self collectionTable;
 		conditions: (SSWSQLCondition field: self sourceField equalTo: SSWSQLQueryParameter).
 
-	self isValueDependent ifTrue: [query addTable: self targetTable withAllFields joinedWithField: self targetField].
+	self isValueDependent ifTrue: 
+		[query 
+			isMultiTableDelete: true;
+			addTable: self targetTable withAllFields joinedWithField: self targetField].
 
 	^query
 ]
@@ -110,6 +121,14 @@ SSWDBStaticCollectionSpec >> deleteQueryWithSubQuery [
 		table: self targetTable;
 		conditions: (SSWSQLCondition field: self targetTable idField is: (SSWSQLOperator messageSelector: #includedIn:) to: subquery asSubQuery);
 		yourself
+]
+
+{ #category : #'actions-internal' }
+SSWDBStaticCollectionSpec >> preserveCollectionEntries: aCollection [
+
+	"Private - If the collection stored mutatable directly-persisted objects then we must use a shallowCopy of these for change detection"
+
+	self targetClass isMutableDirectlyPersistedNonBaseClass ifTrue: [aCollection do: [ :each | each target: each target shallowCopy]]
 ]
 
 { #category : #actions }
@@ -177,7 +196,7 @@ SSWDBStaticCollectionSpec >> readQuery [
 	| query |
 
 	query := self refreshQuery.
-	self targetClass isPersistentBaseClass ifFalse: [query addTable: self targetTable withAllFields joinedWithField: self targetField].
+	self targetClass isDirectlyPersisted ifFalse: [query addTable: self targetTable withAllFields joinedWithField: self targetField].
 
 	^query
 ]
@@ -213,7 +232,7 @@ SSWDBStaticCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 
 	"Return the recovered member objects"
 
-	^self targetClass isPersistentBaseClass
+	^self targetClass isDirectlyPersisted
 		ifTrue: [self recoverBaseClassCollectionForProxy: aCollectionProxy]
 		ifFalse: [self recoverModelClassCollectionForProxy: aCollectionProxy]
 ]
@@ -257,7 +276,7 @@ SSWDBStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	"Refresh as opposed to read - just fetch the IDs.
 	Return the refreshed contents (always none)"
 
-	^self targetClass isPersistentBaseClass
+	^self targetClass isDirectlyPersisted
 		ifTrue: [self recoverBaseClassCollectionForProxy: aCollectionProxy]
 		ifFalse: [self refreshModelClassCollectionForProxy: aCollectionProxy]
 ]
@@ -268,7 +287,7 @@ SSWDBStaticCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 	"Refresh the receiver collection and its contents if they have been updated
 	Return the refreshed contents, i.e. the collection itself"
 
-	^self targetClass isPersistentBaseClass
+	^self targetClass isDirectlyPersisted
 		ifTrue: [self recoverBaseClassCollectionForProxy: aCollectionProxy]
 		ifFalse: [self refreshModelClassCollectionWithContentsIfUpdatedForProxy: aCollectionProxy]
 ]

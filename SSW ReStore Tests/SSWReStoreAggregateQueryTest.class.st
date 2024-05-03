@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreAggregateQueryTest,
@@ -76,7 +75,7 @@ SSWReStoreAggregateQueryTest >> testGroupWithObject [
 	| uniqueProducts |
 
 	"SELECT * FROM TABLE GROUP BY FIELD not supported on Access or SQL Server"
-	((reStore sqlDialect isKindOf: SSWMSAccessDialect) or: [reStore sqlDialect isKindOf: SSWSQLServerDialect]) ifTrue: [^self].
+	((reStore sqlDialect isKindOf: SSWMSAccessDialect) or: [reStore sqlDialect isKindOf: SSWSQLServerDialect]) ifTrue: [self skip].
 
 	uniqueProducts := (SimpleProductOrder storedInstancesIn: reStore) project: [ :each | each product].
 

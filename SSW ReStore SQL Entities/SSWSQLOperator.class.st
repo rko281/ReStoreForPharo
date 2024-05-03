@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLOperator,
@@ -276,8 +275,7 @@ SSWSQLOperator >> sqlString: aString [
 { #category : #output }
 SSWSQLOperator >> sqlStringFor: aTargetValue [
 
-	"aTargetValue is necessary as some SQL operators change form 
-	depending on the target value (e.g. IS NULL)"
+	"aTargetValue is necessary as some SQL operators change form depending on the target value (e.g. IS NULL)"
 	
 	^(aTargetValue isSQLNull and: [self isSetValue not])
 	ifTrue:

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLJoinedTableCollection,
@@ -45,6 +44,14 @@ SSWSQLJoinedTableCollection >> add: anSSWDBTable joinedWith: anSSWSQLCondition [
 SSWSQLJoinedTableCollection >> copy [
 
 	^super copy
+		joinConditions: self joinConditions copy;
+		yourself
+]
+
+{ #category : #evaluating }
+SSWSQLJoinedTableCollection >> copyEmpty: anInteger [
+
+	^(super copyEmpty: anInteger)
 		joinConditions: self joinConditions copy;
 		yourself
 ]

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBVersionedCachingObjectProxy,
@@ -116,7 +115,7 @@ SSWDBVersionedCachingObjectProxy >> _postCommitUpdates [
 	updates := self _fieldUpdates.
 	
 	updates isEmpty ifFalse: 
-		[updates applyTo: copyObject. 
+		[updates copyTo: copyObject. 
 		self _incrementVersion]
 ]
 
@@ -128,7 +127,7 @@ SSWDBVersionedCachingObjectProxy >> _refreshIfUpdated [
 	self _isRecovered ifTrue: 
 		[(reStore refreshProxyIfUpdated: self) ifTrue:
 			["Update the copyObject"
-			self _aquireCopyObject]]
+			self _acquireCopyObject]]
 ]
 
 { #category : #accessing }

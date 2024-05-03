@@ -28,24 +28,20 @@ ReStoreTestWithIDSubclass class >> reStoreDefinition [
 
 { #category : #accessing }
 ReStoreTestWithIDSubclass >> name [
-
-	^ name
+	^name
 ]
 
 { #category : #accessing }
 ReStoreTestWithIDSubclass >> name: anObject [
-
 	name := anObject
 ]
 
 { #category : #accessing }
 ReStoreTestWithIDSubclass >> other [
-
-	^ other
+	^other
 ]
 
 { #category : #accessing }
 ReStoreTestWithIDSubclass >> other: anObject [
-
 	other := anObject
 ]

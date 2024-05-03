@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWMSAccessDialect,
@@ -94,15 +93,15 @@ SSWMSAccessDialect >> largeInteger [
 ]
 
 { #category : #constants }
-SSWMSAccessDialect >> largeIntegerMaximum [ 
+SSWMSAccessDialect >> largeIntegerMaximum [
 
-	^self integerMaximum 
+	^self integerMaximum
 ]
 
 { #category : #constants }
-SSWMSAccessDialect >> largeIntegerMinimum [  
+SSWMSAccessDialect >> largeIntegerMinimum [
 
-	^self integerMinimum 
+	^self integerMinimum
 ]
 
 { #category : #datatypes }
@@ -169,4 +168,10 @@ SSWMSAccessDialect >> updateDelaySeconds [
 	"Arrived at anecdotally... refresh SUnit tests fail with 4 seconds, pass with 5"
 
 	^5
+]
+
+{ #category : #datatypes }
+SSWMSAccessDialect >> uuid [
+
+	^'GUID'
 ]

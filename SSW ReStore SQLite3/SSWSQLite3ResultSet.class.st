@@ -1,17 +1,27 @@
 Class {
-	#name : #SSWSQLite3ResultSet,
-	#superclass : #SQLite3Cursor,
+	#name : 'SSWSQLite3ResultSet',
+	#superclass : 'SQLite3Cursor',
 	#instVars : [
 		'firstRow',
-		'query'
+		'query',
+		'connection'
 	],
 	#pools : [
 		'SQLite3Constants'
 	],
-	#category : #'SSW ReStore SQLite3'
+	#category : 'SSW ReStore SQLite3',
+	#package : 'SSW ReStore SQLite3'
 }
 
-{ #category : #private }
+{ #category : 'initialization' }
+SSWSQLite3ResultSet >> close [
+	" closing a cursor is not the same as closing the statement - we may reuse a prepared statement"
+	statement ifNotNil: [ statement reset ].
+	"Compared to the superclass we want to keep the statement"
+	mutators := nil.
+]
+
+{ #category : 'private' }
 SSWSQLite3ResultSet >> do: aBlock [
 
 	[self next
@@ -19,31 +29,43 @@ SSWSQLite3ResultSet >> do: aBlock [
 		ifNotNil: [ :next | aBlock value: next. true]] whileTrue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> first [
 	^firstRow ifNil: [ self next ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SSWSQLite3ResultSet >> free [
 
 	statement free
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SSWSQLite3ResultSet >> initialize [ 
 
 	super initialize.
 	self rowClass: SSWSQLite3Row 
 ]
 
-{ #category : #accessing }
+{ #category : 'private' }
+SSWSQLite3ResultSet >> keysAndValuesDo: aBlock [
+
+	| index |
+	
+	index := 1.
+
+	[self next
+		ifNil: [ false ]
+		ifNotNil: [ :next | aBlock value: index value: next. index := index + 1. true]] whileTrue
+]
+
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> last [
 
 	^self cachedRows last
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 SSWSQLite3ResultSet >> next [
 
 	^firstRow isNil 
@@ -51,7 +73,7 @@ SSWSQLite3ResultSet >> next [
 		ifFalse: [ super next ]
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 SSWSQLite3ResultSet >> nextOfClass: aRowClass [
 
 	| next |
@@ -63,31 +85,31 @@ SSWSQLite3ResultSet >> nextOfClass: aRowClass [
 	^next
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> numRows [
 
 	^connection changes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> query [
 
 	^query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> readStream [
 
 	^SSWDBForwardOnlyReadStream on: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> results [
 
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> size [
 
 	"size as in number of rows.
@@ -96,20 +118,20 @@ SSWSQLite3ResultSet >> size [
 	^nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> species [
 
 	^OrderedCollection 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLite3ResultSet >> statement: anSSWSQLite3Statement [
 
 	statement := anSSWSQLite3Statement.
 	connection := anSSWSQLite3Statement parent
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SSWSQLite3ResultSet >> statement: aStatement moreRows: aBoolean rows: rCollection mutators: mCollection [
 
 	statement := aStatement.

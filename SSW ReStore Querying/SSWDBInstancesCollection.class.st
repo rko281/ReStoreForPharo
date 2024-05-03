@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBInstancesCollection,
@@ -120,7 +119,7 @@ SSWDBInstancesCollection >> beOrdered [
 { #category : #initializing }
 SSWDBInstancesCollection >> beSorted [
 
-	"Give the receiver the default sort order"
+	"Order the receiver based on the default sort for the instanceClass"
 
 	self sortBlock: SortedCollection defaultSortBlock
 ]
@@ -226,7 +225,7 @@ SSWDBInstancesCollection >> include: aSymbol [
 SSWDBInstancesCollection >> includeAll: aCollectionOfInstVarNames [
 
 	"Arrange for the contents of aCollectionOfInstVarNames (representing components of the receiver) to be bulk fetched when elements of the receiver are read from the database"
-	
+
 	self includeTableComponents: (aCollectionOfInstVarNames collect: [ :instVarName | self table componentAccessing: instVarName])
 ]
 
@@ -645,30 +644,6 @@ SSWDBInstancesCollection >> unstoreAll [
 	"Unstore all elements of the receiver from the database"
 
 	^self unstore: [ :each | true]
-]
-
-{ #category : #deprecated }
-SSWDBInstancesCollection >> withComponent: aSymbol [
-	#deprecated.
-	self include: aSymbol
-]
-
-{ #category : #deprecated }
-SSWDBInstancesCollection >> withComponents: aCollectionOfInstVarNames [
-	#deprecated.
-	self includeAll: aCollectionOfInstVarNames
-]
-
-{ #category : #deprecated }
-SSWDBInstancesCollection >> withDependentComponents [
-	#deprecated.
-	self includeDependentComponents
-]
-
-{ #category : #deprecated }
-SSWDBInstancesCollection >> withRelatedComponents [
-	#deprecated.
-	self includeRelatedComponents
 ]
 
 { #category : #evaluating }

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBDeletedObject,
@@ -23,10 +22,38 @@ SSWDBDeletedObject class >> newForClass: aClass id: anInteger [
 		yourself
 ]
 
+{ #category : #comparing }
+SSWDBDeletedObject >> = anObject [ 
+
+	^self class == anObject class and: [self deletedObjectClass = anObject deletedObjectClass and: [self id = anObject id]]
+]
+
 { #category : #accessing }
 SSWDBDeletedObject >> _id [
 
 	^self id
+]
+
+{ #category : #accessing }
+SSWDBDeletedObject >> _instVarAt: anInteger [
+
+	"Encountered when 'recovering' a deleted object; ignore"
+
+	^nil
+]
+
+{ #category : #accessing }
+SSWDBDeletedObject >> _instVarAt: anInteger put: anObject [
+
+	"Encountered when 'recovering' a deleted object; ignore"
+]
+
+{ #category : #copying }
+SSWDBDeletedObject >> copy [
+
+	"Do not copy the receiver"
+
+	^self
 ]
 
 { #category : #accessing }
@@ -51,6 +78,12 @@ SSWDBDeletedObject >> deletedObjectClass: aClass [
 SSWDBDeletedObject >> displayOn: aStream [
 
 	self id displayOn: aStream
+]
+
+{ #category : #comparing }
+SSWDBDeletedObject >> hash [
+
+	^deletedObjectClass hash bitXor: id hash
 ]
 
 { #category : #accessing }
@@ -85,15 +118,6 @@ SSWDBDeletedObject >> printOn: aStream [
 		nextPutAll: self deletedObjectClass name;
 		nextPutAll: '; ID: ';
 		nextPutAll: self id printString
-]
-
-{ #category : #copying }
-SSWDBDeletedObject >> shallowCopy [
-
-	"Do not copy the receiver"
-
-	^self
-
 ]
 
 { #category : #testing }

@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreSortTest,
@@ -18,7 +17,7 @@ SSWReStoreSortTest >> _testClassSortImplementationInverted [
 
 	| instances |
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<=>).
+	self addMethod: SimplePerson>>#<=> withSelector: #<= fromClass: SimplePerson.
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
@@ -29,7 +28,7 @@ SSWReStoreSortTest >> _testClassSortImplementationWithBlocksInverted [
 
 	| instances |
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==>).
+	self addMethod: SimplePerson>>#<==> withSelector: #<= toClass: SimplePerson.
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
@@ -83,7 +82,7 @@ SSWReStoreSortTest >> tearDown [
 
 	super tearDown.
 
-	SimplePerson methodDictionary at: #<= put: simplePersonCompareMethod
+	self addMethod: simplePersonCompareMethod withSelector: #<= toClass: SimplePerson
 ]
 
 { #category : #'unit tests' }
@@ -111,7 +110,7 @@ SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 
 	instances storeAll.
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#friendCompare:). "a friend <= b friend"
+	self addMethod: SimplePerson>>#friendCompare: withSelector: #<= toClass: SimplePerson. "a friend <= b friend"
 
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
@@ -133,7 +132,7 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocks [
 
 	| instances |
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==).
+	self addMethod: SimplePerson>>#<== withSelector: #<= toClass: SimplePerson.
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
@@ -149,7 +148,7 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocksOnPersistentObject [
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
 	instances storeAll.
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#friendCompareWithBlocks:).
+	self addMethod: SimplePerson>>#friendCompareWithBlocks: withSelector: #<= toClass: SimplePerson.
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
@@ -282,7 +281,7 @@ SSWReStoreSortTest >> testStandardSortOnPersistentObjectWithBlocks [
 	instances with: instances reverse do: [ :person :friend | person friend: friend].
 	instances storeAll.
 
-	SimplePerson methodDictionary at: #<= put: (SimplePerson>>#<==).
+	self addMethod: SimplePerson>>#<== withSelector: #<= toClass: SimplePerson.
 	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a friend <= b friend].
 
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))

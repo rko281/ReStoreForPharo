@@ -2,7 +2,9 @@
 ReStore is a framework enabling Pharo objects to be stored in and read from relational databases (SQLite, PostgreSQL etc.). ReStore aims to make relational persistency as simple as possible, creating and maintaining the database structure itself and providing access to stored objects via familiar Smalltalk messages. 
 
 # Getting Started 
-To load ReStore into your Pharo image, evaluate:
+:warning: If you are using Pharo 11 or earlier please use the [pharo11](https://github.com/rko281/ReStoreForPharo/tree/pharo11) branch.
+
+To load ReStore into your Pharo 12 image, evaluate:
 
 ```smalltalk
 Metacello new

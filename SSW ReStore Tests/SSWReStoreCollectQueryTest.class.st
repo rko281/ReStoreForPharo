@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreCollectQueryTest,
@@ -25,7 +24,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantFirst [
 
 	results := instances collect: [ :each | 'hello' || each firstName].
 	self assert: results size equals: 4.
-	self assert: (results asSortedCollection: [ :r1 :r2 | r1 last <= r2 last]) asArray equals: #(#('hello' 'David') #('hello' 'Jim') #('hello' 'John') #('hello' 'Zoe'))
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 last <= r2 last]) asArray = #(#('hello' 'David') #('hello' 'Jim') #('hello' 'John') #('hello' 'Zoe')).
 ]
 
 { #category : #'unit tests' }
@@ -37,7 +36,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantLast [
 
 	results := instances collect: [ :each | each firstName || 'goodbye'].
 	self assert: results size equals: 4.
-	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray equals: #(#('David' 'goodbye') #('Jim' 'goodbye') #('John' 'goodbye') #('Zoe' 'goodbye')).
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' 'goodbye') #('Jim' 'goodbye') #('John' 'goodbye') #('Zoe' 'goodbye')).
 ]
 
 { #category : #'unit tests' }
@@ -49,7 +48,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantMid [
 
 	results := instances collect: [ :each | each firstName || '-' || each surname].
 	self assert: results size equals: 4.
-	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray equals: #(#('David' '-' 'Smythe') #('Jim' '-' 'Brown') #('John' '-' 'Smith') #('Zoe' '-' 'Brown')).
+	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' '-' 'Smythe') #('Jim' '-' 'Brown') #('John' '-' 'Smith') #('Zoe' '-' 'Brown')).
 ]
 
 { #category : #'unit tests' }
@@ -258,27 +257,6 @@ SSWReStoreCollectQueryTest >> testMathFunctionCollectQuery [
 ]
 
 { #category : #'unit tests' }
-SSWReStoreCollectQueryTest >> testMethodNotNilWithJoinCollectQuery [
-
-	"Test previously-failing case where a method invoked from the collect block contains notNil in an inlined block"
-
-	| instances john results |
-
-	instances := SimplePerson storedInstancesIn: reStore.
-	john := instances detect: [ :each | each firstName = 'John'].
-	john test: (Test new name: 'jTest').
-	john store.
-
-	results := instances collect: [ :each | each firstName || each hasTestOrFriendHasTestBlock].
-	self assert: results size equals: 4.
-	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' false) #('Jim' false) #('John' true) #('Zoe' true)).
-
-	results := (instances satisfying: [ :each | each hasTestOrFriendHasTestBlock]) collect: [ :each | each firstName || each hasTestOrFriendHasTestBlock].
-	self assert: results size equals: 2.
-	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('John' true) #('Zoe' true))
-]
-
-{ #category : #'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleConditionalFirstCollectQuery [
 
 	| instances results |
@@ -466,8 +444,8 @@ SSWReStoreCollectQueryTest >> testObjectFieldOnlyDifferentClassCollectQuery [
 
 	results := instances collect: [ :each | each address].
 
-	self assert: results size equals: 4.
-	self assert: (results occurrencesOf: nil) equals: 2.
+	self assert: (results size = 4).
+	self assert: (results occurrencesOf: nil) = 2.
 	self assert: (results anySatisfy: [ :each | each notNil and: [each line1 = 'Jim Brown']]).
 	self assert: (results anySatisfy: [ :each | each notNil and: [each line1 = 'David Smythe']])
 ]
@@ -482,8 +460,8 @@ SSWReStoreCollectQueryTest >> testObjectFieldOnlySameClassCollectQuery [
 	"friend is also a SimplePerson"
 	results := instances collect: [ :each | each friend].
 
-	self assert: results size equals: 4.
-	self assert: (results occurrencesOf: nil) equals: 2.
+	self assert: (results size = 4).
+	self assert: (results occurrencesOf: nil) = 2.
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'David Smythe']]).
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'John Smith']])
 ]
@@ -503,8 +481,8 @@ SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlyDifferentClassCollectQ
 
 	results := instances collect: [ :each | each test].
 
-	self assert: results size equals: 4.
-	self assert: (results occurrencesOf: nil) equals: 2.
+	self assert: (results size = 4).
+	self assert: (results occurrencesOf: nil) = 2.
 	self assert: (results anySatisfy: [ :each | each notNil and: [each name = 'Jim Brown']]).
 	self assert: (results anySatisfy: [ :each | each notNil and: [each name = 'David Smythe']])
 ]
@@ -527,8 +505,8 @@ SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlySameClassCollectQuery 
 	instances := MidPerson storedInstancesIn: reStore.
 	results := instances collect: [ :each | each midFriend].
 
-	self assert: results size equals: 4.
-	self assert: (results occurrencesOf: nil) equals: 2.
+	self assert: (results size = 4).
+	self assert: (results occurrencesOf: nil) = 2.
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'John Smith']]).
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'David Smythe']])
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #MySQLResultSet }
+Extension { #name : 'MySQLResultSet' }
 
-{ #category : #'*SSW ReStore MySQL' }
+{ #category : '*SSW ReStore MySQL' }
 MySQLResultSet >> asSSWMySQLResultSet [
 
 	^SSWMySQLResultSet new
@@ -14,7 +14,7 @@ MySQLResultSet >> asSSWMySQLResultSet [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore MySQL' }
+{ #category : '*SSW ReStore MySQL' }
 MySQLResultSet >> collect: aBlock [
 
 	^self rows collect: aBlock

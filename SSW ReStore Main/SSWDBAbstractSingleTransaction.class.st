@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBAbstractSingleTransaction,
@@ -23,7 +22,7 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
-	self currentReferencedObjects do: [ :each | each _swapReferences].
+	self currentReferencedObjects do: [ :each | each _unswap].
 	self endObjectCollection
 ]
 
@@ -107,10 +106,10 @@ SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 
 	"Any objects referenced during the errored commit will erroneously be in currentReferencedObjects.
 	Swap back and forget"
-	self currentReferencedObjects do: [ :obj | obj _swapReferences].
+	self currentReferencedObjects do: [ :obj | obj _unswap].
 
 	"The receiver's changedObjects should now be the currentReferencedObjects"
-	self currentReferencedObjects: (self changedObjects collect: [ :obj | obj _swapReferences]).
+	self currentReferencedObjects: (self changedObjects collect: [ :obj | obj _swap]).
 	self allReferencedObjects: self newEmptyObjectsSet
 ]
 
@@ -274,7 +273,7 @@ SSWDBAbstractSingleTransaction >> newEmptyObjectsSet [
 
 	"Return an empty Set of a default size that can be used for holding proxies"
 
-	^self newEmptyObjectsSet: 20
+	^self newEmptyObjectsSet: 128
 ]
 
 { #category : #evaluating }
@@ -292,7 +291,7 @@ SSWDBAbstractSingleTransaction >> nextCollectionPhase [
 		ifTrue: [self allReferencedObjects: self currentReferencedObjects]
 		ifFalse: [self allReferencedObjects addAll: self currentReferencedObjects].
 
-	self currentReferencedObjects: self newEmptyObjectsSet
+	self currentReferencedObjects: (self newEmptyObjectsSet: self currentReferencedObjects size)
 
 ]
 
@@ -341,8 +340,8 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 					[unchanged add: proxy]]].
 		needingPhase2 do: [ :each | each _prepareToCommitPhase2]].
 	
-	self changedObjects: (changed collect: [ :proxy | proxy _swapReferences]). 
-	unchanged do: [ :each | each isDBProxy ifTrue: [each _swapReferences]].
+	self changedObjects: (changed collect: [ :proxy | proxy _unswap]). 
+	unchanged do: [ :each | each isDBProxy ifTrue: [each _unswap]].
 
 	self endObjectCollection
 ]

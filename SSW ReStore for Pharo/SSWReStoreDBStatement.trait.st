@@ -1,15 +1,16 @@
 Trait {
-	#name : #SSWReStoreDBStatement,
+	#name : 'SSWReStoreDBStatement',
 	#instVars : [
 		'query',
 		'sqlString',
 		'parametersCount',
 		'results'
 	],
-	#category : #'SSW ReStore for Pharo'
+	#category : 'SSW ReStore for Pharo',
+	#package : 'SSW ReStore for Pharo'
 }
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWReStoreDBStatement >> close [
 
 	"In Dolphin this closes the result set, leaving the statement open"
@@ -17,26 +18,26 @@ SSWReStoreDBStatement >> close [
 	self results ifNotNil: [ :res | res close ]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWReStoreDBStatement >> closeAfter: aBlock [
 
 	^[ aBlock value: self ] ensure: [ self close ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> describeParam: anInteger [
 
 	^nil
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBStatement >> exec [
 
 	self logQueryExecution.
 	self results: self execute
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWReStoreDBStatement >> free [
 
 	"We have completely finished with the receiver; usually equivalent to Statement>>close in Pharo"
@@ -44,35 +45,35 @@ SSWReStoreDBStatement >> free [
 	[super close] on: Error do: [  :exc | exc return: nil ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDBStatement >> logQueryExecution [
 
 	self parent logQueryExecution: self sqlString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> numRows [
 
 	^self results numRows
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> parametersCount [
 	^ parametersCount
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> parametersCount: anObject [
 	parametersCount := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> query [
 
 	^query
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWReStoreDBStatement >> readValuesFrom: aStream [
 
 	| size index |
@@ -86,39 +87,39 @@ SSWReStoreDBStatement >> readValuesFrom: aStream [
 		index := index + 1]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> results [
 	^ results
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> results: anObject [
 	results := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> rowsAffected [
 
 	^self closeAfter: [ :stmt | stmt numRows]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> setQuery: anSSWSQLQuery [
 	query := anSSWSQLQuery 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> sqlDialect [
 
 	^self parent sqlDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> sqlString [
 	^ sqlString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBStatement >> sqlString: anObject [
 	sqlString := anObject
 ]

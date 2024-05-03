@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWDBTable,
@@ -91,12 +90,12 @@ SSWDBTable >> abbreviations: aDictionary [
 ]
 
 { #category : #evaluating }
-SSWDBTable >> aboutToBeUnstored: anObject [
+SSWDBTable >> aboutToBeUnstored: anSSWDBProxy [
 
-	"anObject (which originated in the receiver table) is about to be removed from the DB.
+	"anSSWDBProxy (which originated in the receiver table) is about to be removed from the DB.
 	Notify the receiver's components so they can take any necessary action"
 
-	self componentsDo: [ :field | field aboutToBeUnstored: anObject]
+	self componentsDo: [ :field | field aboutToBeUnstored: anSSWDBProxy]
 ]
 
 { #category : #defining }
@@ -419,7 +418,7 @@ SSWDBTable >> define: aSymbol asFieldNamed: aString holding: aClass [
 		(SSWDBStaticField new
 			name: aString;
 			targetClass: aClass;
-			accessor: ((self sqlDialect instVarAccessorFor: aClass) access: aSymbol in: self instanceClass);
+			accessor: ((aClass reStoreInstVarAccessorIn: self sqlDialect) access: aSymbol in: self instanceClass);
 			yourself)
 ]
 
@@ -430,7 +429,7 @@ SSWDBTable >> define: aSymbol asInstVarHolding: aClass [
 	
 	^aClass shouldInlinePersistency
 		ifTrue: [self define: aSymbol asInstVarHoldingInlined: aClass]
-		ifFalse: [self define: aSymbol asFieldNamed: (self dbNameFor: aSymbol) holding: aClass]
+		ifFalse: [self define: aSymbol asFieldNamed: (aSymbol databaseFieldNameIn: self) holding: aClass]
 ]
 
 { #category : #defining }
@@ -462,7 +461,7 @@ SSWDBTable >> defineAsID: aSymbol [
 	This can be useful in some cases, although the unique ID is really internal information.
 	Return the idField"
 	
-	^self defineAsID: aSymbol fieldName: (self dbNameFor: aSymbol)
+	^self defineAsID: aSymbol fieldName: (aSymbol databaseFieldNameIn: self)
 ]
 
 { #category : #defining }
@@ -599,7 +598,7 @@ SSWDBTable >> freePreparedStatements [
 	refreshStatement := nil.
 	deleteStatement := nil.
 
-	self collectionSpecs do: [ :each | each freePreparedStatements].
+	self componentsDo: [ :each | each freePreparedStatements].
 ]
 
 { #category : #accessing }
@@ -881,27 +880,13 @@ SSWDBTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	
 	anSSWDBObjectProxy 
 		_proxiedObject: (self createInstanceFromRow: aDBRow);
-		_aquireCollectionProxiesUsing: self collectionSpecs.
+		_acquireCollectionProxiesUsing: self collectionSpecs.
 
 	self controlFields do:
 		[ :field |
-		field applyValueFromRow: aDBRow to: anSSWDBObjectProxy]
-]
+		field applyValueFromRow: aDBRow to: anSSWDBObjectProxy].
 
-{ #category : #'instance creation' }
-SSWDBTable >> refreshProxy: aProxy fromRow: aDBRow [
-
-	| instance |
-
-	instance := aProxy _proxiedObject.
-
-	self dataFields do:
-		[ :field |
-		field applyValueFromRow: aDBRow to: instance].
-	
-	self controlFields do:
-		[ :field |
-		field applyValueFromRow: aDBRow to: aProxy]
+	anSSWDBObjectProxy _postRecovered
 ]
 
 { #category : #'instance creation' }
@@ -1040,31 +1025,6 @@ SSWDBTable >> staticConditions [
 	Subclasses should override if they implement hasStaticConditions to return true"
 	
 	^SSWSQLConditionCollection new
-]
-
-{ #category : #validating }
-SSWDBTable >> storeNonPersistentComponentsOf: aProxyObject [
-
-	"Ensure that each non-persistency-valid component of the proxiedObject of aProxyObject 
-	accessed by the receiver's components exists in the aProxyObject's ReStore 
-	- store those that do not exist."
-	
-	| proxiedObject |
-	
-	proxiedObject := aProxyObject _proxiedObject.
-
-	self dataFields do:
-		[ :field | (field accessor valueIn: proxiedObject) _ensurePersistentIn: self reStore].
-		
-	self collectionSpecs do:
-		[ :collectionSpec || collection |
-		collection := collectionSpec accessor valueIn: aProxyObject.
-		collection isNil ifTrue: [collection := collectionSpec newCollection].
-		collection isDBProxy ifFalse: 
-			[| proxy |
-			proxy := aProxyObject _collectionProxyFor: collectionSpec.
-			proxy _proxiedObject == collection ifFalse: 
-				[proxy _setProxiedObject: collection; _referenced]]]
 ]
 
 { #category : #evaluating }

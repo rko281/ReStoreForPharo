@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBBlockArgument }
+Extension { #name : 'SSWDBBlockArgument' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> and: aBlock [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -9,35 +9,35 @@ SSWDBBlockArgument >> and: aBlock [
 	
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> ifNil: aBlock [
 	
 	^self doesNotUnderstand: (Message selector: #ifNil: argument: aBlock value)
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> ifNotNil: aBlock [
 	
 	^self doesNotUnderstand: (Message selector: #ifNotNil: argument: aBlock value)
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> isNil [ 
 	^self = nil
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> isString [
 
 	^false
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> notNil [ 
 	^self ~= nil
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> or: aBlock [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -46,7 +46,7 @@ SSWDBBlockArgument >> or: aBlock [
 	
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> postProcessDNU: anObject [
 
 	"Check if the next message needs special handling; usually this also results in it being skiped"
@@ -70,17 +70,13 @@ SSWDBBlockArgument >> postProcessDNU: anObject [
 	^anObject
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
-SSWDBBlockArgument >> simulateMessageSend: aMessage [
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBBlockArgument >> simulateMethod: aCompiledMethod withArguments: anArray [
 
-	| method |
-
-	method := self currentClass lookupSelector: aMessage selector.
-	method isNil ifTrue: [self parseError: (self currentClass name, ' does not implement #', aMessage selector)].
-	^method valueWithReceiver: self arguments: aMessage arguments
+	^aCompiledMethod valueWithReceiver: self arguments: anArray
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> stackFrameDetect: aBlock [
 
 	| frame |

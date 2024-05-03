@@ -1,13 +1,14 @@
 Trait {
-	#name : #SSWReStoreDBRow,
+	#name : 'SSWReStoreDBRow',
 	#instVars : [
 		'columns',
 		'fieldMap'
 	],
-	#category : #'SSW ReStore for Pharo'
+	#category : 'SSW ReStore for Pharo',
+	#package : 'SSW ReStore for Pharo'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWReStoreDBRow classSide >> newWithColumns: colsCollection data: dataCollection query: aDBQuery [
 
 	^self new
@@ -15,19 +16,19 @@ SSWReStoreDBRow classSide >> newWithColumns: colsCollection data: dataCollection
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBRow >> atIndex: anInteger [
 
 	^self data at: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBRow >> columns [
 
 	^columns ifNil: [columns := self columnNames collect: [ :each | SSWDBCColAttr new name: each; yourself ]]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWReStoreDBRow >> columns: colsCollection data: dataCollection query: aDBQuery [
 
 	self 
@@ -37,7 +38,7 @@ SSWReStoreDBRow >> columns: colsCollection data: dataCollection query: aDBQuery 
 	aDBQuery isNil ifFalse: [ self createFieldMapFrom: aDBQuery ]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWReStoreDBRow >> createFieldMapFrom: aDBQuery [
 
 	fieldMap := Dictionary new.
@@ -48,7 +49,7 @@ SSWReStoreDBRow >> createFieldMapFrom: aDBQuery [
 		fieldMap at: field put: value ]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWReStoreDBRow >> deAliasQueryFieldsFor: aDBQueryTable [
 
 	"The receiver is derived from a query containing the given SSWDBQueryTable as an alias for an actual SSWDBTable.
@@ -63,17 +64,17 @@ SSWReStoreDBRow >> deAliasQueryFieldsFor: aDBQueryTable [
 	1 to: columns size do: [ :index | (columns at: index) field ifNotNil: [ :field | field table == aDBQueryTable ifTrue: [fieldMap at: field field put: (contents at: index)]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBRow >> fieldMap [
 	^ fieldMap
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBRow >> fieldMap: anObject [
 	fieldMap := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBRow >> lookupField: aField [
 
 	^fieldMap at: aField ifAbsent: [ nil ]

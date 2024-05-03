@@ -23,12 +23,10 @@ UUIDOwnedSubTest class >> shouldInheritPersistency [
 
 { #category : #accessing }
 UUIDOwnedSubTest >> number [
-
-	^ number
+	^number
 ]
 
 { #category : #accessing }
 UUIDOwnedSubTest >> number: anObject [
-
 	number := anObject
 ]

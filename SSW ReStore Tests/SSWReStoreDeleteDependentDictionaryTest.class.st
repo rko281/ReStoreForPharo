@@ -14,7 +14,7 @@ SSWReStoreDeleteDependentDictionaryTest class >> isAbstract [
 SSWReStoreDeleteDependentDictionaryTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	"Need to convert orders to Dictionary if not already done - ensure unproxied before transformation"
-	aCustomer orders size.
+	aCustomer orders _deproxify.
 	(aCustomer orders isKindOf: Dictionary) ifFalse: [aCustomer orders become: Dictionary new].
 
 	^aCustomer orders at: (SimpleAddress new postcode: (aProduct description, anInteger displayString); yourself) put: 

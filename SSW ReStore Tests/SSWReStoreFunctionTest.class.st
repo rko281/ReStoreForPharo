@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreFunctionTest,
@@ -110,6 +109,20 @@ SSWReStoreFunctionTest >> testOversizeStringAsFunctionCriteria [
 	"first_name field is 8 characters; query with a function whose result is 10 characters"
 	daves := (SimplePerson storedInstancesIn: reStore) select: [ :each | (each firstName, each firstName) = 'DavidDavid'].
 	self assert: (daves collect: [ :each | each firstName]) asArray equals: #('David')
+]
+
+{ #category : #'unit tests' }
+SSWReStoreFunctionTest >> testScaledDecimalArgument [
+
+	"Test a query where the argument to a function is a ScaledDecimal - previously caused an error"
+
+	| results |
+
+	SimpleProduct new description: 'scaled decimal test'; retailPrice: 1.23s2; storeIn: reStore.
+
+	results := (SimpleProduct storedInstancesIn: reStore) collect: [ :each | each retailPrice + 4.56s2].
+	self assert: results size equals: 1.
+	self assert: results first equals: 5.79s2
 ]
 
 { #category : #'unit tests' }

@@ -71,7 +71,7 @@ SSWReStoreDeleteCollectionTest >> testDeleteProxiedCollectionQueryCount [
 { #category : #'unit tests' }
 SSWReStoreDeleteCollectionTest >> testDeleteUnproxiedCollectionQueryCount [
 
-	customer1 orders size.
+	customer1 orders _deproxify.
 	self deny: customer1 isDBProxy.
 	self deny: customer1 orders isDBProxy.
 

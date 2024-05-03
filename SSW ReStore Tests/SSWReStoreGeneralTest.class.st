@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWReStoreGeneralTest,
@@ -743,6 +742,34 @@ SSWReStoreGeneralTest >> test31GeneralCollectionRefresh [
 	t refresh.
 
 	self assert: (value name = valueOrig)
+]
+
+{ #category : #'unit tests' }
+SSWReStoreGeneralTest >> test40OwnedSortedCollectionRollback [
+
+	"Ensure resorting after rollback"
+
+	| t |
+
+	t := (OwnerTest storedInstancesIn: reStore) last.
+	self assert: (t ownedSorted collect: [ :each | each name]) asArray equals: #('owned1' 'owned2').
+
+	"Remove an element, change the name to change ordering relative to other elements; re-add; store"
+	t ownedSorted add: 
+		(t ownedSorted removeFirst
+			name: 'owned3';
+			yourself).
+	t store.
+
+	self assert: (t ownedSorted collect: [ :each | each name]) asArray equals: #('owned2' 'owned3').
+
+	"Add but rollback"
+	reStore beginTransaction.
+	t ownedSorted add: (OwnedTest new name: 'owned4').
+	reStore rollbackTransaction.
+
+	"Verify ordering is correct (previously failed; sort order of original 1, 2 contents was used)"
+	self assert: (t ownedSorted collect: [ :each | each name]) asArray equals: #('owned2' 'owned3')
 ]
 
 { #category : #'unit tests' }

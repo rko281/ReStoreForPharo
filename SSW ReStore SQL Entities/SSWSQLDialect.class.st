@@ -1,8 +1,7 @@
 "
 ReStore
 ©2019 John Aspinall
-https://github.com/rko281/ReStoreForDolphin
-https://github.com/rko281/ReStoreForPharo
+https://github.com/rko281/ReStore
 "
 Class {
 	#name : #SSWSQLDialect,
@@ -17,7 +16,8 @@ Class {
 		'maxColumnBytes',
 		'unsizedStringSize',
 		'unsizedBlobSize',
-		'standardNamespace'
+		'standardNamespace',
+		'nullBoolean'
 	],
 	#category : #'SSW ReStore SQL Entities'
 }
@@ -135,30 +135,30 @@ SSWSQLDialect >> asIdentifier: aString [
 { #category : #datatypes }
 SSWSQLDialect >> blob [
 
-    "unsizedBlobSize is used to determine the most appropriate column type (see unsizedBlobSize method comment)"
+	"unsizedBlobSize is used to determine the most appropriate column type (see unsizedBlobSize method comment)"
 
-    ^self blobTypeForSize: self unsizedBlobSize
+	^self blobTypeForSize: self unsizedBlobSize
 ]
 
 { #category : #datatypes }
 SSWSQLDialect >> blobTypeForSize: anInteger [
 
-    anInteger <= self maxColumnBytes ifTrue: 
-        [(self blobTypes asSortedCollection: [ :assoc1 :assoc2 | assoc1 key <= assoc2 key]) do: [ :assoc | assoc key >= anInteger ifTrue: [^assoc value]]].
+	anInteger <= self maxColumnBytes ifTrue: 
+		[(self blobTypes asSortedCollection: [ :assoc1 :assoc2 | assoc1 key <= assoc2 key]) do: [ :assoc | assoc key >= anInteger ifTrue: [^assoc value]]].
 
-    self error: 'No Blob type found for size <1p> - consider increasing maxColumnBytes'
+	self error: 'No Blob type found for size <1p> - consider increasing maxColumnBytes'
 ]
 
 { #category : #datatypes }
 SSWSQLDialect >> blobTypes [
 
-    "Return a collection of associations between the maximum size of an unsized ByteArray type (i.e. one whose type declaration does not include its size, c.f. varblob), and its name in this dialect.
+	"Return a collection of associations between the maximum size of an unsized ByteArray type (i.e. one whose type declaration does not include its size, c.f. varblob), and its name in this dialect.
 
-    By default this just consists of the blob type - dialects with more blob types can extend as necessary"
+	By default this just consists of the blob type - dialects with more blob types can extend as necessary"
 
-    ^OrderedCollection new
-        add: (self unsizedBlobSize -> self unsizedBlob);
-        yourself
+	^OrderedCollection new
+		add: (self unsizedBlobSize -> self unsizedBlob);
+		yourself
 ]
 
 { #category : #datatypes }
@@ -215,7 +215,10 @@ SSWSQLDialect >> commonFunctions [
 		at: #between:and: put: '%1 BETWEEN %2 AND %3' asSQLFunctionBooleanResult;
 		at: #abs put: 'ABS(%1)' asSQLFunction;
 		at: #rounded put: 'ROUND(%1)' asSQLFunctionIntegerResult;
-
+		"Integer bit manipulation functions (the logical role of these is handled directly)"
+		at: #& put: '(%1 & %2)' asSQLFunction;
+		at: #| put: '(%1 | %2)' asSQLFunction;
+		
 		"String functions"
 		at: #size put: 'LEN(%1)' asSQLFunctionIntegerResult;
 		at: #, put: '(%1 || %2)' asSQLFunction;
@@ -359,7 +362,7 @@ SSWSQLDialect >> defaultMaxColumnBytes [
 
 	"default value for maxColumnBytes - see that method's comment"
 	
-    ^self connection defaultMaxColumnBytes
+	^self connection defaultMaxColumnBytes
 ]
 
 { #category : #constants }
@@ -374,6 +377,12 @@ SSWSQLDialect >> defaultMaxTableNameLength [
 
 	"Return an appropriate/known value for when the connection is unable to determine"
 	^self subclassResponsibility
+]
+
+{ #category : #constants }
+SSWSQLDialect >> defaultNullBoolean [
+
+	^nil
 ]
 
 { #category : #constants }
@@ -396,7 +405,7 @@ SSWSQLDialect >> defaultStandardNamespace [
 	^nil
 ]
 
-{ #category : #constants }
+{ #category : #public }
 SSWSQLDialect >> defaultTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -407,10 +416,10 @@ SSWSQLDialect >> defaultTimeResolution [
 { #category : #constants }
 SSWSQLDialect >> defaultUnsizedBlobSize [
 
-    "default value for unsizedBlobSize - see that method's comment"
-    
-    "Default to the maximum column bytes - 1 (for null terminator)"
-    ^self maxColumnBytes - 1
+	"default value for unsizedBlobSize - see that method's comment"
+	
+	"Default to the maximum column bytes - 1 (for null terminator)"
+	^self maxColumnBytes - 1
 ]
 
 { #category : #constants }
@@ -488,6 +497,7 @@ SSWSQLDialect >> initialize [
 
 	self
 		sqlFunctions: self defaultSQLFunctions;
+		nullBoolean: self defaultNullBoolean;
 		classNameTransformation: self defaultClassNameTransformation;
 		instVarNameTransformation: self defaultInstVarNameTransformation
 ]
@@ -534,7 +544,7 @@ SSWSQLDialect >> integerMaximum [
 
 	"Typically 4 byte signed"
 
-	^(2 ** 31) - 1
+	^((2 ** 31) - 1)
 ]
 
 { #category : #constants }
@@ -542,7 +552,7 @@ SSWSQLDialect >> integerMinimum [
 
 	"Typically 4 byte signed"
 
-	^(2 ** 31) negated
+	^((2 ** 31) negated)
 ]
 
 { #category : #datatypes }
@@ -556,7 +566,7 @@ SSWSQLDialect >> largeIntegerMaximum [
 
 	"Typically 8 byte signed"
 
-	^(2 ** 63) - 1
+	^((2 ** 63) - 1)
 ]
 
 { #category : #constants }
@@ -564,7 +574,7 @@ SSWSQLDialect >> largeIntegerMinimum [
 
 	"Typically 8 byte signed"
 
-	^(2 ** 63) negated
+	^((2 ** 63) negated)
 ]
 
 { #category : #datatypes }
@@ -648,7 +658,7 @@ SSWSQLDialect >> maxTableNameLength: anObject [
 	maxTableNameLength := anObject
 ]
 
-{ #category : #constants }
+{ #category : #public }
 SSWSQLDialect >> maxTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -660,6 +670,26 @@ SSWSQLDialect >> maxTimeResolution [
 SSWSQLDialect >> maxVarchar [
 
 	^self maxCharacter
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> nullBoolean [
+
+	"nullBoolean stores the object used when a NULL value is returned from a Boolean field.
+	Historically, ReStore coerced any non-true value (including NULL) to false, however the current behaviour is to return nil instead.
+	To use the legacy behaviour, set nullBoolean to false"
+
+	^nullBoolean
+]
+
+{ #category : #accessing }
+SSWSQLDialect >> nullBoolean: anObject [
+
+	"nullBoolean stores the object used when a NULL value is returned from a Boolean field.
+	Historically, ReStore coerced any non-true value (including NULL) to false, however the current behaviour is to return nil instead.
+	To use the legacy behaviour, set nullBoolean to false"
+
+	nullBoolean := anObject
 ]
 
 { #category : #constants }
@@ -841,7 +871,7 @@ SSWSQLDialect >> timeStringFor: aTime [
 	^aTime printStringFormat: self timeFormat
 ]
 
-{ #category : #datatypes }
+{ #category : #public }
 SSWSQLDialect >> timeWithResolution [
 
 	"Parameter is resolution (0=seconds, 3=milliseconds etc.)"
@@ -879,7 +909,7 @@ SSWSQLDialect >> trueObject [
 	^1
 ]
 
-{ #category : #accessing }
+{ #category : #datatypes }
 SSWSQLDialect >> unsizedBlob [
 
 	^'BLOB'

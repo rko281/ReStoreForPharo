@@ -326,7 +326,7 @@ OwnerTest >> orderedBools: anObject [
 
 { #category : #accessing }
 OwnerTest >> owned [
-	^ owned
+	^owned
 ]
 
 { #category : #accessing }
@@ -512,7 +512,7 @@ OwnerTest >> sortedNumbers: anObject [
 	sortedNumbers := anObject
 ]
 
-{ #category : #tests }
+{ #category : #public }
 OwnerTest >> testOnRollback [
 
 	self owned name
