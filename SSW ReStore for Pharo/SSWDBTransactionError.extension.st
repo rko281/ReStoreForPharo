@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBTransactionError }
+Extension { #name : 'SSWDBTransactionError' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBTransactionError >> sessionManager [
 
 	^UIManager default

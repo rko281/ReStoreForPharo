@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBInstancesCollection }
+Extension { #name : 'SSWDBInstancesCollection' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBInstancesCollection >> errorNotFound: anObject [
 	"Raise a NotFound exception."
 

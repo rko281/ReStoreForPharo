@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStore }
+Extension { #name : 'SSWReStore' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWReStore class >> proxyForObject: anObject ifNone: aBlock [
 
 	"Locate and return the proxy wrapping anObject in the receiver's activeReStores.

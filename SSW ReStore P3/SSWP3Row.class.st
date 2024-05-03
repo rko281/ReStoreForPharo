@@ -1,39 +1,40 @@
 Class {
-	#name : #SSWP3Row,
-	#superclass : #Object,
+	#name : 'SSWP3Row',
+	#superclass : 'Object',
 	#traits : 'SSWReStoreDBRow',
 	#classTraits : 'SSWReStoreDBRow classTrait',
 	#instVars : [
 		'columnNames',
 		'data'
 	],
-	#category : #'SSW ReStore P3'
+	#category : 'SSW ReStore P3',
+	#package : 'SSW ReStore P3'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWP3Row >> columnNames [
 
 	^columnNames
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWP3Row >> columns: aCollection [
 
 	columnNames := aCollection collect: [ :each | each fieldName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWP3Row >> contents [
 
 	^data
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWP3Row >> data [
 	^ data
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWP3Row >> data: anObject [
 	data := anObject
 ]

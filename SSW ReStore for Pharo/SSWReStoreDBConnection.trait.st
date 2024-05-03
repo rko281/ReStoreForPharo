@@ -1,5 +1,5 @@
 Trait {
-	#name : #SSWReStoreDBConnection,
+	#name : 'SSWReStoreDBConnection',
 	#instVars : [
 		'sqlDialect',
 		'debugStream',
@@ -7,10 +7,11 @@ Trait {
 		'hasTxn',
 		'queryCount'
 	],
-	#category : #'SSW ReStore for Pharo'
+	#category : 'SSW ReStore for Pharo',
+	#package : 'SSW ReStore for Pharo'
 }
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 
 	| names columns |
@@ -33,20 +34,20 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 	^columns
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> beginRWTxn [
 
 	self beginTxn
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> beginTxn [
 
 	self beginTransaction.
 	self hasTxn: true
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> close [ 
 
 	self 
@@ -55,29 +56,29 @@ SSWReStoreDBConnection >> close [
 		resetTrait
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> columnDescriptions [
 	^ columnDescriptions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> columnDescriptions: anObject [
 	columnDescriptions := anObject
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWReStoreDBConnection >> columns: aTableName [
 
 	^(self columnNamesFor: aTableName) collect: [ :each | SSWDBCColAttr new name: each]
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWReStoreDBConnection >> columnsForFields: aCollectionOfDBFields [
 
 	^aCollectionOfDBFields collect: [ :field | field columnIn: self]
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWReStoreDBConnection >> columnsInTable: aDBTable [
 
 	^self columnDescriptions at: aDBTable ifAbsentPut: 
@@ -88,14 +89,14 @@ SSWReStoreDBConnection >> columnsInTable: aDBTable [
 		fieldMap]
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> commitTxn [
 
 	self commitTransaction.
 	self hasTxn: false
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> connect [ 
 
 	self basicConnect.
@@ -105,23 +106,23 @@ SSWReStoreDBConnection >> connect [
 		self resetTrait]
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWReStoreDBConnection >> createNamespace: aString [
 
 	self execute: 'CREATE SCHEMA ', (self sqlDialect asIdentifier: aString)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> debugStream [
 	^ debugStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> debugStream: anObject [
 	debugStream := anObject
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDBConnection >> defaultMaxColumnBytes [
 
 	"Comment taken from Dolphin implementation; method is included here since it also impacts on the assumed size of unsized Strings:
@@ -146,13 +147,13 @@ SSWReStoreDBConnection >> defaultMaxColumnBytes [
 	^"(2**17)" 131072
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWReStoreDBConnection >> dropNamespace: aString [
 
 	self execute: 'DROP SCHEMA ', (self sqlDialect asIdentifier: aString)
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> evaluateAsTxn: aBlock [
 
 	"Evaluate aBlock within a database transaction (Txn in Dolphin DBConnect parlance).
@@ -166,14 +167,14 @@ SSWReStoreDBConnection >> evaluateAsTxn: aBlock [
 			ifFalse: [self rollbackTxn. false]] on: Error do: [ :exc | self rollbackTxn. exc pass]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> exec: aString [
 
 	self logQueryExecution: aString.
 	^self execute: aString
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> executeQuery: anSQLQuery cursoredFetch: aBoolean [
 
 	"Entry point for ad-hoc querying"
@@ -195,66 +196,66 @@ SSWReStoreDBConnection >> executeQuery: anSQLQuery cursoredFetch: aBoolean [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> forgetTable: aDBTable [
 
 	self columnDescriptions removeKey: aDBTable ifAbsent: []
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> free [ 
 	self close
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> hasTxn [
 
 	^hasTxn ifNil: [ hasTxn := false ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> hasTxn: aBoolean [
 
 	hasTxn := aBoolean
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> incrementQueryCount [
 
 	queryCount ifNotNil: [ queryCount := queryCount + 1 ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreDBConnection >> isDebug [
 
 	^self debugStream notNil
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> logQueryExecution: aString [
 
 	self debugStream ifNotNil: [ :stream | stream nextPutAll: aString; nextPut: $;; cr].
 	self incrementQueryCount
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> maxColumnNameLength [
 	^63
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> maxTableNameLength [
 	^63
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> onStartup [ 
 
 	[self close] on: self dbErrorClass do: [ :exc | exc return].
 	[self connect] on: self dbErrorClass do: [ :exc | exc return]
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> postConnect [
 
 	self sqlDialect postLoginScript ifNotNil: 
@@ -262,7 +263,7 @@ SSWReStoreDBConnection >> postConnect [
 		self evaluateAsTxn: [self exec: script. true]]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> prepareQuery: anSQLQuery [
 
 	"Entry point for system-generated querying (read, refresh, insert).
@@ -281,35 +282,35 @@ SSWReStoreDBConnection >> prepareQuery: anSQLQuery [
 		yourself
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> prepareToClose [
 
 	"Pre-close actions; users reimplement as necessary"
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWReStoreDBConnection >> printParameterPlaceholder: anInteger on: aStream [
 
 	aStream nextPut: $?
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> queryCount [
 	^ queryCount
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> queryCount: anObject [
 	queryCount := anObject
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> reset [
 
 	"Carry out any reset actions necessary after connect or disconnect"
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> resetQueryCount [
 
 	self queryCount: 0
@@ -317,7 +318,7 @@ SSWReStoreDBConnection >> resetQueryCount [
 	
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWReStoreDBConnection >> resetTrait [
 
 	self 
@@ -325,7 +326,7 @@ SSWReStoreDBConnection >> resetTrait [
 		reset
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWReStoreDBConnection >> rollbackTxn [
 
 	"begin a transaction if one is not active
@@ -336,17 +337,17 @@ SSWReStoreDBConnection >> rollbackTxn [
 	self hasTxn: false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> sqlDialect [
 	^ sqlDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> sqlDialect: anObject [
 	sqlDialect := anObject
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStoreDBConnection >> stopQueryCounting [
 
 	self queryCount: nil
@@ -354,12 +355,12 @@ SSWReStoreDBConnection >> stopQueryCounting [
 	
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWReStoreDBConnection >> tables [
 
 	^self tablesInNamespace: self sqlDialect standardNamespace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDBConnection >> willAutoCommit: aBoolean [
 ]

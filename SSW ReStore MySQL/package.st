@@ -1,1 +1,1 @@
-Package { #name : #'SSW ReStore MySQL' }
+Package { #name : 'SSW ReStore MySQL' }

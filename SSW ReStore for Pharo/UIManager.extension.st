@@ -1,6 +1,6 @@
-Extension { #name : #UIManager }
+Extension { #name : 'UIManager' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 UIManager >> onUnhandledTransactionError: anSSWDBTransactionError [
 
 	anSSWDBTransactionError autoRecover.

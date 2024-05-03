@@ -1,18 +1,19 @@
 Class {
-	#name : #SSWMySQLStatement,
-	#superclass : #MySQLDriverStatement,
+	#name : 'SSWMySQLStatement',
+	#superclass : 'MySQLDriverStatement',
 	#traits : 'SSWReStoreDBStatement',
 	#classTraits : 'SSWReStoreDBStatement classTrait',
-	#category : #'SSW ReStore MySQL'
+	#category : 'SSW ReStore MySQL',
+	#package : 'SSW ReStore MySQL'
 }
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWMySQLStatement >> adoptResultSet: anSSWMySQLResultSet [
 
 	rsContext := anSSWMySQLResultSet 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWMySQLStatement >> cursoredFetch: aBoolean [ 
 
 	"Set a default fetchSize"
@@ -21,13 +22,13 @@ SSWMySQLStatement >> cursoredFetch: aBoolean [
 	super cursoredFetch: aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLStatement >> execute [
 
 	^super execute ifNotNil: [ :resultSet | resultSet asSSWMySQLResultSet ]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 SSWMySQLStatement >> free [
 
 	stmtId isNil ifFalse: 
@@ -35,29 +36,29 @@ SSWMySQLStatement >> free [
 		stmtId := nil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWMySQLStatement >> isFreed [ 
 
 	^stmtId isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLStatement >> parent [
 
 	^driver
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLStatement >> valueAt: anIndex put: anObject [
 	(params at: anIndex) bindValue: anObject reStoreValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLStatement >> values [
 	^ params ifNil: [ #()] ifNotNil: [ params collect: [ :each | each value ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLStatement >> values: aCollection [
 
 	params := OrderedCollection new: aCollection size.

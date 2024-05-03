@@ -1,6 +1,6 @@
-Extension { #name : #HashedCollection }
+Extension { #name : 'HashedCollection' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 HashedCollection >> staticCollectionSpecClass [
 
 	"Return the class of static collection spec that is appropriate for this kind of collection.

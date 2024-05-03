@@ -1,6 +1,6 @@
-Extension { #name : #SSWMSAccessDialect }
+Extension { #name : 'SSWMSAccessDialect' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWMSAccessDialect >> platformSpecificFunctions [
 
 	^Dictionary new

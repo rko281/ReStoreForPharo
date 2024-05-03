@@ -1,6 +1,6 @@
-Extension { #name : #DateAndTime }
+Extension { #name : 'DateAndTime' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 DateAndTime >> _withResolution: anInteger [
 
 	"Modify the receiver to have the given resolution (number of fractional digits) anInteger, i.e. 0 for seconds resolution, 3 for milliseconds etc."
@@ -8,7 +8,7 @@ DateAndTime >> _withResolution: anInteger [
 	nanos := (nanos * (10 ** (anInteger - 9))) truncated * (10 ** (9 - anInteger))
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 DateAndTime >> withResolution: anInteger [
 
 	"Return a copy of the receiver with the given resolution (number of fractional digits) anInteger, i.e. 0 for seconds resolution, 3 for milliseconds etc."

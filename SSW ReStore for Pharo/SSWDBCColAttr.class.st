@@ -1,6 +1,6 @@
 Class {
-	#name : #SSWDBCColAttr,
-	#superclass : #Object,
+	#name : 'SSWDBCColAttr',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'index',
@@ -8,26 +8,27 @@ Class {
 		'connection',
 		'field'
 	],
-	#category : #'SSW ReStore for Pharo'
+	#category : 'SSW ReStore for Pharo',
+	#package : 'SSW ReStore for Pharo'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBCColAttr class >> forString: aString [
 
 	^self new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> connection [
 	^ connection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> connection: anObject [
 	connection := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> field [
 
 	"field stores the SSWSQLField from a SELECT query 
@@ -36,7 +37,7 @@ SSWDBCColAttr >> field [
 	^field
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> field: anSSWSQLField [
 
 	"field stores the SSWSQLField from a SELECT query 
@@ -45,39 +46,39 @@ SSWDBCColAttr >> field: anSSWSQLField [
 	field := anSSWSQLField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> fieldName [
 
 	^self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> index [
 	^ index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> index: anObject [
 	index := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> name: anObject [
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> precision [ 
 
 	^self size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> size [ 
 
 	"Simple support, primarily for SUnits"
@@ -92,17 +93,17 @@ SSWDBCColAttr >> size [
 		ifFalse: [ Integer readFrom: stream ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> table [
 	^ table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> table: anObject [
 	table := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCColAttr >> tableName [
 	^ self table name
 ]

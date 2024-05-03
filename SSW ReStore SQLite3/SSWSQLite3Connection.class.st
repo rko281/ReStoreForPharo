@@ -1,21 +1,22 @@
 Class {
-	#name : #SSWSQLite3Connection,
-	#superclass : #SQLite3Connection,
+	#name : 'SSWSQLite3Connection',
+	#superclass : 'SQLite3Connection',
 	#traits : 'SSWReStoreDBConnection',
 	#classTraits : 'SSWReStoreDBConnection classTrait',
 	#pools : [
 		'SQLite3Constants'
 	],
-	#category : #'SSW ReStore SQLite3'
+	#category : 'SSW ReStore SQLite3',
+	#package : 'SSW ReStore SQLite3'
 }
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWSQLite3Connection >> basicClose [
 
 	super close
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SSWSQLite3Connection >> basicConnect [
 
 	dbHandle isNil ifTrue: [ dbHandle := SQLite3DatabaseExternalObject new ].
@@ -23,7 +24,7 @@ SSWSQLite3Connection >> basicConnect [
 	^self open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 SSWSQLite3Connection >> columnNamesForTable: aDBTable [
 	
 	self isOpen
@@ -45,7 +46,7 @@ SSWSQLite3Connection >> columnNamesForTable: aDBTable [
 		
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWSQLite3Connection >> createNamespace: aString [
 
 	"Since there is no filename given, map this to creating a temporary attached database"
@@ -53,13 +54,13 @@ SSWSQLite3Connection >> createNamespace: aString [
 	^self execute: 'ATTACH DATABASE '''' AS ', (self sqlDialect asIdentifier: aString)
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLite3Connection >> dbErrorClass [
 
 	^SQLite3AbstractError
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWSQLite3Connection >> declaredColumnTypesForTable: aDBTable [
 	
 	self isOpen
@@ -81,19 +82,19 @@ SSWSQLite3Connection >> declaredColumnTypesForTable: aDBTable [
 		
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWSQLite3Connection >> dropNamespace: aString [
 
 	^self execute: 'DETACH DATABASE ', (self sqlDialect asIdentifier: aString)
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWSQLite3Connection >> execute: aString [
 
 	^(self prepare: aString) execute
 ]
 
-{ #category : #'public API - operating' }
+{ #category : 'public API - operating' }
 SSWSQLite3Connection >> finalize: aStatementHandle [
 
 	^dbHandle isNil 
@@ -101,20 +102,20 @@ SSWSQLite3Connection >> finalize: aStatementHandle [
 		ifFalse: [ super finalize: aStatementHandle ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SSWSQLite3Connection >> initialize [
 	
 	super initialize.
 	statementClass := SSWSQLite3Statement
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLite3Connection >> isConnected [
 
 	^self isOpen
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWSQLite3Connection >> masterTableForNamespace: aString [
 
 	^(aString isNil or: [aString = self sqlDialect standardNamespace])
@@ -122,7 +123,7 @@ SSWSQLite3Connection >> masterTableForNamespace: aString [
 		ifFalse: [ aString, '.sqlite_master' ]
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWSQLite3Connection >> open [
 
 	"Override to enable URI naming if specified by the dbFilename"
@@ -137,26 +138,26 @@ SSWSQLite3Connection >> open [
 	isOpen := true
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWSQLite3Connection >> prepareToClose [
 
 	"Allow resources to be finalized"
 	SmalltalkImage current garbageCollectMost
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWSQLite3Connection >> query: aString [
 
 	^self execute: aString
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLite3Connection >> sqlDialectClass [
 
 	^SSWSQLiteNativeDialect
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWSQLite3Connection >> tablesInNamespace: aString [
 
 	| tables s |

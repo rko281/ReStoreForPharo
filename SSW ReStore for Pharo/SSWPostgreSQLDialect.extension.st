@@ -1,6 +1,6 @@
-Extension { #name : #SSWPostgreSQLDialect }
+Extension { #name : 'SSWPostgreSQLDialect' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWPostgreSQLDialect >> platformSpecificFunctions [
 
 	^Dictionary new

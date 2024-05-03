@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLJoinedTableCollection }
+Extension { #name : 'SSWSQLJoinedTableCollection' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWSQLJoinedTableCollection >> collect: aBlock [
 
 	^(super collect: aBlock)

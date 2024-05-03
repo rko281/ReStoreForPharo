@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore MySQL' }
+{ #category : '*SSW ReStore MySQL' }
 Object >> forSSWMySQL [
 
 	^self

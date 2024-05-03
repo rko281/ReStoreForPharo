@@ -1,21 +1,22 @@
 Class {
-	#name : #SSWMySQLConnection,
-	#superclass : #MySQLDriver,
+	#name : 'SSWMySQLConnection',
+	#superclass : 'MySQLDriver',
 	#traits : 'SSWReStoreDBConnection',
 	#classTraits : 'SSWReStoreDBConnection classTrait',
 	#instVars : [
 		'connectionSpec'
 	],
-	#category : #'SSW ReStore MySQL'
+	#category : 'SSW ReStore MySQL',
+	#package : 'SSW ReStore MySQL'
 }
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWMySQLConnection >> basicClose [
 
 	self disconnect
 ]
 
-{ #category : #'connection open/close' }
+{ #category : 'connection open/close' }
 SSWMySQLConnection >> basicConnect [
 
 	| result |
@@ -24,13 +25,13 @@ SSWMySQLConnection >> basicConnect [
 	result isError ifTrue: [ result signalError ]
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWMySQLConnection >> beginTransaction [
 	
 	self query: 'BEGIN'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 SSWMySQLConnection >> columnNamesForTable: aDBTable [
 
 	| stream |
@@ -41,29 +42,29 @@ SSWMySQLConnection >> columnNamesForTable: aDBTable [
 	^(self execute: stream contents) collect: [ :row | row first ]
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWMySQLConnection >> commitTransaction [
 	
 	self query: 'COMMIT'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLConnection >> connectionSpec [
 	^ connectionSpec
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLConnection >> connectionSpec: anObject [
 	connectionSpec := anObject
 ]
 
-{ #category : #'public API - introspection' }
+{ #category : 'public API - introspection' }
 SSWMySQLConnection >> dbErrorClass [
 
 	^MySQLDriverError
 ]
 
-{ #category : #enquiries }
+{ #category : 'enquiries' }
 SSWMySQLConnection >> declaredColumnTypesForTable: aDBTable [
 
 	| stream |
@@ -74,7 +75,7 @@ SSWMySQLConnection >> declaredColumnTypesForTable: aDBTable [
 	^(self execute: stream contents) collect: [ :row | (row atIndex: 2) asString ]
 ]
 
-{ #category : #'error handling' }
+{ #category : 'error handling' }
 SSWMySQLConnection >> error: aString [
 
 	"Use the expected dbErrorClass"
@@ -82,19 +83,19 @@ SSWMySQLConnection >> error: aString [
 	^self dbErrorClass signal: aString
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWMySQLConnection >> execute: aString [
 
 	^self query: aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWMySQLConnection >> isConnected [
 
 	^self connected
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLConnection >> prepare: queryString [
 
 	| response |
@@ -110,25 +111,25 @@ SSWMySQLConnection >> prepare: queryString [
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWMySQLConnection >> query: aString [
 
 	^(super query: aString) asSSWMySQLResultSet
 ]
 
-{ #category : #transactions }
+{ #category : 'transactions' }
 SSWMySQLConnection >> rollbackTransaction [
 	
 	self query: 'ROLLBACK'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLConnection >> sqlDialectClass [
 
 	^SSWMySQLDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWMySQLConnection >> tablesInNamespace: aString [
 
 	^(((aString isNil or: [aString = self sqlDialect standardNamespace])

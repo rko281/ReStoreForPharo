@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBReadStream }
+Extension { #name : 'SSWDBReadStream' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBReadStream >> errorEndOfStream [
 
 	"Pharo does not error"
@@ -8,19 +8,19 @@ SSWDBReadStream >> errorEndOfStream [
 	^nil
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBReadStream >> nextAvailable [
 
 	^self atEnd ifFalse: [self next]
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBReadStream >> nextPut: anObject [
 
 	self shouldNotImplement
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBReadStream >> on: aCollection [
 
 	"Don't want reset here"
@@ -30,7 +30,7 @@ SSWDBReadStream >> on: aCollection [
 	position := 0.
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBReadStream >> size [
 	
 	^readLimit

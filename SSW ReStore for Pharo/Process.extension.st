@@ -1,12 +1,12 @@
-Extension { #name : #Process }
+Extension { #name : 'Process' }
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 Process >> isExpectedToResumePromptly [
 
-	^self isActiveProcess or: [ self suspendingList notNil ]
+	^ self isActive or: [ self suspendingList notNil ]
 ]
 
-{ #category : #'*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore for Pharo' }
 Process >> isInIDECallStack [
 
 	"Answer whether this process is currently in a call stack originating in a message send from well-known IDE classes.
