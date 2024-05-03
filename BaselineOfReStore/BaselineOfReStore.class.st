@@ -83,7 +83,7 @@ BaselineOfReStore >> porpoise: spec [
 		baseline: 'Porpoise'
 		with: [
 			spec
-				repository: 'github://rko281/Porpoise';
+				repository: 'github://rko281/Porpoise:pharo11';
 				loads: 'core'
 		]
 ]

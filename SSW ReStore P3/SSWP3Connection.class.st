@@ -128,5 +128,5 @@ SSWP3Connection >> statementCache: anOrderedCollection [
 { #category : #accessing }
 SSWP3Connection >> tablesInNamespace: aString [
 
-	^(self listTablesInSchema: (aString ifNil: [self sqlDialect standardNamespace])) asOrderedCollection
+	^(self listTablesInSchema: (aString ifNil: [self sqlDialect standardNamespace])) asOrderedCollection collect: [ :each | each first ]
 ]
