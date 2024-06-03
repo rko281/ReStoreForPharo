@@ -50,7 +50,7 @@ BaselineOfReStore >> mySQL: spec [
 		baseline: 'MySQL'
 		with: [
 			spec
-				repository: 'github://pharo-rdbms/Pharo-MySQL'
+				repository: 'github://rko281/Pharo-MySQL'
 		]
 ]
 
@@ -95,6 +95,6 @@ BaselineOfReStore >> sqlite3: spec [
 		baseline: 'SQLite3'
 		with: [
 			spec
-				repository: 'github://pharo-rdbms/Pharo-SQLite3/src'
+				repository: 'github://rko281/Pharo-SQLite3/src'
 		]
 ]
