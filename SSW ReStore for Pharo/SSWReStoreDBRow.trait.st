@@ -3,7 +3,6 @@ Trait {
 	#instVars : [
 		'columns'
 	],
-	#classTraits : '{} + TraitedClass',
 	#category : 'SSW ReStore for Pharo',
 	#package : 'SSW ReStore for Pharo'
 }
