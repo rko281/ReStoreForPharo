@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _changedObjectsIn: aReStore [
 
 	^(self _checkHasChangedIn: aReStore)
@@ -8,7 +8,7 @@ Object >> _changedObjectsIn: aReStore [
 		ifFalse: [#()]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _checkHasChangedIn: aReStore [
 
 	"Assuming the receiver is (or will be) a persistent object in aReStore, has it changed from the persisted version?"
@@ -19,7 +19,7 @@ Object >> _checkHasChangedIn: aReStore [
 		ifNotNil: [ :proxy | proxy _checkHasChangedIn: aReStore]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _commitIn: aReStore [
 
 	"Should only be sent when all proxied objects have been swapped out to their proxy,
@@ -31,7 +31,7 @@ Object >> _commitIn: aReStore [
 		[self isValidForPersistence ifFalse: [self storeInAnsweringProxy: aReStore]]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxy [
 
 	"Attempt to locate the SSWDBObjectProxy wrapping this object.
@@ -40,7 +40,7 @@ Object >> _dbProxy [
 	^self _dbProxyIfNone: [self error: 'Cannot locate ReStore proxy']
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxyIfNone: aBlock [
 
 	"Attempt to locate the SSWDBObjectProxy wrapping this object.
@@ -49,19 +49,19 @@ Object >> _dbProxyIfNone: aBlock [
 	^SSWReStore proxyForObject: self ifNone: aBlock
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxyIn: aReStore [
 
 	^self _dbProxyIn: aReStore ifNone: [self error: 'Cannot locate ReStore proxy']
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxyIn: aReStore ifNone: aBlock [
 	
 	^aReStore activeProxyForObject: self ifNone: aBlock
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxyReStore [
 
 	"If this message is received , a proxy was swapped to its proxied object by a higher-priority process, immediately at the start of its implemention of doesNotUnderstand:.
@@ -71,7 +71,7 @@ Object >> _dbProxyReStore [
 	^nil
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _ensureActiveIn: anSSWReStore [
 
 	"Ensure that the receiver is 'active' in the given ReStore 
@@ -80,7 +80,7 @@ Object >> _ensureActiveIn: anSSWReStore [
 	^self _ensurePersistentIn: anSSWReStore
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _ensurePersistentIn: anSSWReStore [
 
 	"Ensure that the receiver is persistent in the given ReStore.
@@ -89,7 +89,7 @@ Object >> _ensurePersistentIn: anSSWReStore [
 	(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _forceRefreshIn: aReStore [
 
 	"Private - Non-persistent - cannot have changed - do nothing"
@@ -98,7 +98,7 @@ Object >> _forceRefreshIn: aReStore [
 
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _forceRefreshWithContents [
 
 	"Private - Non-persistent - cannot have changed - do nothing.
@@ -107,7 +107,7 @@ Object >> _forceRefreshWithContents [
 	^#()
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _hasChangedFrom: anObject [
 
 	"Return a Boolean indicating whether the receiver has changed in state from anObject.
@@ -121,7 +121,7 @@ Object >> _hasChangedFrom: anObject [
 		ifFalse: [true]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _id [
 
 	"Return the receiver's unique ID or nil if not persistent"
@@ -129,7 +129,7 @@ Object >> _id [
 	^(self _dbProxyIfNone: [nil]) ifNotNil: [ :proxy | proxy _id]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _idIn: aReStore [
 
 	"Return the receiver's unique ID as a proxy in the given ReStore instance"
@@ -137,7 +137,7 @@ Object >> _idIn: aReStore [
 	^(self _dbProxyIn: aReStore) _id
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _isRecovered [
 
 	"The receiver is a real object, therefore it is recovered from the database
@@ -146,7 +146,7 @@ Object >> _isRecovered [
 	^true
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _reStore [
 
 	"Attempt to locate the SSWReStore in which the receiver resides.
@@ -155,7 +155,7 @@ Object >> _reStore [
 	^self _reStoreIfNone: [nil]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _reStoreIfNone: aBlock [
 
 	"Attempt to locate the SSWReStore in which the receiver resides.
@@ -164,7 +164,7 @@ Object >> _reStoreIfNone: aBlock [
 	^SSWReStore reStoreForObject: self ifNone: aBlock
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _refreshIfUpdatedIn: aReStore [
 
 	"Private - Non-persistent - cannot have been updated externally - do nothing"
@@ -173,7 +173,7 @@ Object >> _refreshIfUpdatedIn: aReStore [
 
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _refreshIn: aReStore [
 
 	"Private - Non-persistent - cannot have changed - do nothing"
@@ -182,7 +182,7 @@ Object >> _refreshIn: aReStore [
 
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _refreshWithContents [
 
 	"Private - Non-persistent - cannot have changed - do nothing.
@@ -191,7 +191,7 @@ Object >> _refreshWithContents [
 	^#()
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _refreshWithContentsIfUpdated [
 
 	"Private - Non-persistent - cannot have changed - do nothing.
@@ -200,26 +200,26 @@ Object >> _refreshWithContentsIfUpdated [
 	^#()
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _rollbackIn: aReStore [
 
 	"Should only be sent when all proxied objects have been swapped out to their proxy,
 	therefore the receiver is not currently persistent, therefore do nothing"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> _touch [
 
 	"No-op to ensure the receiver (a persistent object) has been encountered during the current ReStore transaction"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> errorNotPersistent [
 
 	self error: 'object not persistent'
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> handleUpdateClash: aSymbol from: oldVersion to: newVersion [
 
 	"A change in the receiver to the instance variable named aSymbol 
@@ -240,7 +240,7 @@ Object >> handleUpdateClash: aSymbol from: oldVersion to: newVersion [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> hasChanged [
 
 	"Return whether the receiver or its related objects have changed in the image since loading from the ReStore instance in which they reside"
@@ -250,7 +250,7 @@ Object >> hasChanged [
 		ifNotNil: [ :reStore | reStore hasChanged: self withRelatedComponents]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"Return an instance of the receiver class that is specified by the given value/ReStore combination.
@@ -262,13 +262,13 @@ Object class >> instanceFromDBValue: aValue in: anSSWReStore [
 		ifFalse: [anSSWReStore deferredObjectOfClass: self withID: aValue]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> isDBDeleted [
 
 	^false
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> isDBProxy [
 
 	"Differentiate between proxys and actual objects"
@@ -276,13 +276,13 @@ Object >> isDBProxy [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> isPersistent [
 
 	^(self _dbProxyIfNone: [nil]) notNil
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> isValidForPersistence [
 
 	"Return a Boolean indicating whether the receiver is a valid object for persistent storage.
@@ -291,7 +291,7 @@ Object >> isValidForPersistence [
 	^self class isDirectlyPersisted
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> mergeUpdate: aSymbol from: anObject [
 
 	"Transaction commit concurrent update resolution:
@@ -305,7 +305,7 @@ Object >> mergeUpdate: aSymbol from: anObject [
 	^nil
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> mergeUpdateFrom: newVersion newValue: newValue accessor: anInstVarAccessor [
 
 	"Private - Transaction commit concurrent update resolution:
@@ -323,7 +323,7 @@ Object >> mergeUpdateFrom: newVersion newValue: newValue accessor: anInstVarAcce
 		true]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> onAboutToUnstore [
 
 	"The receiver is about to be unstored from its ReStore container - carry out any necessary actions.
@@ -331,21 +331,21 @@ Object >> onAboutToUnstore [
 	Use onUnstored for definite confirmation of a completed unstore"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> onRecovered [
 
 	"Carry out any actions necessary following recovering this Object from the database.
 	Default - do nothing"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> onRefresh [
 
 	"Carry out any actions necessary following refreshing this Object from the database.
 	Default - do nothing"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> onRollback [
 
 	"Carry out any actions necessary following rolling back this object to its state prior to the current transaction.
@@ -353,14 +353,14 @@ Object >> onRollback [
 
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> onUnstored [
 
 	"The receiver has been unstored from the database.
 	Carry out any necessary actions"
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object class >> preferredObjectProxyClass [ 
 
 	"If the receiver needs a specific proxy class, return this else nil"
@@ -368,7 +368,7 @@ Object class >> preferredObjectProxyClass [
 	^nil
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> reStoreNewUniqueID [
 
 	"Return a new unique ID object to use for newly-persistent instances of the receiver.
@@ -377,7 +377,7 @@ Object >> reStoreNewUniqueID [
 	^self class reStoreIDClass reStoreNewUnique
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> reStoreValue [
 
 	"Return an object to use to represent the receiver in ReStore.
@@ -389,7 +389,7 @@ Object >> reStoreValue [
 		ifFalse: [self _id reStoreValue]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> refresh [
 
 	"Refresh the receiver and its related objects to their stored state"
@@ -397,7 +397,7 @@ Object >> refresh [
 	(self _reStoreIfNone: [self errorNotPersistent]) refresh: self withRelatedComponents
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> rollback [
 
 	"Rollback the receiver and its related objects to their previous state"
@@ -405,7 +405,7 @@ Object >> rollback [
 	(self _reStoreIfNone: [self errorNotPersistent]) rollback: self withRelatedComponents
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> safeHandleUpdateClash: aSymbol from: oldVersion to: newVersion [
 
 	"Private - Error-trapped entrypoint for handleUpdateClash:from:to:
@@ -427,7 +427,7 @@ Object >> safeHandleUpdateClash: aSymbol from: oldVersion to: newVersion [
 	^result = true
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> safeMergeUpdateFrom: newVersion newValue: anObject accessor: anInstVarAccessor [
 
 	"Private - Error-trapped entrypoint for mergeUpdateFrom:newValue:accessor:
@@ -449,13 +449,13 @@ Object >> safeMergeUpdateFrom: newVersion newValue: anObject accessor: anInstVar
 	^result = true
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> similarInstances [
 
 	^self similarInstancesIn: SSWReStore default
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> similarInstancesIn: aReStore [
 
 	"Return an InstancesCollection representing those persistent instances
@@ -469,7 +469,7 @@ Object >> similarInstancesIn: aReStore [
 	^instances
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> store [
 
 	"Store the receiver and its related objects in the ReStore instance in which they reside (or the default if not currently persistent); return success.
@@ -479,7 +479,7 @@ Object >> store [
 	^self storeIn: (self _reStoreIfNone: [SSWReStore default])
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> storeIn: aReStore [
 
 	"Store the receiver and its related objects in aReStore; return success.
@@ -500,7 +500,7 @@ Object >> storeIn: aReStore [
 			ifFalse: [StoreFailure signalWith: aReStore. false]]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> storeInAnsweringProxy: anSSWReStore [
 
 	"Store the receiver object as a new persistent object in anSSWReStore.
@@ -511,7 +511,7 @@ Object >> storeInAnsweringProxy: anSSWReStore [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object class >> storedInstances [
 
 	"Return all instances of the receiver stored in the database accessed by the default ReStore"
@@ -519,7 +519,7 @@ Object class >> storedInstances [
 	^self storedInstancesIn: SSWReStore default
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object class >> storedInstancesIn: aReStore [
 
 	"Return all instances of the receiver stored in the database accessed by aReStore"
@@ -527,7 +527,7 @@ Object class >> storedInstancesIn: aReStore [
 	^aReStore instancesOf: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> unstore [
 
 	"Unstore the receiver and its dependent objects from the ReStore in which they reside.
@@ -540,7 +540,7 @@ Object >> unstore [
 	^(self _dbProxyIfNone: [nil]) ifNotNil: [ :proxy | proxy unstore]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> unstored [
 
 	"Return the receiver in an UnstoreWrapper"
@@ -548,19 +548,19 @@ Object >> unstored [
 	^SSWDBUnstoreWrapper on: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> withComponents [
 
 	^SSWDBObjectWithComponents on: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> withRelatedComponents [
 
 	^SSWDBObjectWithRelatedComponents on: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Object >> writeSQLOn: aStream [
 
 	"Defer to printOn: by default"

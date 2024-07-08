@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 String class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"ASSERT: aValue isNil OR aValue isKindOf: self"
@@ -8,7 +8,7 @@ String class >> instanceFromDBValue: aValue in: anSSWReStore [
 	^aValue
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 String >> withComponents [
 
 	"Treat as an object, not a collection"
@@ -16,7 +16,7 @@ String >> withComponents [
 	^SSWDBObjectWithComponents on: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 String >> withRelatedComponents [
 
 	"Treat as an object, not a collection"

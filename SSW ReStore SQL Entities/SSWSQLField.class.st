@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLField,
-	#superclass : #SSWSQLTableComponent,
+	#name : 'SSWSQLField',
+	#superclass : 'SSWSQLTableComponent',
 	#instVars : [
 		'name'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLField class >> allFieldsInTable: anSSWSQLTable [
 
 	"Create and return a 'field' to represent the SQL concept of all fields (*) for the given table"
@@ -23,20 +24,20 @@ SSWSQLField class >> allFieldsInTable: anSSWSQLTable [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLField >> = anSSWDBField [
 
 	^self == anSSWDBField 
 		or: [self table = anSSWDBField table and: [self name = anSSWDBField name]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLField >> canBeParameterized [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLField >> fieldNamed: aString [
 
 	"Polymorphic with field collections"
@@ -46,13 +47,13 @@ SSWSQLField >> fieldNamed: aString [
 		ifFalse: [nil]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLField >> hash [
 
 	^self table hash bitXor: self name hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLField >> isFieldCollection [
 
 	"Just a single field"
@@ -60,7 +61,7 @@ SSWSQLField >> isFieldCollection [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLField >> name [
 
 	"name stores the name of this field"
@@ -68,7 +69,7 @@ SSWSQLField >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLField >> name: aString [
 
 	"name stores the name of this field"
@@ -76,14 +77,14 @@ SSWSQLField >> name: aString [
 	name := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLField >> requiresAliasing [
 
 	"Return whether this field always requires aliasing"
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLField >> sqlCanBeParameterized [
 
 	"When expressing this field as a value, can its SQL be parameterized?
@@ -92,7 +93,7 @@ SSWSQLField >> sqlCanBeParameterized [
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLField >> withFunction: aString arguments: aCollection [
 
 	"Return an SSWSQLFunctionField base on the receiver with the given function String and arguments"
@@ -105,7 +106,7 @@ SSWSQLField >> withFunction: aString arguments: aCollection [
 		yourself
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLField >> writeAliasedSQLOn: aStream [
 
 	"For situations where duplicate field names are anticipated
@@ -114,7 +115,7 @@ SSWSQLField >> writeAliasedSQLOn: aStream [
 	aStream nextPutAliasedField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLField >> writeSQLForUpdateOn: aStream [
 
 	"Write the receiver field to aStream, specifically as part of an Update query.
@@ -124,7 +125,7 @@ SSWSQLField >> writeSQLForUpdateOn: aStream [
 	^aStream nextPutIdentifier: self name
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLField >> writeSQLOn: aStream [
 
 	"Use <table name>.<field name> notation to avoid ambiguity"

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLQueryParameter,
-	#superclass : #Object,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLQueryParameter',
+	#superclass : 'Object',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLQueryParameter class >> new [
 
 	"The receiver should not have instances created"
@@ -17,7 +18,7 @@ SSWSQLQueryParameter class >> new [
 	^self error: 'Do not create instances of this class'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLQueryParameter class >> writeSQLOn: aStream [
 
 	"The receiver exists purely to write the parameter placeholder character(s) (usually '?')"

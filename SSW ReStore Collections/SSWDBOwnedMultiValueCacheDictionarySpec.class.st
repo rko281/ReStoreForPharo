@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOwnedMultiValueCacheDictionarySpec,
-	#superclass : #SSWDBOwnedCacheDictionarySpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBOwnedMultiValueCacheDictionarySpec',
+	#superclass : 'SSWDBOwnedCacheDictionarySpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBOwnedMultiValueCacheDictionarySpec >> allElementsIn: aDictionary [
 
 	^aDictionary inject: OrderedCollection new into: [ :all :each | all addAll: each; yourself]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedMultiValueCacheDictionarySpec >> copyCollection: aCollection [
 
 	| copy |
@@ -27,7 +28,7 @@ SSWDBOwnedMultiValueCacheDictionarySpec >> copyCollection: aCollection [
 	^copy
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBOwnedMultiValueCacheDictionarySpec >> elementsIn: updatedCollection notIn: originalCollection [
 
 	| additions |
@@ -42,7 +43,7 @@ SSWDBOwnedMultiValueCacheDictionarySpec >> elementsIn: updatedCollection notIn: 
 	^additions
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBOwnedMultiValueCacheDictionarySpec >> hasCollection: updatedCollection anyAdditionsOrRemovalsFrom: originalCollection [
 
 	updatedCollection size ~= originalCollection size ifTrue: [^true].
@@ -55,7 +56,7 @@ SSWDBOwnedMultiValueCacheDictionarySpec >> hasCollection: updatedCollection anyA
 	^false
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBOwnedMultiValueCacheDictionarySpec >> newCollectionWrapper [
 
 	^SSWDBMultiValueCacheDictionaryWrapper new

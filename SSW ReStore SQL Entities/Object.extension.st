@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> ifNull: aValue [
 
 	"SQL control flow message; maps to IFNULL().
@@ -9,7 +9,7 @@ Object >> ifNull: aValue [
 	^self ifNil: [aValue]
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> ifNull: aValue ifNotNull: otherValue [
 
 	"SQL control flow message; maps to a CASE statement.
@@ -18,20 +18,20 @@ Object >> ifNull: aValue ifNotNull: otherValue [
 	^self ifNil: [aValue] ifNotNil: [otherValue]
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> isSQLNull [
 
 	^false
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> sqlCanBeParameterized [
 
 	"Can the SQL representation of the receiver be parameterized?"
 	^true
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> sqlStringIn: anSSWSQLDialect [
 
 	| stream |
@@ -43,19 +43,19 @@ Object >> sqlStringIn: anSSWSQLDialect [
 	^stream contents
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> writeSQLOn: aStream forCondition: aSQLCondition [
 
 	^self writeSQLOn: aStream forField: aSQLCondition field
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> writeSQLOn: aStream forField: aField [
 
 	^aStream nextPut: self forField: aField
 ]
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Object class >> writeSQLTypeOn: aStream using: anSQLDialect [
 
 	"If not overriden, assume a persistent class with a unique ID"

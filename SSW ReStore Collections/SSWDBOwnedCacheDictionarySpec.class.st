@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOwnedCacheDictionarySpec,
-	#superclass : #SSWDBOwnedCollectionSpec,
+	#name : 'SSWDBOwnedCacheDictionarySpec',
+	#superclass : 'SSWDBOwnedCollectionSpec',
 	#instVars : [
 		'keyAccessor'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCacheDictionarySpec >> keyAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"
@@ -20,7 +21,7 @@ SSWDBOwnedCacheDictionarySpec >> keyAccessor [
 	^keyAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCacheDictionarySpec >> keyAccessor: anSSWInstVarAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"
@@ -28,7 +29,7 @@ SSWDBOwnedCacheDictionarySpec >> keyAccessor: anSSWInstVarAccessor [
 	keyAccessor := anSSWInstVarAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 
 	"If aSymbolOrBlock is aSymbol it should be an inst var name"
@@ -38,7 +39,7 @@ SSWDBOwnedCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 		ifFalse: [self keyAccessor: aSymbolOrBlock]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBOwnedCacheDictionarySpec >> newCollection [
 
 	^self newCollectionWrapper
@@ -47,7 +48,7 @@ SSWDBOwnedCacheDictionarySpec >> newCollection [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBOwnedCacheDictionarySpec >> newCollectionWrapper [
 
 	^SSWDBCacheDictionaryWrapper new

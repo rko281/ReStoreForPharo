@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SimpleProductOrder,
-	#superclass : #Object,
+	#name : 'SimpleProductOrder',
+	#superclass : 'Object',
 	#instVars : [
 		'customer',
 		'product',
 		'quantity',
 		'date'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SimpleProductOrder class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -26,48 +27,48 @@ SimpleProductOrder class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimpleProductOrder >> <= anOrder [
 
 	^self quantity <= anOrder quantity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> customer [
 	^customer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> customer: anObject [
 	customer := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> date [
 	^date
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> date: anObject [
 	date := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> product [
 	^product
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> product: anObject [
 	product := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> quantity [
 	^quantity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProductOrder >> quantity: anObject [
 	quantity := anObject
 ]

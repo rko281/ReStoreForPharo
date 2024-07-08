@@ -4,34 +4,54 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryField,
-	#superclass : #Object,
+	#name : 'SSWDBQueryField',
+	#superclass : 'Object',
 	#instVars : [
-		'field'
+		'field',
+		'columnIndex'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryField >> accessor [
 
 	^self field accessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> accessorPath [
 
 	^self field path
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryField >> canBeParameterized [
 
 	"Defer to the field"
 	^self field canBeParameterized
 ]
 
-{ #category : #evaluating }
+{ #category : 'accessing' }
+SSWDBQueryField >> columnIndex [
+
+	"columnIndex stores the expected index of the receiver's column in a DBRow after the most recent query involving the receiver.
+	It is set during query result preparation and is checked first during subsequent lookups for this field"
+
+	^columnIndex
+]
+
+{ #category : 'accessing' }
+SSWDBQueryField >> columnIndex: anInteger [
+
+	"columnIndex stores the expected index of the receiver's column in a DBRow after the most recent query involving the receiver.
+	It is set during query result preparation and is checked first during subsequent lookups for this field"
+
+	columnIndex := anInteger
+]
+
+{ #category : 'evaluating' }
 SSWDBQueryField >> convertValue: aValue [
 
 	"Forward to the real field"
@@ -39,7 +59,7 @@ SSWDBQueryField >> convertValue: aValue [
 	^self field convertValue: aValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> field [
 
 	"The receiver is created to stand in place of a regular SSWDBField 
@@ -50,7 +70,7 @@ SSWDBQueryField >> field [
 	^field
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> field: anSSWDBField [
 
 	"The receiver is created to stand in place of a regular SSWDBField 
@@ -61,27 +81,33 @@ SSWDBQueryField >> field: anSSWDBField [
 	field := anSSWDBField
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryField >> fieldNamed: aString [
 
 	"Defer to the real field"
 	^self field fieldNamed: aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryField >> hasAggregateFunction [
 
 	"Defer to the field"
 	^self field hasAggregateFunction
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryField >> isFieldCollection [
 
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'accessing' }
+SSWDBQueryField >> lookupIn: aDBRow [
+
+	^aDBRow lookupField: self
+]
+
+{ #category : 'evaluating' }
 SSWDBQueryField >> name [
 
 	"Forward to the real field"
@@ -89,20 +115,20 @@ SSWDBQueryField >> name [
 	^self field name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> reStore [
 
 	^self table reStore
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryField >> requiresAliasing [
 
 	"Defer to the field"
 	^self field requiresAliasing
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryField >> sqlCanBeParameterized [
 
 	"When expressing this field as a value, can its SQL be parameterized?
@@ -111,13 +137,13 @@ SSWDBQueryField >> sqlCanBeParameterized [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> table [
 
 	^self field table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> targetClass [
 
 	"Forward to the real field"
@@ -125,7 +151,7 @@ SSWDBQueryField >> targetClass [
 	^self field targetClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryField >> targetClass: aClass [
 	
 	aClass = self targetClass ifFalse: 
@@ -136,7 +162,7 @@ SSWDBQueryField >> targetClass: aClass [
 					yourself))]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryField >> withFunction: aSQLFunction [
 
 	"Return an SSWDBFunctionField base on the receiver with the given function"
@@ -144,7 +170,7 @@ SSWDBQueryField >> withFunction: aSQLFunction [
 	^self withFunction: aSQLFunction arguments: #()
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryField >> withFunction: aString arguments: aCollection [
 
 	"Return an SSWDBFunctionField base on the receiver with the given function String and arguments"
@@ -156,7 +182,7 @@ SSWDBQueryField >> withFunction: aString arguments: aCollection [
 		yourself
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBQueryField >> writeSQLForUpdateOn: aStream [
 
 	"Forward to the contained field"

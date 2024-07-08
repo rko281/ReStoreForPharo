@@ -5,16 +5,17 @@ https://github.com/rko281/ReStoreForDolphin
 https://github.com/rko281/ReStoreForPharo
 "
 Class {
-	#name : #SSWInlinedInstVarAccessor,
-	#superclass : #SSWInstVarAccessor,
+	#name : 'SSWInlinedInstVarAccessor',
+	#superclass : 'SSWInstVarAccessor',
 	#instVars : [
 		'inlinedAccessor',
 		'inlinedClass'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInlinedInstVarAccessor >> accesses: aSymbol [
 
 	"Test whether the receiver itself directly (shallowly) accesses aSymbol.
@@ -23,7 +24,7 @@ SSWInlinedInstVarAccessor >> accesses: aSymbol [
 	^self accessesShallowly: aSymbol
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInlinedInstVarAccessor >> accessesDeeply: aSymbol [
 
 	"Return whether the receiver accesses an inst var named aSymbol at a level deeper than that tested for by #accesses:"
@@ -31,7 +32,7 @@ SSWInlinedInstVarAccessor >> accessesDeeply: aSymbol [
 	^(self inlinedAccessor accesses: aSymbol) or: [self inlinedAccessor accessesDeeply: aSymbol]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInlinedInstVarAccessor >> accessesShallowly: aSymbol [
 
 	"Return whether the receiver shallowly/immediately accesses an inst var named aSymbol.
@@ -40,13 +41,13 @@ SSWInlinedInstVarAccessor >> accessesShallowly: aSymbol [
 	^super accesses: aSymbol
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> copyValue: valueObject in: targetObject [
 
 	^self inlinedAccessor copyValue: valueObject in: (self inlinedValueIn: targetObject)
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWInlinedInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 
 	"targetObject is a shallow copy of sourceObject; perform any additional copying necessary.
@@ -66,27 +67,27 @@ SSWInlinedInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 	self inlinedAccessor copyValueIn: sourceValue to: targetValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInlinedInstVarAccessor >> inlinedAccessor [
 	^inlinedAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInlinedInstVarAccessor >> inlinedAccessor: anObject [
 	inlinedAccessor := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInlinedInstVarAccessor >> inlinedClass [
 	^inlinedClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInlinedInstVarAccessor >> inlinedClass: anObject [
 	inlinedClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInlinedInstVarAccessor >> inlinedClassDeeply [
 
 	^self inlinedAccessor isInlined
@@ -94,7 +95,7 @@ SSWInlinedInstVarAccessor >> inlinedClassDeeply [
 		ifFalse: [self inlinedClass]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> inlinedValueIn: targetObject [
 
 	"Private - Return the inlined object in targetObject, creating and assigning it if necessary"
@@ -102,31 +103,31 @@ SSWInlinedInstVarAccessor >> inlinedValueIn: targetObject [
 	^(self shallowValueIn: targetObject) ifNil: [self shallowValue: self inlinedClass new in: targetObject]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInlinedInstVarAccessor >> isInlined [
 
 	^true
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> shallowValue: valueObject in: targetObject [
 
 	^super value: valueObject in: targetObject
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> shallowValueIn: targetObject [
 
 	^super valueIn: targetObject
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> value: valueObject in: targetObject [
 
 	^self inlinedAccessor value: valueObject in: (self inlinedValueIn: targetObject)
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInlinedInstVarAccessor >> valueIn: targetObject [
 
 	| inlined |

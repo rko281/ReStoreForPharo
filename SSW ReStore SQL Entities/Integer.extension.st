@@ -1,6 +1,6 @@
-Extension { #name : #Integer }
+Extension { #name : 'Integer' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Integer class >> writeSQLTypeOn: aStream  using: anSQLDialect [
 
 	"Use INT - long integer"

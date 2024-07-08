@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBClassDefinition,
-	#superclass : #Object,
+	#name : 'SSWDBClassDefinition',
+	#superclass : 'Object',
 	#instVars : [
 		'definedClass',
 		'instVarDefinitions',
@@ -13,10 +13,11 @@ Class {
 		'idInstVar',
 		'namespace'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBClassDefinition class >> forClass: aClass [
 
 	^super new
@@ -25,7 +26,7 @@ SSWDBClassDefinition class >> forClass: aClass [
 		yourself
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBClassDefinition >> addDefinitionToTable: aDBTable [
 
 	self instVarDefinitions do: [ :assoc | aDBTable define: assoc key as: assoc value].
@@ -35,7 +36,7 @@ SSWDBClassDefinition >> addDefinitionToTable: aDBTable [
 	self namespace isNil ifFalse: [aDBTable namespace: self namespace]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBClassDefinition >> asTableIn: aReStore [
 
 	| table |
@@ -49,7 +50,7 @@ SSWDBClassDefinition >> asTableIn: aReStore [
 		ifFalse: [nil]
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBClassDefinition >> define: aSymbol as: aClass [
 
 	"Define the inst var named aSymbol as holding instances of aClass.	 
@@ -62,7 +63,7 @@ SSWDBClassDefinition >> define: aSymbol as: aClass [
 	self instVarDefinitions add: (aSymbol -> aClass)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> defineAsID: aSymbol [
 
 	"OPTIONAL:
@@ -73,43 +74,43 @@ SSWDBClassDefinition >> defineAsID: aSymbol [
 	self idInstVar: aSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> definedClass [
 	^definedClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> definedClass: anObject [
 	definedClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> idInstVar [
 	^idInstVar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> idInstVar: anObject [
 	idInstVar := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> instVarDefinitions [
 	^instVarDefinitions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> instVarDefinitions: anObject [
 	instVarDefinitions := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassDefinition >> isEmpty [
 
 	^self instVarDefinitions isEmpty and: [self idInstVar isNil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> name: aString [
 
 	"Polymorphic with SSWDBTable"
@@ -117,12 +118,12 @@ SSWDBClassDefinition >> name: aString [
 	self tableName: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> namespace [
 	^namespace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> namespace: anObject [
 
 	"OPTIONAL:
@@ -134,12 +135,12 @@ SSWDBClassDefinition >> namespace: anObject [
 	namespace := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> tableName [
 	^tableName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBClassDefinition >> tableName: aString [
 
 	"OPTIONAL:

@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreMultiValueCacheDictionaryTest,
-	#superclass : #SSWReStoreGenericTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreMultiValueCacheDictionaryTest',
+	#superclass : 'SSWReStoreGenericTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreMultiValueCacheDictionaryTest >> componentDefinition [
 
 	^Dictionary of: #key -> (OrderedCollection of: GenericOwnedTest dependent) 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreMultiValueCacheDictionaryTest >> templateTestObject [
 
 	| template |
@@ -32,7 +33,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> templateTestObject [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreMultiValueCacheDictionaryTest >> testNamed: aString [
 
 	^GenericOwnedTest new 
@@ -41,7 +42,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testNamed: aString [
 		yourself
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testReadAllFetch [
 
 	| testObjects queryCount |
@@ -62,7 +63,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testReadAllFetch [
 	self assert: queryCount equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testReadAllInclude [
 
 	| testObjects queryCount |
@@ -83,7 +84,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testReadAllInclude [
 	self assert: queryCount equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshAdditionAtExistingKey [
 
 	| clive |
@@ -100,7 +101,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshAdditionAtExistingKey [
 	self assert: ((testObject component at: 'c') collect: [ :each | each name]) asSortedCollection asArray equals: #('Clive' 'Colin')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshAdditionOfNewKey [
 
 	| dave |
@@ -117,7 +118,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshAdditionOfNewKey [
 	self assert: (testObject component at: 'd') first equals: dave
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalAtExistingKey [
 
 	| colin |
@@ -133,7 +134,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalAtExistingKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = colin name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalOfAllKeys [
 
 	testObject2 component keys do: [ :each | testObject2 component removeKey: each].
@@ -145,7 +146,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalOfAllKeys [
 	self assert: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalOfKey [
 
 	testObject2 component removeKey: 'b'.
@@ -158,7 +159,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshRemovalOfKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshReplacementAtExistingKey [
 
 	| bees barry bill |
@@ -177,7 +178,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshReplacementAtExistingKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = barry name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRefreshReplacementOfKey [
 
 	testObject2 component removeKey: 'b'.
@@ -192,7 +193,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRefreshReplacementOfKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | (each name = 'Barry') | (each name = 'Bernard')]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackAdditionAtExistingKey [
 
 	| clive |
@@ -207,7 +208,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackAdditionAtExistingKey [
 	self assert: ((testObject component at: 'c') collect: [ :each | each name]) asSortedCollection asArray equals: #('Colin')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackAdditionOfNewKey [
 
 	| dave |
@@ -221,7 +222,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackAdditionOfNewKey [
 	self assert: testObject component keys asSortedCollection asArray equals: #('a' 'b' 'c')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalAtExistingKey [
 
 	| colin |
@@ -236,7 +237,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalAtExistingKey [
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = colin name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalOfAllKeys [
 
 	testObject component keys do: [ :each | testObject component removeKey: each].
@@ -247,7 +248,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalOfAllKeys [
 	self deny: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalOfKey [
 
 	testObject component removeKey: 'b'.
@@ -259,7 +260,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackRemovalOfKey [
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackReplacementAtExistingKey [
 
 	| barry bill |
@@ -275,7 +276,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackReplacementAtExistingKey 
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = barry name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testRollbackReplacementOfKey [
 
 	testObject component removeKey: 'b'.
@@ -289,7 +290,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testRollbackReplacementOfKey [
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = 'Bernard']) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreAdditionAtExistingKey [
 
 	| clive |
@@ -306,7 +307,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreAdditionAtExistingKey [
 	self assert: ((testObject component at: 'c') collect: [ :each | each name]) asSortedCollection asArray equals: #('Clive' 'Colin')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreAdditionOfNewKey [
 
 	| dave |
@@ -323,7 +324,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreAdditionOfNewKey [
 	self assert: (testObject component at: 'd') first equals: dave
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalAtExistingKey [
 
 	| colin |
@@ -338,7 +339,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalAtExistingKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = colin name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalOfAllKeys [
 
 	testObject component keys do: [ :each | testObject component removeKey: each].
@@ -350,7 +351,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalOfAllKeys [
 	self assert: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalOfKey [
 
 	testObject component removeKey: 'b'.
@@ -363,7 +364,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreRemovalOfKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreReplacementAtExistingKey [
 
 	| bees barry bill |
@@ -382,7 +383,7 @@ SSWReStoreMultiValueCacheDictionaryTest >> testStoreReplacementAtExistingKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = barry name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreMultiValueCacheDictionaryTest >> testStoreReplacementOfKey [
 
 	testObject component removeKey: 'b'.

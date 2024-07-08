@@ -4,21 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SubPerson,
-	#superclass : #MidPerson,
+	#name : 'SubPerson',
+	#superclass : 'MidPerson',
 	#instVars : [
 		'age',
 		'subFlags'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SubPerson class >> mutableAspects [
 	^super mutableAspects copyWith: #subFlags.
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SubPerson class >> reStoreDefinition [
 	^super reStoreDefinition
 		define: #age as: Integer;
@@ -26,23 +27,23 @@ SubPerson class >> reStoreDefinition [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SubPerson >> age [
 	^age
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SubPerson >> age: anObject [
 	age := anObject
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SubPerson >> initialize [
 	super initialize.
 	subFlags := TestBitmask new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SubPerson >> subFlags [
 	^subFlags.
 ]

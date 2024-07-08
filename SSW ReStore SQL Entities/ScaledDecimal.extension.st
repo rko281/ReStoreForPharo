@@ -1,6 +1,6 @@
-Extension { #name : #ScaledDecimal }
+Extension { #name : 'ScaledDecimal' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 ScaledDecimal >> writeSQLOn: aStream [
 
 	"We don't want the s postfix"

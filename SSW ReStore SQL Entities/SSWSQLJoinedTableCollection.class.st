@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLJoinedTableCollection,
-	#superclass : #SSWSQLTableCollection,
-	#type : #variable,
+	#name : 'SSWSQLJoinedTableCollection',
+	#superclass : 'SSWSQLTableCollection',
+	#type : 'variable',
 	#instVars : [
 		'joinConditions'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLJoinedTableCollection class >> new [
 
 	^super new
@@ -21,7 +22,7 @@ SSWSQLJoinedTableCollection class >> new [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLJoinedTableCollection class >> new: aSize [
 
 	^(super new: aSize)
@@ -29,7 +30,7 @@ SSWSQLJoinedTableCollection class >> new: aSize [
 		yourself
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLJoinedTableCollection >> add: anSSWDBTable joinedWith: anSSWSQLCondition [
 
 	"Add the given table joined with the given condition; return the table added.
@@ -40,7 +41,7 @@ SSWSQLJoinedTableCollection >> add: anSSWDBTable joinedWith: anSSWSQLCondition [
 	^anSSWDBTable
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLJoinedTableCollection >> copy [
 
 	^super copy
@@ -48,7 +49,7 @@ SSWSQLJoinedTableCollection >> copy [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLJoinedTableCollection >> copyEmpty: anInteger [
 
 	^(super copyEmpty: anInteger)
@@ -56,7 +57,7 @@ SSWSQLJoinedTableCollection >> copyEmpty: anInteger [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLJoinedTableCollection >> copyLikeOfSize: anInteger [
 
 	^(super copyLikeOfSize: anInteger)
@@ -64,7 +65,7 @@ SSWSQLJoinedTableCollection >> copyLikeOfSize: anInteger [
 		yourself
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWSQLJoinedTableCollection >> doWithJoins: aTwoArgBlock [
 
 	"Iterate over the receiver's *joined* tables, evaluating aTwoArgBlock with each table-join condition pair.
@@ -73,13 +74,13 @@ SSWSQLJoinedTableCollection >> doWithJoins: aTwoArgBlock [
 	2 to: self size do: [ :index | aTwoArgBlock value: (self at: index) value: (self joinConditions at: (index - 1))]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLJoinedTableCollection >> hasJoins [
 
 	^self joinConditions size > 0
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLJoinedTableCollection >> includes: anSSWDBTable joinedWith: anSSWSQLCondition [
 	
 	2 to: self size do:
@@ -91,7 +92,7 @@ SSWSQLJoinedTableCollection >> includes: anSSWDBTable joinedWith: anSSWSQLCondit
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLJoinedTableCollection >> joinConditions [
 
 	"joinConditions stores a collection of SSWSQLConditions that join the receiver collection of tables.
@@ -101,7 +102,7 @@ SSWSQLJoinedTableCollection >> joinConditions [
 	^joinConditions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLJoinedTableCollection >> joinConditions: anOrderedCollection [
 
 	"joinConditions stores a collection of SSWSQLConditions that join the receiver collection of tables.
@@ -111,7 +112,7 @@ SSWSQLJoinedTableCollection >> joinConditions: anOrderedCollection [
 	joinConditions := anOrderedCollection
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLJoinedTableCollection >> merge: anSSWSQLJoinedTableCollection [
 
 	"Add the tables and joins from anSSWSQLJoinedTableCollection to the receiver.
@@ -125,14 +126,14 @@ SSWSQLJoinedTableCollection >> merge: anSSWSQLJoinedTableCollection [
 		(self includes: table joinedWith: joinCondition) ifFalse: [self add: table joinedWith: joinCondition]]
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLJoinedTableCollection >> removeLast [
 
 	self joinConditions removeLast. 
 	^super removeLast
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLJoinedTableCollection >> tableJoinedWithField: anSSWDBField [
 	
 	self joinConditions keysAndValuesDo: [ :index :each | (each value = anSSWDBField and: [each value accessorPath = anSSWDBField accessorPath]) ifTrue: [^self at: (index + 1)]].
@@ -140,7 +141,7 @@ SSWSQLJoinedTableCollection >> tableJoinedWithField: anSSWDBField [
 	^nil
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLJoinedTableCollection >> withoutDuplicates [
 
 	"Return a copy of the receiver, excluding duplicate entries.

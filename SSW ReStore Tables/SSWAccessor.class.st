@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWAccessor,
-	#superclass : #Object,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWAccessor',
+	#superclass : 'Object',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWAccessor >> access: aSymbol in: aClass [
 
 	"Configure the receiver to access the inst var of aClass which is named aSymbol"
@@ -17,7 +18,7 @@ SSWAccessor >> access: aSymbol in: aClass [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWAccessor >> accesses: aSymbol [
 
 	"Return a Boolean indicating whether the receiver access the instance variable
@@ -26,13 +27,13 @@ SSWAccessor >> accesses: aSymbol [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWAccessor >> isInlined [
 
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWAccessor >> name [
 
 	"Return the name of the inst var accessed by the receiver.
@@ -42,7 +43,7 @@ SSWAccessor >> name [
 	^nil
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWAccessor >> value: valueObject in: targetObject [
 
 	"Set the attribute of targetObject which the receiver accesses to valueObject.
@@ -51,7 +52,7 @@ SSWAccessor >> value: valueObject in: targetObject [
 	self subclassResponsibility
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWAccessor >> valueIfChanged: valueObject in: targetObject [
 
 	"Set the attribute of targetObject which the receiver accesses to valueObject, 
@@ -67,7 +68,7 @@ SSWAccessor >> valueIfChanged: valueObject in: targetObject [
 		ifFalse: [false]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWAccessor >> valueIn: anObject [
 
 	"Extract and return the value of anObject which the receiver accesses"

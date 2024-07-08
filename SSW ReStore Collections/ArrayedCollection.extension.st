@@ -1,6 +1,6 @@
-Extension { #name : #ArrayedCollection }
+Extension { #name : 'ArrayedCollection' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 ArrayedCollection >> _dbAdd: anObject suggestedIndex: anInteger [
 
 	"Translate to at:put:"
@@ -10,7 +10,7 @@ ArrayedCollection >> _dbAdd: anObject suggestedIndex: anInteger [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 ArrayedCollection >> staticCollectionSpecClass [ 
 
 	^SSWDBArrayedStaticCollectionSpec

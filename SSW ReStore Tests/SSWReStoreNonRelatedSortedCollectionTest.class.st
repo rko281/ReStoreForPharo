@@ -4,24 +4,25 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNonRelatedSortedCollectionTest,
-	#superclass : #SSWReStoreGenericNonRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreNonRelatedSortedCollectionTest',
+	#superclass : 'SSWReStoreGenericNonRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedSortedCollectionTest >> componentDefinition [
 
 	^SortedCollection of: GenericOwnedTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreNonRelatedSortedCollectionTest >> replaceInCollection: aCollection [
 
 	^(aCollection remove: aCollection last) -> (aCollection add: self templateComponent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedSortedCollectionTest >> templateCollection [
 
 	^SortedCollection 
@@ -30,7 +31,7 @@ SSWReStoreNonRelatedSortedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedSortedCollectionTest >> testCollectionRefreshComponentChange [
 
 	| component originalName changedName changedName2 |
@@ -54,7 +55,7 @@ SSWReStoreNonRelatedSortedCollectionTest >> testCollectionRefreshComponentChange
 	self assert: (component name = changedName2)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedSortedCollectionTest >> testCollectionRefreshComponentChangeIfUpdated [
 
 	| component originalName changedName changedName2 |

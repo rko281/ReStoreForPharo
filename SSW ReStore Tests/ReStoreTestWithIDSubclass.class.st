@@ -1,14 +1,15 @@
 Class {
-	#name : #ReStoreTestWithIDSubclass,
-	#superclass : #ReStoreTestWithIDOnly,
+	#name : 'ReStoreTestWithIDSubclass',
+	#superclass : 'ReStoreTestWithIDOnly',
 	#instVars : [
 		'name',
 		'other'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 ReStoreTestWithIDSubclass class >> name: aString nmbr: anInteger [
 
 	^self new
@@ -17,7 +18,7 @@ ReStoreTestWithIDSubclass class >> name: aString nmbr: anInteger [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 ReStoreTestWithIDSubclass class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -26,22 +27,22 @@ ReStoreTestWithIDSubclass class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDSubclass >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDSubclass >> name: anObject [
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDSubclass >> other [
 	^other
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDSubclass >> other: anObject [
 	other := anObject
 ]

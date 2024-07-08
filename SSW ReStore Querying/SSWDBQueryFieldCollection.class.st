@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryFieldCollection,
-	#superclass : #SSWSQLFieldCollection,
-	#type : #variable,
+	#name : 'SSWDBQueryFieldCollection',
+	#superclass : 'SSWSQLFieldCollection',
+	#type : 'variable',
 	#instVars : [
 		'parser'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryFieldCollection >> asSQLFields [
 
 	"Convert the receiver to the standard non-query subsystem representation"
@@ -25,13 +26,13 @@ SSWDBQueryFieldCollection >> asSQLFields [
 	^self inject: sql into: [ :all :each | all add: each asSQLFields; yourself]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryFieldCollection >> concatenateCondition: aCondition [
 
 	self add: (self parser unprocessedConditionsCombinedWithArgument: aCondition)
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBQueryFieldCollection >> doesNotUnderstand: aMessage [
 	
 	"Attempt to interpret selector as a function message send"
@@ -42,17 +43,17 @@ SSWDBQueryFieldCollection >> doesNotUnderstand: aMessage [
 	^super doesNotUnderstand: aMessage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryFieldCollection >> parser [
 	^parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryFieldCollection >> parser: anObject [
 	parser := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryFieldCollection >> || anObject [
 
 	^anObject forConcatenation concatenatedWith: self

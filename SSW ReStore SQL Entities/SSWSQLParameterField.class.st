@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLParameterField,
-	#superclass : #Object,
+	#name : 'SSWSQLParameterField',
+	#superclass : 'Object',
 	#instVars : [
 		'value'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLParameterField class >> forValue: anObject [
 
 	^self new
@@ -20,29 +21,35 @@ SSWSQLParameterField class >> forValue: anObject [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLParameterField >> canBeParameterized [
 
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'accessing' }
+SSWSQLParameterField >> columnIndex: anInteger [
+
+	"Polymorphic with SSWDBField"
+]
+
+{ #category : 'testing' }
 SSWSQLParameterField >> requiresAliasing [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLParameterField >> value [
 	^value
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLParameterField >> value: anObject [
 	value := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLParameterField >> writeAliasedSQLOn: aStream [
 
 	"For situations where duplicate field names are anticipated
@@ -51,7 +58,7 @@ SSWSQLParameterField >> writeAliasedSQLOn: aStream [
 	aStream nextPutAliasedField: self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLParameterField >> writeSQLOn: aStream [
 
 	^self value writeSQLOn: aStream forField: self

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBPrivateAccessor,
-	#superclass : #SSWAccessor,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBPrivateAccessor',
+	#superclass : 'SSWAccessor',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBPrivateAccessor >> access: aSymbol in: aClass [
 
 	"Do nothing - the receiver is hard-wired to access a private aspect of an object"
@@ -17,7 +18,7 @@ SSWDBPrivateAccessor >> access: aSymbol in: aClass [
 	^self 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBPrivateAccessor >> accesses: aSymbol [
 
 	"Check against the specialSymbol"
@@ -25,7 +26,7 @@ SSWDBPrivateAccessor >> accesses: aSymbol [
 	^aSymbol == self specialSymbol
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBPrivateAccessor >> name [
 
 	"Use the specialSymbol for this"
@@ -33,7 +34,7 @@ SSWDBPrivateAccessor >> name [
 	^self specialSymbol
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBPrivateAccessor >> nameInDB [
 
 	"Return the name of the receiver as used for the basis of its (field) name in the database.
@@ -43,7 +44,7 @@ SSWDBPrivateAccessor >> nameInDB [
 	^self specialSymbol
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBPrivateAccessor >> specialSymbol [
 
 	"Return a 'special' symbol denoting the private aspect 'accessed' by the receiver.

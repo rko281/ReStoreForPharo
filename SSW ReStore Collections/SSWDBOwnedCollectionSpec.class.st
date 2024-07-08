@@ -4,30 +4,31 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOwnedCollectionSpec,
-	#superclass : #SSWDBCollectionSpec,
+	#name : 'SSWDBOwnedCollectionSpec',
+	#superclass : 'SSWDBCollectionSpec',
 	#instVars : [
 		'targetClass',
 		'ownerField',
 		'ownerAccessor',
 		'orderingSpecs'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> allElementsIn: aCollection [
 
 	^aCollection
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedCollectionSpec >> copyCollection: aCollection [
 
 	^aCollection copy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> dbInstancesFor: aCollectionProxy [
 
 	"Return a DBInstancesCollection representing the instances owned by aCollectionProxy
@@ -46,7 +47,7 @@ SSWDBOwnedCollectionSpec >> dbInstancesFor: aCollectionProxy [
 		
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> deleteQuery [
 
 	self ownerField == nil ifTrue: [self setOwnerFieldFrom: self reStore].
@@ -57,19 +58,19 @@ SSWDBOwnedCollectionSpec >> deleteQuery [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> elementsIn: aCollection notIn: anotherCollection [
 
 	^aCollection reject: [ :each | anotherCollection identityIncludes: each]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBOwnedCollectionSpec >> hasCollection: updatedCollection anyAdditionsOrRemovalsFrom: originalCollection [
 
 	^updatedCollection size ~= originalCollection size or: [updatedCollection anySatisfy: [ :each | (originalCollection identityIncludes: each) not]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> orderingSpecs [
 
 	orderingSpecs isNil ifTrue: [self setOrderingSpecs].
@@ -77,19 +78,19 @@ SSWDBOwnedCollectionSpec >> orderingSpecs [
 	^orderingSpecs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> orderingSpecs: anOrderedCollection [
 
 	orderingSpecs := anOrderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> owner: aSymbol [
 
 	self ownerAccessor: (SSWInstVarAccessor toAccess: aSymbol in: self targetClass)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> ownerAccessor [
 
 	"ownerAccessor stores an Accessor configured to access instance variable 
@@ -98,7 +99,7 @@ SSWDBOwnedCollectionSpec >> ownerAccessor [
 	^ownerAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> ownerAccessor: anInstVarAccessor [
 
 	"ownerAccessor stores an Accessor configured to access instance variable 
@@ -107,7 +108,7 @@ SSWDBOwnedCollectionSpec >> ownerAccessor: anInstVarAccessor [
 	ownerAccessor := anInstVarAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> ownerClass [
 
 	"Return the class of object that owns the collection specified by the receiver"
@@ -115,7 +116,7 @@ SSWDBOwnedCollectionSpec >> ownerClass [
 	^self table instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> ownerField [
 
 	"ownerField stores the SSWDBField from the dbTable of the targetClass
@@ -126,7 +127,7 @@ SSWDBOwnedCollectionSpec >> ownerField [
 	^ownerField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> ownerField: anSSWDBField [
 
 	"ownerField stores the SSWDBField from the dbTable of the targetClass
@@ -137,7 +138,7 @@ SSWDBOwnedCollectionSpec >> ownerField: anSSWDBField [
 	ownerField := anSSWDBField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> queryClass [
 
 	"Return the correct query class to use for the receiver"
@@ -147,7 +148,7 @@ SSWDBOwnedCollectionSpec >> queryClass [
 		ifFalse: [SSWSQLSelectQuery]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedCollectionSpec >> readAllFor: aCollection [
 
 	"Using a single query (ideally, multiple batched queries if aCollection is too large), read all untouched collections specified by the receiver for members of aCollection"
@@ -173,7 +174,7 @@ SSWDBOwnedCollectionSpec >> readAllFor: aCollection [
 		(collections at: proxy _id ifAbsent: [self newCollection]) _proxifyIn: (self accessor valueIn: proxy)]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> readAllQuery [
 
 	| params |
@@ -186,13 +187,13 @@ SSWDBOwnedCollectionSpec >> readAllQuery [
 		yourself
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> readQuery [
 
 	^self selectQueryIn: self reStore
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 
 	"Return the recovered member objects"
@@ -207,7 +208,7 @@ SSWDBOwnedCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 	^collection _proxifyIn: aCollectionProxy
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 
 	"Refresh as opposed to read - just fetch the IDs. 
@@ -224,7 +225,7 @@ SSWDBOwnedCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	statement values: (Array with: aCollectionProxy _ownerID).
 	reStore rowsFromStatement: statement do:
 		[ :row |
-		collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row lookupField: idField))].
+		collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (idField lookupIn: row))].
 	
 	collection _proxifyIn: aCollectionProxy.
 
@@ -232,7 +233,7 @@ SSWDBOwnedCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	^#()
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBOwnedCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCollectionProxy [
 
 	"Refresh the receiver collection and its contents if they have been updated
@@ -251,12 +252,12 @@ SSWDBOwnedCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCol
 
 	statement := self refreshWithContentsIfUpdatedStatement. 
 	statement values: (Array with: aCollectionProxy _ownerID).
-	reStore rowsFromStatement: statement do: [ :row | collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (row lookupField: idField) version: (row lookupField: versionField))].
+	reStore rowsFromStatement: statement do: [ :row | collection _dbAdd: (reStore deferredObjectOfClass: self targetClass withID: (idField lookupIn: row) version: (versionField lookupIn: row))].
 
 	^collection _proxifyIn: aCollectionProxy
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> refreshQuery [
 
 	^self readQuery
@@ -264,7 +265,7 @@ SSWDBOwnedCollectionSpec >> refreshQuery [
 		yourself
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 
 	| query |
@@ -275,7 +276,7 @@ SSWDBOwnedCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBOwnedCollectionSpec >> selectQueryIn: anSSWReStore [
 
 	"Private - Patched for issue 120-007"
@@ -303,7 +304,7 @@ SSWDBOwnedCollectionSpec >> selectQueryIn: anSSWReStore [
 	^query
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBOwnedCollectionSpec >> setOrderingSpecs [
 
 	^self templateCollection isOrdered
@@ -311,7 +312,7 @@ SSWDBOwnedCollectionSpec >> setOrderingSpecs [
 		ifFalse: [self orderingSpecs: #()]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBOwnedCollectionSpec >> setOwnerFieldFrom: anSSWReStore [
 
 	| targetTable |
@@ -321,7 +322,7 @@ SSWDBOwnedCollectionSpec >> setOwnerFieldFrom: anSSWReStore [
 	self ownerField: (targetTable dataFields detect: [ :field | field accessor = self ownerAccessor])
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBOwnedCollectionSpec >> setTargetClass: aClass [
 
 	"Double-despatch to the argument"
@@ -329,7 +330,7 @@ SSWDBOwnedCollectionSpec >> setTargetClass: aClass [
 	aClass beTargetClassOf: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> targetClass [
 
 	"targetClass stores the Class of object held in the collection specified by the receiver.
@@ -338,7 +339,7 @@ SSWDBOwnedCollectionSpec >> targetClass [
 	^targetClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> targetClass: aClass [
 
 	"targetClass stores the Class of object held in the collection specified by the receiver.
@@ -347,7 +348,7 @@ SSWDBOwnedCollectionSpec >> targetClass: aClass [
 	targetClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> targetTable [ 
 
 	^self reStore tableForClass: self targetClass

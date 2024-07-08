@@ -23,9 +23,13 @@ SSWMySQLStatement >> cursoredFetch: aBoolean [
 ]
 
 { #category : 'accessing' }
-SSWMySQLStatement >> execute [
+SSWMySQLStatement >> executeCommandClass [
+	^SSWMySQLCommandExecute
+]
 
-	^super execute ifNotNil: [ :resultSet | resultSet asSSWMySQLResultSet ]
+{ #category : 'accessing' }
+SSWMySQLStatement >> fetchCommandClass [
+	^SSWMySQLCommandFetch
 ]
 
 { #category : 'initialize-release' }

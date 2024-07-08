@@ -4,30 +4,31 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLFunction,
-	#superclass : #Object,
+	#name : 'SSWSQLFunction',
+	#superclass : 'Object',
 	#instVars : [
 		'parameterizedString',
 		'resultParamIndex',
 		'staticResultClass',
 		'isAggregateFunction'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLFunction class >> new [
 
 	^super new initialize
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLFunction >> beAggregateFunction [
 
 	self isAggregateFunction: true
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLFunction >> convertValue: aValue forFunctionField: aFunctionField [
 
 	"Convert the given DB value object to the class of object specified as the result of this function. Return the converted object.
@@ -40,7 +41,7 @@ SSWSQLFunction >> convertValue: aValue forFunctionField: aFunctionField [
 		ifFalse: [self staticResultClass instanceFromDBValue: aValue in: aFunctionField reStore]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLFunction >> initialize [
 
 	"By default the class of the first parameter (the receiver in the corresponding Smalltalk expression) is the class of the result"
@@ -49,47 +50,47 @@ SSWSQLFunction >> initialize [
 	self isAggregateFunction: false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> isAggregateFunction [
 	^isAggregateFunction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> isAggregateFunction: anObject [
 	isAggregateFunction := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> parameterizedString [
 	^parameterizedString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> parameterizedString: anObject [
 	parameterizedString := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> resultParamIndex [
 	^resultParamIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> resultParamIndex: anObject [
 	resultParamIndex := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> staticResultClass [
 	^staticResultClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> staticResultClass: anObject [
 	staticResultClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunction >> targetClassForFunctionField: aFunctionField [
 
 	^self staticResultClass ifNil: [(aFunctionField fieldAtIndex: self resultParamIndex) targetClass]

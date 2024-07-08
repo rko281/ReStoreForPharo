@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreQueryTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreQueryTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreQueryTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -17,7 +18,7 @@ SSWReStoreQueryTest >> addClassesTo: aReStore [
 		addClass: SimpleProduct
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreQueryTest >> convertToDictionary: results index: anInteger [
 
 	| dict |
@@ -27,7 +28,7 @@ SSWReStoreQueryTest >> convertToDictionary: results index: anInteger [
 	^dict
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreQueryTest >> createProducts [
 
 	reStore evaluateAsTransaction: 
@@ -48,7 +49,7 @@ SSWReStoreQueryTest >> createProducts [
 			storeIn: reStore]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test1Simple [
 
 	| instances |
@@ -74,7 +75,7 @@ SSWReStoreQueryTest >> test1Simple [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test2Wildcards [
 
 	| instances |
@@ -86,7 +87,7 @@ SSWReStoreQueryTest >> test2Wildcards [
 	self assert: ((instances collect: [ :each | each firstName]) asSortedCollection asArray = #('David' 'John'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test3Order [
 
 	| instances |
@@ -103,7 +104,7 @@ SSWReStoreQueryTest >> test3Order [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test3Sort [
 
 	| instances |
@@ -115,7 +116,7 @@ SSWReStoreQueryTest >> test3Sort [
 	self assert: ((instances collect: [ :each | each firstName]) asArray = #('Zoe' 'Jim'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test4Modify [
 
 	| instances |
@@ -134,7 +135,7 @@ SSWReStoreQueryTest >> test4Modify [
 "
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test5InlineFunctionQuery [
 
 	| instances |
@@ -144,7 +145,7 @@ SSWReStoreQueryTest >> test5InlineFunctionQuery [
 	self assert: (instances size = 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test6MethodFunctionQuery [
 
 	| instances |
@@ -154,7 +155,7 @@ SSWReStoreQueryTest >> test6MethodFunctionQuery [
 	self assert: (instances size = 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test6MethodFunctionQueryWithDirectInstVars [
 
 	"Unsupported - should fail"
@@ -165,7 +166,7 @@ SSWReStoreQueryTest >> test6MethodFunctionQueryWithDirectInstVars [
 	self should: [instances := instances satisfying: [ :each | each fullNameDirect = 'Jim Brown']] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test7InlineFunctionQueryComplex [
 
 	| instances |
@@ -178,7 +179,7 @@ SSWReStoreQueryTest >> test7InlineFunctionQueryComplex [
 	self assert: (instances size = 2)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test7MethodFunctionQueryComplex [
 
 	| instances |
@@ -189,7 +190,7 @@ SSWReStoreQueryTest >> test7MethodFunctionQueryComplex [
 	self assert: ((instances detect: [ :each | each profitMargin > 50]) description = 'wobulator')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test8CustomQuery [
 
 	| instances results|
@@ -203,7 +204,7 @@ SSWReStoreQueryTest >> test8CustomQuery [
 	self assert: (results asSortedCollection asArray = #(2 10 200))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> test9MultiArgumentFieldQuery [
 
 	| instances results|
@@ -217,7 +218,7 @@ SSWReStoreQueryTest >> test9MultiArgumentFieldQuery [
 	self assert: (results size = 2)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testAMultiArgumentMixedQuery [
 
 	| instances results|
@@ -231,7 +232,7 @@ SSWReStoreQueryTest >> testAMultiArgumentMixedQuery [
 	self assert: (results size = 2)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testBMultiArgumentFunctionCollectFieldQuery [
 
 	| instances results|
@@ -245,7 +246,7 @@ SSWReStoreQueryTest >> testBMultiArgumentFunctionCollectFieldQuery [
 	self assert: (results asArray = #('et'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCMultiArgumentFunctionCollectMixedQuery [
 
 	| instances results|
@@ -259,7 +260,7 @@ SSWReStoreQueryTest >> testCMultiArgumentFunctionCollectMixedQuery [
 	self assert: (results asArray = #('et'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQuery [
 
 	| instances john results |
@@ -314,7 +315,7 @@ SSWReStoreQueryTest >> testCollectQuery [
 	self assert: ((results at: 4) = #(nil 'Zoe' 'John' 'Brown')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithActualObject [
 
 	| instances john dave zoe jim testBlock testCount |
@@ -349,7 +350,7 @@ SSWReStoreQueryTest >> testCollectQueryWithActualObject [
 	self assert: (testCount = 5)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithBooleanFunction [
 
 	"Test a condition which previously caused an error - non-first component in collect query having a Boolean function gave error due to incorrect implementation of peekFinalField"
@@ -377,7 +378,7 @@ SSWReStoreQueryTest >> testCollectQueryWithBooleanFunction [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithFunction [
 
 	| instances john results |
@@ -432,7 +433,7 @@ SSWReStoreQueryTest >> testCollectQueryWithFunction [
 	self assert: ((results at: 4) = #(nil 'Zoe' 'John' 'Brown'))."
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithInlineFunction [
 
 	| instances john results |
@@ -487,7 +488,7 @@ SSWReStoreQueryTest >> testCollectQueryWithInlineFunction [
 	self assert: ((results at: 4) = #(nil 'Zoe' 'John' 'Brown'))."
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithMultipleObjects [
 
 	| instances john results |
@@ -514,7 +515,7 @@ SSWReStoreQueryTest >> testCollectQueryWithMultipleObjects [
 	self assert: ((results at: 4) = #(nil 'Zoe' 'John' 'Brown')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithMultipleObjectsFunction [
 
 	| instances john results |
@@ -533,7 +534,7 @@ SSWReStoreQueryTest >> testCollectQueryWithMultipleObjectsFunction [
 	self assert: ((results at: 4) = #('Zoe' 'John' nil 'Zoe Brown'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithMultipleObjectsInlineFunction [
 
 	| instances john results |
@@ -552,7 +553,7 @@ SSWReStoreQueryTest >> testCollectQueryWithMultipleObjectsInlineFunction [
 	self assert: ((results at: 4) = #('Zoe' 'John' nil 'Zoe Brown'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithRelatedObject [
 
 	| instances john dave testBlock testCount |
@@ -582,7 +583,7 @@ SSWReStoreQueryTest >> testCollectQueryWithRelatedObject [
 	self assert: (testCount = 5)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectFunction [
 
 	| instances john results |
@@ -623,7 +624,7 @@ SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectFunction [
 	self assert: ((results at: 4) = #('John' 'Brown' 'John Smith' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectInlineFunction [
 
 	| instances john results |
@@ -664,7 +665,7 @@ SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectInlineFunction [
 	self assert: ((results at: 4) = #('John' 'Brown' 'John Smith' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectOfDifferentClass [
 
 	"Previously failed; generated object of the class of the collection instead of the target object"
@@ -686,7 +687,7 @@ SSWReStoreQueryTest >> testCollectQueryWithRelatedObjectOfDifferentClass [
 	self assert: ((results reject: [ :each | each isNil]) collect: [ :each | each postcode]) asSortedCollection asArray equals: #('D2 2DD' 'J1 1JJ')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testConcatenateQueryWithJoins [
 
 	| instances john results |
@@ -717,7 +718,7 @@ SSWReStoreQueryTest >> testConcatenateQueryWithJoins [
 	self assert: ((results reject: [ :each | each isNil]) asArray = #('JohnDavidjTestSmytheSmith'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testIncludesInQueryBlockEmptyCriteria [
 
 	| instances |
@@ -741,7 +742,7 @@ SSWReStoreQueryTest >> testIncludesInQueryBlockEmptyCriteria [
 		self assert: matches size = instances size]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testIncludesInQueryBlockPersistentObject [
 
 	| instances john david |
@@ -762,7 +763,7 @@ SSWReStoreQueryTest >> testIncludesInQueryBlockPersistentObject [
 		self assert: ((matches collect: [ :e | e fullName]) asSortedCollection asArray = #('John Smith' 'Zoe Brown'))]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testIncludesInQueryBlockSimple [
 
 	| instances |
@@ -780,7 +781,7 @@ SSWReStoreQueryTest >> testIncludesInQueryBlockSimple [
 		self assert: ((matches collect: [ :e | e fullName]) asSortedCollection asArray = #('John Smith' 'Zoe Brown'))]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testInstancesCollectionIncludes [
 
 	| instances zoe |
@@ -794,7 +795,7 @@ SSWReStoreQueryTest >> testInstancesCollectionIncludes [
 	self deny: (instances includes: SimplePerson new)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testQueryEvaluationLocationDatabase [
 
 	"Test database side of imageDo:databaseDo:"
@@ -810,7 +811,7 @@ SSWReStoreQueryTest >> testQueryEvaluationLocationDatabase [
 		self assert: array last equals: ('<1s> <2s> (DATABASE)' expandMacrosWith: array first with: array second)].
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testQueryEvaluationLocationImage [
 
 	"Test image side of imageDo:databaseDo:"
@@ -826,7 +827,7 @@ SSWReStoreQueryTest >> testQueryEvaluationLocationImage [
 		self assert: array last equals: ('<1s> <2s> (IMAGE)' expandMacrosWith: array first with: array second)].
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testReverse [
 
 	| forward reverse |

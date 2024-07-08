@@ -28,7 +28,6 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 					index: index;
 					table: aDBTable;
 					field: (aDBTable fieldNamed: name);
-					connection: self; 
 					yourself ) ].
 				
 	^columns

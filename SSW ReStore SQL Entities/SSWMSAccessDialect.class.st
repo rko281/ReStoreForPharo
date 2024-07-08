@@ -4,24 +4,25 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWMSAccessDialect,
-	#superclass : #SSWSQLDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWMSAccessDialect',
+	#superclass : 'SSWSQLDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect class >> dbmsName [
 
 	^'ACCESS'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> boolean [
 
 	^'YESNO'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> date [
 
 	"No explicit date type"
@@ -29,7 +30,7 @@ SSWMSAccessDialect >> date [
 	^self datetime
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> datetimeWithResolution [
 
 	"Not supported"
@@ -37,19 +38,19 @@ SSWMSAccessDialect >> datetimeWithResolution [
 	^self datetime
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> defaultMaxColumnNameLength [
 
 	^64
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> defaultMaxTableNameLength [
 
 	^64
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
@@ -84,7 +85,7 @@ SSWMSAccessDialect >> dialectSpecificFunctions [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> largeInteger [
 
 	"Not supported"
@@ -92,25 +93,25 @@ SSWMSAccessDialect >> largeInteger [
 	^self integer
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> largeIntegerMaximum [
 
 	^self integerMaximum
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> largeIntegerMinimum [
 
 	^self integerMinimum
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> longText [
 
 	^'LONGTEXT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> maxAllocatedStatements [
 
 	"Access 2000 (v9.0.2720, driver 4.00.4403.02) seems to slowdown around 120 allocated statements"
@@ -119,13 +120,13 @@ SSWMSAccessDialect >> maxAllocatedStatements [
 	^100
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> maxDateTimeResolution [
 
 	^0
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWMSAccessDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore 
@@ -133,7 +134,7 @@ SSWMSAccessDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 		executeSQLFrom: [ :stream | stream nextPutAll: 'DROP TABLE '; writeSQLFor: oldTable]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWMSAccessDialect >> shouldMapEmptyStringsToNil [
 
 	"Return whether empty Strings should be mapped to nil before storage in the database.
@@ -142,7 +143,7 @@ SSWMSAccessDialect >> shouldMapEmptyStringsToNil [
 	^true
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> time [
 
 	"No explicit time type"
@@ -150,19 +151,19 @@ SSWMSAccessDialect >> time [
 	^self datetime
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> trueObject [
 
 	^-1
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> unsizedBlob [
 
 	^'LONGBINARY'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccessDialect >> updateDelaySeconds [
 
 	"Arrived at anecdotally... refresh SUnit tests fail with 4 seconds, pass with 5"
@@ -170,7 +171,7 @@ SSWMSAccessDialect >> updateDelaySeconds [
 	^5
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMSAccessDialect >> uuid [
 
 	^'GUID'

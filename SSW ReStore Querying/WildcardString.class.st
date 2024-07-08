@@ -4,33 +4,34 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #WildcardString,
-	#superclass : #Object,
+	#name : 'WildcardString',
+	#superclass : 'Object',
 	#instVars : [
 		'string'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 WildcardString >> collect: aBlock [
 
 	^self string collect: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> hash [
 
 	^self string hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 WildcardString >> isEmpty [
 
 	^self size = 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> orNilIfEmpty [
 
 	^self isEmpty
@@ -38,13 +39,13 @@ WildcardString >> orNilIfEmpty [
 		ifFalse: [self]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> reStoreValue [
 
 	^self string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> similarityComparator [
 
 	"Private - The receiver is just a String for which the similarity is defined by like:"
@@ -52,18 +53,18 @@ WildcardString >> similarityComparator [
 	^#matches:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> size [
 
 	^self string size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> string [
 	^string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 WildcardString >> string: anObject [
 	string := anObject
 ]

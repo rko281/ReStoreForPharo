@@ -1,16 +1,17 @@
 Class {
-	#name : #StringIDOwnedTest,
-	#superclass : #UUIDOwnedTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'StringIDOwnedTest',
+	#superclass : 'UUIDOwnedTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 StringIDOwnedTest class >> reStoreIDClass [
 
 	^String maxSize: 32
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 StringIDOwnedTest >> reStoreNewUniqueID [
 
 	(Delay forMilliseconds: 1) wait.

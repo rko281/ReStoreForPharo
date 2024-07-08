@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLDialect }
+Extension { #name : 'SSWSQLDialect' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLDialect >> instVarAccessorFor: aClass [
 
 	"Create and return an inst var accessor (instance of SSWInstVarAccessor or subclass)

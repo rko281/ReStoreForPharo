@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionWithRelatedContents,
-	#superclass : #SSWDBObjectWithRelatedComponents,
+	#name : 'SSWDBCollectionWithRelatedContents',
+	#superclass : 'SSWDBObjectWithRelatedComponents',
 	#instVars : [
 		'cachedProxy'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionWithRelatedContents >> collection [
 
 	^self proxy 
@@ -20,13 +21,13 @@ SSWDBCollectionWithRelatedContents >> collection [
 		ifNotNil: [ :proxy | proxy _proxiedObject]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionWithRelatedContents >> collectionSpec [
 
 	^self originatingComponent ifNil: [self proxy ifNotNil: [ :proxy | proxy _collectionSpec]]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBCollectionWithRelatedContents >> componentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet [
 
 	| spec |
@@ -48,7 +49,7 @@ SSWDBCollectionWithRelatedContents >> componentsIn: aReStore do: aBlock visited:
 		[self collection keysDo: [ :key | key withRelatedComponents withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionWithRelatedContents >> isRelated [
 
 	^(self originatingComponent ifNil: [self proxy ifNotNil: [ :proxy | proxy _collectionSpec]])
@@ -56,7 +57,7 @@ SSWDBCollectionWithRelatedContents >> isRelated [
 		ifNotNil: [ :spec | spec isRelated]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionWithRelatedContents >> object: anObject [
 
 	anObject isDBProxy 
@@ -66,7 +67,7 @@ SSWDBCollectionWithRelatedContents >> object: anObject [
 	super object: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionWithRelatedContents >> proxy [
 
 	self object isDBProxy ifTrue: [^self object].

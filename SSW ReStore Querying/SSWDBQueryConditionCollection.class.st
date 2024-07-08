@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryConditionCollection,
-	#superclass : #SSWSQLConditionCollection,
-	#type : #variable,
+	#name : 'SSWDBQueryConditionCollection',
+	#superclass : 'SSWSQLConditionCollection',
+	#type : 'variable',
 	#instVars : [
 		'parser',
 		'blockEndpoint',
 		'postCondition'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> _sqlAnd: aCondition [
 
 	"Private - Bypass the local implementation"
@@ -23,7 +24,7 @@ SSWDBQueryConditionCollection >> _sqlAnd: aCondition [
 	^super sqlAnd: aCondition
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> _sqlOr: aCondition [
 
 	"Private - Bypass the local implementation"
@@ -31,7 +32,7 @@ SSWDBQueryConditionCollection >> _sqlOr: aCondition [
 	^super sqlOr: aCondition
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryConditionCollection >> asSQLConditions [
 
 	"Convert the receiver to the standard non-query subsystem representation"
@@ -44,7 +45,7 @@ SSWDBQueryConditionCollection >> asSQLConditions [
 	^self inject: sql into: [ :all :each | all add: each asSQLConditions; yourself]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryConditionCollection >> asSQLFields [
 
 	"Convert the receiver to the standard non-query subsystem representation for fields"
@@ -55,17 +56,17 @@ SSWDBQueryConditionCollection >> asSQLFields [
 		ifFalse: [self asSQLConditions]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> blockEndpoint [
 	^blockEndpoint
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> blockEndpoint: anObject [
 	blockEndpoint := anObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> concatenateCondition: aCondition [
 
 	"Since the receiver is a condition and not a FieldCollection (the result of a concatenation), it must be the first condition in the concatenation"
@@ -82,7 +83,7 @@ SSWDBQueryConditionCollection >> concatenateCondition: aCondition [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> concatenatedWith: anObject [
 
 	"Private - Double-despatch entry point"
@@ -90,7 +91,7 @@ SSWDBQueryConditionCollection >> concatenatedWith: anObject [
 	^anObject concatenateCondition: self
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 SSWDBQueryConditionCollection >> copyLikeOfSize: anInteger [
 
 	^(super copyLikeOfSize: anInteger)
@@ -99,33 +100,33 @@ SSWDBQueryConditionCollection >> copyLikeOfSize: anInteger [
 
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryConditionCollection >> forConcatenation [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> parser [
 	^parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> parser: anObject [
 	parser := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> postCondition [
 	^postCondition
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryConditionCollection >> postCondition: anObject [
 	postCondition := anObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> sqlAnd: aCondition [
 
 	| argument receiver |
@@ -136,7 +137,7 @@ SSWDBQueryConditionCollection >> sqlAnd: aCondition [
 	^receiver _sqlAnd: argument
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> sqlOr: aCondition [
 
 	| argument receiver |
@@ -147,7 +148,7 @@ SSWDBQueryConditionCollection >> sqlOr: aCondition [
 	^receiver _sqlOr: argument
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryConditionCollection >> || anObject [
 
 	"Primarily for multi-field collect: and project: - concatenate with anObject, which may be aBlockEvaluator or another Condition(Collection).

@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreReadStreamTest,
-	#superclass : #SSWReStorePersonTest,
+	#name : 'SSWReStoreReadStreamTest',
+	#superclass : 'SSWReStorePersonTest',
 	#instVars : [
 		'readStream'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> _testIncludeDuring: aBlock [
 
 	| results |
@@ -22,7 +23,7 @@ SSWReStoreReadStreamTest >> _testIncludeDuring: aBlock [
 	self assert: (self countQueriesDuring: [results do: [ :each | each address]]) equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> _testRead: anInteger during: aBlock [
 
 	"Private - Verify no more than anInteger number of SimplePersons are read during aBlock"
@@ -35,7 +36,7 @@ SSWReStoreReadStreamTest >> _testRead: anInteger during: aBlock [
 	self assert: SimplePerson allInstances size <= (before + (anInteger * 2)) "* 2 since a copy is created for each instance read"
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadStreamTest >> createTestData [
 
 	self sampleSet storeAllIn: reStore.
@@ -45,7 +46,7 @@ SSWReStoreReadStreamTest >> createTestData [
 	readStream := ((SimplePerson storedInstancesIn: reStore) beOrdered; include: #address; yourself) readStream
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadStreamTest >> sampleSet [
 
 	^(1 to: self sampleSize) collect: 
@@ -58,20 +59,20 @@ SSWReStoreReadStreamTest >> sampleSet [
 			yourself]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadStreamTest >> sampleSize [
 
 	^50
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadStreamTest >> tearDown [
 
 	readStream close.
 	super tearDown
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testAtEnd [
 
 	self _testRead: (self sampleSize - 1) during: 
@@ -84,7 +85,7 @@ SSWReStoreReadStreamTest >> testAtEnd [
 	self assert: readStream atEnd
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNext [
 
 	self _testRead: 2 during: 
@@ -92,7 +93,7 @@ SSWReStoreReadStreamTest >> testNext [
 		self assert: readStream next firstName equals: 'John2']
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextAvailable [
 
 	self _testRead: (self sampleSize - 1) during: 
@@ -104,13 +105,13 @@ SSWReStoreReadStreamTest >> testNextAvailable [
 	self assert: readStream nextAvailable isNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextAvailableInclude [
 
 	self _testIncludeDuring: [{readStream nextAvailable}]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextAvailableN [
 
 	self _testRead: (self sampleSize - 5) during: 
@@ -130,19 +131,19 @@ SSWReStoreReadStreamTest >> testNextAvailableN [
 			self assert: each firstName equals: 'John', ((self sampleSize - 5) + index) displayString]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextAvailableNInclude [
 
 	self _testIncludeDuring: [readStream nextAvailable: 10]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextInclude [
 
 	self _testIncludeDuring: [{readStream next}]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextN [
 
 	self _testRead: 30 during: 
@@ -155,13 +156,13 @@ SSWReStoreReadStreamTest >> testNextN [
 			self assert: each firstName equals: 'John', (10 + index) displayString]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testNextNInclude [
 
 	self _testIncludeDuring: [readStream next: 10]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testPeek [
 
 	self _testRead: 3 during: 
@@ -174,7 +175,7 @@ SSWReStoreReadStreamTest >> testPeek [
 		self assert: readStream peek firstName equals: 'John3']
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testPositionBackwards [
 
 	readStream position: 19.
@@ -186,7 +187,7 @@ SSWReStoreReadStreamTest >> testPositionBackwards [
 	self assert: readStream next firstName equals: 'John11'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testPositionForwards [
 
 	readStream position: 9.
@@ -198,7 +199,7 @@ SSWReStoreReadStreamTest >> testPositionForwards [
 	self assert: readStream next firstName equals: 'John21'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testReset [
 
 	10 timesRepeat: [readStream next].
@@ -216,13 +217,13 @@ SSWReStoreReadStreamTest >> testReset [
 	self assert: readStream next firstName equals: 'John2'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testSize [
 
 	self _testRead: 0 during: [self assert: readStream size equals: self sampleSize]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testUpTo [
 
 	| j25 jN |
@@ -249,7 +250,7 @@ SSWReStoreReadStreamTest >> testUpTo [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testUpToEnd [
 
 	self _testRead: (self sampleSize - 25) during: 
@@ -269,13 +270,13 @@ SSWReStoreReadStreamTest >> testUpToEnd [
 			self assert: each firstName equals: 'John', ((self sampleSize - 25) + index) displayString]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testUpToEndInclude [
 
 	self _testIncludeDuring: [readStream upToEnd]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadStreamTest >> testUpToInclude [
 
 	| j25 |

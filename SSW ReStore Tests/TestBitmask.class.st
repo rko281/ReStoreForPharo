@@ -1,13 +1,14 @@
 Class {
-	#name : #TestBitmask,
-	#superclass : #SSWDBDirectlyPersistedObject,
+	#name : 'TestBitmask',
+	#superclass : 'SSWDBDirectlyPersistedObject',
 	#instVars : [
 		'value'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TestBitmask class >> fromReStoreValue: aValue [
 
 	^aValue ifNotNil: 
@@ -16,24 +17,24 @@ TestBitmask class >> fromReStoreValue: aValue [
 			yourself]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TestBitmask class >> hasMutablePersistentInstances [
 
 	^true
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TestBitmask class >> new [
 	^super new initialize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestBitmask class >> reStoreValueClass [
 
 	^Integer
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TestBitmask class >> value: anInteger [
 
 	^self new 
@@ -41,25 +42,25 @@ TestBitmask class >> value: anInteger [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 TestBitmask >> bitAnd2 [
 
 	^self value & 2
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 TestBitmask >> bitSet: anInteger [
 
 	value := value setBit: anInteger
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 TestBitmask >> initialize [
 
 	value := 0
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TestBitmask >> isBitSet: anInteger [
 
 	"Implement directly for database in form that can be translated to SQL for queries"
@@ -69,18 +70,18 @@ TestBitmask >> isBitSet: anInteger [
 		databaseDo: [(self value & (2 ** (anInteger - 1))) > 0]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestBitmask >> reStoreValue [
 
 	^self value
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestBitmask >> value [
 	^value
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestBitmask >> value: anObject [
 	value := anObject
 ]

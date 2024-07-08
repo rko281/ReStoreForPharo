@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionUpdate,
-	#superclass : #SSWDBCollectionChange,
+	#name : 'SSWDBCollectionUpdate',
+	#superclass : 'SSWDBCollectionChange',
 	#instVars : [
 		'newTarget'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBCollectionUpdate class >> entry: aCollectionEntry newTarget: anObject [
 
 	^(self newWithEntry: aCollectionEntry)
@@ -20,13 +21,13 @@ SSWDBCollectionUpdate class >> entry: aCollectionEntry newTarget: anObject [
 		yourself
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBCollectionUpdate >> applyTo: aCollection [
 
 	self affectedEntry target: self newTarget
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBCollectionUpdate >> commitFor: aCollectionProxy [
 
 	self affectedEntry isPersistent ifTrue: 
@@ -36,7 +37,7 @@ SSWDBCollectionUpdate >> commitFor: aCollectionProxy [
 			in: aCollectionProxy _reStore]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionUpdate >> newTarget [
 
 	"newTarget stores the object which is now in the position of the collection
@@ -45,7 +46,7 @@ SSWDBCollectionUpdate >> newTarget [
 	^newTarget
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionUpdate >> newTarget: anObject [
 
 	"newTarget stores the object which is now in the position of the collection
@@ -54,7 +55,7 @@ SSWDBCollectionUpdate >> newTarget: anObject [
 	newTarget := anObject
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBCollectionUpdate >> prepareToCommitFor: anSSWDBCollectionProxy [
 
 	(anSSWDBCollectionProxy _shouldUnstoreValue: self affectedEntry target) ifTrue: [self affectedEntry target unstore].

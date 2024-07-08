@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #OwnerTest,
-	#superclass : #Object,
+	#name : 'OwnerTest',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'number',
@@ -37,10 +37,11 @@ Class {
 		'dependentOwnedOrdered',
 		'dependentOrdered'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 OwnerTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -80,7 +81,7 @@ OwnerTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 OwnerTest class >> template [
 
 	^self new
@@ -109,160 +110,160 @@ OwnerTest class >> template [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> <= another [
 
 	^(self single1 name <= another single1 name) |
 		((self single1 name = another single1 name) & (self single2 name <= another single2 name))
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> array [
 	"Private - Answer the value of the receiver's ''array'' instance variable."
 
 	^array
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> array: anObject [
 	"Private - Set the value of the receiver's ''array'' instance variable to the argument, anObject."
 
 	array := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> arrayOfNames [
 	"Private - Answer the value of the receiver's ''arrayOfNames'' instance variable."
 
 	^arrayOfNames
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> arrayOfNames: anObject [
 	"Private - Set the value of the receiver's ''arrayOfNames'' instance variable to the argument, anObject."
 
 	arrayOfNames := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> aspectDictionary [
 	"Private - Answer the value of the receiver's ''aspectDictionary'' instance variable."
 
 	^aspectDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> aspectDictionary: anObject [
 	"Private - Set the value of the receiver's ''aspectDictionary'' instance variable to the argument, anObject."
 
 	aspectDictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dependentOrdered [
 	^dependentOrdered
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dependentOrdered: anObject [
 	dependentOrdered := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dependentOwnedOrdered [
 	^dependentOwnedOrdered
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dependentOwnedOrdered: anObject [
 	dependentOwnedOrdered := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> descNumbers [
 	"Private - Answer the value of the receiver's ''descNumbers'' instance variable."
 
 	^descNumbers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> descNumbers: anObject [
 	"Private - Set the value of the receiver's ''descNumbers'' instance variable to the argument, anObject."
 
 	descNumbers := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dictOfSizes [
 	"Private - Answer the value of the receiver's ''dictOfSizes'' instance variable."
 
 	^dictOfSizes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> dictOfSizes: anObject [
 	"Private - Set the value of the receiver's ''dictOfSizes'' instance variable to the argument, anObject."
 
 	dictOfSizes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> keyedBaseDictionary [
 	"Private - Answer the value of the receiver's ''keyedBaseDictionary'' instance variable."
 
 	^keyedBaseDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> keyedBaseDictionary: anObject [
 	"Private - Set the value of the receiver's ''keyedBaseDictionary'' instance variable to the argument, anObject."
 
 	keyedBaseDictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> keyedGeneralDictionary [
 	"Private - Answer the value of the receiver's ''keyedGeneralDictionary'' instance variable."
 
 	^keyedGeneralDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> keyedGeneralDictionary: anObject [
 	"Private - Set the value of the receiver's ''keyedGeneralDictionary'' instance variable to the argument, anObject."
 
 	keyedGeneralDictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> list [
 	"Private - Answer the value of the receiver's ''list'' instance variable."
 
 	^list
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> list: anObject [
 	"Private - Set the value of the receiver's ''list'' instance variable to the argument, anObject."
 
 	list := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> listOfTimes [
 	"Private - Answer the value of the receiver's ''listOfTimes'' instance variable."
 
 	^listOfTimes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> listOfTimes: anObject [
 	"Private - Set the value of the receiver's ''listOfTimes'' instance variable to the argument, anObject."
 
 	listOfTimes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> mergeUpdate: aSymbol from: anObject [
 
 	^(aSymbol = #name and: [anObject name = 'blockMerge'])
@@ -270,249 +271,249 @@ OwnerTest >> mergeUpdate: aSymbol from: anObject [
 		ifFalse: [super mergeUpdate: aSymbol from: anObject]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> name: anObject [
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> number [
 	^number
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> number: anObject [
 	number := anObject
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 OwnerTest >> onRefresh [
 
 	self refreshCount: (self refreshCount + 1)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ordered [
 	"Private - Answer the value of the receiver's ''ordered'' instance variable."
 
 	^ordered
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ordered: anObject [
 	"Private - Set the value of the receiver's ''ordered'' instance variable to the argument, anObject."
 
 	ordered := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> orderedBools [
 	"Private - Answer the value of the receiver's ''orderedBools'' instance variable."
 
 	^orderedBools
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> orderedBools: anObject [
 	"Private - Set the value of the receiver's ''orderedBools'' instance variable to the argument, anObject."
 
 	orderedBools := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> owned [
 	^owned
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> owned: anObject [
 	owned := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedArray [
 	"Private - Answer the value of the receiver's ''ownedArray'' instance variable."
 
 	^ownedArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedArray: anObject [
 	"Private - Set the value of the receiver's ''ownedArray'' instance variable to the argument, anObject."
 
 	ownedArray := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedList [
 	"Private - Answer the value of the receiver's ''ownedList'' instance variable."
 
 	^ownedList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedList: anObject [
 	"Private - Set the value of the receiver's ''ownedList'' instance variable to the argument, anObject."
 
 	ownedList := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedOrdered [
 	"Private - Answer the value of the receiver's ''ownedOrdered'' instance variable."
 
 	^ownedOrdered
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedOrdered: anObject [
 	"Private - Set the value of the receiver's ''ownedOrdered'' instance variable to the argument, anObject."
 
 	ownedOrdered := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedSet [
 	"Private - Answer the value of the receiver's ''ownedSet'' instance variable."
 
 	^ownedSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedSet: anObject [
 	"Private - Set the value of the receiver's ''ownedSet'' instance variable to the argument, anObject."
 
 	ownedSet := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedSorted [
 	"Private - Answer the value of the receiver's ''ownedSorted'' instance variable."
 
 	^ownedSorted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> ownedSorted: anObject [
 	"Private - Set the value of the receiver's ''ownedSorted'' instance variable to the argument, anObject."
 
 	ownedSorted := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> refreshCount [
 	^refreshCount ifNil: [0]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> refreshCount: anObject [
 	refreshCount := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> set [
 	"Private - Answer the value of the receiver's ''set'' instance variable."
 
 	^set
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> set: anObject [
 	"Private - Set the value of the receiver's ''set'' instance variable to the argument, anObject."
 
 	set := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> setOfDates [
 	"Private - Answer the value of the receiver's ''setOfDates'' instance variable."
 
 	^setOfDates
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> setOfDates: anObject [
 	"Private - Set the value of the receiver's ''setOfDates'' instance variable to the argument, anObject."
 
 	setOfDates := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single1 [
 	"Private - Answer the value of the receiver's ''single1'' instance variable."
 
 	^single1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single1: anObject [
 	"Private - Set the value of the receiver's ''single1'' instance variable to the argument, anObject."
 
 	single1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single2 [
 	"Private - Answer the value of the receiver's ''single2'' instance variable."
 
 	^single2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single2: anObject [
 	"Private - Set the value of the receiver's ''single2'' instance variable to the argument, anObject."
 
 	single2 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single3 [
 	"Private - Answer the value of the receiver's ''single3'' instance variable."
 
 	^single3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> single3: anObject [
 	"Private - Set the value of the receiver's ''single3'' instance variable to the argument, anObject."
 
 	single3 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> sorted [
 	"Private - Answer the value of the receiver's ''sorted'' instance variable."
 
 	^sorted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> sorted: anObject [
 	"Private - Set the value of the receiver's ''sorted'' instance variable to the argument, anObject."
 
 	sorted := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> sortedNumbers [
 	"Private - Answer the value of the receiver's ''sortedNumbers'' instance variable."
 
 	^sortedNumbers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnerTest >> sortedNumbers: anObject [
 	"Private - Set the value of the receiver's ''sortedNumbers'' instance variable to the argument, anObject."
 
 	sortedNumbers := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 OwnerTest >> testOnRollback [
 
 	self owned name

@@ -1,6 +1,6 @@
-Extension { #name : #Mutex }
+Extension { #name : 'Mutex' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Mutex >> isDebugging [
 
 	^false

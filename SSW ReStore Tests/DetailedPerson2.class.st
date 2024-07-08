@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #DetailedPerson2,
-	#superclass : #SuperPerson,
+	#name : 'DetailedPerson2',
+	#superclass : 'SuperPerson',
 	#instVars : [
 		'dob',
 		'dateOfBirth',
@@ -18,10 +18,11 @@ Class {
 		'useBestFriend',
 		'useLongNotes'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 class >> notesSize [
 
 	^self useLongNotes 
@@ -29,7 +30,7 @@ DetailedPerson2 class >> notesSize [
 		ifFalse: [40]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson2 class >> reStoreDefinition [
 
 	| definition |
@@ -49,84 +50,84 @@ DetailedPerson2 class >> reStoreDefinition [
 	^definition
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson2 class >> useBestFriend [
 
 	^useBestFriend ifNil: [false]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson2 class >> useBestFriend: aBoolean [
 
 	useBestFriend := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 class >> useDateOfBirth [
 	^useDateOfBirth ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 class >> useDateOfBirth: anObject [
 	useDateOfBirth := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 class >> useLongNotes [
 	^useLongNotes ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 class >> useLongNotes: anObject [
 	useLongNotes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> bestFriend [
 	^bestFriend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> bestFriend: anObject [
 	bestFriend := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> dateOfBirth [
 	^dateOfBirth
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> dateOfBirth: anObject [
 	dateOfBirth := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> dob [
 	^dob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> dob: anObject [
 	dob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> friend [
 	^friend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> friend: anObject [
 	friend := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> notes [
 	^notes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson2 >> notes: anObject [
 	notes := anObject
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #LargeInteger }
+Extension { #name : 'LargeInteger' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 LargeInteger class >> writeSQLTypeOn: aStream  using: anSQLDialect [
 
 	"Map LargeInteger to (typically) BIGINT"

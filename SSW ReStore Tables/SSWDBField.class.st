@@ -4,24 +4,26 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBField,
-	#superclass : #SSWDBTableComponent,
+	#name : 'SSWDBField',
+	#superclass : 'SSWDBTableComponent',
 	#instVars : [
 		'name',
 		'isDependent',
-		'isRelated'
+		'isRelated',
+		'columnIndex'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBField >> = anSSWDBField [
 
 	^self == anSSWDBField 
 		or: [anSSWDBField notNil and: [self table = anSSWDBField table and: [self name = anSSWDBField name]]]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBField >> aboutToBeUnstored: anSSWDBProxy [
 
 	"Delete the components of anSSWDBProxy referenced by the receiver, if dependent"
@@ -30,7 +32,7 @@ SSWDBField >> aboutToBeUnstored: anSSWDBProxy [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBField >> accessorPath [
 
 	"The path of accessors from some originating table to this field. 
@@ -39,31 +41,49 @@ SSWDBField >> accessorPath [
 	^#()
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBField >> beDependent [
 
 	isDependent := true
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBField >> beRelated [
 
 	isRelated := true
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBField >> beUnrelated [
 
 	isRelated := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> canBeParameterized [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+SSWDBField >> columnIndex [
+
+	"columnIndex stores the expected index of the receiver's column in a DBRow after the most recent query involving the receiver.
+	It is set during query result preparation and is checked first during subsequent lookups for this field"
+
+	^columnIndex
+]
+
+{ #category : 'accessing' }
+SSWDBField >> columnIndex: anInteger [
+
+	"columnIndex stores the expected index of the receiver's column in a DBRow after the most recent query involving the receiver.
+	It is set during query result preparation and is checked first during subsequent lookups for this field"
+
+	columnIndex := anInteger
+]
+
+{ #category : 'accessing' }
 SSWDBField >> fieldNamed: aString [
 
 	"Polymorphic with field collections"
@@ -73,19 +93,19 @@ SSWDBField >> fieldNamed: aString [
 		ifFalse: [nil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> hasAggregateFunction [
 
 	^false
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBField >> hash [
 
 	^self table hash bitXor: self name hash
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBField >> initialize [
 
 	super initialize.
@@ -94,7 +114,7 @@ SSWDBField >> initialize [
 	isRelated := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> isAll [
 
 	"The receiver is not the all fields (*) pseudo field"
@@ -102,7 +122,7 @@ SSWDBField >> isAll [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> isDependent [
 
 	"isDependent indicates whether the receiver is marked as 'dependent', 
@@ -111,7 +131,7 @@ SSWDBField >> isDependent [
 	^isDependent
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> isFieldCollection [
 
 	"Just a single field"
@@ -119,13 +139,13 @@ SSWDBField >> isFieldCollection [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> isInlined [
 
 	^self accessor isInlined
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> isRelated [
 
 	"isRelated indicates whether the receiver field represents an object which is related to the owning/source object such that it will be commited/rolled-back with that object when withRelatedComponents is used"
@@ -133,7 +153,13 @@ SSWDBField >> isRelated [
 	^isRelated
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+SSWDBField >> lookupIn: aDBRow [
+
+	^aDBRow lookupField: self
+]
+
+{ #category : 'accessing' }
 SSWDBField >> name [
 
 	"name stores the name of this field"
@@ -141,7 +167,7 @@ SSWDBField >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBField >> name: aString [
 
 	"name stores the name of this field"
@@ -149,7 +175,7 @@ SSWDBField >> name: aString [
 	name := aString
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBField >> printOn: aStream [
 
 	super printOn: aStream.
@@ -159,20 +185,20 @@ SSWDBField >> printOn: aStream [
 		nextPutAll: self name
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBField >> relatedComponentsOf: anObject do: aBlock [
 
 	self isRelated ifTrue: [self componentsOf: anObject do: aBlock ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> requiresAliasing [
 
 	"Return whether this field always requires aliasing"
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBField >> sqlCanBeParameterized [
 
 	"When expressing this field as a value, can its SQL be parameterized?
@@ -181,7 +207,7 @@ SSWDBField >> sqlCanBeParameterized [
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBField >> withFunction: aSQLFunction [
 
 	"Return an SSWDBFunctionField base on the receiver with the given function"
@@ -189,7 +215,7 @@ SSWDBField >> withFunction: aSQLFunction [
 	^self withFunction: aSQLFunction arguments: #()
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBField >> withFunction: aString arguments: aCollection [
 
 	"Return an SSWDBFunctionField base on the receiver with the given function String and arguments"
@@ -201,7 +227,7 @@ SSWDBField >> withFunction: aString arguments: aCollection [
 		yourself
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBField >> writeAliasedSQLOn: aStream [
 
 	"For situations where duplicate field names are anticipated
@@ -210,13 +236,13 @@ SSWDBField >> writeAliasedSQLOn: aStream [
 	aStream nextPutAliasedField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBField >> writeSQLDefinitionOn: aStream [
 
 	aStream nextPutIdentifier: self name
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBField >> writeSQLForUpdateOn: aStream [
 
 	"Write the receiver field to aStream, specifically as part of an Update query.
@@ -226,7 +252,7 @@ SSWDBField >> writeSQLForUpdateOn: aStream [
 	^aStream nextPutIdentifier: self name
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBField >> writeSQLOn: aStream [
 
 	"Use <table name>.<field name> notation to avoid ambiguity"

@@ -1,6 +1,9 @@
 Class {
 	#name : 'SSWMySQLResultSet',
 	#superclass : 'MySQLResultSet',
+	#instVars : [
+		'columns'
+	],
 	#category : 'SSW ReStore MySQL',
 	#package : 'SSW ReStore MySQL'
 }
@@ -10,6 +13,18 @@ SSWMySQLResultSet >> close [
 
 	"In Dolphin this closes the result set, leaving the statement open.
 	Nothing to do here"
+]
+
+{ #category : 'enumerating' }
+SSWMySQLResultSet >> collect: aBlock [
+
+	^self rows collect: aBlock
+]
+
+{ #category : 'accessing' }
+SSWMySQLResultSet >> columns [
+
+	^columns
 ]
 
 { #category : 'enumerating' }
@@ -49,6 +64,8 @@ SSWMySQLResultSet >> last [
 { #category : 'accessing' }
 SSWMySQLResultSet >> next [ 
 	^self nextRow
+		columns: self columns;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -61,20 +78,6 @@ SSWMySQLResultSet >> numRows [
 SSWMySQLResultSet >> readStream [
 
 	^SSWDBForwardOnlyReadStream on: self
-]
-
-{ #category : 'accessing' }
-SSWMySQLResultSet >> results [
-
-	^self
-]
-
-{ #category : 'accessing' }
-SSWMySQLResultSet >> rows: aCollection [
-
-	(statement isNil or:[aCollection isNil]) ifTrue: [^super rows: aCollection].
-	
-	super rows: (aCollection collect: [ :each | each asSSWMySQLRowFrom: statement query])
 ]
 
 { #category : 'accessing' }
@@ -95,6 +98,19 @@ SSWMySQLResultSet >> species [
 { #category : 'accessing' }
 SSWMySQLResultSet >> statement: anSSWMySQLStatement [
 
-	anSSWMySQLStatement ifNotNil: [ :stmt | stmt adoptResultSet: self].
-	super statement: anSSWMySQLStatement
+	| query |
+
+	super statement: anSSWMySQLStatement.
+	fields isEmpty ifTrue: [^self].
+
+	statement adoptResultSet: self.
+	query := statement query.
+	columns :=  fields collect: 
+		[ :each | 
+		SSWDBCColAttr new 
+			name: each name; 
+			field:  (query fieldNamed: each name);
+			yourself].
+
+	rows ifNotNil: [rows do: [ :each | each columns: columns]]
 ]

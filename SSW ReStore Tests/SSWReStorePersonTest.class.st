@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStorePersonTest,
-	#superclass : #SSWReStoreTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStorePersonTest',
+	#superclass : 'SSWReStoreTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStorePersonTest class >> isAbstract [
 
 	^self == SSWReStorePersonTest
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStorePersonTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.

@@ -1,6 +1,6 @@
 Class {
-	#name : #TestWithBitmask,
-	#superclass : #Test,
+	#name : 'TestWithBitmask',
+	#superclass : 'Test',
 	#instVars : [
 		'number1',
 		'number2',
@@ -11,10 +11,11 @@ Class {
 		'set',
 		'dictionary'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TestWithBitmask class >> new [
 
 	^super new
@@ -27,7 +28,7 @@ TestWithBitmask class >> new [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 TestWithBitmask class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -45,88 +46,88 @@ TestWithBitmask class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 TestWithBitmask class >> shouldInheritPersistency [
 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> array [
 	^array
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> array: anObject [
 	array := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> bitmask [
 	^bitmask
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> bitmask: anObject [
 	bitmask := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> dictionary [
 	^dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> dictionary: anObject [
 	dictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> number1 [
 	^number1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> number1: anObject [
 	number1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> number2 [
 	^number2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> number2: anObject [
 	number2 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> orderedCollection [
 	^orderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> orderedCollection: anObject [
 	orderedCollection := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> set [
 	^set
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> set: anObject [
 	set := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> sortedCollection [
 	^sortedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithBitmask >> sortedCollection: anObject [
 	sortedCollection := anObject
 ]

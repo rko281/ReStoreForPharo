@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBTableComponent,
-	#superclass : #SSWSQLTableComponent,
+	#name : 'SSWDBTableComponent',
+	#superclass : 'SSWSQLTableComponent',
 	#instVars : [
 		'accessor',
 		'readAllStatement'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTableComponent class >> new [
 
 	^super new initialize
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTableComponent >> aboutToBeUnstored: anSSWDBProxy [
 
 	"anSSWDBProxy (which originated in the receiver's table) is about to be removed from the DB.
@@ -29,7 +30,13 @@ SSWDBTableComponent >> aboutToBeUnstored: anSSWDBProxy [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'testing' }
+SSWDBTableComponent >> accesses: aSymbol [
+
+	^self accessor accesses: aSymbol
+]
+
+{ #category : 'accessing' }
 SSWDBTableComponent >> accessor [
 
 	"accessor stores an 'Accessor' object which is used to get and set the value
@@ -39,7 +46,7 @@ SSWDBTableComponent >> accessor [
 	^accessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableComponent >> accessor: anAccessor [
 
 	"accessor stores an 'Accessor' object which is used to get and set the value
@@ -49,7 +56,7 @@ SSWDBTableComponent >> accessor: anAccessor [
 	accessor := anAccessor
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTableComponent >> componentsOf: anObject do: aBlock [
 
 	"For each component of anObject represented by the receiver, evaluate aBlock"
@@ -57,7 +64,7 @@ SSWDBTableComponent >> componentsOf: anObject do: aBlock [
 	aBlock value: (self accessor valueIn: anObject)
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBTableComponent >> freePreparedStatements [
 
 	readAllStatement notNil ifTrue: 
@@ -65,13 +72,13 @@ SSWDBTableComponent >> freePreparedStatements [
 		readAllStatement := nil]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBTableComponent >> newReadAllParameters [
 
 	^Array new: self table readAllBatchSize
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBTableComponent >> printOn: aStream [
 
 	super printOn: aStream.
@@ -81,13 +88,13 @@ SSWDBTableComponent >> printOn: aStream [
 		nextPutAll: self table name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableComponent >> reStore [
 
 	^self table reStore
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTableComponent >> readAllFor: aCollection [
 
 	"Bulk-read (ideally in a single query, but possibly batched into several queries) all target objects of this table component belonging to any member of aCollection.
@@ -96,7 +103,7 @@ SSWDBTableComponent >> readAllFor: aCollection [
 	self subclassResponsibility
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBTableComponent >> readAllQuery [
 
 	"Return a SQL query for reading all elements of this table component for a selection of owning objects"
@@ -104,7 +111,7 @@ SSWDBTableComponent >> readAllQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableComponent >> readAllStatement [
 
 	"Return a prepared statement for reading all elements of this table component for a selection of owning objects"
@@ -112,7 +119,7 @@ SSWDBTableComponent >> readAllStatement [
 	^readAllStatement ifNil: [readAllStatement := self reStore prepareStatementForQuery: self readAllQuery]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTableComponent >> relatedComponentsOf: anObject do: aBlock [
 
 	"For each component of anObject represented by the receiver, which are related to anObject, evaluate aBlock"
@@ -120,7 +127,7 @@ SSWDBTableComponent >> relatedComponentsOf: anObject do: aBlock [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableComponent >> sqlDialect [
 
 	^self table sqlDialect

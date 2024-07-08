@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBSingleTransactionWithVersioning,
-	#superclass : #SSWDBSingleTransaction,
+	#name : 'SSWDBSingleTransactionWithVersioning',
+	#superclass : 'SSWDBSingleTransaction',
 	#instVars : [
 		'proxyCommitFailures'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSingleTransactionWithVersioning >> commitFailures [
 
 	"Return the actual objects (not proxies) which failed to commit"
@@ -20,7 +21,7 @@ SSWDBSingleTransactionWithVersioning >> commitFailures [
 	^self proxyCommitFailures collect: [ :proxy | proxy _proxiedObject]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 
 	"Commit the receiver's objects without any checking (done in prepareToCommit).
@@ -66,26 +67,26 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	self resetChangedObjects
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> ensureHasFailedCommit [
 
 	self hasFailedCommit ifFalse: [self error: 'Transaction has not failed a commit'].
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBSingleTransactionWithVersioning >> hasFailedCommit [
 
 	^self proxyCommitFailures notNil and: [self proxyCommitFailures isEmpty not]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> postRollback [
 
 	self proxyCommitFailures: nil.
 	super postRollback
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSingleTransactionWithVersioning >> proxyCommitFailures [
 
 	"proxyCommitFailures stores an OrderdCollection of those proxy objects which error
@@ -94,7 +95,7 @@ SSWDBSingleTransactionWithVersioning >> proxyCommitFailures [
 	^proxyCommitFailures
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSingleTransactionWithVersioning >> proxyCommitFailures: anOrderedCollection [
 
 	"proxyCommitFailures stores an OrderdCollection of those proxy objects which error
@@ -103,7 +104,7 @@ SSWDBSingleTransactionWithVersioning >> proxyCommitFailures: anOrderedCollection
 	proxyCommitFailures := anOrderedCollection
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> refreshAndRollforward [
 
 	self ensureHasFailedCommit.
@@ -113,7 +114,7 @@ SSWDBSingleTransactionWithVersioning >> refreshAndRollforward [
 		(proxyObj _refreshAndRollforward) ifFalse: [self currentReferencedObjects remove: proxyObj]]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> rollbackAndRefresh [
 
 	self ensureHasFailedCommit.

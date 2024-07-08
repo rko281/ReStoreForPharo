@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWPostgreSQLDialect,
-	#superclass : #SSWSQLDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWPostgreSQLDialect',
+	#superclass : 'SSWSQLDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect class >> dbmsName [
 
 	^'PostgreSQL'
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWPostgreSQLDialect >> alterField: aField table: aTable in: aReStore [
 
 	aReStore executeSQLFrom: 
@@ -29,43 +30,43 @@ SSWPostgreSQLDialect >> alterField: aField table: aTable in: aReStore [
 		aField targetClass writeSQLTypeOn: stream using: self]
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWPostgreSQLDialect >> datetime [
 
 	^'TIMESTAMP'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWPostgreSQLDialect >> datetimeWithResolution [
 
 	^'TIMESTAMP(<1p>)'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> defaultDateTimeResolution [
 
 	^6
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> defaultMaxColumnNameLength [
 
 	^63
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> defaultMaxTableNameLength [
 
 	^63
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> defaultStandardNamespace [
 
 	^'public'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
@@ -86,25 +87,25 @@ SSWPostgreSQLDialect >> dialectSpecificFunctions [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWPostgreSQLDialect >> double [
 
 	^'DOUBLE PRECISION'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> identifierQuoteClose [
 
 	^$"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> identifierQuoteOpen [
 
 	^$"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWPostgreSQLDialect >> maxCharacter [
 
 	"Technically 1GB, but limit it to something reasonable"
@@ -112,7 +113,7 @@ SSWPostgreSQLDialect >> maxCharacter [
 	^65535
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWPostgreSQLDialect >> renameField: oldField to: newField in: aReStore [
 
 	aReStore executeSQLFrom: 
@@ -126,13 +127,13 @@ SSWPostgreSQLDialect >> renameField: oldField to: newField in: aReStore [
 			nextPutIdentifier: newField name]
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWPostgreSQLDialect >> unsizedBlob [
 
 	^'bytea'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWPostgreSQLDialect >> uuid [
 
 	^'uuid'

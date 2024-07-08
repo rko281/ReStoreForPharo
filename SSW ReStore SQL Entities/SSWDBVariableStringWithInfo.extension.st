@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBVariableStringWithInfo }
+Extension { #name : 'SSWDBVariableStringWithInfo' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 SSWDBVariableStringWithInfo >> writeSQLTypeOn: aStream using: anSQLDialect [
 
 	"If the receiver's size exceeds the maximum allowed, use a longText (if available)"

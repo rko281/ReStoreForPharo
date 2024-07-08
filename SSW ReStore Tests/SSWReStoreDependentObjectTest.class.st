@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreDependentObjectTest,
-	#superclass : #SSWReStoreRelatedObjectTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDependentObjectTest',
+	#superclass : 'SSWReStoreRelatedObjectTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreDependentObjectTest >> _testComponentExistenceOnDependency [
 
 	"component is dependent at this level, so should no longer exist"
@@ -20,13 +21,13 @@ SSWReStoreDependentObjectTest >> _testComponentExistenceOnDependency [
 	self assert: ((component class storedInstancesIn: reStore) detect: [ :each | each name = component name] ifNone: [nil]) isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreDependentObjectTest >> componentDefinition [
 
 	^GenericOwnedTest dependent
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreDependentObjectTest >> testRefreshIfUpdatedRollbackRemovedComponentChange [
 
 	"This test is not relevant to dependent relationships"

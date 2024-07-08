@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SimpleProduct,
-	#superclass : #Object,
+	#name : 'SimpleProduct',
+	#superclass : 'Object',
 	#instVars : [
 		'description',
 		'supplierPrice',
 		'retailPrice'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SimpleProduct class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -24,44 +25,44 @@ SimpleProduct class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> description [
 	^description
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> description: anObject [
 	description := anObject
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SimpleProduct >> markUp [
 
 	^self retailPrice - self supplierPrice
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SimpleProduct >> profitMargin [
 
 	^((self markUp * 100) / self supplierPrice) rounded
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> retailPrice [
 	^retailPrice
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> retailPrice: anObject [
 	retailPrice := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> supplierPrice [
 	^supplierPrice
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleProduct >> supplierPrice: anObject [
 	supplierPrice := anObject
 ]

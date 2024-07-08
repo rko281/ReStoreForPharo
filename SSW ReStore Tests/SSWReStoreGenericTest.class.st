@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGenericTest,
-	#superclass : #SSWReStore2Test,
+	#name : 'SSWReStoreGenericTest',
+	#superclass : 'SSWReStore2Test',
 	#instVars : [
 		'testObject',
 		'testObject2'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericTest class >> isAbstract [
 
 	^self == SSWReStoreGenericTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -28,13 +29,13 @@ SSWReStoreGenericTest >> addClassesTo: aReStore [
 	aReStore addClass: GenericTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericTest >> componentDefinition [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> createTestData [
 
 	self createTestObject.
@@ -42,13 +43,13 @@ SSWReStoreGenericTest >> createTestData [
 	self fetchTestObjects
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> createTestObject [
 
 	reStore evaluateAsTransaction: [self templateTestObject storeIn: reStore]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> destroyAllData [
 
 	"GenericTest>>component can change definition; ReStore doesn't check for this so drop any contained tables"
@@ -60,7 +61,7 @@ SSWReStoreGenericTest >> destroyAllData [
 	super destroyAllData
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> fetchTestObjects [
 
 	(Delay forMilliseconds: 10) wait.
@@ -69,7 +70,7 @@ SSWReStoreGenericTest >> fetchTestObjects [
 	testObject := (GenericTest storedInstancesIn: reStore) first
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGenericTest >> setUp [
 
 	super setUp.
@@ -77,7 +78,7 @@ SSWReStoreGenericTest >> setUp [
 	testObject2 := (GenericTest storedInstancesIn: reStore2) first
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericTest >> templateComponent [
 
 	"Ensure unique name"
@@ -86,13 +87,13 @@ SSWReStoreGenericTest >> templateComponent [
 	^GenericOwnedTest new name: (self class name, Time microsecondClockValue printString)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericTest >> templateTestObject [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreGenericTest >> testReadAllStatementNilled [
 
 	"Verify the cached readAllStatement is nilled when necessary (previously omitted for non-collections)"

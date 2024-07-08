@@ -1,6 +1,6 @@
-Extension { #name : #Metaclass }
+Extension { #name : 'Metaclass' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Metaclass class >> isPersistentBaseClass [
 
 	^true

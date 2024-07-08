@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStore,
-	#superclass : #Object,
+	#name : 'SSWReStore',
+	#superclass : 'Object',
 	#instVars : [
 		'connection',
 		'tableCache',
@@ -27,17 +27,18 @@ Class {
 		'activeReStores',
 		'isDebugging'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #events }
+{ #category : 'events' }
 SSWReStore class >> activated: anSSWReStore [
 
 	self activeReStores add: anSSWReStore.
 	anSSWReStore beFinalizable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> activeReStores [
 
 	"activeReStores stores a WeakIdentitySet of all instances of the receiver that are active (have allocated proxies)"
@@ -45,7 +46,7 @@ SSWReStore class >> activeReStores [
 	^activeReStores
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> affiliateFor: anObject [
 
 	"Return the ReStore instance affiliated with anObject, or nil if none"
@@ -53,7 +54,7 @@ SSWReStore class >> affiliateFor: anObject [
 	^self activeReStores detect: [ :each | each isAffiliatedWith: anObject] ifNone: [nil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> affiliatedDefault [
 
 	"Private - Return the ReStore instance affiliated with the current state of the system (as determined by the affiliations themselves)"
@@ -61,14 +62,14 @@ SSWReStore class >> affiliatedDefault [
 	^self activeReStores detect: [ :each | each hasActiveAffiliation] ifNone: [nil]
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 SSWReStore class >> deactivated: anSSWReStore [
 
 	self activeReStores remove: anSSWReStore ifAbsent: [nil].
 	anSSWReStore beUnfinalizable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> default [
 
 	"Return the default ReStore instance. This may be a private default for the current state of the system, or the global default"
@@ -80,7 +81,7 @@ SSWReStore class >> default [
 	^globalDefault
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> enterDebugMode [
 
 	"Activate debugging for all active and future instances"
@@ -90,7 +91,7 @@ SSWReStore class >> enterDebugMode [
 		setDebugMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> globalDefault [
 
 	"Private - Return the global default ReStore instance (i.e. the default for all processes not requiring their own private default), creating it if necessary. 
@@ -99,7 +100,7 @@ SSWReStore class >> globalDefault [
 	^globalDefault ifNil: [globalDefault := self new]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore class >> initialize [
 
 	SessionManager current when: #sessionStarted send: #onStartup to: self.
@@ -108,13 +109,13 @@ SSWReStore class >> initialize [
 		resetActive
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore class >> initializeReStoreGlobal [
 
 	self class environment at: #ReStore put: self globalDefault
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> isDebugging [
 
 	"Default setting for isDebugging status of instances.
@@ -123,7 +124,7 @@ SSWReStore class >> isDebugging [
 	^isDebugging ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> isDebugging: aBoolean [
 
 	"Default setting for isDebugging status of instances.
@@ -132,7 +133,7 @@ SSWReStore class >> isDebugging: aBoolean [
 	isDebugging := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> leaveDebugMode [
 
 	"Deactivate debugging for all active and future instances"
@@ -142,7 +143,7 @@ SSWReStore class >> leaveDebugMode [
 		setDebugMode
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWReStore class >> new [
 
 	^super new
@@ -153,13 +154,13 @@ SSWReStore class >> new [
 		yourself
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 SSWReStore class >> onStartup [
 
 	self activeReStores do: [ :each | each onStartup]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> reStoreForObject: anObject ifNone: aBlock [
 
 	"Locate and return the instance of the receiver's activeReStores in which anObject is persistent.
@@ -171,7 +172,7 @@ SSWReStore class >> reStoreForObject: anObject ifNone: aBlock [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore class >> reset [
 
 	"Reset the default instance"
@@ -183,20 +184,20 @@ SSWReStore class >> reset [
 	self initializeReStoreGlobal
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore class >> resetActive [
 
 	activeReStores := WeakIdentitySet new
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore class >> setDebugMode [
 
 	"Private - Put all active instances into the current debug mode"
 	self activeReStores do: [ :each | each setDefaultDebugMode]
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> _activeProxyForObject: anObject ifNone: aBlock [
 
 	"Private - Locate and return the proxy object wrapping anObject, or the result of a Block if none"
@@ -213,14 +214,14 @@ SSWReStore >> _activeProxyForObject: anObject ifNone: aBlock [
 			ifNotNil: [ :trans | trans proxyForObject: anObject ifNone: aBlock]]
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> _rollbackObjects: aCollection [
 
 	[self beginTransaction.
 	aCollection do: [ :each | each _rollbackIn: self]] ensure: [self rollbackTransaction]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> abandonTransaction [
 
 	self hasTransaction ifFalse: [self error: 'No transaction to abandon'].
@@ -231,7 +232,7 @@ SSWReStore >> abandonTransaction [
 		self connection rollbackTxn]
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> activeProxyForObject: anObject ifNone: aBlock [
 
 	"Locate and return the proxy object wrapping anObject, or the result of a Block if none"
@@ -248,7 +249,7 @@ SSWReStore >> activeProxyForObject: anObject ifNone: aBlock [
 				ifFalse: ["Bypass" self _activeProxyForObject: anObject ifNone: aBlock]]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> addClass: aClass [
 
 	"Add aClass as a persistent class known to the receiver.
@@ -271,6 +272,8 @@ SSWReStore >> addClass: aClass [
 	"Validate"
 	self validateTable: table.
 
+	table postCreate.
+
 	"Add it"
 	self tableCache at: aClass put: table.
 
@@ -280,7 +283,7 @@ SSWReStore >> addClass: aClass [
 	^table
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> addClassWithSubclasses: aClass [
 
 	"Add aClass and all its subclasses as persistent classes known to the receiver"
@@ -288,19 +291,19 @@ SSWReStore >> addClassWithSubclasses: aClass [
 	aClass withAllSubclasses do: [ :class | self addClass: class]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> addClasses: aCollection [
 
 	aCollection do: [ :each | self addClass: each]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> affiliateWith: anObject using: aBlock [
 
 	self affiliations at: anObject put: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> affiliations [
 
 	"affiliations stores a weak-keyed Dictionary where the key is an object with which the receiver is 'affiliated' such that it is that object's default ReStore instance. 
@@ -311,13 +314,13 @@ SSWReStore >> affiliations [
 	^affiliations ifNil: [affiliations := WeakIdentityDictionary newWithWeakKeys: 16]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> allocateIDFor: anObject in: aDBTable [
 
 	^anObject reStoreNewUniqueID ifNil: [self transaction allocateIDFor: anObject tableRecord: (self tableRecordFor: aDBTable)]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> alterInstVar: aSymbol in: aClass [
 
 	"Alter the definition of the column corresponding to oldInstVar (a Symbol) in aClass to match its current type definition.
@@ -345,7 +348,7 @@ SSWReStore >> alterInstVar: aSymbol in: aClass [
 		true]
 ]
 
-{ #category : #'read/write objects' }
+{ #category : 'read/write objects' }
 SSWReStore >> applyUpdates: anSSWSQLCollection toObject: anSSWDBObjectProxy [
 
 	"Return a Boolean indicating whether the update succeeds"
@@ -360,7 +363,7 @@ SSWReStore >> applyUpdates: anSSWSQLCollection toObject: anSSWDBObjectProxy [
 	^statement rowsAffected = 1
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> attachTo: aConnection [
 
 	"Attach the receiver to aConnection (probably, but not necessarily, already-connected)"
@@ -369,7 +372,7 @@ SSWReStore >> attachTo: aConnection [
 	self connect
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> beginDumbTransaction [
 
 	"Begin a dumb transaction to absorb object traversals"
@@ -377,7 +380,7 @@ SSWReStore >> beginDumbTransaction [
 	self transaction: (SSWDBDumbTransaction new begin; yourself)
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> beginTransaction [
 
 	self transactionCritical: 
@@ -389,7 +392,7 @@ SSWReStore >> beginTransaction [
 				yourself)]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> cacheObject: aPersistentObjectProxy [
 
 	"Add the given persistent object proxy to the receiver's cache"
@@ -398,7 +401,7 @@ SSWReStore >> cacheObject: aPersistentObjectProxy [
 	(self classCacheFor: aPersistentObjectProxy _class) at: aPersistentObjectProxy _id put: aPersistentObjectProxy
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> cachedInstancesOf: aClass [
 
 	"Careful with this - despite the naming similarity to instancesOf: it is only intended for use with refreshObjects: and related methods"
@@ -406,7 +409,7 @@ SSWReStore >> cachedInstancesOf: aClass [
 	^(self classCacheFor: aClass) values
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> cachedObjectOfClass: aClass withID: aRawID ifAbsent: aBlock [
 
 	"Return the cached object (actually a proxy) of the given class with the given unique ID (raw value as read from database; may need reifying).
@@ -415,7 +418,7 @@ SSWReStore >> cachedObjectOfClass: aClass withID: aRawID ifAbsent: aBlock [
 	^self transactionCritical: [(self classCacheFor: aClass) at: (aClass reStoreIDClass instanceFromDBValue: aRawID in: self) ifAbsent: aBlock]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> cachedObjectOfClass: aClass withID: aRawID 
 	ifAbsent: absentBlock ifUnrecovered: unrecoveredBlock ifUntouched: untouchedBlock [
 
@@ -438,7 +441,7 @@ SSWReStore >> cachedObjectOfClass: aClass withID: aRawID
 			proxy]]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> changedClassOfInstVar: aSymbol in: aClass modifyUsing: aBlock [
 
 	"The definition of the inst var named aSymbol in aClass has changed.
@@ -491,19 +494,20 @@ SSWReStore >> changedClassOfInstVar: aSymbol in: aClass modifyUsing: aBlock [
 		true]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> classCacheFor: aClass [
 
 	"Return the subcache of the receiver's proxyCache responsible for caching
 	proxied instances of aClass"
 	
 	"Proxies are cached under the registerClass of their associated table"
-	^self proxyCache 
-		at: (self tableForClass: aClass) registerClass 
-		ifAbsentPut: [WeakLookupTable new: 128]
+	^self proxyCache at: aClass ifAbsentPut:
+		[self proxyCache 
+			at: (self tableForClass: aClass) registerClass 
+			ifAbsentPut: [WeakLookupTable new: 128]]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearAllCaches [
 
 	self
@@ -514,25 +518,25 @@ SSWReStore >> clearAllCaches [
 		clearStatementCache
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearDBTableNames [
 
 	self dbTableNames: nil
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearNextIDCache [
 
 	self nextIDCache: IdentityDictionary new
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearProxyCache [
 
 	self proxyCache: IdentityDictionary new
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearStatementCache [
 
 	nextIDStatement ifNotNil: 
@@ -543,7 +547,7 @@ SSWReStore >> clearStatementCache [
 	self tableCache do: [ :each | each freePreparedStatements]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> clearTableCache [
 
 	self 
@@ -551,13 +555,13 @@ SSWReStore >> clearTableCache [
 		clearNextIDCache
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> clearTransaction [
 
 	self transaction: nil
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> clearTxn [
 
 	"Clear down any active database txn (transaction)"
@@ -565,19 +569,19 @@ SSWReStore >> clearTxn [
 	[self connection rollbackTxn] on: Error do: [ :exc | exc return: nil]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> columnsForFields: aCollectionOfDBFields [
 
 	^self connection columnsForFields: aCollectionOfDBFields
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> columnsInTable: anSSWDBTable [
 
 	^self connection columnsInTable: anSSWDBTable
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> commit: anObject [
 
 	"Commit changes to anObject"
@@ -585,7 +589,7 @@ SSWReStore >> commit: anObject [
 	^self commitAll: {anObject}
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> commitAll: aCollection [
 
 	"Alternative transaction model - commit any changes made to the members of aCollection.
@@ -599,7 +603,7 @@ SSWReStore >> commitAll: aCollection [
 		[self evaluateInTransaction: [aCollection do: [ :each | each _commitIn: self]]]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> commitTransaction [
 
 	"Trap and attempt to recover from errors during commit (Issue#0023)"
@@ -620,7 +624,7 @@ SSWReStore >> commitTransaction [
 		success]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> connect [
 
 	"Connect to the database, initializing the receiver"
@@ -632,7 +636,7 @@ SSWReStore >> connect [
 	self postConnect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> connection [
 
 	"connection stores the DBConnection with which the receiver communicates with the database"
@@ -640,7 +644,7 @@ SSWReStore >> connection [
 	^connection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> connection: aDBConnection [
 
 	"connection stores the DBConnection with which the receiver communicates with the database"
@@ -648,7 +652,7 @@ SSWReStore >> connection: aDBConnection [
 	connection := aDBConnection
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> createProxyForNewObject: anObject [
 
 	"Create and return a proxy for the given non-persistent object.
@@ -675,7 +679,7 @@ SSWReStore >> createProxyForNewObject: anObject [
 	^proxy
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> createProxyForObjectOfClass: aClass withID: anInteger [
 
 	"Return an unrecovered proxy for the given class/ID"
@@ -686,7 +690,7 @@ SSWReStore >> createProxyForObjectOfClass: aClass withID: anInteger [
 			yourself
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> createProxyForRow: aDBRow fromTable: aDBTable withID: anInteger [
 
 	"Patched for issue 120-xxx	_intern the proxy before recovery (in case it directly references itself)
@@ -705,7 +709,7 @@ SSWReStore >> createProxyForRow: aDBRow fromTable: aDBTable withID: anInteger [
 	^proxy yourself		
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> createTableRecordFor: anSSWDBTable [
 
 	"Private - Create in the database the DBTableRecord for aClass."
@@ -725,19 +729,19 @@ SSWReStore >> createTableRecordFor: anSSWDBTable [
 	self evaluateInTxn: [self insertProxy: record. true]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> dbErrorClass [
 
 	^self connection dbErrorClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> dbIncludesTable: aDBTable [
 
 	^(self dbTableNamesFor: aDBTable namespace) includes: aDBTable name asUppercase
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> dbIncludesTableForClass: aClass [
 
 	^(self tableForClass: aClass ifAbsent: [nil])
@@ -745,7 +749,7 @@ SSWReStore >> dbIncludesTableForClass: aClass [
 		ifNotNil: [ :table | self dbIncludesTable: table]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> dbTableNames [
 
 	"dbTableNames stores a Dictionary mapping database namespaces (schemas/databases, empty String for the default) to collections of table names (Strings) in that namespace'.
@@ -756,7 +760,7 @@ SSWReStore >> dbTableNames [
 	^dbTableNames ifNil: [dbTableNames := Dictionary new]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> dbTableNames: aCollectionOrNil [
 
 	"dbTableNames stores a Dictionary mapping database namespaces (schemas/databases, empty String for the default) to collections of table names (Strings) in that namespace'.
@@ -767,13 +771,13 @@ SSWReStore >> dbTableNames: aCollectionOrNil [
 	dbTableNames := aCollectionOrNil
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> dbTableNamesFor: aNamespaceOrNil [
 
 	^self dbTableNames at: (aNamespaceOrNil ifNil: ['']) ifAbsentPut: [(self connection tablesInNamespace: aNamespaceOrNil) collect: [ :each | each asUppercase]]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> debugTo: aStreamOrNil [
 
 	"Set the debug (logging) mode of the receiver:
@@ -783,13 +787,13 @@ SSWReStore >> debugTo: aStreamOrNil [
 	self connection debugStream: aStreamOrNil
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStore >> defaultReadAllBatchSize [
 
 	^100
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> deferredObjectOfClass: aClass withID: anInteger [
 
 	"Return the object with the given class/ID from the receiver's proxyCache.
@@ -799,7 +803,7 @@ SSWReStore >> deferredObjectOfClass: aClass withID: anInteger [
 		[self createProxyForObjectOfClass: aClass withID: anInteger]
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> deferredObjectOfClass: aClass withID: anInteger version: versionInteger [
 
 	"Return the object with the given class/ID from the receiver's proxyCache.
@@ -814,7 +818,7 @@ SSWReStore >> deferredObjectOfClass: aClass withID: anInteger version: versionIn
 		ifUntouched: [ :proxy | proxy _version < versionInteger ifTrue: [proxy _forgetProxiedObject]. proxy]
 ]
 
-{ #category : #'read/write objects' }
+{ #category : 'read/write objects' }
 SSWReStore >> deleteProxy: aProxydObject [
 
 	"Delete aProxydObject from the database"
@@ -832,13 +836,13 @@ SSWReStore >> deleteProxy: aProxydObject [
 	self transaction addDeletedObject: aProxydObject
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> deregisterProxy: anSSWDBObjectProxy [
 
 	self uncacheObject: anSSWDBObjectProxy
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> destroyAllClasses [
 
 	"USE WITH EXTREME CAUTION.
@@ -857,7 +861,7 @@ SSWReStore >> destroyAllClasses [
 	self evaluateAsTransaction: [self unstoreNextIDsForTables: droppedTables]] ensure: [self clearDBTableNames]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> destroyAllTables [
 
 	"USE WITH EXTREME CAUTION - DEPENDING ON YOUR DATABASE - THIS MAY DELETE REQUIRED SYSTEM TABLES.
@@ -870,7 +874,7 @@ SSWReStore >> destroyAllTables [
 			ensure: [self clearDBTableNames]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> destroyClass: aClass [
 
 	"Remove from the database the definition(s) of the table(s) associated with the given class"
@@ -884,7 +888,7 @@ SSWReStore >> destroyClass: aClass [
 		ifFalse: [(self instancesOf: aClass) unstoreAll]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> destroyTable: aTable [
 
 	"Remove from the database the definition of the given table (and any associated tables)"
@@ -896,7 +900,7 @@ SSWReStore >> destroyTable: aTable [
 		true]] ensure: [self clearDBTableNames]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> detach [
 
 	"Detach the receiver from its connection, returning the connection.
@@ -917,13 +921,13 @@ SSWReStore >> detach [
 	^oldConnection
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> disaffiliateWith: anObject [
 
 	self affiliations removeKey: anObject ifAbsent: [self error: 'not affiliated with ', anObject printString]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> disconnect [
 
 	"Disconnect from the database and clear all caches"
@@ -933,7 +937,7 @@ SSWReStore >> disconnect [
 	self hardDisconnect
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> enableFullTableRecords [
 
 	"Enable the use of full table records - intended for existing databases without this enabled"
@@ -952,7 +956,7 @@ SSWReStore >> enableFullTableRecords [
 
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> ensureCanChangeTransactionMode [
 
 	"Cannot change mode if connected to DB"
@@ -960,13 +964,13 @@ SSWReStore >> ensureCanChangeTransactionMode [
 	self isConnected ifTrue: [self error: 'Cannot change transaction mode whilst connected']
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> ensureIsActiveInCurrentTransaction: anObject [
 
 	^self transaction ensureIsActive: anObject
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> ensureNoActiveTransaction [
 
 	self hasTransaction ifTrue:
@@ -975,13 +979,13 @@ SSWReStore >> ensureNoActiveTransaction [
 			ifFalse: [self error: 'Active transaction - cannot proceed']]
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 SSWReStore >> enterDebugMode [
 
 	self isDebugging: true
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> evaluateAsTransaction: aBlock [
 
 	"Return whether the commit succeeded"
@@ -991,7 +995,7 @@ SSWReStore >> evaluateAsTransaction: aBlock [
 	self commitTransaction] ifCurtailed: [self rollbackTransaction]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> evaluateAsTransactionUntilSuccess: aBlock [
 
 	"Evaluate aBlock within a transaction then commit.
@@ -1005,7 +1009,7 @@ SSWReStore >> evaluateAsTransactionUntilSuccess: aBlock [
 			[self rollbackAndRefreshTransaction]] ifCurtailed: [self rollbackTransaction]]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> evaluateAsTxn: aBlock [
 
 	"Evaluate aBlock within a database transaction (Txn in Dolphin DBConnect parlance).
@@ -1015,7 +1019,7 @@ SSWReStore >> evaluateAsTxn: aBlock [
 	^self connection evaluateAsTxn: aBlock
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> evaluateInTransaction: aBlock [
 
 	"Evaluate aBlock within a transaction:
@@ -1030,7 +1034,7 @@ SSWReStore >> evaluateInTransaction: aBlock [
 		ifFalse: [self evaluateAsTransaction: aBlock]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> evaluateInTxn: aBlock [
 
 	"Private - If the receiver's connection is currently within a txn (database transaction),
@@ -1041,7 +1045,7 @@ SSWReStore >> evaluateInTxn: aBlock [
 		ifFalse: [self evaluateAsTxn: aBlock]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> executeQuery: anSSWSQLQuery [
 
 	"Execute the given query.
@@ -1051,7 +1055,7 @@ SSWReStore >> executeQuery: anSSWSQLQuery [
 	^self executeQuery: anSSWSQLQuery cursoredFetch: false
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
 
 	"Execute the given query.
@@ -1066,13 +1070,13 @@ SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
 			ifFalse: [[statement rowsAffected] ensure: [statement free]]]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> executeSQL: aString [
 
 	^self connection exec: aString
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> executeSQLAsTxn: aCollectionOfStrings [
 
 	"Raw SQL execution - for privileged clients only"
@@ -1082,7 +1086,7 @@ SSWReStore >> executeSQLAsTxn: aCollectionOfStrings [
 		true]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> executeSQLFrom: aBlock [
 
 	"Evaluate aBlock with a new SQLWriteStream, evaluating the contents.
@@ -1095,7 +1099,7 @@ SSWReStore >> executeSQLFrom: aBlock [
 	^self executeSQL: stream contents
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> fetchObjectOfClass: aClass withQuery: anSSWSQLQuery ifNone: aBlock [
 
 	| row |
@@ -1107,19 +1111,19 @@ SSWReStore >> fetchObjectOfClass: aClass withQuery: anSSWSQLQuery ifNone: aBlock
 		ifFalse: [self objectFromRow: row table: (self tableForClass: aClass)]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> fetchObjectsFromTable: aDBTable withQuery: anSSWSQLQuery into: aCollection [
 
 	self rowsFromQuery: anSSWSQLQuery do: [ :row | aCollection _dbAdd: (self objectFromRow: row table: aDBTable)]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> fetchObjectsOfClass: aClass withQuery: anSSWSQLQuery into: aCollection [
 
 	^self fetchObjectsFromTable: (self tableForClass: aClass) withQuery: anSSWSQLQuery into: aCollection
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> fetchObjectsOfClass: aClass withStatement: aDBPreparedStatement into: aCollection [
 
 	| table |
@@ -1131,7 +1135,7 @@ SSWReStore >> fetchObjectsOfClass: aClass withStatement: aDBPreparedStatement in
 		keysAndValuesDo: [ :index :row | aCollection _dbAdd: (self objectFromRow: row table: table) suggestedIndex: index]
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> finalize [
 
 	"Ensure the receiver is disconnected prior to GC  (issue#0016)"
@@ -1139,13 +1143,13 @@ SSWReStore >> finalize [
 	[self disconnect] on: Error do: [ :sig | "Ignore possible 'not connected' error; refactor to avoid this" sig return: nil]	
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> forceRefresh: anObject [
 
 	self forceRefreshAll: {anObject}
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> forceRefreshAll: aCollection [
 
 	self transactionCritical:
@@ -1155,13 +1159,13 @@ SSWReStore >> forceRefreshAll: aCollection [
 		aCollection do: [ :each | each _forceRefreshIn: self]]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> forgetClass: aClass [
 
 	(self tableCache removeKey: aClass ifAbsent: []) ifNotNil: [ :table | self connection forgetTable: table]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> fullTableRecordFor: anSSWDBTable [
 
 	"Private - Return the TableRecord (ID manager) for the given table, using full name lookup.
@@ -1177,7 +1181,7 @@ SSWReStore >> fullTableRecordFor: anSSWDBTable [
 			ifFalse: [self nextIDCache at: anSSWDBTable put: record]]
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 SSWReStore >> halt [
 
 	"Put the receiver into debug mode first"
@@ -1186,7 +1190,7 @@ SSWReStore >> halt [
 	super halt
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> hardDisconnect [
 
 	"Disconnect from the database and clear all caches"
@@ -1197,7 +1201,7 @@ SSWReStore >> hardDisconnect [
 		postDisconnect
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> hasActiveAffiliation [
 
 	self hasAffiliations ifFalse: [^false].
@@ -1207,13 +1211,13 @@ SSWReStore >> hasActiveAffiliation [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> hasAffiliations [
 
 	^affiliations notNil
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> hasChanged: anObject [
 
 	"Return true if anObject has changes that would be persisted by commitObjects:"
@@ -1221,26 +1225,26 @@ SSWReStore >> hasChanged: anObject [
 	^anObject _checkHasChangedIn: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> hasConnection [
 
 	^self connection notNil
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> hasTransaction [
 
 	^self transaction notNil
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> hasTransactionChanges [
 
 	"Critical due to hasChanges interrogating the internals of the transaction"
 	^self transactionCritical: [self isTransactionInProgress and: [self transaction hasChanges]]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> haveAnyChanged: aCollection [
 
 	"Return true if any of the objects in aCollection have changes that would be persisted by commitObjects:"
@@ -1248,7 +1252,7 @@ SSWReStore >> haveAnyChanged: aCollection [
 	^aCollection anySatisfy: [ :each | self hasChanged: each]
 ]
 
-{ #category : #'read/write objects' }
+{ #category : 'read/write objects' }
 SSWReStore >> insertProxy: aProxydObject [
 
 	"aProxydObject is a proxy which is not yet persistent. Insert it into the database"
@@ -1262,19 +1266,19 @@ SSWReStore >> insertProxy: aProxydObject [
 	statement exec; close
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> instancesOf: aClass [
 
 	^SSWDBInstancesCollection forClass: aClass in: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> isAffiliatedWith: anObject [
 
 	^self hasAffiliations and: [self affiliations includesKey: anObject]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> isClassPersistent: aClass [
 
 	"Return a Boolean indicating whether the given class is a persistent class
@@ -1285,7 +1289,7 @@ SSWReStore >> isClassPersistent: aClass [
 		[(self addClass: aClass) notNil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> isConnected [
 
 	"Pass-thru to the connection"
@@ -1293,7 +1297,7 @@ SSWReStore >> isConnected [
 	^self hasConnection and: [self connection isConnected]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> isDebugging [
 
 	"When isDebugging is true the receiver will adjust its behaviour to facilitate easier debugging within ReStore code. 
@@ -1306,7 +1310,7 @@ SSWReStore >> isDebugging [
 	^isDebugging
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> isDebugging: aBoolean [
 
 	"When isDebugging is true the receiver will adjust its behaviour to facilitate easier debugging within ReStore code. 
@@ -1319,31 +1323,31 @@ SSWReStore >> isDebugging: aBoolean [
 	isDebugging := aBoolean
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> isInCurrentTransaction: anObject [
 
 	^self transaction includesProxiedObject: anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> isSystemClass: aClass [
 
 	^self persistentSystemClasses includes: aClass
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> isTransactionInProgress [
 
 	^self hasTransaction and: [self transaction isDumb not]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> lazyRefresh: anObject [
 
 	self lazyRefreshAll: {anObject}
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> lazyRefreshAll: aCollection [
 
 	"Lazy-refresh the elements of aCollection - just forget the actual objects; they will be lazily re-read (and hence refreshed) when next referenced"
@@ -1355,19 +1359,19 @@ SSWReStore >> lazyRefreshAll: aCollection [
 		aCollection do: [ :each | each _lazyRefreshIn: self]]
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 SSWReStore >> leaveDebugMode [
 
 	self isDebugging: false
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> mustBeConnected [
 	
 	self isConnected ifFalse: [self error: 'Not connected']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> nextIDCache [
 
 	"nextIDCache stores a Dictionary mapping SSWDBTables 
@@ -1376,7 +1380,7 @@ SSWReStore >> nextIDCache [
 	^nextIDCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> nextIDCache: anIdentityDictionary [
 
 	"nextIDCache stores a Dictionary mapping SSWDBTables 
@@ -1385,7 +1389,7 @@ SSWReStore >> nextIDCache: anIdentityDictionary [
 	nextIDCache := anIdentityDictionary
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> nextIDForTable: anSSWDBTable [
 
 	"Return the next ID for the given table, updating the table's database record accordingly.
@@ -1410,7 +1414,7 @@ SSWReStore >> nextIDForTable: anSSWDBTable [
 	^self nextIDForTable: anSSWDBTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> nextIDStatement [
 
 	^nextIDStatement ifNil: 
@@ -1425,12 +1429,12 @@ SSWReStore >> nextIDStatement [
 					yourself)]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> nextIDStatement: anObject [
 	nextIDStatement := anObject
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> nextShortTableNameFor: anSSWDBTable [
 
 	"Private - Return a unique name for anSSWDBTable, within the size limits of the database"
@@ -1456,14 +1460,14 @@ SSWReStore >> nextShortTableNameFor: anSSWDBTable [
 	^shortName
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> objectFromRow: aDatabaseRow table: anSSWDBTable [
 
 	"Return the proxyd object represented by the given row from the given table.
 	If the required proxy object is not in the cache, create it.
 	If the object is already recovered, refresh it from the row if it's not been changed in the image"
 	
-	^(aDatabaseRow lookupField: anSSWDBTable idField) ifNotNil: 
+	^(aDatabaseRow lookupIDField: anSSWDBTable idField) ifNotNil: 
 		[ :id | 
 		self 
 			cachedObjectOfClass: (anSSWDBTable instanceClassFromRow: aDatabaseRow)
@@ -1473,7 +1477,7 @@ SSWReStore >> objectFromRow: aDatabaseRow table: anSSWDBTable [
 			ifUntouched: [ :proxy | proxy _refreshFromRow: aDatabaseRow table: anSSWDBTable]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> objectProxyClass [
 
 	"objectProxyClass stores the class of Proxy to use for Objects (as opposed to collections).
@@ -1482,7 +1486,7 @@ SSWReStore >> objectProxyClass [
 	^objectProxyClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> objectProxyClass: aClass [
 
 	"objectProxyClass stores the class of Proxy to use for Objects (as opposed to collections).
@@ -1491,13 +1495,13 @@ SSWReStore >> objectProxyClass: aClass [
 	objectProxyClass := aClass
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> objectProxyClassFor: aClass [
 
 	^aClass preferredObjectProxyClass ifNil: [self objectProxyClass]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> onStartup [
 
 	self connection isNil ifFalse: [self connection onStartup].
@@ -1507,7 +1511,7 @@ SSWReStore >> onStartup [
 	self clearStatementCache
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> openConnection [
 
 	"Open the receiver's connection to the database"
@@ -1521,7 +1525,7 @@ SSWReStore >> openConnection [
 	self connection postConnect
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> persistentSystemClasses [
 
 	"Private - Return all ReStore system classes that exist in the database"
@@ -1529,7 +1533,7 @@ SSWReStore >> persistentSystemClasses [
 	^Array with: SSWDBTableRecord
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> postConnect [
 
 	"Reinitializate the mutex"
@@ -1541,7 +1545,7 @@ SSWReStore >> postConnect [
 	self class activated: self
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> postDisconnect [
 
 	self clearAllCaches.
@@ -1549,7 +1553,7 @@ SSWReStore >> postDisconnect [
 	self class deactivated: self
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> preDisconnect [
 
 	"Statements may need an active connection in order to be free'd correctly, so this is done pre-disconnect"
@@ -1557,7 +1561,7 @@ SSWReStore >> preDisconnect [
 	self clearStatementCache
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> prepareStatementForQuery: anSSWSQLQuery [
 
 	"Prepare (including column defs) and return a DBPreparedStatement for the given query"
@@ -1567,7 +1571,7 @@ SSWReStore >> prepareStatementForQuery: anSSWSQLQuery [
 	^self connection prepareQuery: anSSWSQLQuery
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> proxy: anSSWDBProxy forwarded: aMessage [
 
 	"anSSWDBProxy has just forwarded aMessage to its proxiedObject.
@@ -1578,7 +1582,7 @@ SSWReStore >> proxy: anSSWDBProxy forwarded: aMessage [
 	self transaction proxy: anSSWDBProxy forwarded: aMessage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> proxyCache [
 
 	"proxyCache stores a Dictionary mapping classes of persistent objects 
@@ -1589,7 +1593,7 @@ SSWReStore >> proxyCache [
 	^proxyCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> proxyCache: aDictionary [
 
 	"proxyCache stores a Dictionary mapping classes of persistent objects 
@@ -1600,7 +1604,7 @@ SSWReStore >> proxyCache: aDictionary [
 	proxyCache := aDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> readAllBatchSize [
 
 	"When using the readAll function to mass-read components for all of a collection's elements, a parameteised statement is used with a fixed number of query parameters.
@@ -1613,7 +1617,7 @@ SSWReStore >> readAllBatchSize [
 	^readAllBatchSize ifNil: [self defaultReadAllBatchSize]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> readAllBatchSize: anInteger [
 
 	"When using the readAll function to mass-read components for all of a collection's elements, a parameteised statement is used with a fixed number of query parameters.
@@ -1626,14 +1630,14 @@ SSWReStore >> readAllBatchSize: anInteger [
 	readAllBatchSize := anInteger
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> reconnect [
 
 	self isConnected ifTrue: [self disconnect].
 	self connect
 ]
 
-{ #category : #'read/write objects' }
+{ #category : 'read/write objects' }
 SSWReStore >> recoverObjectOfClass: aClass withID: anID into: anSSWDBObjectProxy [
 
 	"Optimised query for recovering objects into an unrecovered proxy.
@@ -1654,7 +1658,7 @@ SSWReStore >> recoverObjectOfClass: aClass withID: anID into: anSSWDBObjectProxy
 		ifFalse: [table recoverInstanceFromRow: row into: anSSWDBObjectProxy]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> refresh: anObject [
 
 	"Refresh anObject according to its own strategy (e.g. always; only if changed; lazy)"
@@ -1662,7 +1666,7 @@ SSWReStore >> refresh: anObject [
 	self refreshAll: {anObject}
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> refreshAll: aCollection [
 
 	"Refresh all elements of aCollection according to their own strategy (e.g. always; only if changed; lazy)"
@@ -1678,7 +1682,7 @@ SSWReStore >> refreshAll: aCollection [
 		aCollection do: [ :each | each _refreshIn: self]]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> refreshAllIfUpdated: aCollection [
 
 	"Refresh those members of aCollection which have been updated in the database"
@@ -1694,7 +1698,7 @@ SSWReStore >> refreshAllIfUpdated: aCollection [
 		aCollection do: [ :each | each _refreshIfUpdatedIn: self]]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> refreshAllObjects [
 
 	"Patched for issue 120-010 (revised)"
@@ -1713,7 +1717,7 @@ SSWReStore >> refreshAllObjects [
 						[each _collectionProxies do: [ :coll | coll _forgetProxiedObject]]]]]]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> refreshAndRollforwardTransaction [
 
 	self isTransactionInProgress ifFalse: [self error: 'No transaction in progress'].
@@ -1723,7 +1727,7 @@ SSWReStore >> refreshAndRollforwardTransaction [
 		self transaction refreshAndRollforward]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> refreshClasses [
 
 	"Regenerate each table in the tableCache from its class"
@@ -1731,13 +1735,13 @@ SSWReStore >> refreshClasses [
 	self tableCache copy keysDo: [ :class | self addClass: class]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> refreshIfUpdated: anObject [
 
 	self refreshAllIfUpdated: {anObject}
 ]
 
-{ #category : #'read/write objects' }
+{ #category : 'read/write objects' }
 SSWReStore >> refreshProxyIfUpdated: anSSWDBObjectProxy [
 
 	"Refresh the contents of anSSWDBObjectProxy if the version in the database has been updated
@@ -1760,24 +1764,24 @@ SSWReStore >> refreshProxyIfUpdated: anSSWDBObjectProxy [
 		[anSSWDBObjectProxy _proxiedObjectMissing. 
 		^true].
 
-	^(row lookupField: table versionControlField) ~= anSSWDBObjectProxy _version 
+	^(table versionControlField lookupIn: row) ~= anSSWDBObjectProxy _version 
 		ifTrue: [anSSWDBObjectProxy _forceRefresh. true] 
 		ifFalse: [false]
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> registerProxy: anSSWDBObjectProxy [
 
 	self cacheObject: anSSWDBObjectProxy
 ]
 
-{ #category : #'proxy manipulation' }
+{ #category : 'proxy manipulation' }
 SSWReStore >> removeFromTransaction: aProxy [
 
 	self transaction removeProxy: aProxy
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> renameTable: oldTable to: newTable [
 
 	"Private - Rename the old-named table to the new name, updating relevant objects"
@@ -1805,7 +1809,7 @@ SSWReStore >> renameTable: oldTable to: newTable [
 		self renameTable: oldContainedTable to: newContainedTable]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> renamedClass: aClass from: aSymbol [
 
 	"Rename the table related to aClass to match its new name.
@@ -1835,7 +1839,7 @@ SSWReStore >> renamedClass: aClass from: aSymbol [
 			ensure: [self clearDBTableNames]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> renamedInstVar: newInstVar from: oldInstVar in: aClass [
 
 	"Rename the column corresponding to oldInstVar (a Symbol) in aClass to match newInstVar.
@@ -1865,7 +1869,7 @@ SSWReStore >> renamedInstVar: newInstVar from: oldInstVar in: aClass [
 	definitionTable == table ifFalse: [self addClassWithSubclasses: definitionTable instanceClass]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> resetClasses [
 
 	self clearTableCache.
@@ -1874,13 +1878,13 @@ SSWReStore >> resetClasses [
 	self persistentSystemClasses do: [ :each | self addClass: each]
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> rollback: anObject [
 
 	self rollbackAll: {anObject}
 ]
 
-{ #category : #'transactionless api' }
+{ #category : 'transactionless api' }
 SSWReStore >> rollbackAll: aCollection [
 
 	"Rollback any changes made to the members of aCollection"
@@ -1890,7 +1894,7 @@ SSWReStore >> rollbackAll: aCollection [
 		self _rollbackObjects: aCollection]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> rollbackAndRefreshTransaction [
 
 	self isTransactionInProgress ifFalse: [self error: 'No transaction in progress'].
@@ -1901,7 +1905,7 @@ SSWReStore >> rollbackAndRefreshTransaction [
 		self transaction: self transaction ownerTransaction]
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> rollbackTransaction [
 
 	| rolledBack |
@@ -1919,7 +1923,7 @@ SSWReStore >> rollbackTransaction [
 	self hasTransaction ifTrue: [self softRollback]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> rowFromQuery: anSSWSQLQuery [
 
 	"Return the sole/first row obtained by execuing anSSWSQLQuery"
@@ -1935,7 +1939,7 @@ SSWReStore >> rowFromQuery: anSSWSQLQuery [
 	^row
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> rowsFromQuery: anSSWSQLQuery do: aBlock [
 
 	| results |
@@ -1947,7 +1951,7 @@ SSWReStore >> rowsFromQuery: anSSWSQLQuery do: aBlock [
 		free
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> rowsFromStatement: aDBPreparedStatement do: aBlock [
 
 	aDBPreparedStatement exec.
@@ -1955,7 +1959,7 @@ SSWReStore >> rowsFromStatement: aDBPreparedStatement do: aBlock [
 	[aDBPreparedStatement results do: [ :row | aBlock value: row]] ensure: [aDBPreparedStatement close]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 SSWReStore >> rowsFromStatement: aDBPreparedStatement keysAndValuesDo: aBlock [
 
 	aDBPreparedStatement exec.
@@ -1963,7 +1967,7 @@ SSWReStore >> rowsFromStatement: aDBPreparedStatement keysAndValuesDo: aBlock [
 	[aDBPreparedStatement results keysAndValuesDo: [ :index :row | aBlock value: index value: row]] ensure: [aDBPreparedStatement close]
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> selectChanged: aCollection [
 
 	"Return those elements of aCollection which have changed"
@@ -1971,19 +1975,19 @@ SSWReStore >> selectChanged: aCollection [
 	^aCollection inject: IdentitySet new into: [ :all :each | all addAll: (each _changedObjectsIn: self)]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> setDefaultDebugMode [
 
 	self isDebugging: SSWReStore isDebugging
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> setDefaultTransactionMode [
 
 	self useTransactionsWithVersioning
 ]
 
-{ #category : #connection }
+{ #category : 'connection' }
 SSWReStore >> softDisconnect [
 
 	"Disconnect from the DB but do not clear the proxy cache"
@@ -1992,7 +1996,7 @@ SSWReStore >> softDisconnect [
 	self connection close.
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> softRollback [
 
 	"Carry out a 'soft rollback'. Note this is different from rollbackTransaction:
@@ -2013,13 +2017,13 @@ SSWReStore >> softRollback [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> sqlDialect [
 
 	^self connection sqlDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> supportsFullTableRecords [
 
 	"supportsFullTableRecords stores a Boolean indicating whether the receiver
@@ -2034,7 +2038,7 @@ SSWReStore >> supportsFullTableRecords [
 	^supportsFullTableRecords
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> supportsFullTableRecords: aBoolean [
 
 	"supportsFullTableRecords stores a Boolean indicating whether the receiver
@@ -2047,13 +2051,13 @@ SSWReStore >> supportsFullTableRecords: aBoolean [
 	supportsFullTableRecords := aBoolean
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStore >> supportsVersioning [
 
 	^self objectProxyClass = SSWDBVersionedCachingObjectProxy
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> synchronizeAllClasses [
 
 	"Synchronize the definitions of all the tables associated with the receiver's classes"
@@ -2071,7 +2075,7 @@ SSWReStore >> synchronizeAllClasses [
 			ensure: [self clearDBTableNames]
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> synchronizeClass: aClass [
 
 	"Synchronize the definition(s) of the table(s) associated with the given class"
@@ -2087,7 +2091,7 @@ SSWReStore >> synchronizeClass: aClass [
 			ensure: [self clearDBTableNames]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> tableCache [
 
 	"tableCache stores a Dictionary mapping classes (known as persistent to the receiver)
@@ -2096,7 +2100,7 @@ SSWReStore >> tableCache [
 	^tableCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> tableCache: anIdentityDictionary [
 
 	"tableCache stores a Dictionary mapping classes (known as persistent to the receiver)
@@ -2105,25 +2109,25 @@ SSWReStore >> tableCache: anIdentityDictionary [
 	tableCache := anIdentityDictionary
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> tableForClass: aClass [
 
 	^self tableForClass: aClass ifAbsent: [self addClass: aClass]
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> tableForClass: aClass ifAbsent: aBlock [
 	
 	^self tableCache at: aClass ifAbsent: aBlock
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> tableRecordFor: aDBTable [
 
 	^self nextIDCache at: aDBTable ifAbsentPut: [(self instancesOf: SSWDBTableRecord) detect: [ :seq | seq tableName = aDBTable name] ifNone: [self error: 'nextID not found for table ', aDBTable name]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transaction [
 
 	"transaction stores an SSWDBTransaction which manages 
@@ -2132,7 +2136,7 @@ SSWReStore >> transaction [
 	^transaction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transaction: anSSWDBTransaction [
 
 	"transaction stores an SSWDBTransaction which manages 
@@ -2141,7 +2145,7 @@ SSWReStore >> transaction: anSSWDBTransaction [
 	transaction := anSSWDBTransaction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transactionClass [
 
 	"transactionClass stores the class of transaction (SSWDBTransaction subclass) 
@@ -2150,7 +2154,7 @@ SSWReStore >> transactionClass [
 	^transactionClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transactionClass: aSSWDBTransactionSubclass [
 
 	"transactionClass stores the class of transaction (SSWDBTransaction subclass) 
@@ -2161,7 +2165,7 @@ SSWReStore >> transactionClass: aSSWDBTransactionSubclass [
 	transactionClass := aSSWDBTransactionSubclass
 ]
 
-{ #category : #'transaction api' }
+{ #category : 'transaction api' }
 SSWReStore >> transactionCommitFailures [
 
 	self isTransactionInProgress ifFalse: [self error: 'No transaction in progress'].
@@ -2171,7 +2175,7 @@ SSWReStore >> transactionCommitFailures [
 		ifFalse: [self error: 'Transaction has not failed commit']
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> transactionCritical: aBlock [
 
 	"Evaluate aBlock under the guard of the transactionMutex"
@@ -2184,7 +2188,7 @@ SSWReStore >> transactionCritical: aBlock [
 			ifFalse: [self transactionMutex critical: aBlock]]
 ]
 
-{ #category : #'transaction management' }
+{ #category : 'transaction management' }
 SSWReStore >> transactionCritical: aBlock ifLocked: lockedBlock [
 
 	"Evaluate aBlock under the guard of the transactionMutex"
@@ -2192,7 +2196,7 @@ SSWReStore >> transactionCritical: aBlock ifLocked: lockedBlock [
 	^self transactionMutex critical: aBlock ifLocked: lockedBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transactionMutex [
 
 	"transactionMutex holds a Mutex which guards access to critical areas of transaction functionality.
@@ -2201,7 +2205,7 @@ SSWReStore >> transactionMutex [
 	^transactionMutex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStore >> transactionMutex: aMutex [
 
 	"transactionMutex holds a Mutex which guards access to critical areas of transaction functionality.
@@ -2210,7 +2214,7 @@ SSWReStore >> transactionMutex: aMutex [
 	transactionMutex := aMutex
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> translateMessage: aSymbol toFunction: aSQLFunction [
 
 	"Add aSymbol>>aSQLFunction as an additional message>>function translation"
@@ -2220,7 +2224,7 @@ SSWReStore >> translateMessage: aSymbol toFunction: aSQLFunction [
 	self sqlDialect translateMessage: aSymbol toFunction: aSQLFunction
 ]
 
-{ #category : #'cache management' }
+{ #category : 'cache management' }
 SSWReStore >> uncacheObject: aPersistentObjectProxy [
 
 	"Remove the given persistent object proxy to the receiver's cache"
@@ -2229,7 +2233,7 @@ SSWReStore >> uncacheObject: aPersistentObjectProxy [
 	(self classCacheFor: aPersistentObjectProxy _class) removeKey: aPersistentObjectProxy _id
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> unstoreNextIDsForTables: aCollection [
 
 	"Forget and unstore the NEXT_ID entries for aCollection of (dropped) SSWDBTables"
@@ -2244,7 +2248,7 @@ SSWReStore >> unstoreNextIDsForTables: aCollection [
 	((self instancesOf: SSWDBTableRecord) satisfying: [ :nextID | droppedNames includes: nextID tableName]) unstoreAll
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> useTransactionsWithVersioning [
 
 	"Set the receiver to use (single) transactions with version counting
@@ -2259,7 +2263,7 @@ SSWReStore >> useTransactionsWithVersioning [
 
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWReStore >> useTransactionsWithoutVersioning [
 
 	"Set the receiver to use (single) transactions *without* version counting
@@ -2273,7 +2277,7 @@ SSWReStore >> useTransactionsWithoutVersioning [
 
 ]
 
-{ #category : #'class maintenance' }
+{ #category : 'class maintenance' }
 SSWReStore >> validateTable: anSSWDBTable [
 
 	"Private - At present, validation just checks that the table name is within the permitted size,

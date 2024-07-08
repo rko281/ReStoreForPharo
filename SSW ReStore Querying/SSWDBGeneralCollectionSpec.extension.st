@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBGeneralCollectionSpec }
+Extension { #name : 'SSWDBGeneralCollectionSpec' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWDBGeneralCollectionSpec >> dbBlockCollectionReceiver [
 
 	"Return a block receiver object suitable for parsing (mainly) subqueries involving the receiver"

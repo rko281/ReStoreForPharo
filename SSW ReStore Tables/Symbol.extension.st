@@ -1,12 +1,12 @@
-Extension { #name : #Symbol }
+Extension { #name : 'Symbol' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Symbol >> asInstVarName [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Symbol >> databaseFieldNameIn: anSSWDBTable [
 
 	"Return the corresponding field name of the receiver in anSSWDBTable"
@@ -14,7 +14,7 @@ Symbol >> databaseFieldNameIn: anSSWDBTable [
 	^(SSWDBInstVarDefinition name: self) databaseFieldNameIn: anSSWDBTable
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Symbol >> previouslyNamed: aSymbol [
 
 	"Return an object representing the instance variable with the receiver's name, which was previously named aSymbol"
@@ -24,7 +24,7 @@ Symbol >> previouslyNamed: aSymbol [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Symbol >> withDatabaseName: aString [
 
 	"Return an object representing the instance variable with the receiver's name, which is to be mapped to a database field with the name aString"

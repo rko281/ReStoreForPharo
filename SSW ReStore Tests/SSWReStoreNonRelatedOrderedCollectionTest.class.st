@@ -4,30 +4,31 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNonRelatedOrderedCollectionTest,
-	#superclass : #SSWReStoreGenericNonRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreNonRelatedOrderedCollectionTest',
+	#superclass : 'SSWReStoreGenericNonRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedOrderedCollectionTest >> componentDefinition [
 
 	^OrderedCollection of: GenericOwnedTest
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreNonRelatedOrderedCollectionTest >> duplicateInCollection: aCollection [
 
 	^aCollection at: 1 put: aCollection last
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreNonRelatedOrderedCollectionTest >> replaceInCollection: aCollection [
 
 	^(aCollection at: aCollection size) -> (aCollection at: aCollection size put: self templateComponent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedOrderedCollectionTest >> templateCollection [
 
 	^OrderedCollection 
@@ -36,7 +37,7 @@ SSWReStoreNonRelatedOrderedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOrderedCollectionTest >> testCheckHasChangedComponentSwap [
 
 	"Only relevant to non-owned"
@@ -56,7 +57,7 @@ SSWReStoreNonRelatedOrderedCollectionTest >> testCheckHasChangedComponentSwap [
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOrderedCollectionTest >> testCommitComponentSwap [
 
 	"Only relevant to non-owned"
@@ -86,7 +87,7 @@ SSWReStoreNonRelatedOrderedCollectionTest >> testCommitComponentSwap [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOrderedCollectionTest >> testDuplicateEntries [
 
 	"Ensure duplicate entries are handled correctly"
@@ -98,7 +99,7 @@ SSWReStoreNonRelatedOrderedCollectionTest >> testDuplicateEntries [
 	self assert: (self countQueriesDuring: [testObject store]) equals: (1 "for the update" + (self componentDefinition isValueDependent ifTrue: [1] ifFalse: [0]) "1 for the deletion of the overwritten item (if dependent)")
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOrderedCollectionTest >> testRollbackComponentSwap [
 
 	"Only relevant to non-owned"

@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBGeneralCollectionBlockReceiver,
-	#superclass : #SSWDBCollectionBlockReceiver,
+	#name : 'SSWDBGeneralCollectionBlockReceiver',
+	#superclass : 'SSWDBCollectionBlockReceiver',
 	#instVars : [
 		'intermediateCollection'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionBlockReceiver >> collectionParser [
 
 	^self intermediateCollection parser
 
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBGeneralCollectionBlockReceiver >> includes: anObject [
 
 	"Can be done with just the intermediate table"
@@ -27,7 +28,7 @@ SSWDBGeneralCollectionBlockReceiver >> includes: anObject [
 	^self localAnySatisfy: [ :each | each target = anObject]
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBGeneralCollectionBlockReceiver >> includesAssociation: anAssociation [
 
 	"For dictionaires - turn into an equivalent anySatisfy:"
@@ -35,7 +36,7 @@ SSWDBGeneralCollectionBlockReceiver >> includesAssociation: anAssociation [
 	^self localAnySatisfy: [ :each | (each index = anAssociation key) & (each target = anAssociation value)]
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBGeneralCollectionBlockReceiver >> includesKey: anObject [
 
 	"For dictionaires - turn into an equivalent anySatisfy:"
@@ -43,7 +44,7 @@ SSWDBGeneralCollectionBlockReceiver >> includesKey: anObject [
 	^self localAnySatisfy: [ :each | each index = anObject]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionBlockReceiver >> intermediateCollection [
 
 	"Return a stored instances pseudo-collection representing the entries in the intermediate table.
@@ -56,7 +57,7 @@ SSWDBGeneralCollectionBlockReceiver >> intermediateCollection [
 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBGeneralCollectionBlockReceiver >> localAnySatisfy: aBlock [
 
 	"Private - For subqueries requiring only the intermediate table"
@@ -67,7 +68,7 @@ SSWDBGeneralCollectionBlockReceiver >> localAnySatisfy: aBlock [
 			yourself)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBGeneralCollectionBlockReceiver >> qualifyCollectionParserWith: aBlock [
 
 	"Start with the target collection, not the intermediate"
@@ -75,7 +76,7 @@ SSWDBGeneralCollectionBlockReceiver >> qualifyCollectionParserWith: aBlock [
 	self collectionParser qualifyWith: [ :each | aBlock value: each target]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBGeneralCollectionBlockReceiver >> selectQueryFrom: aBlock [
 
 	"Start with the elements of the target collection, not the intermediate table's collection entries"
@@ -83,7 +84,7 @@ SSWDBGeneralCollectionBlockReceiver >> selectQueryFrom: aBlock [
 	^super selectQueryFrom: [ :each | aBlock value: each target]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionBlockReceiver >> targetField [
 
 	"Confusingly, in this context the target field is the source field of the intermediate table. 
@@ -92,7 +93,7 @@ SSWDBGeneralCollectionBlockReceiver >> targetField [
 	^self collectionSpec collectionTable fieldAccessing: #sourceID
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionBlockReceiver >> targetFieldCollectQuery [
 
 	"Confusingly, in this context the target field is the source field of the intermediate table. 
@@ -101,7 +102,7 @@ SSWDBGeneralCollectionBlockReceiver >> targetFieldCollectQuery [
 	^self collectionParser collectQueryFrom: [ :each | each sourceID]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionBlockReceiver >> targetTableFromParser [
 
 	"Ensure the target collection table is included in the parser.

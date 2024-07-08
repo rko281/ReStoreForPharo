@@ -1,14 +1,14 @@
 Class {
-	#name : #SSWDBInstVarWithFieldName,
-	#superclass : #SSWDBInstVarDefinition,
+	#name : 'SSWDBInstVarWithFieldName',
+	#superclass : 'SSWDBInstVarDefinition',
 	#instVars : [
-		'instVar',
 		'fieldName'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarWithFieldName >> databaseFieldNameIn: anSSWDBTable [
 
 	"Use the configured fieldName"
@@ -16,12 +16,12 @@ SSWDBInstVarWithFieldName >> databaseFieldNameIn: anSSWDBTable [
 	^self fieldName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarWithFieldName >> fieldName [
 	^fieldName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarWithFieldName >> fieldName: anObject [
 	fieldName := anObject
 ]

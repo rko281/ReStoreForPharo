@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBTransaction,
-	#superclass : #Object,
-	#category : #'SSW ReStore Main'
+	#name : 'SSWDBTransaction',
+	#superclass : 'Object',
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTransaction >> beginWithin: anotherTransaction [
 
 	"Initialize the receiver transaction as a nested transaction within anotherTransaction.
@@ -18,7 +19,7 @@ SSWDBTransaction >> beginWithin: anotherTransaction [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransaction >> canCommit [
 
 	"Return whether the receiver is capable of committing.
@@ -27,7 +28,7 @@ SSWDBTransaction >> canCommit [
 	^true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTransaction >> commitTo: aDBConnection [
 
 	"Write the changes associated with the receiver transaction.
@@ -36,7 +37,7 @@ SSWDBTransaction >> commitTo: aDBConnection [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransaction >> hasChanges [
 
 	"Return whether receiver contains any changed (modified/created/deleted) objects"
@@ -44,7 +45,7 @@ SSWDBTransaction >> hasChanges [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransaction >> hasFailedCommit [
 
 	"Return whether the receiver's last commit failed"
@@ -52,7 +53,7 @@ SSWDBTransaction >> hasFailedCommit [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransaction >> includesProxy: anSSWDBProxy [
 
 	"Return a Boolean indicating whether the given proxy is contained in this transaction"
@@ -60,7 +61,7 @@ SSWDBTransaction >> includesProxy: anSSWDBProxy [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransaction >> isDumb [
 
 	"Return whether the receiver is a 'dumb' transaction
@@ -69,7 +70,7 @@ SSWDBTransaction >> isDumb [
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTransaction >> ownerTransaction [
 
 	"Return the transaction that the receiver is nested within, or nil if none (root transaction).
@@ -78,13 +79,13 @@ SSWDBTransaction >> ownerTransaction [
 	^self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTransaction >> prepareToCommit [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'proxy tracking' }
+{ #category : 'proxy tracking' }
 SSWDBTransaction >> proxy: aProxydObject forwarded: aMessage [
 
 	"aProxydObject has forwarded the given message to its proxiedObject. 
@@ -93,7 +94,7 @@ SSWDBTransaction >> proxy: aProxydObject forwarded: aMessage [
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBTransaction >> rollback [
 
 	"Forget the changes associated with the receiver transaction.

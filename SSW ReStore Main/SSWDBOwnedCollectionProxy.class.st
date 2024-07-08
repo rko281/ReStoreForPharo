@@ -4,34 +4,35 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOwnedCollectionProxy,
-	#superclass : #SSWDBCollectionProxy,
+	#name : 'SSWDBOwnedCollectionProxy',
+	#superclass : 'SSWDBCollectionProxy',
 	#instVars : [
 		'copyCollection'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _acquireCopyCollection [
 
 	copyCollection := collectionSpec copyCollection: proxiedObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBOwnedCollectionProxy >> _checkHasChanged [
 
 	^self _isDeleted or: [self _isPersistent not or: [collectionSpec hasCollection: proxiedObject anyAdditionsOrRemovalsFrom: copyCollection]]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _commitChangesPhase1 [
 
 	"The only collection-level change is deletion of the entire collection; this is done in phase 2"
 	^true
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _commitChangesPhase2 [
 
 	"Deletion of dependent collection elements - done as part of phase 2 to allow moved elements to first have their owner pointer updated"
@@ -43,7 +44,7 @@ SSWDBOwnedCollectionProxy >> _commitChangesPhase2 [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionProxy >> _copyCollection [
 
 	"The receiver automatically detects changes to its proxiedObject 
@@ -52,7 +53,7 @@ SSWDBOwnedCollectionProxy >> _copyCollection [
 	^copyCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionProxy >> _copyCollection: aCollection [
 
 	"The receiver automatically detects changes to its proxiedObject 
@@ -61,14 +62,14 @@ SSWDBOwnedCollectionProxy >> _copyCollection: aCollection [
 	copyCollection := aCollection
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _forgetProxiedObject [
 
 	copyCollection := nil.
 	super _forgetProxiedObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _postCommitChanges [
 
 	self 
@@ -76,7 +77,7 @@ SSWDBOwnedCollectionProxy >> _postCommitChanges [
 		_acquireCopyCollection
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _prepareToCommitPhase1 [
 
 	"Prepare to 'commit' the receiver by ensuring that all elements added to the	proxiedObject point back to the owner.
@@ -105,7 +106,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase1 [
 	^self _isPersistent
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 
 	"Prepare to 'commit' the receiver by ensuring that elements removed from the receiver have their backpointer nil'd, or are deleted if dependent"
@@ -133,7 +134,7 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 			each _ensureActiveIn: reStore]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionProxy >> _proxiedObject: aCollection [
 
 	"Overriden to set the copyCollection"
@@ -142,7 +143,7 @@ SSWDBOwnedCollectionProxy >> _proxiedObject: aCollection [
 	self _acquireCopyCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionProxy >> _unchangedCollection [
 
 	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"

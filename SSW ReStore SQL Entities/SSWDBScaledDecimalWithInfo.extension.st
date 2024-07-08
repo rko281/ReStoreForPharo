@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBScaledDecimalWithInfo }
+Extension { #name : 'SSWDBScaledDecimalWithInfo' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 SSWDBScaledDecimalWithInfo >> writeSQLTypeOn: aStream  using: anSQLDialect [
 
 	"Form is something like DECIMAL(precision,scale)"

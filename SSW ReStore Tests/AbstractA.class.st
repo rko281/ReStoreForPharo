@@ -1,13 +1,14 @@
 Class {
-	#name : #AbstractA,
-	#superclass : #Object,
+	#name : 'AbstractA',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 AbstractA class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -15,7 +16,7 @@ AbstractA class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 AbstractA class >> shouldSubclassesInheritPersistencyFalse [
 
 	^self ~~ AbstractA

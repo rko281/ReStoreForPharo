@@ -1,6 +1,6 @@
-Extension { #name : #Metaclass }
+Extension { #name : 'Metaclass' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Metaclass class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"Classes are represented by name"

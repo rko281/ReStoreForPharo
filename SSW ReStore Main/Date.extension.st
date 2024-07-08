@@ -1,6 +1,6 @@
-Extension { #name : #Date }
+Extension { #name : 'Date' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Date class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"aValue may be some other object which can convert itself to a Date"

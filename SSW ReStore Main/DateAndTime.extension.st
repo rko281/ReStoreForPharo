@@ -1,6 +1,6 @@
-Extension { #name : #DateAndTime }
+Extension { #name : 'DateAndTime' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 DateAndTime class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"aValue may be nil, a DateAndTime, a Date or a Time depending on database supported types"

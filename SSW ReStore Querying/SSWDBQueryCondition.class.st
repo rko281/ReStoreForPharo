@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryCondition,
-	#superclass : #SSWSQLCondition,
+	#name : 'SSWDBQueryCondition',
+	#superclass : 'SSWSQLCondition',
 	#instVars : [
 		'parser'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> _sqlAnd: aCondition [
 
 	"Private - Bypass the local implementation"
@@ -20,7 +21,7 @@ SSWDBQueryCondition >> _sqlAnd: aCondition [
 	^super sqlAnd: aCondition
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> _sqlOr: aCondition [
 
 	"Private - Bypass the local implementation"
@@ -28,7 +29,7 @@ SSWDBQueryCondition >> _sqlOr: aCondition [
 	^super sqlOr: aCondition
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> addLast: anObject [
 
 	"Received if the receiver is masquerading as a ConctenatedCollection"
@@ -42,7 +43,7 @@ SSWDBQueryCondition >> addLast: anObject [
 		become: self
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryCondition >> asSQLConditions [
 
 	"Convert the receiver to the standard non-query subsystem representation"
@@ -50,7 +51,7 @@ SSWDBQueryCondition >> asSQLConditions [
 	^SSWSQLCondition field: self field is: self operator to: self value
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryCondition >> asSQLFields [
 
 	"Convert the receiver to the standard non-query subsystem representation for fields"
@@ -60,7 +61,7 @@ SSWDBQueryCondition >> asSQLFields [
 		ifFalse: [self asSQLConditions]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> concatenateCondition: aCondition [
 
 	"Since the receiver is a condition and not a FieldCollection (the result of a concatenation), it must be the first condition in the concatenation"
@@ -77,7 +78,7 @@ SSWDBQueryCondition >> concatenateCondition: aCondition [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> concatenatedWith: anObject [
 
 	"Private - Double-despatch entry point"
@@ -85,7 +86,7 @@ SSWDBQueryCondition >> concatenatedWith: anObject [
 	^anObject concatenateCondition: self
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBQueryCondition >> doesNotUnderstand: aMessage [
 	
 	"Attempt to interpret selector as a function message send"
@@ -96,29 +97,29 @@ SSWDBQueryCondition >> doesNotUnderstand: aMessage [
 	^super doesNotUnderstand: aMessage
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryCondition >> forConcatenation [
 
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryCondition >> newCollection [
 
 	^self parser newConditionCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryCondition >> parser [
 	^parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryCondition >> parser: anObject [
 	parser := anObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> sqlAnd: aCondition [
 
 	| argument receiver |
@@ -129,7 +130,7 @@ SSWDBQueryCondition >> sqlAnd: aCondition [
 	^receiver _sqlAnd: argument
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> sqlOr: aCondition [
 
 	| argument receiver |
@@ -140,7 +141,7 @@ SSWDBQueryCondition >> sqlOr: aCondition [
 	^receiver _sqlOr: argument
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBQueryCondition >> withFunction: aString arguments: aCollection [
 
 	"Return an SSWDBFunctionField base on the receiver with the given function String and arguments"
@@ -152,7 +153,7 @@ SSWDBQueryCondition >> withFunction: aString arguments: aCollection [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryCondition >> || anObject [
 
 	"Primarily for multi-field collect: and project: - concatenate with anObject, which may be aBlockEvaluator or another Condition"

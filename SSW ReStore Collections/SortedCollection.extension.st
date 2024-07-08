@@ -1,6 +1,6 @@
-Extension { #name : #SortedCollection }
+Extension { #name : 'SortedCollection' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SortedCollection >> _dbAdd: anObject [
 
 	"For use when instantiating a collection from the database.
@@ -9,7 +9,7 @@ SortedCollection >> _dbAdd: anObject [
 	^super addLast: anObject
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SortedCollection >> orderingSpecsFor: aClass in: aReStore [
 
 	"Convert the receiver's sortBlock into DBOrderingSpecs"
@@ -29,7 +29,7 @@ SortedCollection >> orderingSpecsFor: aClass in: aReStore [
 				ifFalse: [each criteria: field accessor name]]]
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SortedCollection >> ownedCollectionSpecClass [ 
 
 	"Return the class of owned collection spec that is appropriate for this kind of collection"
@@ -37,7 +37,7 @@ SortedCollection >> ownedCollectionSpecClass [
 	^SSWDBSortedOwnedCollectionSpec
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SortedCollection >> staticCollectionSpecClass [ 
 
 	^SSWDBSortedStaticCollectionSpec

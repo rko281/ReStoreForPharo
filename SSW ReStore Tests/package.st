@@ -1,1 +1,1 @@
-Package { #name : #'SSW ReStore Tests' }
+Package { #name : 'SSW ReStore Tests' }

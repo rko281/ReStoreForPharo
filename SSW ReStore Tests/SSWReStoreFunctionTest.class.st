@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreFunctionTest,
-	#superclass : #SSWReStoreQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreFunctionTest',
+	#superclass : 'SSWReStoreQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreFunctionTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreFunctionTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -23,7 +24,7 @@ SSWReStoreFunctionTest >> addClassesTo: aReStore [
 		addClass: SimpleProductOrder
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testConditionAsFunctionReceiver [
 
 	"Test where the a function is applied to a condition rather than a field.
@@ -36,7 +37,7 @@ SSWReStoreFunctionTest >> testConditionAsFunctionReceiver [
 	self assert: (results allSatisfy: [ :each | each first age > 20 ifTrue: [each last = 'old'] ifFalse: [each last = 'young']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaDateYear [
 
 	"Test a query where the result of a function is a different class to the source field"
@@ -51,7 +52,7 @@ SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaDateYear [
 		self assert: (orders detect: [ :each | each date year = index]) quantity equals: index]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaStringSize [
 
 	"Test a query where the result of a function is a different class to the source field"
@@ -62,7 +63,7 @@ SSWReStoreFunctionTest >> testDifferentClassAsFunctionCriteriaStringSize [
 	self assert: (threes collect: [ :each | each firstName]) asSortedCollection asArray equals: #('Jim' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testModelClassAsFunctionReceiver [
 
 	"Test where the receiver of a function is a model class (as opposed to Number, String etc. type).
@@ -75,7 +76,7 @@ SSWReStoreFunctionTest >> testModelClassAsFunctionReceiver [
 	self assert: (results allSatisfy: [ :each | each first friend isNil ifTrue: [each last == each first] ifFalse: [each last == each first friend]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testModelClassAsFunctionReceiverWithJoin [
 
 	"Test where the receiver of a function is a model class (as opposed to Number, String etc. type), where there are multiple function classes encountered in the function, including a join.
@@ -99,7 +100,7 @@ SSWReStoreFunctionTest >> testModelClassAsFunctionReceiverWithJoin [
 				ifFalse: [result == person friend]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testOversizeStringAsFunctionCriteria [
 
 	"Test a query where an oversize string (compared to the originating field) is the criteria"
@@ -111,7 +112,7 @@ SSWReStoreFunctionTest >> testOversizeStringAsFunctionCriteria [
 	self assert: (daves collect: [ :each | each firstName]) asArray equals: #('David')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testScaledDecimalArgument [
 
 	"Test a query where the argument to a function is a ScaledDecimal - previously caused an error"
@@ -125,7 +126,7 @@ SSWReStoreFunctionTest >> testScaledDecimalArgument [
 	self assert: results first equals: 5.79s2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testStaticValueAsFunctionResult [
 
 	"Test where the result of a function is a fixed value, not a field"
@@ -137,7 +138,7 @@ SSWReStoreFunctionTest >> testStaticValueAsFunctionResult [
 	self assert: (results allSatisfy: [ :each | each first friend isNil ifTrue: [each last = 1] ifFalse: [each last = 2]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreFunctionTest >> testTargetFieldFromArgument [
 
 	"Test where the result of a function is the class of an argument, not the class of the receiver"

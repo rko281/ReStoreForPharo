@@ -1,14 +1,15 @@
 Class {
-	#name : #SSWDBCacheDictionaryWrapper,
-	#superclass : #Object,
+	#name : 'SSWDBCacheDictionaryWrapper',
+	#superclass : 'Object',
 	#instVars : [
 		'dictionary',
 		'keyAccessor'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 SSWDBCacheDictionaryWrapper >> _dbAdd: targetObject [
 
 	"Add the targetObject to the dictionary at the key derived by the keyAccessor"
@@ -16,35 +17,35 @@ SSWDBCacheDictionaryWrapper >> _dbAdd: targetObject [
 	^self dictionary at: (self keyAccessor value: targetObject) put: targetObject
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SSWDBCacheDictionaryWrapper >> _dbAdd: targetObject suggestedIndex: ignore [
 
 	^self _dbAdd: targetObject
 ]
 
-{ #category : #'restore-internal' }
+{ #category : 'restore-internal' }
 SSWDBCacheDictionaryWrapper >> _proxifyIn: aCollectionProxy [
 
 	aCollectionProxy _proxiedObject: self dictionary.
 	^self dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryWrapper >> dictionary [
 	^dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryWrapper >> dictionary: anObject [
 	dictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryWrapper >> keyAccessor [
 	^keyAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryWrapper >> keyAccessor: anObject [
 	keyAccessor := anObject
 ]

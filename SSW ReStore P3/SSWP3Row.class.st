@@ -18,12 +18,6 @@ SSWP3Row >> columnNames [
 ]
 
 { #category : 'accessing' }
-SSWP3Row >> columns: aCollection [
-
-	columnNames := aCollection collect: [ :each | each fieldName ]
-]
-
-{ #category : 'accessing' }
 SSWP3Row >> contents [
 
 	^data

@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBForwardOnlyReadStream,
-	#superclass : #SSWDBReadStream,
-	#category : #'SSW ReStore Querying'
+	#name : 'SSWDBForwardOnlyReadStream',
+	#superclass : 'SSWDBReadStream',
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBForwardOnlyReadStream >> evaluatePostReadActionsFor: aCollection [
 
 	"We can't back-up so if we're at the end free things up"
@@ -13,7 +14,7 @@ SSWDBForwardOnlyReadStream >> evaluatePostReadActionsFor: aCollection [
 	^super evaluatePostReadActionsFor: aCollection
 ]
 
-{ #category : #positioning }
+{ #category : 'positioning' }
 SSWDBForwardOnlyReadStream >> position: anInteger [
 
 	anInteger >= self position ifTrue: [^(anInteger - self position) timesRepeat: [self collectionNext]].
@@ -22,7 +23,7 @@ SSWDBForwardOnlyReadStream >> position: anInteger [
 	anInteger timesRepeat: [self collectionNext]
 ]
 
-{ #category : #positioning }
+{ #category : 'positioning' }
 SSWDBForwardOnlyReadStream >> resetResultsSet [
 
 	collection isNil ifFalse: [collection free].

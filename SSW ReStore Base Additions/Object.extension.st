@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object >> _instVarAt: anInteger [
 
 	"Make the receiver polymorphic with proxies"
@@ -8,7 +8,7 @@ Object >> _instVarAt: anInteger [
 	^self instVarAt: anInteger
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object >> _instVarAt: anInteger put: anObject [
 
 	"Make the receiver polymorphic with proxies"
@@ -16,7 +16,7 @@ Object >> _instVarAt: anInteger put: anObject [
 	^self instVarAt: anInteger put: anObject
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object >> chainPerform: aCollection [
 
 	"perform: each member (Symbol) of aCollection against the receiver as a chain
@@ -26,7 +26,7 @@ Object >> chainPerform: aCollection [
 
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object class >> hasMutablePersistentInstances [
 
 	"Are instances of this class mutable (at least from the database's point of view), i.e. can have their internal state changed.
@@ -37,7 +37,7 @@ Object class >> hasMutablePersistentInstances [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object >> includedIn: aCollection [
 
 	"Reciprocal of Collection>>includes: "
@@ -45,7 +45,7 @@ Object >> includedIn: aCollection [
 	^aCollection includes: self
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object class >> isDirectlyPersisted [
 
 	"Return whether the receiver class is directly persisted in the database, i.e. has a representation that it stored in a single database column.
@@ -57,7 +57,7 @@ Object class >> isDirectlyPersisted [
 	^self isPersistentBaseClass
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object class >> isDirectlyPersistedNonBaseClass [
 
 	"Return whether the receiver class is directly persisted in the database, i.e. has a representation that it stored in a single database column BUT is not one of the persistent base classes"
@@ -65,7 +65,7 @@ Object class >> isDirectlyPersistedNonBaseClass [
 	^self isPersistentBaseClass not and: [self isDirectlyPersisted]
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object class >> isMutableDirectlyPersistedNonBaseClass [
 
 	"Return whether the receiver class is directly persisted in the database, i.e. has a representation that it stored in a single database column BUT is not one of the persistent base classes AND can be mutated (have its internal state changed)"
@@ -73,7 +73,7 @@ Object class >> isMutableDirectlyPersistedNonBaseClass [
 	^self isDirectlyPersistedNonBaseClass and: [self hasMutablePersistentInstances]
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Object class >> isPersistentBaseClass [
 
 	"Return whether the receiver class is a valid persistent base class

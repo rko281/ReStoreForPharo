@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBAbstractSingleTransaction,
-	#superclass : #SSWDBTransaction,
+	#name : 'SSWDBAbstractSingleTransaction',
+	#superclass : 'SSWDBTransaction',
 	#instVars : [
 		'allReferencedObjects',
 		'currentReferencedObjects',
@@ -14,10 +14,11 @@ Class {
 		'allocatedIDs',
 		'deletedObjects'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
@@ -26,7 +27,7 @@ SSWDBAbstractSingleTransaction >> abandon [
 	self endObjectCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> activeProxiesMap [
 
 	"activeProxiesMap stores an IdentityDictionary mapping objects active in this transaction to their proxy"
@@ -34,7 +35,7 @@ SSWDBAbstractSingleTransaction >> activeProxiesMap [
 	^activeProxiesMap
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> activeProxiesMap: anIdentityDictionary [
 
 	"activeProxiesMap stores an IdentityDictionary mapping objects active in this transaction to their proxy"
@@ -42,13 +43,13 @@ SSWDBAbstractSingleTransaction >> activeProxiesMap: anIdentityDictionary [
 	activeProxiesMap := anIdentityDictionary
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> addDeletedObject: aDBProxy [
 
 	^self deletedObjects add: aDBProxy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> allReferencedObjects [
 
 	"allReferencedObjects stores a collection of all objects referenced during this transaction. 
@@ -57,7 +58,7 @@ SSWDBAbstractSingleTransaction >> allReferencedObjects [
 	^allReferencedObjects
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> allReferencedObjects: anIdentitySet [
 
 	"allReferencedObjects stores a collection of all objects referenced during this transaction. 
@@ -66,7 +67,7 @@ SSWDBAbstractSingleTransaction >> allReferencedObjects: anIdentitySet [
 	allReferencedObjects := anIdentitySet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> allocateIDFor: anObject tableRecord: aDBTableRecord [
 
 	| allocated |
@@ -81,7 +82,7 @@ SSWDBAbstractSingleTransaction >> allocateIDFor: anObject tableRecord: aDBTableR
 			yourself)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> allocatedIDs [
 
 	"allocatedIDs stores SSWDBAllocatedIDs allocated to newly-persistent objects during a commit of the receiver.
@@ -90,7 +91,7 @@ SSWDBAbstractSingleTransaction >> allocatedIDs [
 	^allocatedIDs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> allocatedIDs: anIdentityDictionary [
 
 	"allocatedIDs stores SSWDBAllocatedIDs allocated to newly-persistent objects during a commit of the receiver.
@@ -99,7 +100,7 @@ SSWDBAbstractSingleTransaction >> allocatedIDs: anIdentityDictionary [
 	allocatedIDs := anIdentityDictionary
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 
 	"Attempt to fix up the receiver following an error during the commit stage"
@@ -113,7 +114,7 @@ SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 	self allReferencedObjects: self newEmptyObjectsSet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> autoRecoverPreCommitIn: anSSWReStore [
 
 	"Attempt to fix up the receiver following an error during the pre-commit stage"
@@ -123,7 +124,7 @@ SSWDBAbstractSingleTransaction >> autoRecoverPreCommitIn: anSSWReStore [
 	self allReferencedObjects: self newEmptyObjectsSet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> begin [
 
 	"Initialize the receiver transaction"
@@ -134,7 +135,7 @@ SSWDBAbstractSingleTransaction >> begin [
 		beginObjectCollection
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBAbstractSingleTransaction >> beginObjectCollection [
 
 	"Initialize the receiver transaction to begin accumulating referenced objects"
@@ -145,7 +146,7 @@ SSWDBAbstractSingleTransaction >> beginObjectCollection [
 		deletedObjects: self newEmptyObjectsSet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> beginWithin: anotherTransaction [
 
 	"For single (non-nested) transactions, anotherTransaction should always be nil.
@@ -156,7 +157,7 @@ SSWDBAbstractSingleTransaction >> beginWithin: anotherTransaction [
 		ifFalse: [self error: 'Nesting of transaction not supported']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> changedObjects [
 
 	"changedObjects stores the collection of objects changed within this transaction.
@@ -165,7 +166,7 @@ SSWDBAbstractSingleTransaction >> changedObjects [
 	^changedObjects
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> changedObjects: anIdentitySet [
 
 	"changedObjects stores the collection of objects changed within this transaction.
@@ -174,7 +175,7 @@ SSWDBAbstractSingleTransaction >> changedObjects: anIdentitySet [
 	changedObjects := anIdentitySet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> commitAllocatedIDs [
 
 	self allocatedIDs keysAndValuesDo: 
@@ -190,7 +191,7 @@ SSWDBAbstractSingleTransaction >> commitAllocatedIDs [
 			tableRecord _recoverProxiedObject]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> currentReferencedObjects [
 
 	"currentReferencedObjects stores a collection of all objects that are referenced 
@@ -201,7 +202,7 @@ SSWDBAbstractSingleTransaction >> currentReferencedObjects [
 	^currentReferencedObjects
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> currentReferencedObjects: anIdentitySet [
 
 	"currentReferencedObjects stores a collection of all objects that are referenced 
@@ -212,7 +213,7 @@ SSWDBAbstractSingleTransaction >> currentReferencedObjects: anIdentitySet [
 	currentReferencedObjects := anIdentitySet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> deletedObjects [
 
 	"deletedObjects stores any persistent objects which have been deleted during this transaction.
@@ -221,7 +222,7 @@ SSWDBAbstractSingleTransaction >> deletedObjects [
 	^deletedObjects
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> deletedObjects: anIdentitySet [
 
 	"deletedObjects stores any persistent objects which have been deleted during this transaction.
@@ -230,7 +231,7 @@ SSWDBAbstractSingleTransaction >> deletedObjects: anIdentitySet [
 	deletedObjects := anIdentitySet
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBAbstractSingleTransaction >> endObjectCollection [
 
 	"End the accumulation of referenced objects"
@@ -240,7 +241,7 @@ SSWDBAbstractSingleTransaction >> endObjectCollection [
 		currentReferencedObjects: self newEmptyObjectsSet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> ensureIsActive: anObject [
 
 	"Ensure anObject is currently active (i.e.is in the currentReferencedObjects set) if it is already present in this transaction.
@@ -249,26 +250,26 @@ SSWDBAbstractSingleTransaction >> ensureIsActive: anObject [
 	^(self activeProxiesMap at: anObject ifPresent: [ :proxy | self currentReferencedObjects add: proxy]) notNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBAbstractSingleTransaction >> includesProxiedObject: anObject [
 
 	^self activeProxiesMap includesKey: anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBAbstractSingleTransaction >> includesProxy: anSSWDBProxy [
 
 	^(self currentReferencedObjects includes: anSSWDBProxy)
 		or: [self allReferencedObjects includes: anSSWDBProxy]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBAbstractSingleTransaction >> isAlreadyDeleted: aDBProxy [
 
 	^self deletedObjects includes: aDBProxy
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSingleTransaction >> newEmptyObjectsSet [
 
 	"Return an empty Set of a default size that can be used for holding proxies"
@@ -276,7 +277,7 @@ SSWDBAbstractSingleTransaction >> newEmptyObjectsSet [
 	^self newEmptyObjectsSet: 128
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSingleTransaction >> newEmptyObjectsSet: anInteger [
 
 	"Return an empty Set that can be used for holding proxies"
@@ -284,7 +285,7 @@ SSWDBAbstractSingleTransaction >> newEmptyObjectsSet: anInteger [
 	^IdentitySet new: anInteger
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBAbstractSingleTransaction >> nextCollectionPhase [
 
 	self allReferencedObjects isEmpty
@@ -295,7 +296,7 @@ SSWDBAbstractSingleTransaction >> nextCollectionPhase [
 
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSingleTransaction >> ownerTransaction [
 
 	"For a single (non-nested transaction) the ownerTransaction is always nil"
@@ -303,7 +304,7 @@ SSWDBAbstractSingleTransaction >> ownerTransaction [
 	^nil
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 
 	self allocatedIDs keysAndValuesDo: 
@@ -314,7 +315,7 @@ SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 		tableRecord _proxiedObject incrementNextIDBy: ids size]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBAbstractSingleTransaction >> prepareToCommit [
 
 	| changed unchanged currentObjects |
@@ -346,7 +347,7 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 	self endObjectCollection
 ]
 
-{ #category : #'proxy tracking' }
+{ #category : 'proxy tracking' }
 SSWDBAbstractSingleTransaction >> proxy: aDBProxy forwarded: aMessage [
 
 	"Add aDBProxy to the collection of potentially-changed objects (the receiver performs no checking on the message sent)"
@@ -355,13 +356,13 @@ SSWDBAbstractSingleTransaction >> proxy: aDBProxy forwarded: aMessage [
 	self currentReferencedObjects add: aDBProxy
 ]
 
-{ #category : #'proxy tracking' }
+{ #category : 'proxy tracking' }
 SSWDBAbstractSingleTransaction >> proxyForObject: anObject ifNone: aBlock [
 
 	^self activeProxiesMap at: anObject ifAbsent: aBlock
 ]
 
-{ #category : #'proxy tracking' }
+{ #category : 'proxy tracking' }
 SSWDBAbstractSingleTransaction >> removeProxy: aProxydObject [
 
 	"Remove aProxydObject from the collections of potentially-changed objects"
@@ -370,7 +371,7 @@ SSWDBAbstractSingleTransaction >> removeProxy: aProxydObject [
 	self allReferencedObjects remove: aProxydObject ifAbsent: []
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBAbstractSingleTransaction >> resetChangedObjects [
 
 	self changedObjects: nil

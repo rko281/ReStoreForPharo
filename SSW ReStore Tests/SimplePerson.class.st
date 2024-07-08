@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SimplePerson,
-	#superclass : #Object,
+	#name : 'SimplePerson',
+	#superclass : 'Object',
 	#instVars : [
 		'firstName',
 		'surname',
@@ -18,10 +18,11 @@ Class {
 		'address',
 		'isDeceased'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson class >> new [
 
 	^super new
@@ -31,7 +32,7 @@ SimplePerson class >> new [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -47,13 +48,13 @@ SimplePerson class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> <= aPerson [
 
 	^self surname < aPerson surname | ((self surname = aPerson surname) & (self firstName <= aPerson firstName))
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> <== aPerson [
 
 	"Same implementation as <= but using Blocks"
@@ -61,7 +62,7 @@ SimplePerson >> <== aPerson [
 	^self surname < aPerson surname or: [self surname = aPerson surname and: [self firstName <= aPerson firstName]]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> <==> aPerson [
 
 	"Inverse implementation of <=="
@@ -69,7 +70,7 @@ SimplePerson >> <==> aPerson [
 	^aPerson surname > self surname or: [aPerson surname = self surname and: [aPerson firstName >= self firstName]]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> <=> aPerson [
 
 	"Inverse implementation of <="
@@ -77,7 +78,7 @@ SimplePerson >> <=> aPerson [
 	^aPerson surname > self surname | ((aPerson surname = self surname) & (aPerson firstName >= self firstName))
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> _instVarAt: anInteger [
 
 	anInteger = 1 ifTrue: 
@@ -88,113 +89,113 @@ SimplePerson >> _instVarAt: anInteger [
 	^super _instVarAt: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> address [
 	^address
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> address: anObject [
 	address := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> age [
 	^age
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> age: anObject [
 	age := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> emailAddress [
 	"Private - Answer the value of the receiver's ''emailAddress'' instance variable."
 
 	^emailAddress
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> emailAddress: anObject [
 	"Private - Set the value of the receiver's ''emailAddress'' instance variable to the argument, anObject."
 
 	emailAddress := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> firstName [
 	"Private - Answer the value of the receiver's ''firstName'' instance variable."
 
 	^firstName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> firstName: anObject [
 	"Private - Set the value of the receiver's ''firstName'' instance variable to the argument, anObject."
 
 	firstName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> friend [
 	^friend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> friend: anObject [
 	friend := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> friendCompare: aSimplePerson [
 
 	^self friend standardCompare: aSimplePerson friend
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> friendCompareWithBlocks: aSimplePerson [
 
 	^self friend standardCompareWithBlocks: aSimplePerson friend
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> friendIsNilAndJohn [
 
 	^self friend isNil and: [self firstName = 'John']
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> friendIsNilOrJohn [
 
 	^self friend isNil or: [self firstName = 'John']
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> friendNotNilAndJim [
 
 	^self friend notNil and: [self firstName = 'Jim']
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> friendNotNilOrJim [
 
 	^self friend notNil or: [self firstName = 'Jim']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> fullName [
 
 	^self firstName, ' ', self surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> fullNameDirect [
 
 	^firstName, ' ', surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> fullNameWithEvaluationLocation [
 
 	^self 
@@ -202,87 +203,87 @@ SimplePerson >> fullNameWithEvaluationLocation [
 		databaseDo: [self fullName, ' (DATABASE)']
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> hasFriend [
 
 	^self friend notNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> hasNoFriend [
 
 	^self friend isNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> hasNoTest [
 
 	^self test isNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> hasTest [
 
 	^self test notNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> hasTestOrFriendHasTestBlock [
 
 	^self test notNil or: [self friend test notNil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> isBrown20 [
 
 	^self surname = 'Brown' and: [self age = 20]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> isDavidAndTestIsNil [
 
 	^self firstName = 'David' and: [self test isNil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> isDavidOrTestIsNil [
 
 	^self firstName = 'David' or: [self test isNil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> isDeceased [
 	^isDeceased
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> isDeceased: anObject [
 	isDeceased := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SimplePerson >> isJohnAndTestIsNil [
 
 	^self firstName = 'John' and: [self test isNil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> orderCount [
 
 	^self orders size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> orders [
 	^orders
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> orders: anObject [
 	orders := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> standardCompare: aPerson [
 
 	"Works with friendCompare:"
@@ -290,7 +291,7 @@ SimplePerson >> standardCompare: aPerson [
 	^self surname < aPerson surname | ((self surname = aPerson surname) & (self firstName <= aPerson firstName))
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson >> standardCompareWithBlocks: aPerson [
 
 	"Works with friendCompareWithBlocks:"
@@ -298,38 +299,38 @@ SimplePerson >> standardCompareWithBlocks: aPerson [
 	^self surname < aPerson surname or: [self surname = aPerson surname and: [self firstName <= aPerson firstName]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> surname [
 	"Private - Answer the value of the receiver's ''surname'' instance variable."
 
 	^surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> surname: anObject [
 	"Private - Set the value of the receiver's ''surname'' instance variable to the argument, anObject."
 
 	surname := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> test [
 	^test
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> test: anObject [
 	test := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> time [
 	"Private - Answer the value of the receiver's ''time'' instance variable."
 
 	^time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson >> time: anObject [
 	"Private - Set the value of the receiver's ''time'' instance variable to the argument, anObject."
 

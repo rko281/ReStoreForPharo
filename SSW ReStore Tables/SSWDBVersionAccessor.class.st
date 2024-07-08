@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBVersionAccessor,
-	#superclass : #SSWDBPrivateAccessor,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBVersionAccessor',
+	#superclass : 'SSWDBPrivateAccessor',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBVersionAccessor >> nameInDB [
 
 	^#version_
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBVersionAccessor >> specialSymbol [
 
 	"Accesses _version - this is a method defined by the object proxy"
@@ -23,7 +24,7 @@ SSWDBVersionAccessor >> specialSymbol [
 	^#_version
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWDBVersionAccessor >> value: valueObject in: targetObject [
 
 	"The receiver accesses the version number of objects.
@@ -33,7 +34,7 @@ SSWDBVersionAccessor >> value: valueObject in: targetObject [
 	^valueObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBVersionAccessor >> valueIn: anObject [
 
 	"The receiver accesses the version number of objects.

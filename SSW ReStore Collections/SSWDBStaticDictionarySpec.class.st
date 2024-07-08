@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStaticDictionarySpec,
-	#superclass : #SSWDBKeyedStaticCollectionSpec,
+	#name : 'SSWDBStaticDictionarySpec',
+	#superclass : 'SSWDBKeyedStaticCollectionSpec',
 	#instVars : [
 		'keyClass',
 		'isKeyDependent',
@@ -14,28 +14,29 @@ Class {
 		'keyTableForRefresh',
 		'deleteKeysStatement'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticDictionarySpec >> beKeyDependent [
 
 	isKeyDependent := true
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticDictionarySpec >> beKeyRelated [
 
 	isKeyRelated := true
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticDictionarySpec >> beKeyUnrelated [
 
 	isKeyRelated := false
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticDictionarySpec >> createCollectionTable [
 
 	"Intercept to set the Class of the key field in the collection table"
@@ -45,7 +46,7 @@ SSWDBStaticDictionarySpec >> createCollectionTable [
 	(self collectionTable fieldAccessing: #index) targetClass: self keyClass
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticDictionarySpec >> deleteKeysQuery [
 
 	^self sqlDialect supportsDeleteWithJoin
@@ -57,7 +58,7 @@ SSWDBStaticDictionarySpec >> deleteKeysQuery [
 		[self deleteKeysQueryWithSubQuery]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticDictionarySpec >> deleteKeysQueryWithSubQuery [
 
 	| subquery |
@@ -74,7 +75,7 @@ SSWDBStaticDictionarySpec >> deleteKeysQueryWithSubQuery [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> deleteKeysStatement [
 
 	"Return a prepared statement for deleting the keys of this collection"
@@ -82,7 +83,7 @@ SSWDBStaticDictionarySpec >> deleteKeysStatement [
 	^deleteKeysStatement ifNil: [self deleteKeysQuery ifNotNil: [ :query | deleteKeysStatement := self reStore prepareStatementForQuery: query]]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticDictionarySpec >> deleteQueryWithJoin [
 
 	| query |
@@ -97,7 +98,7 @@ SSWDBStaticDictionarySpec >> deleteQueryWithJoin [
 	^query
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticDictionarySpec >> elementRemovalClass [
 
 	"Return the class of change object representing the removal of an element for the type of collection modelled by the receiver"
@@ -105,13 +106,13 @@ SSWDBStaticDictionarySpec >> elementRemovalClass [
 	^SSWDBCollectionRemovalWithKey
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBStaticDictionarySpec >> hasMutableElements [
 
 	^super hasMutableElements or: [self keyClass isMutableDirectlyPersistedNonBaseClass]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBStaticDictionarySpec >> initialize [
 
 	super initialize.
@@ -120,7 +121,7 @@ SSWDBStaticDictionarySpec >> initialize [
 	isKeyRelated := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBStaticDictionarySpec >> isKeyDependent [
 
 	"Dictionary keys can optionally be dependent (see isValueDependent)"
@@ -128,7 +129,7 @@ SSWDBStaticDictionarySpec >> isKeyDependent [
 	^isKeyDependent
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBStaticDictionarySpec >> isKeyRelated [
 
 	"Dictionary keys can optionally be related (see isValueRelated)"
@@ -136,7 +137,7 @@ SSWDBStaticDictionarySpec >> isKeyRelated [
 	^isKeyRelated
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> keyClass [
 
 	"keyClass stores the Class of the objects that are the keys to this Dictionary.
@@ -145,7 +146,7 @@ SSWDBStaticDictionarySpec >> keyClass [
 	^keyClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> keyClass: aBasicClass [
 
 	"keyClass stores the Class of the objects that are the keys to this Dictionary.
@@ -154,25 +155,25 @@ SSWDBStaticDictionarySpec >> keyClass: aBasicClass [
 	keyClass := aBasicClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> keyTable [ 
 
 	^self reStore tableForClass: self keyClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> keyTableForRead [
 
 	^keyTableForRead
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> keyTableForRefresh [
 
 	^keyTableForRefresh
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticDictionarySpec >> readAllEntriesFor: ids [
 
 	| stream allEntries statement targetTable keyTable |
@@ -206,7 +207,7 @@ SSWDBStaticDictionarySpec >> readAllEntriesFor: ids [
 	^allEntries
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticDictionarySpec >> readAllFor: aCollection [
 
 	"Using a single query (ideally, multiple batched queries if aCollection is too large), read all unrecovered collections specified by the receiver for members of aCollection"
@@ -231,7 +232,7 @@ SSWDBStaticDictionarySpec >> readAllFor: aCollection [
 			_collectionEntries: entries]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticDictionarySpec >> readQuery [
 
 	| query |
@@ -242,7 +243,7 @@ SSWDBStaticDictionarySpec >> readQuery [
 	^query
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticDictionarySpec >> recoverCollectionForProxy: aCollectionProxy [
 
 	"Recover a collection of instances; return the recovered collection.
@@ -281,7 +282,7 @@ SSWDBStaticDictionarySpec >> recoverCollectionForProxy: aCollectionProxy [
 	^collection
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticDictionarySpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCollectionProxy [
 
 	"Refresh the receiver collection and its contents if they have been updated
@@ -309,10 +310,10 @@ SSWDBStaticDictionarySpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 	self reStore rowsFromStatement: statement do:
 		[ :row || entry |
 		entry := self createNonProxiedInstanceFromRow: row.
-		(entry index isDBProxy and: [entry index _isRecovered and: [entry index _version < (row lookupField: keyVersionField)]]) ifTrue:
+		(entry index isDBProxy and: [entry index _isRecovered and: [entry index _version < (keyVersionField lookupIn: row)]]) ifTrue:
 			["Out-of-date key object - forget it"
 			entry index _forgetProxiedObject].
-		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (row lookupField: valueVersionField)]]) ifTrue:
+		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (valueVersionField lookupIn: row)]]) ifTrue:
 			["Out-of-date value object - forget it"
 			entry target _forgetProxiedObject].
 		entry
@@ -326,7 +327,7 @@ SSWDBStaticDictionarySpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 	^collection
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticDictionarySpec >> refreshWithContentsIfUpdatedQuery [
 
 	| query |
@@ -337,7 +338,7 @@ SSWDBStaticDictionarySpec >> refreshWithContentsIfUpdatedQuery [
 	^query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticDictionarySpec >> setKeyClass: aClass [
 
 	"Double-despatch to the argument"
@@ -346,7 +347,7 @@ SSWDBStaticDictionarySpec >> setKeyClass: aClass [
 
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticDictionarySpec >> shouldCompareKeysByEquality [
 
 	^self keyClass isDirectlyPersisted

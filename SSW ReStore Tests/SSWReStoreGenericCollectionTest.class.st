@@ -4,28 +4,29 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGenericCollectionTest,
-	#superclass : #SSWReStoreGenericTest,
+	#name : 'SSWReStoreGenericCollectionTest',
+	#superclass : 'SSWReStoreGenericTest',
 	#instVars : [
 		'collection'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreGenericCollectionTest class >> isAbstract [
 
 	^self == SSWReStoreGenericCollectionTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericCollectionTest class >> multipleOccurrenceTestSelectors [
 
 	"Return the selectors of any tests that depend on the ability to support multiple occurrences of an object in the collection tested by this class"
 	^#(#testDependencyDeleteOnRepeatedRemoval)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> _testComponentExistenceOnDependency: component [
 
 	"Private - No dependency at this level so should still exist"
@@ -36,67 +37,67 @@ SSWReStoreGenericCollectionTest >> _testComponentExistenceOnDependency: componen
 	self assert: ((component class storedInstancesIn: reStore) anySatisfy: [ :each | each name = component name])
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> addToCollection [
 
 	^self addToCollection: collection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> addToCollection: aCollection [
 
 	^aCollection add: self templateComponent
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> allSatisfy: aBlock [
 
 	^collection allSatisfy: aBlock
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> anyOne [
 
 	^collection anyOne
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> anySatisfy: aBlock [
 
 	^collection anySatisfy: aBlock
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreGenericCollectionTest >> componentDefinitionIsDependent [ 
 
 	^self componentDefinition isValueDependent
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> detect: aBlock [
 
 	^collection detect: aBlock
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> detect: aBlock ifNone: absentBlock [
 
 	^collection detect: aBlock ifNone: absentBlock
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> duplicateInCollection [
 
 	^self duplicateInCollection: collection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> duplicateInCollection: aCollection [
 
 	"optional - implement where necessary" 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericCollectionTest >> fetchTestObjects [
 
 	super fetchTestObjects.
@@ -104,55 +105,55 @@ SSWReStoreGenericCollectionTest >> fetchTestObjects [
 	collection := testObject component
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> includes: anObject [
 
 	^collection includes: anObject
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> remove: anObject fromCollection: aCollection [
 
 	^aCollection remove: anObject
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> removeFromCollection [
 
 	^self removeFromCollection: collection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> removeFromCollection: aCollection [
 
 	^self remove: self anyOne fromCollection: aCollection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGenericCollectionTest >> replaceInCollection [
 
 	^self replaceInCollection: collection
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericCollectionTest >> replaceInCollection: aCollection [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreGenericCollectionTest >> select: aBlock [
 
 	^collection select: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericCollectionTest >> templateCollection [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreGenericCollectionTest >> templateTestObject [
 
 	^GenericTest new
@@ -160,7 +161,7 @@ SSWReStoreGenericCollectionTest >> templateTestObject [
 		yourself
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testCollectionMultiAssignmentFailure [
 
 	"Ensure an attemp to assign a collection to more than one persistent object will fail."
@@ -176,7 +177,7 @@ SSWReStoreGenericCollectionTest >> testCollectionMultiAssignmentFailure [
 	self should: [object2 storeIn: reStore] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentAddition [
 
 	| originalSize added | 
@@ -192,7 +193,7 @@ SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentAddition [
 	self assert: (self select: [ :each | each name = added name]) size equals: 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentRemoval [
 
 	| component originalSize removed | 
@@ -210,7 +211,7 @@ SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentRemoval [
 	self deny: (self includes: component)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentReplace [
 
 	| originalSize originalAndReplacement original replacement | 
@@ -231,7 +232,7 @@ SSWReStoreGenericCollectionTest >> testCollectionRefreshComponentReplace [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testCollectionUninitializedOnRollback [
 
 	"Ensure a collection that was created when storing an object with a collection definition (i.e. the collection inst var was nil prior to the store) is reset to nil on rollback"
@@ -247,7 +248,7 @@ SSWReStoreGenericCollectionTest >> testCollectionUninitializedOnRollback [
 	self assert: object component isNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testDependencyCascadedDelete [
 
 	"Check that collection contents are or are not deleted when the owning object is deleted, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not)"
@@ -263,7 +264,7 @@ SSWReStoreGenericCollectionTest >> testDependencyCascadedDelete [
 	self _testComponentExistenceOnDependency: component
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testDependencyDeleteOnRemoval [
 
 	"Check that non-dependent collection contents are or are not deleted when removed, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not)"
@@ -278,7 +279,7 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnRemoval [
 	self _testComponentExistenceOnDependency: component
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testDependencyDeleteOnRepeatedRemoval [
 
 	"Check that non-dependent collection contents are or are not deleted when removed, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not)"
@@ -318,7 +319,7 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnRepeatedRemoval [
 	self _testComponentExistenceOnDependency: component
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testDependencyDeleteOnReplacement [
 
 	"Check that non-dependent collection contents are or are not deleted when replaced, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not)"
@@ -330,7 +331,7 @@ SSWReStoreGenericCollectionTest >> testDependencyDeleteOnReplacement [
 	self componentDefinitionIsDependent ifTrue: [self _testComponentExistenceOnDependency: originalAndReplacement key]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testIncludes [
 
 	| instances existing template matches |
@@ -352,7 +353,7 @@ SSWReStoreGenericCollectionTest >> testIncludes [
 	self assert: matches first == testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericCollectionTest >> testNewEmptyCollectionRollback [
 
 	"Ensure a collection that is stored when empty can be subsequently rolled back without error (previously gave an error for non-owned collections)"

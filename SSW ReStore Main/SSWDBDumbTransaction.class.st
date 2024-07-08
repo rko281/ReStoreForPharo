@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBDumbTransaction,
-	#superclass : #SSWDBAbstractSingleTransaction,
-	#category : #'SSW ReStore Main'
+	#name : 'SSWDBDumbTransaction',
+	#superclass : 'SSWDBAbstractSingleTransaction',
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDumbTransaction >> canCommit [
 
 	"The purpose of the receiver is to absorb objects traversed when not in a 'real' transaction.
@@ -18,14 +19,14 @@ SSWDBDumbTransaction >> canCommit [
 	^false
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBDumbTransaction >> commitTo: aReStore [
 
 	"Cannot actually commit (just here to satisfy subclassResponsibility protocol)"
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDumbTransaction >> hasChanges [
 
 	"Cannot commit, therefore does not track changes (just here to satisfy subclassResponsibility protocol)"
@@ -33,7 +34,7 @@ SSWDBDumbTransaction >> hasChanges [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDumbTransaction >> hasFailedCommit [
 
 	"Cannot commit, therefore cannot fail (just here to satisfy subclassResponsibility protocol)"
@@ -41,7 +42,7 @@ SSWDBDumbTransaction >> hasFailedCommit [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDumbTransaction >> isDumb [
 
 	"The purpose of the receiver is to absorb objects traversed when not in a 'real' transaction.
@@ -50,7 +51,7 @@ SSWDBDumbTransaction >> isDumb [
 	^true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBDumbTransaction >> rollback [
 
 	"To rollback the receiver just abandon it.

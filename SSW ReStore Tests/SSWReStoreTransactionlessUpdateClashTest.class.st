@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreTransactionlessUpdateClashTest,
-	#superclass : #SSWReStoreUpdateClashTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreTransactionlessUpdateClashTest',
+	#superclass : 'SSWReStoreUpdateClashTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test01DetectAndMerge [
 
 	"Check detect and pass (independent changes)"
@@ -52,7 +53,7 @@ SSWReStoreTransactionlessUpdateClashTest >> test01DetectAndMerge [
 	self prvTestOwnerTest: inst2 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test02DetectNoMerge [
 
 	"Check detect and fail (independent changes but merge prevented)"
@@ -84,7 +85,7 @@ SSWReStoreTransactionlessUpdateClashTest >> test02DetectNoMerge [
 	self prvTestOwnerTest: inst2 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test03DetectFailRollback [
 
 	"Check detect-fail-rollback"
@@ -121,7 +122,7 @@ SSWReStoreTransactionlessUpdateClashTest >> test03DetectFailRollback [
 	self prvTestTest: inst2 single1 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test04DetectFailRollforward [
 
 	"Check detect-fail-rollforward"
@@ -160,7 +161,7 @@ SSWReStoreTransactionlessUpdateClashTest >> test04DetectFailRollforward [
 	self assert: (inst2 single1 name = 'single3:2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test05DetectFailAndHandle [
 
 	"Check detect-fail-handle-pass"
@@ -201,7 +202,7 @@ SSWReStoreTransactionlessUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: (inst2 name = 'test4:2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTransactionlessUpdateClashTest >> test06DetectFailNoHandle [
 
 	"Check detect-fail-handle-fail"

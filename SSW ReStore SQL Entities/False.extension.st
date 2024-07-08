@@ -1,6 +1,6 @@
-Extension { #name : #False }
+Extension { #name : 'False' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 False >> asSQLStringIn: aSQLDialect [
 
 	"ASSERT: falseObject is a String in this dialect"

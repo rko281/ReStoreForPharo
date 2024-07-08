@@ -1,22 +1,23 @@
 Class {
-	#name : #SSWReStoreDeleteDependentOwnedCollectionTest,
-	#superclass : #SSWReStoreDeleteDependentCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteDependentOwnedCollectionTest',
+	#superclass : 'SSWReStoreDeleteDependentCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteDependentOwnedCollectionTest class >> testSelectors [
 
 	^self myTestSelectors
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentOwnedCollectionTest >> deleteQueriesCount [
 
 	^1
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentOwnedCollectionTest >> ordersCollectionDefinition [
 
 	"Owned collection"
@@ -24,7 +25,7 @@ SSWReStoreDeleteDependentOwnedCollectionTest >> ordersCollectionDefinition [
 	^(OrderedCollection of: SimpleProductOrder dependent owner: #customer)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreDeleteDependentOwnedCollectionTest >> testUnstoreCollectionElements [
 
 	"Verify unstoring collection elements does not delete the owning customer (previous error case)"

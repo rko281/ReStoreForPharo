@@ -1,6 +1,6 @@
-Extension { #name : #Collection }
+Extension { #name : 'Collection' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> _dbAdd: anObject [
 
 	"For use when instantiating a collection from the database.
@@ -9,7 +9,7 @@ Collection >> _dbAdd: anObject [
 	^self add: anObject
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> _dbAdd: anObject suggestedIndex: anInteger [
 
 	"Add anObject to the receiver, possibly at the index anInteger.
@@ -18,7 +18,7 @@ Collection >> _dbAdd: anObject suggestedIndex: anInteger [
 	^self _dbAdd: anObject
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> _fetchAll: aCollection [
 
 	"Private - ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -36,14 +36,14 @@ Collection >> _fetchAll: aCollection [
 	
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> _proxifyIn: aCollectionProxy [
 
 	aCollectionProxy _proxiedObject: self.
 	^self
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> fetch: aSymbol [
 
 	"ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -52,7 +52,7 @@ Collection >> fetch: aSymbol [
 	^self fetchAll: (Array with: aSymbol)
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> fetchAll: aCollection [
 
 	"ReStore - for each element of the receiver, use a single query (ideally, or multiple batched queries if the receiver's size is too large for the readAll batch size)
@@ -61,14 +61,14 @@ Collection >> fetchAll: aCollection [
 	^(self select: [ :each | each _isRecovered]) _fetchAll: aCollection
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> isOrdered [
 
 	^false
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> isValidForPersistence [
 
 	"Collections are not persisted directly (e.g. via storeIn:), therefore consider them already persistent"
@@ -76,14 +76,14 @@ Collection >> isValidForPersistence [
 	^true
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection class >> of: targetClass [
 
 	^self new of: targetClass
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> of: targetClass [
 
 	"ReStore specification method - specifies a general (M to M) collection containing aClass.
@@ -92,7 +92,7 @@ Collection >> of: targetClass [
 	^self of: targetClass specClass: self staticCollectionSpecClass
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection class >> of: targetClass owner: aSymbol [
 
 	^self new of: targetClass owner: aSymbol
@@ -100,7 +100,7 @@ Collection class >> of: targetClass owner: aSymbol [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> of: targetClass owner: aSymbol [
 
 	"ReStore specification method - specifies a 1 to many collection, containing aClass,
@@ -116,7 +116,7 @@ Collection >> of: targetClass owner: aSymbol [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> of: targetClass specClass: specClass [
 
 	"ReStore specification method - specifies a general (M to M) collection containing aClass.
@@ -128,7 +128,7 @@ Collection >> of: targetClass specClass: specClass [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> orRemote [
 
 	"The receiver is already in memory, return it"
@@ -136,7 +136,7 @@ Collection >> orRemote [
 	^self
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> ownedCollectionSpecClass [ 
 
 	"Return the class of owned collection spec that is appropriate for this kind of collection"
@@ -146,7 +146,7 @@ Collection >> ownedCollectionSpecClass [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> remote [
 
 	"Defer to the proxy"
@@ -154,7 +154,7 @@ Collection >> remote [
 	^self _dbProxy remote
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Collection >> staticCollectionSpecClass [ 
 
 	"Return the class of static collection spec that is appropriate for this kind of collection.

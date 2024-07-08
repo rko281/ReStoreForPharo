@@ -4,13 +4,14 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #ConcatenatedCollection,
-	#superclass : #OrderedCollection,
-	#type : #variable,
-	#category : #'SSW ReStore Querying'
+	#name : 'ConcatenatedCollection',
+	#superclass : 'OrderedCollection',
+	#type : 'variable',
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'double dispatch' }
+{ #category : 'double dispatch' }
 ConcatenatedCollection >> concatenatedWith: aConcatenatedCollection [
 
 	^aConcatenatedCollection 
@@ -18,7 +19,7 @@ ConcatenatedCollection >> concatenatedWith: aConcatenatedCollection [
 		yourself
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 ConcatenatedCollection >> || anObject [
 
 	^anObject concatenatedWith: self

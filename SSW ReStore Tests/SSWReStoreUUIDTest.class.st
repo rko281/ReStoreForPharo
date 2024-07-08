@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreUUIDTest,
-	#superclass : #SSWReStoreAlternativeIDTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreUUIDTest',
+	#superclass : 'SSWReStoreAlternativeIDTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreUUIDTest >> testClass [
 
 	^UUIDOwnedTest
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUUIDTest >> testQueryUUID_ID [
 
 	| obj id |
@@ -22,7 +23,7 @@ SSWReStoreUUIDTest >> testQueryUUID_ID [
 	self assert: (self testInstances detect: [:each | each _id = GUID newUnique] ifNone: [nil]) equals: nil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUUIDTest >> testVerifyIDIsUUID [
 
 	| obj id |

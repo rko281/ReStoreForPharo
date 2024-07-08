@@ -1,23 +1,24 @@
 Class {
-	#name : #ReStoreTestWithStringID,
-	#superclass : #ReStoreTestWithID,
+	#name : 'ReStoreTestWithStringID',
+	#superclass : 'ReStoreTestWithID',
 	#classInstVars : [
 		'counter'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithStringID class >> counter [
 	^counter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithStringID class >> counter: anObject [
 	counter := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 ReStoreTestWithStringID class >> reStoreDefinition [
 
 	^(SSWDBClassDefinition forClass: self)
@@ -27,13 +28,13 @@ ReStoreTestWithStringID class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 ReStoreTestWithStringID class >> reStoreIDClass [
 
 	^String maxSize: 32
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 ReStoreTestWithStringID >> reStoreNewUniqueID [
 
 	self class counter: self class counter + 1.

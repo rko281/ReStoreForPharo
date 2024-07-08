@@ -4,27 +4,28 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreIsNilQueryTest,
-	#superclass : #SSWReStoreQueryTest,
+	#name : 'SSWReStoreIsNilQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
 	#instVars : [
 		'instances'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreIsNilQueryTest class >> defaultCompilationFlags [
 
 	^0
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreIsNilQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreIsNilQueryTest >> setUp [
 
 	super setUp.
@@ -32,7 +33,7 @@ SSWReStoreIsNilQueryTest >> setUp [
 	instances := SimplePerson storedInstancesIn: reStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testAndIsNilCondition [
 
 	"Test the combination of a block and: followed by isNil condition (two inlined non-standard message sends)"
@@ -51,7 +52,7 @@ SSWReStoreIsNilQueryTest >> testAndIsNilCondition [
 	self assert: results first firstName equals: 'David'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testAndMethodIsNilCondition [
 
 	| john results |
@@ -68,7 +69,7 @@ SSWReStoreIsNilQueryTest >> testAndMethodIsNilCondition [
 	self assert: results first firstName equals: 'David'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilAndCondition [
 
 	"Test the combination of isNil followed by a block and: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode)"
@@ -85,7 +86,7 @@ SSWReStoreIsNilQueryTest >> testIsNilAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilAndNonInlinedAndCondition [
 
 	| results |
@@ -97,7 +98,7 @@ SSWReStoreIsNilQueryTest >> testIsNilAndNonInlinedAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilAndNonInlinedOrCondition [
 
 	| results |
@@ -109,7 +110,7 @@ SSWReStoreIsNilQueryTest >> testIsNilAndNonInlinedOrCondition [
 	self assert: results size equals: 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilDeepFieldCondition [
 
 	"Test the use of isNil on a nested field"
@@ -143,7 +144,7 @@ SSWReStoreIsNilQueryTest >> testIsNilDeepFieldCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilFieldFirstCondition [
 
 	| john results |
@@ -166,7 +167,7 @@ SSWReStoreIsNilQueryTest >> testIsNilFieldFirstCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilFieldLastCondition [
 
 	| john results |
@@ -193,7 +194,7 @@ SSWReStoreIsNilQueryTest >> testIsNilFieldLastCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilFieldMidCondition [
 
 	| john results |
@@ -215,7 +216,7 @@ SSWReStoreIsNilQueryTest >> testIsNilFieldMidCondition [
 	self assert: results size equals: 4
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilFieldSoleCondition [
 
 	| john results |
@@ -229,7 +230,7 @@ SSWReStoreIsNilQueryTest >> testIsNilFieldSoleCondition [
 	self assert: results first firstName equals: 'John'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilFirstCondition [
 
 	| john results |
@@ -250,7 +251,7 @@ SSWReStoreIsNilQueryTest >> testIsNilFirstCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilLastCondition [
 
 	| john results |
@@ -273,7 +274,7 @@ SSWReStoreIsNilQueryTest >> testIsNilLastCondition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilMidCondition [
 
 	| john results |
@@ -295,7 +296,7 @@ SSWReStoreIsNilQueryTest >> testIsNilMidCondition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilOrCondition [
 
 	"Test the combination of isNil followed by a block or: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode)"
@@ -315,7 +316,7 @@ SSWReStoreIsNilQueryTest >> testIsNilOrCondition [
 	self assert: results size equals: 4
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilOrNonInlinedAndCondition [
 
 	"Test the combination of isNil followed by a block or: condition followed by a non-block | condition"
@@ -327,7 +328,7 @@ SSWReStoreIsNilQueryTest >> testIsNilOrNonInlinedAndCondition [
 	self assert: results first fullName equals: 'John Smith'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilOrNonInlinedOrCondition [
 
 	"Test the combination of isNil followed by a block or: condition followed by a non-block | condition"
@@ -338,7 +339,7 @@ SSWReStoreIsNilQueryTest >> testIsNilOrNonInlinedOrCondition [
 	self assert: results size equals: 4
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testIsNilSoleCondition [
 
 	| john results |
@@ -352,7 +353,7 @@ SSWReStoreIsNilQueryTest >> testIsNilSoleCondition [
 	self deny: (results includes: john)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testMethodIsNilAndCondition [
 
 	"Test the combination of isNil implemented in a method followed by a block and: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode)"
@@ -369,7 +370,7 @@ SSWReStoreIsNilQueryTest >> testMethodIsNilAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testMethodIsNilAndJointCondition [
 
 	"Test the combination of isNil followed by a block and: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode) implemented in a method"
@@ -386,7 +387,7 @@ SSWReStoreIsNilQueryTest >> testMethodIsNilAndJointCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testMethodIsNilCondition [
 
 	| john results |
@@ -410,7 +411,7 @@ SSWReStoreIsNilQueryTest >> testMethodIsNilCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testMethodIsNilOrCondition [
 
 	| results |
@@ -425,7 +426,7 @@ SSWReStoreIsNilQueryTest >> testMethodIsNilOrCondition [
 	self assert: results size equals: 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testMethodIsNilOrJointCondition [
 
 	"Test the combination of isNil followed by a block or: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode) implemented in a method"
@@ -442,7 +443,7 @@ SSWReStoreIsNilQueryTest >> testMethodIsNilOrJointCondition [
 	self assert: results size equals: 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testOrIsNilCondition [
 
 	| john results |
@@ -459,7 +460,7 @@ SSWReStoreIsNilQueryTest >> testOrIsNilCondition [
 	self deny: (results anySatisfy: [ :each | each firstName = 'John'])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreIsNilQueryTest >> testOrMethodIsNilCondition [
 
 	| john results |

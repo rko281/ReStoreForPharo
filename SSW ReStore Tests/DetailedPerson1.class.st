@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #DetailedPerson1,
-	#superclass : #SuperPerson,
+	#name : 'DetailedPerson1',
+	#superclass : 'SuperPerson',
 	#instVars : [
 		'friend2'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson1 class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -20,12 +21,12 @@ DetailedPerson1 class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson1 >> friend2 [
 	^friend2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson1 >> friend2: anObject [
 	friend2 := anObject
 ]

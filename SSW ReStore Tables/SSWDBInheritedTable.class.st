@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBInheritedTable,
-	#superclass : #SSWDBTable,
+	#name : 'SSWDBInheritedTable',
+	#superclass : 'SSWDBTable',
 	#instVars : [
 		'classField'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInheritedTable >> classField [
 
 	"classField stores the DBField which defines which class of object a row represents.
@@ -23,7 +24,7 @@ SSWDBInheritedTable >> classField [
 	^classField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInheritedTable >> classField: anSSWDBField [
 
 	"classField stores the SSWDBField which defines which class of object a row represents.
@@ -33,7 +34,7 @@ SSWDBInheritedTable >> classField: anSSWDBField [
 	classField := anSSWDBField
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBInheritedTable >> initializeClassField: aDBField [
 	
 	^aDBField
@@ -44,24 +45,15 @@ SSWDBInheritedTable >> initializeClassField: aDBField [
 		yourself
 ]
 
-{ #category : #initializing }
-SSWDBInheritedTable >> initializeIn: anSSWReStore [
-
-	"Overriden to setup the classField"
-
-	super initializeIn: anSSWReStore.
-	self setDefaultClassField
-]
-
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBInheritedTable >> instanceClassFromRow: aDBRow [
 
 	"Private - Determine the class to use from the row"
-	
-	^self classField convertValue: (aDBRow lookupField: self classField)
+
+	^self classField convertValue: (self classField lookupIn: aDBRow)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWDBInheritedTable >> recoverExactClassInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	"Private - Recover assuming that aDBRow represents an object of exactly our instanceClass.
 	Class has already been set on the proxy (see #recoverInstanceFromRow:into:"
@@ -69,7 +61,7 @@ SSWDBInheritedTable >> recoverExactClassInstanceFromRow: aDBRow into: anSSWDBObj
 	super recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy.
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBInheritedTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	"Redirect to the relevant concrete class, ensuring the proxy is informed of the actual class of the object.
 	We must do this before setting the proxiedObject to ensure that the correct list of fields is used when
@@ -87,14 +79,14 @@ SSWDBInheritedTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 		into: anSSWDBObjectProxy.
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBInheritedTable >> setDefaultClassField [
-	
-	self controlFields add: (self initializeClassField: SSWDBStaticField new).
-	self classField: (self initializeClassField: SSWDBNonParameterizedStaticField new)
+
+	self classField: (self initializeClassField: SSWDBNonParameterizedControlField new).
+	self controlFields add: (self initializeClassField: SSWDBDataField new)
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInheritedTable >> withAllFields [
 
 	"Return a table equivalent to the receiver but containing all possible fields.	

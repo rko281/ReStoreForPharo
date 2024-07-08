@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOrderedStaticCollectionSpec,
-	#superclass : #SSWDBKeyedStaticCollectionSpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBOrderedStaticCollectionSpec',
+	#superclass : 'SSWDBKeyedStaticCollectionSpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBOrderedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 
 	"Add the ordering"
@@ -22,7 +23,7 @@ SSWDBOrderedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 	^instances
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBOrderedStaticCollectionSpec >> freePreparedStatements [
 
 	updateTargetStatement notNil ifTrue: 
@@ -32,7 +33,7 @@ SSWDBOrderedStaticCollectionSpec >> freePreparedStatements [
 	super freePreparedStatements
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBOrderedStaticCollectionSpec >> queryClass [
 
 	"Return the class of select query appropriate for the receiver"
@@ -40,7 +41,7 @@ SSWDBOrderedStaticCollectionSpec >> queryClass [
 	^SSWSQLOrderedSelectQuery
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBOrderedStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 
 	"Always SELECT in ascending order"
@@ -50,7 +51,7 @@ SSWDBOrderedStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 		yourself
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBOrderedStaticCollectionSpec >> updateEntry: anSSWDBCollectionEntry withTarget: aProxy in: anSSWReStore [ 
 
 	| query |

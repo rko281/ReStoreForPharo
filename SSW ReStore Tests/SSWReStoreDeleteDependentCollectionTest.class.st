@@ -1,22 +1,23 @@
 Class {
-	#name : #SSWReStoreDeleteDependentCollectionTest,
-	#superclass : #SSWReStoreDeleteCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteDependentCollectionTest',
+	#superclass : 'SSWReStoreDeleteCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteDependentCollectionTest class >> isAbstract [
 
 	^self = SSWReStoreDeleteDependentCollectionTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteDependentCollectionTest class >> myTestSelectors [
 
 	^SSWReStoreDeleteCollectionTest testSelectors, SSWReStoreDeleteDependentCollectionTest testSelectors
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentCollectionTest >> testDeleteProxiedCollection [
 
 	| allOrders totalOrderCount customer1OrderCount customer2OrderCount customer3OrderCount id |
@@ -37,7 +38,7 @@ SSWReStoreDeleteDependentCollectionTest >> testDeleteProxiedCollection [
 	self assert: (allOrders satisfying: [ :each | each customer = customer3]) size equals: customer3OrderCount
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentCollectionTest >> testDeleteUnproxiedCollection [
 
 	| allOrders totalOrderCount customer1OrderCount customer2OrderCount customer3OrderCount id |

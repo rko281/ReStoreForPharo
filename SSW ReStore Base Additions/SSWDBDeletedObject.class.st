@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBDeletedObject,
-	#superclass : #DeafObject,
+	#name : 'SSWDBDeletedObject',
+	#superclass : 'DeafObject',
 	#instVars : [
 		'deletedObjectClass',
 		'id'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBDeletedObject class >> newForClass: aClass id: anInteger [
 
 	^self basicNew
@@ -22,19 +23,19 @@ SSWDBDeletedObject class >> newForClass: aClass id: anInteger [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBDeletedObject >> = anObject [ 
 
 	^self class == anObject class and: [self deletedObjectClass = anObject deletedObjectClass and: [self id = anObject id]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> _id [
 
 	^self id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> _instVarAt: anInteger [
 
 	"Encountered when 'recovering' a deleted object; ignore"
@@ -42,13 +43,13 @@ SSWDBDeletedObject >> _instVarAt: anInteger [
 	^nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> _instVarAt: anInteger put: anObject [
 
 	"Encountered when 'recovering' a deleted object; ignore"
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 SSWDBDeletedObject >> copy [
 
 	"Do not copy the receiver"
@@ -56,7 +57,7 @@ SSWDBDeletedObject >> copy [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> deletedObjectClass [
 
 	"deletedObjectClass stores the Class of object for which the receiver 
@@ -65,7 +66,7 @@ SSWDBDeletedObject >> deletedObjectClass [
 	^deletedObjectClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> deletedObjectClass: aClass [
 
 	"deletedObjectClass stores the Class of object for which the receiver 
@@ -74,19 +75,19 @@ SSWDBDeletedObject >> deletedObjectClass: aClass [
 	deletedObjectClass := aClass
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBDeletedObject >> displayOn: aStream [
 
 	self id displayOn: aStream
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBDeletedObject >> hash [
 
 	^deletedObjectClass hash bitXor: id hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> id [
 
 	"id stores the unique ID of the instance of deletedObjectClass
@@ -95,7 +96,7 @@ SSWDBDeletedObject >> id [
 	^id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDeletedObject >> id: anInteger [
 
 	"id stores the unique ID of the instance of deletedObjectClass
@@ -104,13 +105,13 @@ SSWDBDeletedObject >> id: anInteger [
 	id := anInteger
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDeletedObject >> isDBDeleted [
 
 	^true
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBDeletedObject >> printOn: aStream [
 
 	aStream 
@@ -120,7 +121,7 @@ SSWDBDeletedObject >> printOn: aStream [
 		nextPutAll: self id printString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDeletedObject >> unstore [
 
 	"Do nothing - the receiver is already deleted"

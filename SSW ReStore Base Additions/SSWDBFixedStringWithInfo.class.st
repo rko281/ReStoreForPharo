@@ -4,7 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBFixedStringWithInfo,
-	#superclass : #SSWDBStringWithInfo,
-	#category : #'SSW ReStore Base Additions'
+	#name : 'SSWDBFixedStringWithInfo',
+	#superclass : 'SSWDBStringWithInfo',
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }

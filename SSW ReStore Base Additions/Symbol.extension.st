@@ -1,6 +1,6 @@
-Extension { #name : #Symbol }
+Extension { #name : 'Symbol' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 Symbol >> sswInUnderscoreFormat [
 
 	"Return a String which is the receiver in 'underscore format' (e.g. for SQL).

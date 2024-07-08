@@ -4,46 +4,47 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLCondition,
-	#superclass : #SSWSQLFieldValueConjunction,
+	#name : 'SSWSQLCondition',
+	#superclass : 'SSWSQLFieldValueConjunction',
 	#instVars : [
 		'operator'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLCondition class >> equals [
 
 	^self new
 		
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLCondition class >> field: anSSWDBField equalTo: aValue [
 
 	^self new field: anSSWDBField equalTo: aValue
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLCondition class >> field: anSSWDBField is: anSSWSQLOperator to: aValue [
 
 	^self new field: anSSWDBField is: anSSWSQLOperator to: aValue
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLCondition class >> field: anSSWDBField value: aValue [
 
 	^self new field: anSSWDBField value: aValue
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLCondition class >> fieldOnly: anSSWDBField [
 
 	^self new fieldOnly: anSSWDBField
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> & aCondition [
 
 	"Double-dispatch to handle unexpected arguments"
@@ -51,14 +52,14 @@ SSWSQLCondition >> & aCondition [
 	^aCondition sqlAndWithCondition: self
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLCondition >> = anSSWSQLCondition [
 
 	"Class test necessary for when the receiver is used as a result field in a query - in this case the receiver may be compared to a DBField"
 	^anSSWSQLCondition class = SSWSQLCondition and: [super = anSSWSQLCondition and: [self operator = anSSWSQLCondition operator]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLCondition >> aggregatedConditions [
 
 	^self hasAggregateFunction
@@ -66,7 +67,7 @@ SSWSQLCondition >> aggregatedConditions [
 		ifFalse: [self newCollection beAND]
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWSQLCondition >> anySatisfy: aBlock [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -74,13 +75,13 @@ SSWSQLCondition >> anySatisfy: aBlock [
 	^aBlock value: self
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> asFieldAssignment [
 
 	^SSWSQLFieldAssignment field: self field value: self value
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> asOrderingSpec [
 
 	"Return the receiver as an OrderingSpec
@@ -89,13 +90,13 @@ SSWSQLCondition >> asOrderingSpec [
 	^self operator orderingSpecFor: self field
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLCondition >> canInvertValue [
 
 	^(self value == true or: [self value == false]) and: [self operator isEquality or: [self operator isInequality]]
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWSQLCondition >> collect: aBlock [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -103,7 +104,14 @@ SSWSQLCondition >> collect: aBlock [
 	^Array with: (aBlock value: self)
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'accessing' }
+SSWSQLCondition >> columnIndex: anInteger [
+
+	"Polymorphic with SSWDBField"
+	^self field columnIndex: anInteger
+]
+
+{ #category : 'collection behavior' }
 SSWSQLCondition >> do: aBlock [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -111,13 +119,13 @@ SSWSQLCondition >> do: aBlock [
 	^aBlock value: self
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWSQLCondition >> field: anSSWDBField equalTo: aValue [
 
 	^self field: anSSWDBField is: SSWSQLOperator equals to: aValue
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWSQLCondition >> field: anSSWDBField is: anSSWSQLOperator to: aValue [
 
 	^self
@@ -127,19 +135,19 @@ SSWSQLCondition >> field: anSSWDBField is: anSSWSQLOperator to: aValue [
 		yourself
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWSQLCondition >> field: anSSWDBField value: aValue [
 
 	^self field: anSSWDBField is: SSWSQLOperator setValue to: aValue
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWSQLCondition >> fieldOnly: anSSWDBField [
 
 	^self field: anSSWDBField is: nil to: nil
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWSQLCondition >> flattened [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -147,13 +155,13 @@ SSWSQLCondition >> flattened [
 	^Array with: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLCondition >> hasAggregateFunction [
 
 	^self field hasAggregateFunction
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWSQLCondition >> isEmpty [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -161,7 +169,7 @@ SSWSQLCondition >> isEmpty [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLCondition >> isFieldCollection [
 
 	"Polymorphic with SQLConditionCollection"
@@ -169,19 +177,19 @@ SSWSQLCondition >> isFieldCollection [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLCondition >> isFieldOnly [
 
 	^self operator isNil and: [self value isNil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLCondition >> newCollection [
 
 	^SSWSQLConditionCollection new
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> not [
 
 	"No operator for an implicit true expression"
@@ -194,7 +202,7 @@ SSWSQLCondition >> not [
 			ifFalse: [self operator invert]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLCondition >> operator [
 
 	"operator stores the comparison operation for this condition"
@@ -202,7 +210,7 @@ SSWSQLCondition >> operator [
 	^operator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLCondition >> operator: anSSWSQLOperator [
 
 	"operator stores the comparison operation for this condition"
@@ -210,7 +218,7 @@ SSWSQLCondition >> operator: anSSWSQLOperator [
 	operator := anSSWSQLOperator
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> sqlAnd: aConditionOrCollection [
 
 	"Return an SQLConditionCollection consisting of the receiver ANDed with the given
@@ -227,7 +235,7 @@ SSWSQLCondition >> sqlAnd: aConditionOrCollection [
 			yourself]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> sqlAndWithCondition: aConditionOrCollection [
 
 	"Double-despatch entry point"
@@ -235,7 +243,7 @@ SSWSQLCondition >> sqlAndWithCondition: aConditionOrCollection [
 	^aConditionOrCollection sqlAnd: self
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> sqlOr: aConditionOrCollection [
 
 	"Return an SQLConditionCollection consisting of the receiver ORed with the given
@@ -248,7 +256,7 @@ SSWSQLCondition >> sqlOr: aConditionOrCollection [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> sqlOrWithCondition: aConditionOrCollection [
 
 	"Double-despatch entry point"
@@ -256,7 +264,7 @@ SSWSQLCondition >> sqlOrWithCondition: aConditionOrCollection [
 	^aConditionOrCollection sqlOr: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLCondition >> unaggregatedConditions [
 
 	^self hasAggregateFunction
@@ -264,13 +272,13 @@ SSWSQLCondition >> unaggregatedConditions [
 		ifFalse: [self newCollection add: self; yourself]
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLCondition >> writeConjunctionSQLOn: aStream [
 
 	self operator writeSQLOn: aStream forTarget: self value
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLCondition >> writeSQLOn: aStream [
 
 	"Handle special cases"
@@ -287,13 +295,13 @@ SSWSQLCondition >> writeSQLOn: aStream [
 	^super writeSQLOn: aStream
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLCondition >> writeValueSQLOn: aStream [
 
 	self value writeSQLOn: aStream forCondition: self
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLCondition >> | aCondition [
 
 	"Double-dispatch to handle unexpected arguments"

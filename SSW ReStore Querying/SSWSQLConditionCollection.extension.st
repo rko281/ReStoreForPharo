@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLConditionCollection }
+Extension { #name : 'SSWSQLConditionCollection' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> convertValue: aValue [
 
 	"For situations where a condition is being used as a result field in a query.
@@ -9,7 +9,7 @@ SSWSQLConditionCollection >> convertValue: aValue [
 	^Boolean instanceFromDBValue: aValue in: self first field table reStore
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> fieldNamed: aString [
 
 	"Polymorphic with SSWDBField; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -17,7 +17,7 @@ SSWSQLConditionCollection >> fieldNamed: aString [
 	^self 
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> finalField [
 
 	"Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -25,7 +25,7 @@ SSWSQLConditionCollection >> finalField [
 	^self
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> hasFinalField [
 
 	"Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -33,7 +33,7 @@ SSWSQLConditionCollection >> hasFinalField [
 	^true
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> requiresAliasing [
 
 	"Polymorphic with SSWDBField; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -41,7 +41,7 @@ SSWSQLConditionCollection >> requiresAliasing [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLConditionCollection >> writeAliasedSQLOn: aStream [
 
 	"For situations where a condition is being used as a result field in a query"

@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCacheDictionaryEntry,
-	#superclass : #SSWDBCollectionEntry,
+	#name : 'SSWDBCacheDictionaryEntry',
+	#superclass : 'SSWDBCollectionEntry',
 	#instVars : [
 		'keyAccessor'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 SSWDBCacheDictionaryEntry >> _cacheDictionaryKey_ [
 
 	"Special selector allowing interception by the block parser"
@@ -20,25 +21,25 @@ SSWDBCacheDictionaryEntry >> _cacheDictionaryKey_ [
 	^self key
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCacheDictionaryEntry >> addTargetTo: aCollection [
 
 	aCollection at: self key put: self target
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBCacheDictionaryEntry >> index [
 
 	^self _cacheDictionaryKey_
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryEntry >> key [
 
 	^self keyAccessor value: self target
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryEntry >> keyAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"
@@ -46,7 +47,7 @@ SSWDBCacheDictionaryEntry >> keyAccessor [
 	^keyAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCacheDictionaryEntry >> keyAccessor: anSSWInstVarAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"

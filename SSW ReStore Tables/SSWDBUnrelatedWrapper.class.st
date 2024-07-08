@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBUnrelatedWrapper,
-	#superclass : #SSWDBWrapper,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBUnrelatedWrapper',
+	#superclass : 'SSWDBWrapper',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBUnrelatedWrapper >> defineAs: aSymbol in: aDBTable [
 
 	"Define the wrapped object, making the resulting object unrelated"
@@ -19,7 +20,7 @@ SSWDBUnrelatedWrapper >> defineAs: aSymbol in: aDBTable [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBUnrelatedWrapper >> unrelatedObject [
 
 	^self object

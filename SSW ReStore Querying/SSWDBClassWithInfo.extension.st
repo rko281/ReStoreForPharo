@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBClassWithInfo }
+Extension { #name : 'SSWDBClassWithInfo' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWDBClassWithInfo >> isPersistentIn: anSSWReStore [
 
 	"Required class-like behavior"

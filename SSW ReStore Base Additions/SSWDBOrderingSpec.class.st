@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOrderingSpec,
-	#superclass : #Object,
+	#name : 'SSWDBOrderingSpec',
+	#superclass : 'Object',
 	#instVars : [
 		'criteria',
 		'isAscending'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBOrderingSpec class >> ascending: anObject [
 
 	^self new
@@ -22,7 +23,7 @@ SSWDBOrderingSpec class >> ascending: anObject [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBOrderingSpec class >> descending: anObject [
 
 	^self new
@@ -31,7 +32,7 @@ SSWDBOrderingSpec class >> descending: anObject [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBOrderingSpec >> compare: objectA with: objectB [
 
 	"Use the receiver to compare the two objects.
@@ -52,7 +53,7 @@ SSWDBOrderingSpec >> compare: objectA with: objectB [
 			ifFalse: [a > b]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOrderingSpec >> criteria [
 
 	"criteria stores an Object used for ordering
@@ -62,7 +63,7 @@ SSWDBOrderingSpec >> criteria [
 	^criteria
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOrderingSpec >> criteria: anOrderedCollection [
 
 	"criteria stores an Object used for ordering
@@ -72,13 +73,13 @@ SSWDBOrderingSpec >> criteria: anOrderedCollection [
 	criteria := anOrderedCollection
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWDBOrderingSpec >> invert [
 
 	self isAscending: self isAscending not
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBOrderingSpec >> inverted [
 
 	"Answer a new ordering spec equivalent to the receiver but with reversed ordering"
@@ -86,7 +87,7 @@ SSWDBOrderingSpec >> inverted [
 	^self copy invert
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOrderingSpec >> isAscending [
 
 	"isAscending stores a Boolean indicating if ordering by the receiver's criteria
@@ -95,7 +96,7 @@ SSWDBOrderingSpec >> isAscending [
 	^isAscending
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOrderingSpec >> isAscending: aBoolean [
 
 	"isAscending stores a Boolean indicating if ordering by the receiver's criteria

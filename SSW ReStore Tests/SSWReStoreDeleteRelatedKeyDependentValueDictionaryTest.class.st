@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest,
-	#superclass : #SSWReStoreDeleteDependentDictionaryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest',
+	#superclass : 'SSWReStoreDeleteDependentDictionaryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest >> ordersCollectionDefinition [
 
 	^Dictionary of: (SimpleAddress related -> SimpleProductOrder dependent)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest >> testDeleteProxiedCollection [
 
 	| keyTable allKeysCount |
@@ -24,7 +25,7 @@ SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest >> testDeleteProxiedColle
 	self assert: (reStore executeSQL: 'select count(id_) from <1s>' << keyTable) results first contents first equals: allKeysCount
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedKeyDependentValueDictionaryTest >> testDeleteUnproxiedCollection [
 
 	| keyTable allKeysCount |

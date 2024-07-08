@@ -4,24 +4,25 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBClassAccessor,
-	#superclass : #SSWDBPrivateAccessor,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBClassAccessor',
+	#superclass : 'SSWDBPrivateAccessor',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBClassAccessor >> nameInDB [
 
 	^#instClass_
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBClassAccessor >> specialSymbol [
 
 	^#class
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWDBClassAccessor >> value: valueObject in: targetObject [
 
 	"The receiver 'accesses' the class of objects - cannot be changed"
@@ -29,7 +30,7 @@ SSWDBClassAccessor >> value: valueObject in: targetObject [
 	^valueObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBClassAccessor >> valueIn: anObject [
 
 	"The receiver 'accesses' the class of objects.

@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWMySQLDialect,
-	#superclass : #SSWSQLDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWMySQLDialect',
+	#superclass : 'SSWSQLDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLDialect class >> dbmsName [
 
 	^'MySQL'
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWMySQLDialect >> alterField: aField table: aTable in: aReStore [
 
 	aReStore executeSQLFrom: 
@@ -27,7 +28,7 @@ SSWMySQLDialect >> alterField: aField table: aTable in: aReStore [
 		aField writeSQLDefinitionOn: stream]
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMySQLDialect >> blobTypes [
 
 	"Full use of MEDIUMBLOB and LONGBLOB will require increasing the default maxColumnBytes (unrealistically so for LONGBLOB)"
@@ -40,25 +41,25 @@ SSWMySQLDialect >> blobTypes [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMySQLDialect >> boolean [
 
 	^'TINYINT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLDialect >> defaultMaxColumnNameLength [
 
 	^64
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLDialect >> defaultMaxTableNameLength [
 
 	^64
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
@@ -93,7 +94,7 @@ SSWMySQLDialect >> dialectSpecificFunctions [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMySQLDialect >> maxVarchar [
 
 	"MySQL's limit is technically 65535, but this is for an entire row.
@@ -102,7 +103,7 @@ SSWMySQLDialect >> maxVarchar [
 	^2048
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWMySQLDialect >> renameField: oldField to: newField in: aReStore [
 
 	aReStore executeSQLFrom: 
@@ -116,7 +117,7 @@ SSWMySQLDialect >> renameField: oldField to: newField in: aReStore [
 		newField writeSQLDefinitionOn: stream]
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWMySQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore executeSQLFrom: 
@@ -128,7 +129,7 @@ SSWMySQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 			writeSQLFor: newTable]  "<-subtle difference; MySQL needs the fully-qualified new name in case of namespace qualification, or the table will move to the standard namespace"
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWMySQLDialect >> supportsDeleteWithJoin [
 
 	"Answer whether this dialect supports DELETE queries featuring JOINs"
@@ -136,13 +137,13 @@ SSWMySQLDialect >> supportsDeleteWithJoin [
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWMySQLDialect >> supportsMultipleAddColumns [
 
 	^true
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMySQLDialect >> unsizedStringTypes [
 
 	"Full use of MEDIUMTEXT and LONGTEXT will require increasing the default maxColumnBytes (unrealistically so for LONGTEXT)"
@@ -154,7 +155,7 @@ SSWMySQLDialect >> unsizedStringTypes [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWMySQLDialect >> uuid [
 
 	^'BINARY(16)'

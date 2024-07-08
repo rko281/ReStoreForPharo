@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWReStoreStringDataIDTest,
-	#superclass : #SSWReStoreDataIDTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreStringDataIDTest',
+	#superclass : 'SSWReStoreDataIDTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test2DuplicateCheck [
 
 	"Check can't update to a duplicate assigned ID"
@@ -14,7 +15,7 @@ SSWReStoreStringDataIDTest >> test2DuplicateCheck [
 	reStore connection rollbackTxn
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test3Update [
 
 	"Check update"
@@ -41,7 +42,7 @@ SSWReStoreStringDataIDTest >> test3Update [
 	self assert: obj2 other name equals: 'jim'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test4Query [
 
 	| matches |
@@ -54,7 +55,7 @@ SSWReStoreStringDataIDTest >> test4Query [
 	self assert: matches isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test5QueryByExample [
 
 	| template matches |
@@ -83,7 +84,7 @@ SSWReStoreStringDataIDTest >> test5QueryByExample [
 	self assert: matches isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test6VerifyIDInCopy [
 
 	"Test issue where data ID value was not set in copyObject"
@@ -96,7 +97,7 @@ SSWReStoreStringDataIDTest >> test6VerifyIDInCopy [
 	self assert: obj2 other _dbProxy _copyObject name equals: 'john'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDataIDTest >> test7VerifyAssignedID [
 
 	"Test an automatically-assigned ID makes it into a new instance when stored"
@@ -129,7 +130,7 @@ SSWReStoreStringDataIDTest >> test7VerifyAssignedID [
 	self assert: recoveredObj name equals: 'new 7'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreStringDataIDTest >> testClass [
 
 	^ReStoreTestWithStringID

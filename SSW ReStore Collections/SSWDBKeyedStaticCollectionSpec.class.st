@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBKeyedStaticCollectionSpec,
-	#superclass : #SSWDBStaticCollectionSpec,
+	#name : 'SSWDBKeyedStaticCollectionSpec',
+	#superclass : 'SSWDBStaticCollectionSpec',
 	#instVars : [
 		'indexField',
 		'updateTargetStatement'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBKeyedStaticCollectionSpec >> allAdditionsTo: aCollection [
 
 	"Return an collection of SSWDBCollectionAdditions representing the addition of all aCollection's elements to itself, starting when empty"
@@ -27,7 +28,7 @@ SSWDBKeyedStaticCollectionSpec >> allAdditionsTo: aCollection [
 	^additions
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBKeyedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
@@ -59,7 +60,7 @@ SSWDBKeyedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntr
 	^changes
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBKeyedStaticCollectionSpec >> elementRemovalClass [
 
 	"Return the class of change object representing the removal of an element for the type of collection modelled by the receiver"
@@ -67,7 +68,7 @@ SSWDBKeyedStaticCollectionSpec >> elementRemovalClass [
 	^SSWDBCollectionRemoval
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBKeyedStaticCollectionSpec >> entryClass [
 
 	"Return the class of collection entry appropriate for the receiver"
@@ -75,7 +76,7 @@ SSWDBKeyedStaticCollectionSpec >> entryClass [
 	^SSWDBKeyedCollectionEntry
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBKeyedStaticCollectionSpec >> freePreparedStatements [
 
 	updateTargetStatement notNil ifTrue: 
@@ -85,7 +86,7 @@ SSWDBKeyedStaticCollectionSpec >> freePreparedStatements [
 	super freePreparedStatements
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBKeyedStaticCollectionSpec >> indexField [
 
 	"indexField stores the SSWDBField in the receiver's collectionTable
@@ -96,7 +97,7 @@ SSWDBKeyedStaticCollectionSpec >> indexField [
 	^indexField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBKeyedStaticCollectionSpec >> indexField: anSSWDBField [
 
 	"indexField stores the SSWDBField in the receiver's collectionTable
@@ -105,13 +106,13 @@ SSWDBKeyedStaticCollectionSpec >> indexField: anSSWDBField [
 	indexField := anSSWDBField
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBKeyedStaticCollectionSpec >> shouldCompareKeysByEquality [
 
 	^false
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBKeyedStaticCollectionSpec >> updateEntry: anSSWDBCollectionEntry withTarget: aProxy in: anSSWReStore [ 
 
 	| query |

@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLCondition }
+Extension { #name : 'SSWSQLCondition' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> convertValue: aValue [
 
 	"For situations where a condition is being used as a result field in a query.
@@ -9,7 +9,7 @@ SSWSQLCondition >> convertValue: aValue [
 	^Boolean instanceFromDBValue: aValue in: self field table reStore
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> fieldNamed: aString [
 
 	"Polymorphic with SSWDBField; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -17,7 +17,7 @@ SSWSQLCondition >> fieldNamed: aString [
 	^self field fieldNamed: aString
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> finalField [
 
 	"Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -25,7 +25,7 @@ SSWSQLCondition >> finalField [
 	^self
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> hasFinalField [
 
 	"Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -33,7 +33,7 @@ SSWSQLCondition >> hasFinalField [
 	^true
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> requiresAliasing [
 
 	"Polymorphic with SSWDBField; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -41,7 +41,7 @@ SSWSQLCondition >> requiresAliasing [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> table [
 
 	"Polymorphic with SSWDBField; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
@@ -49,7 +49,7 @@ SSWSQLCondition >> table [
 	^self field table
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWSQLCondition >> writeAliasedSQLOn: aStream [
 
 	"For situations where a condition is being used as a result field in a query"

@@ -4,21 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNotNilQueryTest,
-	#superclass : #SSWReStoreQueryTest,
+	#name : 'SSWReStoreNotNilQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
 	#instVars : [
 		'instances'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreNotNilQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreNotNilQueryTest >> setUp [
 
 	super setUp.
@@ -26,7 +27,7 @@ SSWReStoreNotNilQueryTest >> setUp [
 	instances := SimplePerson storedInstancesIn: reStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testAndNotNilCondition [
 
 	| john results |
@@ -43,7 +44,7 @@ SSWReStoreNotNilQueryTest >> testAndNotNilCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilAndCondition [
 
 	| john results |
@@ -60,7 +61,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilAndJointCondition [
 
 	"Test the combination of notNil followed by a block and: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode) implemented in a method"
@@ -77,7 +78,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilAndJointCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilCondition [
 
 	| john results |
@@ -101,7 +102,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilCondition [
 	self assert: results first firstName equals: 'David'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilOrCondition [
 
 	| john results |
@@ -119,7 +120,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilOrCondition [
 	self assert: (results collect: [ :e | e firstName]) asSortedCollection asArray equals: #('David' 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilOrJointCondition [
 
 	"Test the combination of notNil followed by a block or: condition (two inlined non-standard message sends, resulting in a single conditional jump bytecode) implemented in a method"
@@ -136,7 +137,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilOrJointCondition [
 	self assert: results size equals: 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testMethodNotNilWithJoin [
 
 	"Test previously-failing case where a method invoked from the query block contains notNil in an inlined block"
@@ -164,7 +165,7 @@ SSWReStoreNotNilQueryTest >> testMethodNotNilWithJoin [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe').
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilAndCondition [
 
 	| results |
@@ -179,7 +180,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedAndCondition [
 
 	| results |
@@ -188,7 +189,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedAndCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedOrCondition [
 
 	| results |
@@ -197,7 +198,7 @@ SSWReStoreNotNilQueryTest >> testNotNilAndNonInlinedOrCondition [
 	self assert: results size equals: 3.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilDeepFieldCondition [
 
 	"Test the use of notNil on a nested field"
@@ -229,7 +230,7 @@ SSWReStoreNotNilQueryTest >> testNotNilDeepFieldCondition [
 	self assert: results first firstName equals: 'John'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilFieldFirstCondition [
 
 	| john results |
@@ -254,7 +255,7 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldFirstCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'Jim' 'John' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilFieldLastCondition [
 
 	| john results |
@@ -283,7 +284,7 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldLastCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilFieldMidCondition [
 
 	| john results |
@@ -306,7 +307,7 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldMidCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John' 'Zoe')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilFieldSoleCondition [
 
 	| john results |
@@ -322,7 +323,7 @@ SSWReStoreNotNilQueryTest >> testNotNilFieldSoleCondition [
 	self assert: results first firstName equals: 'John'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilFirstCondition [
 
 	| john results |
@@ -343,7 +344,7 @@ SSWReStoreNotNilQueryTest >> testNotNilFirstCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilLastCondition [
 
 	| john results |
@@ -364,7 +365,7 @@ SSWReStoreNotNilQueryTest >> testNotNilLastCondition [
 	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('David' 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilMidCondition [
 
 	| john results |
@@ -384,7 +385,7 @@ SSWReStoreNotNilQueryTest >> testNotNilMidCondition [
 	self assert: results isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilMultipleConditions [
 
 	| jim results |
@@ -407,7 +408,7 @@ SSWReStoreNotNilQueryTest >> testNotNilMultipleConditions [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilOrCondition [
 
 	| results |
@@ -422,7 +423,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrCondition [
 	self assert: results size equals: 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedAndCondition [
 
 	| results |
@@ -432,7 +433,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedAndCondition [
 	self assert: results first fullName equals: 'Zoe Brown'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedOrCondition [
 
 	| results |
@@ -441,7 +442,7 @@ SSWReStoreNotNilQueryTest >> testNotNilOrNonInlinedOrCondition [
 	self assert: results size equals: 4
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNotNilQueryTest >> testNotNilSoleCondition [
 
 	| john results |

@@ -4,36 +4,37 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreTest,
-	#superclass : #TestCase,
+	#name : 'SSWReStoreTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'reStore'
 	],
 	#classInstVars : [
 		'queryCount'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTest class >> isAbstract [
 
 	^self == SSWReStoreTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> addClassesTo: aReStore [
 
 	aReStore addClass: Test; addClass: OwnedTest; addClass: OwnerTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> countQueries [
 
 	self resetQueryCount
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> countQueriesDuring: aBlock [
 
 	self countQueries.
@@ -41,13 +42,13 @@ SSWReStoreTest >> countQueriesDuring: aBlock [
 	self queryCount] ensure: [self stopQueryCounting]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> createReStore [
 
 	reStore := SSWReStore new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> createStandardTestInstance [
 
 	"Private - Initialize the database"
@@ -123,11 +124,11 @@ SSWReStoreTest >> createStandardTestInstance [
 	reStore commitTransaction
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> createTestData [
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> destroyAllClasses [
 
 	self shouldDestroyClasses
@@ -135,7 +136,7 @@ SSWReStoreTest >> destroyAllClasses [
 		ifFalse: [self destroyAllData]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> destroyAllData [
 
 	| nextID |
@@ -158,33 +159,33 @@ SSWReStoreTest >> destroyAllData [
 		true]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> initReStore: aReStore [
 
 	aReStore isDebugging: false.
 	self initConnectionFor: aReStore
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTest >> performTest [
 
 	reStore debugTo: self debugStream.
 	^super performTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreTest >> queryCount [
 
 	^reStore connection queryCount
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreTest >> refreshDelay [
 
 	^(Delay forSeconds: reStore sqlDialect updateDelaySeconds) wait
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> releaseReStore: aReStore [
 
 	aReStore isConnected ifTrue: [aReStore disconnect].
@@ -192,13 +193,13 @@ SSWReStoreTest >> releaseReStore: aReStore [
 	aReStore clearTableCache
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> resetQueryCount [
 
 	reStore connection resetQueryCount
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> setUp [
 
 	self createReStore.
@@ -210,7 +211,7 @@ SSWReStoreTest >> setUp [
 	self createTestData
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreTest >> shouldDestroyClasses [
 
 	"For efficiency with some databases we don't destroy classes (this can take a long time) but erase all data instead (see my sender).
@@ -219,13 +220,13 @@ SSWReStoreTest >> shouldDestroyClasses [
 	^reStore sqlDialect shouldDropTablesForTestCases
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> stopQueryCounting [
 
 	reStore connection resetQueryCount
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTest >> tearDown [
 
 	self resetQueryCount; stopQueryCounting.

@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLiteDialect,
-	#superclass : #SSWSQLDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLiteDialect',
+	#superclass : 'SSWSQLDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLiteDialect class >> dbmsName [
 
 	^'SQLITE'
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLiteDialect >> alterField: aField table: aTable in: aReStore [
 
 	"No direct support in SQLite - workaround:
@@ -46,31 +47,31 @@ SSWSQLiteDialect >> alterField: aField table: aTable in: aReStore [
 		executeSQL: ('DROP TABLE ', (tempTable sqlStringIn: self))
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLiteDialect >> decimal [
 
 	^'NUMERIC'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLiteDialect >> defaultDateTimeResolution [
 
 	^3
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLiteDialect >> defaultMaxColumnNameLength [
 
 	^255
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLiteDialect >> defaultMaxTableNameLength [
 
 	^255
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLiteDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
@@ -85,7 +86,7 @@ SSWSQLiteDialect >> dialectSpecificFunctions [
 		yourself
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLiteDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSWReStore [
 
 	"No explicit drop column support"
@@ -111,7 +112,7 @@ SSWSQLiteDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSW
 		executeSQLFrom: [ :stream | stream nextPutAll: 'ALTER TABLE '; writeSQLFor: tempTable; nextPutAll: ' RENAME TO '; nextPutIdentifier: anSSWDBTable name]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLiteDialect >> shouldExpandNamespacedAllFields [
 
 	"SQLite gives error with namespace.table_name.* in SELECT query"

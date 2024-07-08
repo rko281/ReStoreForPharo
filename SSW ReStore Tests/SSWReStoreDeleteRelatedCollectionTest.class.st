@@ -1,22 +1,23 @@
 Class {
-	#name : #SSWReStoreDeleteRelatedCollectionTest,
-	#superclass : #SSWReStoreDeleteCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteRelatedCollectionTest',
+	#superclass : 'SSWReStoreDeleteCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteRelatedCollectionTest class >> isAbstract [
 
 	^self = SSWReStoreDeleteRelatedCollectionTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteRelatedCollectionTest class >> myTestSelectors [
 
 	^SSWReStoreDeleteCollectionTest testSelectors, SSWReStoreDeleteRelatedCollectionTest testSelectors
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedCollectionTest >> testDeleteProxiedCollection [
 
 	| allOrders totalOrderCount id |
@@ -32,7 +33,7 @@ SSWReStoreDeleteRelatedCollectionTest >> testDeleteProxiedCollection [
 	self assert: allOrders size equals: totalOrderCount
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedCollectionTest >> testDeleteUnproxiedCollection [
 
 	| allOrders totalOrderCount id |

@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBDirectlyPersistedObject,
-	#superclass : #Object,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBDirectlyPersistedObject',
+	#superclass : 'Object',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBDirectlyPersistedObject class >> fromReStoreValue: aValue [
 
 	"Return an instance of the receiver generated from aValue (an instance of the receiver's reStoreValueClass)"
@@ -12,7 +13,7 @@ SSWDBDirectlyPersistedObject class >> fromReStoreValue: aValue [
 	^self subclassResponsibility
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBDirectlyPersistedObject class >> instanceFromDBValue: aValue in: aReStore [
 
 	"Return an instance of the receiver generated from aValue (an instance of the receiver's reStoreValueClass) read from aReStore"
@@ -21,13 +22,13 @@ SSWDBDirectlyPersistedObject class >> instanceFromDBValue: aValue in: aReStore [
 	^self fromReStoreValue: aValue
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDirectlyPersistedObject class >> isDirectlyPersisted [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDirectlyPersistedObject class >> reStoreValueClass [
 
 	"Return the class of object of which instances of the receiver are persisted in the database, i.e. the class of an instance's reStoreValue"
@@ -35,13 +36,13 @@ SSWDBDirectlyPersistedObject class >> reStoreValueClass [
 	^self subclassResponsibility
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBDirectlyPersistedObject class >> writeSQLTypeOn: aStream using: anSQLDialect [
 
 	self reStoreValueClass writeSQLTypeOn: aStream using: anSQLDialect
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBDirectlyPersistedObject >> <= anObject [
 
 	"Directly persisted objects should always be compared based on their reStoreValue"
@@ -49,7 +50,7 @@ SSWDBDirectlyPersistedObject >> <= anObject [
 	^self reStoreValue <= anObject reStoreValue
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBDirectlyPersistedObject >> = anObject [
 
 	"Directly persisted objects should always be compared based on their reStoreValue"
@@ -57,19 +58,19 @@ SSWDBDirectlyPersistedObject >> = anObject [
 	^self reStoreValue = anObject reStoreValue
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBDirectlyPersistedObject >> hash [
 
 	^self reStoreValue hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBDirectlyPersistedObject >> isValidForPersistence [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDirectlyPersistedObject >> reStoreValue [
 
 	"Return the value used to represent the receiver in the database.

@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLOperator,
-	#superclass : #Object,
+	#name : 'SSWSQLOperator',
+	#superclass : 'Object',
 	#instVars : [
 		'sqlString',
 		'messageSelector',
@@ -15,23 +15,24 @@ Class {
 		'messageSQLMap',
 		'messageInverseSQLMap'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> equals [
 
 	^self messageSelector: #=
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> greaterThan [
 	
 	^self messageSelector: #>
 
 ]
 
-{ #category : #utility }
+{ #category : 'utility' }
 SSWSQLOperator class >> inverseSQLStringForMessage: aSymbol [
 
 	"Return the SQL text equivalent to the inverse of the given Smalltalk message.
@@ -40,7 +41,7 @@ SSWSQLOperator class >> inverseSQLStringForMessage: aSymbol [
 	^self messageInverseSQLMap at: aSymbol ifAbsent: [self error: 'No inverse defined for this message']
 ]
 
-{ #category : #utility }
+{ #category : 'utility' }
 SSWSQLOperator class >> messageForSQLString: aString [
 
 	"Return the SQL text equivalent to the given Smalltalk message"
@@ -48,7 +49,7 @@ SSWSQLOperator class >> messageForSQLString: aString [
 	^self messageSQLMap keyAtValue: aString asUppercase ifAbsent: [aString asSymbol]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLOperator class >> messageInverseSQLMap [
 
 	"Maps Smalltalk message selectors to the equivalent SQL text for the *inverse* of that operation"
@@ -67,7 +68,7 @@ SSWSQLOperator class >> messageInverseSQLMap [
 				yourself)]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLOperator class >> messageSQLMap [
 
 	"Maps Smalltalk message selectors to equivalent SQL text.
@@ -83,7 +84,7 @@ SSWSQLOperator class >> messageSQLMap [
 				yourself)]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> messageSelector: aSymbol [
 
 	^self new
@@ -92,7 +93,7 @@ SSWSQLOperator class >> messageSelector: aSymbol [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> new [
 
 	^super new
@@ -100,13 +101,13 @@ SSWSQLOperator class >> new [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> setValue [
 
 	^self messageSelector: #value:
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOperator class >> sqlString: aString [
 
 	^self new
@@ -115,7 +116,7 @@ SSWSQLOperator class >> sqlString: aString [
 		yourself
 ]
 
-{ #category : #utility }
+{ #category : 'utility' }
 SSWSQLOperator class >> sqlStringForMessage: aSymbol [
 
 	"Return the SQL text equivalent to the given Smalltalk message"
@@ -123,7 +124,7 @@ SSWSQLOperator class >> sqlStringForMessage: aSymbol [
 	^self messageSQLMap at: aSymbol ifAbsent: [aSymbol asString]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLOperator >> = anSSWSQLOperator [
 
 	anSSWSQLOperator isNil ifTrue: [^false].
@@ -132,7 +133,7 @@ SSWSQLOperator >> = anSSWSQLOperator [
 		[self isInverted = anSSWSQLOperator isInverted]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLOperator >> compare: value1 with: value2 [
 
 	| result |
@@ -144,13 +145,13 @@ SSWSQLOperator >> compare: value1 with: value2 [
 		ifFalse: [result]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLOperator >> hash [
 
 	^self messageSelector hash
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 SSWSQLOperator >> invert [
 
 	self isInverted
@@ -163,25 +164,25 @@ SSWSQLOperator >> invert [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> isEquality [
 
 	^self messageSelector = #= and: [self isInverted not]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> isIncludedIn [
 
 	^self messageSelector = #includedIn:
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> isInequality [
 
 	^self messageSelector = #~= and: [self isInverted not]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> isInverted [
 
 	"isInverted stores a Boolean indicating whether the receiver should invert
@@ -194,7 +195,7 @@ SSWSQLOperator >> isInverted [
 	^isInverted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> isInverted: aBoolean [
 
 	"isInverted stores a Boolean indicating whether the receiver should invert
@@ -207,7 +208,7 @@ SSWSQLOperator >> isInverted: aBoolean [
 	isInverted := aBoolean
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> isSetValue [
 
 	"If the receiver is being used to set a value (rather than compare), 
@@ -218,13 +219,13 @@ SSWSQLOperator >> isSetValue [
 	^self messageSelector == #value:
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> isValidForOrdering [
 
 	^#(#< #<= #>= #>) includes: self messageSelector
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> messageSelector [
 
 	"messageSelector stores the Smalltalk message name which is equivalent to the receiver's sqlString"
@@ -232,7 +233,7 @@ SSWSQLOperator >> messageSelector [
 	^messageSelector
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> messageSelector: aSymbol [
 
 	"messageSelector stores the Smalltalk message name which is equivalent to the receiver's sqlString"
@@ -240,7 +241,7 @@ SSWSQLOperator >> messageSelector: aSymbol [
 	messageSelector := aSymbol
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOperator >> orderingSpecFor: anObject [
 
 	self isValidForOrdering ifFalse: [self error: 'Condition invalid for ordering'].
@@ -256,7 +257,7 @@ SSWSQLOperator >> orderingSpecFor: anObject [
 			ifFalse: [SSWDBOrderingSpec descending: anObject]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> sqlString [
 
 	"sqlString stores the SQL text for this operator"
@@ -264,7 +265,7 @@ SSWSQLOperator >> sqlString [
 	^sqlString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOperator >> sqlString: aString [
 
 	"sqlString stores the SQL text for this operator"
@@ -272,7 +273,7 @@ SSWSQLOperator >> sqlString: aString [
 	sqlString := aString
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLOperator >> sqlStringFor: aTargetValue [
 
 	"aTargetValue is necessary as some SQL operators change form depending on the target value (e.g. IS NULL)"
@@ -290,7 +291,7 @@ SSWSQLOperator >> sqlStringFor: aTargetValue [
 		[self sqlString]
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLOperator >> writeSQLOn: aStream forTarget: aTargetValue [
 
 	"aTargetValue is necessary as some SQL operators change form 

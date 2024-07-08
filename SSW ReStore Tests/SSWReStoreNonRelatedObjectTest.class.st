@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNonRelatedObjectTest,
-	#superclass : #SSWReStoreGenericObjectTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreNonRelatedObjectTest',
+	#superclass : 'SSWReStoreGenericObjectTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedObjectTest >> componentDefinition [
 
 	^GenericOwnedTest
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testChangedObjectsComponentChange [
 
 	| originalName changedName |
@@ -35,7 +36,7 @@ SSWReStoreNonRelatedObjectTest >> testChangedObjectsComponentChange [
 	self assert: ((reStore selectChanged: (Array with: testObject withComponents)) asArray = (Array with: component))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testChangedObjectsComponentChangeDeeply [
 
 	| originalName changedName |
@@ -58,7 +59,7 @@ SSWReStoreNonRelatedObjectTest >> testChangedObjectsComponentChangeDeeply [
 	self assert: ((reStore selectChanged: (Array with: testObject withComponents)) asArray = (Array with: component deepTest))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testCheckHasChangedComponentChange [
 
 	| originalName changedName |
@@ -78,7 +79,7 @@ SSWReStoreNonRelatedObjectTest >> testCheckHasChangedComponentChange [
 	self assert: (reStore hasChanged: testObject withComponents)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testCheckHasChangedComponentChangeDeeply [
 
 	| originalName changedName |
@@ -100,7 +101,7 @@ SSWReStoreNonRelatedObjectTest >> testCheckHasChangedComponentChangeDeeply [
 	self assert: (reStore hasChanged: testObject withComponents)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testCommitComponentChange [
 
 	| originalName changedName |
@@ -127,7 +128,7 @@ SSWReStoreNonRelatedObjectTest >> testCommitComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testCommitComponentChangeDeeply [
 
 	| originalName changedName |
@@ -157,7 +158,7 @@ SSWReStoreNonRelatedObjectTest >> testCommitComponentChangeDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testForceRefreshComponent [
 
 	| originalName changedName |
@@ -185,7 +186,7 @@ SSWReStoreNonRelatedObjectTest >> testForceRefreshComponent [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testForceRefreshComponentDeeply [
 
 	| originalName changedName |
@@ -214,7 +215,7 @@ SSWReStoreNonRelatedObjectTest >> testForceRefreshComponentDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testRefreshComponentIfUpdated [
 
 	| originalName changedName |
@@ -239,7 +240,7 @@ SSWReStoreNonRelatedObjectTest >> testRefreshComponentIfUpdated [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testRefreshComponentIfUpdatedDeeply [
 
 	| originalName changedName |
@@ -270,7 +271,7 @@ SSWReStoreNonRelatedObjectTest >> testRefreshComponentIfUpdatedDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testRollbackComponentChange [
 
 	| originalName changedName |
@@ -292,7 +293,7 @@ SSWReStoreNonRelatedObjectTest >> testRollbackComponentChange [
 	self assert: (component name = originalName).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedObjectTest >> testRollbackComponentChangeDeeply [
 
 	| originalName changedName |

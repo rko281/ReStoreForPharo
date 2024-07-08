@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBSortedStaticCollectionSpec,
-	#superclass : #SSWDBStaticCollectionSpec,
+	#name : 'SSWDBSortedStaticCollectionSpec',
+	#superclass : 'SSWDBStaticCollectionSpec',
 	#instVars : [
 		'orderingSpecs'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBSortedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
@@ -44,7 +45,7 @@ SSWDBSortedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEnt
 	^changes
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBSortedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 
 	"Add the ordering"
@@ -57,7 +58,7 @@ SSWDBSortedStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 	^instances
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSortedStaticCollectionSpec >> orderingSpecs [
 
 	"Derived from the sortBlock of the templateCollection"
@@ -67,7 +68,7 @@ SSWDBSortedStaticCollectionSpec >> orderingSpecs [
 	^orderingSpecs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSortedStaticCollectionSpec >> orderingSpecs: anOrderedCollection [
 
 	"Derived from the sortBlock of the templateCollection"
@@ -75,7 +76,7 @@ SSWDBSortedStaticCollectionSpec >> orderingSpecs: anOrderedCollection [
 	orderingSpecs := anOrderedCollection
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBSortedStaticCollectionSpec >> queryClass [
 
 	"Return the class of select query appropriate for the receiver"
@@ -83,7 +84,7 @@ SSWDBSortedStaticCollectionSpec >> queryClass [
 	^SSWSQLOrderedSelectQuery
 ]
 
-{ #category : #'actions - api' }
+{ #category : 'actions - api' }
 SSWDBSortedStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 
 	"We need to join to the target table in order to order the query (ie. sort the results correctly), therefore we may as well do a full recover"
@@ -91,7 +92,7 @@ SSWDBSortedStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	^self recoverCollectionForProxy: aCollectionProxy
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBSortedStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 
 	| query |
@@ -115,7 +116,7 @@ SSWDBSortedStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 	^query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSortedStaticCollectionSpec >> setOrderingSpecs [
 
 	self orderingSpecs: (self templateCollection orderingSpecsFor: self targetClass in: self reStore)

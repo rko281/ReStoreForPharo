@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryTable,
-	#superclass : #Object,
+	#name : 'SSWDBQueryTable',
+	#superclass : 'Object',
 	#instVars : [
 		'table',
 		'repetitionIndex',
 		'allFields'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBQueryTable class >> forRepetition: anInteger of: anSSWDBTable [
 
 	^self new
@@ -23,31 +24,31 @@ SSWDBQueryTable class >> forRepetition: anInteger of: anSSWDBTable [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBQueryTable >> = anSSWDBTable [
 
 	^self == anSSWDBTable or: [self species == anSSWDBTable species and: [self name = anSSWDBTable name and: [self repetitionIndex = anSSWDBTable repetitionIndex]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> allFields [
 
 	^allFields ifNil: [allFields := self table allFields collect: [ :each | SSWDBQueryTableField forField: each in: self]]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBQueryTable >> allFieldsDetect: aBlock ifNone: noneBlock [
 
 	^self allFields detect: aBlock ifNone: noneBlock
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBQueryTable >> allFieldsDo: aBlock [
 
 	^self allFields do: aBlock
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryTable >> collectionAccessing: aSymbol [
 
 	"Forward to the real table"
@@ -55,25 +56,25 @@ SSWDBQueryTable >> collectionAccessing: aSymbol [
 	^self table collectionAccessing: aSymbol
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBQueryTable >> fieldAccessing: aSymbol [
 
 	^self allFieldsDetect: [ :field | field accessor accesses: aSymbol] ifNone: [nil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> fieldNamed: aString [
 
 	^self allFieldsDetect: [ :field | field name = aString] ifNone: [nil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryTable >> hasNamespace [
 
 	^self table hasNamespace
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryTable >> hasStaticConditions [
 
 	"Forward to the real table"
@@ -81,25 +82,25 @@ SSWDBQueryTable >> hasStaticConditions [
 	^self table hasStaticConditions
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBQueryTable >> hash [
 
 	^self name hash bitXor: self repetitionIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> idField [
 
 	^self allFields detect: [ :each | each field == self table idField]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> instanceClass [
 
 	^self table instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> instanceClassFromRow: aRow [
 
 	"isKindOf: test to avoid aliasing the row if not needed"
@@ -108,13 +109,13 @@ SSWDBQueryTable >> instanceClassFromRow: aRow [
 		ifFalse: [self table instanceClassFromRow: (aRow copy deAliasQueryFieldsFor: self)]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> name [
 
 	^self table name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> originalTable [
 
 	"Return the original table wrapped by the receiver.
@@ -123,25 +124,25 @@ SSWDBQueryTable >> originalTable [
 	^self reStore tableForClass: self instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> reStore [
 
 	^self table reStore
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWDBQueryTable >> recoverInstanceFromRow: aRow into: aDBProxy [
 
 	^self originalTable recoverInstanceFromRow: (aRow copy deAliasQueryFieldsFor: self) into: aDBProxy
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWDBQueryTable >> refreshProxy: aDBProxy whereChangedFromRow: aRow [
 
 	^self originalTable refreshProxy: aDBProxy whereChangedFromRow: (aRow copy deAliasQueryFieldsFor: self)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> repetitionIndex [
 
 	"repetitionIndex specifies which repetition of the receiver's table the receiver replaces.
@@ -150,7 +151,7 @@ SSWDBQueryTable >> repetitionIndex [
 	^repetitionIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> repetitionIndex: anInteger [
 
 	"repetitionIndex specifies which repetition of the receiver's table the receiver replaces.
@@ -159,7 +160,7 @@ SSWDBQueryTable >> repetitionIndex: anInteger [
 	repetitionIndex := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> sqlAndStaticConditionsWith: anSQLConditionCollection [
 
 	"Created for issue 120-015
@@ -172,13 +173,13 @@ SSWDBQueryTable >> sqlAndStaticConditionsWith: anSQLConditionCollection [
 		ifFalse: [self staticConditions sqlAnd: anSQLConditionCollection]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> sqlDialect [
 
 	^self table sqlDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> staticConditions [
 
 	"Created for issue 120-015
@@ -188,7 +189,7 @@ SSWDBQueryTable >> staticConditions [
 	^self table staticConditions copyForQueryTable: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> table [
 
 	"The receiver is created to stand in place of a regular SSWDBTable when 
@@ -200,7 +201,7 @@ SSWDBQueryTable >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> table: anSSWDBTable [
 
 	"The receiver is created to stand in place of a regular SSWDBTable when 
@@ -212,7 +213,7 @@ SSWDBQueryTable >> table: anSSWDBTable [
 	table := anSSWDBTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> versionControlField [
 
 	| versionControlField |
@@ -222,7 +223,7 @@ SSWDBQueryTable >> versionControlField [
 	^self allFields detect: [ :each | each field == versionControlField]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTable >> withAllFields [
 
 	self table: self table withAllFields.
@@ -230,7 +231,7 @@ SSWDBQueryTable >> withAllFields [
 
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBQueryTable >> writeSQLNameOn: aStream [
 
 	"Append to aStream a name for the receiver based on the repetitionIndex.
@@ -239,7 +240,7 @@ SSWDBQueryTable >> writeSQLNameOn: aStream [
 	aStream nextPutAliasedTable: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBQueryTable >> writeSQLOn: aStream [
 
 	"Alias the actual table name if necessary"

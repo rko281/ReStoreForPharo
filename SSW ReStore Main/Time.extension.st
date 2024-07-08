@@ -1,6 +1,6 @@
-Extension { #name : #Time }
+Extension { #name : 'Time' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Time class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"aValue may be some other object which can convert itself to a Time"

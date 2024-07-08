@@ -4,34 +4,35 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGeneralAffiliationTest,
-	#superclass : #SSWReStoreDefaultTest,
+	#name : 'SSWReStoreGeneralAffiliationTest',
+	#superclass : 'SSWReStoreDefaultTest',
 	#instVars : [
 		'reStore3',
 		'sessionHolder'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralAffiliationTest >> session1 [
 
 	sessionHolder value: #one
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralAffiliationTest >> session2 [
 
 	sessionHolder value: #two
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralAffiliationTest >> session3 [
 
 	sessionHolder value: #three
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralAffiliationTest >> setUp [
 
 	super setUp.
@@ -46,7 +47,7 @@ SSWReStoreGeneralAffiliationTest >> setUp [
 	reStore3 affiliateWith: sessionHolder using: [ :sh | sh value = #three]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralAffiliationTest >> tearDown [
 
 	reStore3 isNil ifFalse: 
@@ -58,7 +59,7 @@ SSWReStoreGeneralAffiliationTest >> tearDown [
 	SSWReStore reset
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testDefaultStoredInstancesWithAffiliations [
 
 	"Test use of storedInstances with the default ReStore and other affiliated instances"
@@ -84,7 +85,7 @@ SSWReStoreGeneralAffiliationTest >> testDefaultStoredInstancesWithAffiliations [
 	self assert: zoe3 _reStore identicalTo: reStore3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testDefaultWithAffiliations [
 
 	"Test separation of the default ReStore and nother affiliated instances"
@@ -103,7 +104,7 @@ SSWReStoreGeneralAffiliationTest >> testDefaultWithAffiliations [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testDisaffiliation [
 
 	"Test a session disaffiliated from its ReStore returns to the default global ReStore"
@@ -130,7 +131,7 @@ SSWReStoreGeneralAffiliationTest >> testDisaffiliation [
 	self assert: zoe3 _reStore identicalTo:  reStore3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testExistingStoreWithAffiliations [
 
 	"Test that a store of an existing object stores in the object's reStore, not the current default (affiliated or global)"
@@ -172,7 +173,7 @@ SSWReStoreGeneralAffiliationTest >> testExistingStoreWithAffiliations [
 	self assert: (SimplePerson storedInstances detect: [ :each | each emailAddress = 'dtest3']) identicalTo:  david1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testMultipleAffiliationsWithSameReStore [
 
 	"Test a ReStore affiliated with two different sessions results in the same objects"
@@ -195,7 +196,7 @@ SSWReStoreGeneralAffiliationTest >> testMultipleAffiliationsWithSameReStore [
 	self assert: zoe3 _reStore identicalTo:  reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testNewStoreInAffiliatedReStore [
 
 	"Test that a store under an affiliated ReStore stores in that ReStore, not the default"
@@ -210,7 +211,7 @@ SSWReStoreGeneralAffiliationTest >> testNewStoreInAffiliatedReStore [
 	self assert: alan _reStore identicalTo:  reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralAffiliationTest >> testObjectReStoreWithAffiliatedReStore [
 
 	"Test that a check for an existing object's reStore returns the object's reStore, not the current default (affilated or global)"

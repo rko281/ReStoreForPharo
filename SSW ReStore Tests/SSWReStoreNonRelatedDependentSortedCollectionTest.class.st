@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNonRelatedDependentSortedCollectionTest,
-	#superclass : #SSWReStoreNonRelatedSortedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreNonRelatedDependentSortedCollectionTest',
+	#superclass : 'SSWReStoreNonRelatedSortedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreNonRelatedDependentSortedCollectionTest >> _testComponentExistenceOnDependency: component [
 
 	"Private - collection is dependent at this level, so replaced/removed/cascade-deleted component should no longer exist"
@@ -20,7 +21,7 @@ SSWReStoreNonRelatedDependentSortedCollectionTest >> _testComponentExistenceOnDe
 	self assert: ((component class storedInstancesIn: reStore) detect: [ :each | each name = component name] ifNone: [nil]) isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedDependentSortedCollectionTest >> componentDefinition [
 
 	^SortedCollection of: GenericOwnedTest dependent unrelated

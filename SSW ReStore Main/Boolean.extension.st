@@ -1,6 +1,6 @@
-Extension { #name : #Boolean }
+Extension { #name : 'Boolean' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Boolean class >> instanceFromDBValue: aValue in: anSSWReStore [
 
 	"Check the obvious possibilities first for efficiency"

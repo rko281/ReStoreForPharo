@@ -1,6 +1,6 @@
-Extension { #name : #Class }
+Extension { #name : 'Class' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Class >> isPersistentIn: anSSWReStore [
 
 	^anSSWReStore isClassPersistent: self

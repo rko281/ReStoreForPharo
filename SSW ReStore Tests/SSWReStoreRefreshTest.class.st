@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRefreshTest,
-	#superclass : #SSWReStore2Test,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRefreshTest',
+	#superclass : 'SSWReStore2Test',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreRefreshTest >> createTestData [
 
 	self createStandardTestInstance.
@@ -17,7 +18,7 @@ SSWReStoreRefreshTest >> createTestData [
 	self refreshDelay
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test01 [
 
 	"check it works for objects"
@@ -39,7 +40,7 @@ SSWReStoreRefreshTest >> test01 [
 	self assert: (inst2 number = 11)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test02 [
 
 	"check refresh doesn't occur when not updated"
@@ -88,7 +89,7 @@ SSWReStoreRefreshTest >> test02 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test03 [
 
 	"check changes are remembered in copyObject"
@@ -112,7 +113,7 @@ SSWReStoreRefreshTest >> test03 [
 	self deny: inst2 hasChanged
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test04 [
 
 	"check it works with known objects"
@@ -133,7 +134,7 @@ SSWReStoreRefreshTest >> test04 [
 	self assert: (inst2 number = num)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test20 [
 
 	"owned collections - add"
@@ -161,7 +162,7 @@ SSWReStoreRefreshTest >> test20 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test21 [
 
 	"owned collections - remove"
@@ -188,7 +189,7 @@ SSWReStoreRefreshTest >> test21 [
 	self assert: ((inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray = (prevColl remove: 'owned1'; yourself) asArray)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test23 [
 
 	"owned collections - change"
@@ -215,7 +216,7 @@ SSWReStoreRefreshTest >> test23 [
 	self assert: (inst2 ownedOrdered collect: [ :e | e name]) asSortedCollection asArray equals: (prevColl remove: 'owned2'; add: 'xyz'; yourself) asArray
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test24 [
 
 	"owned collections - refresh with contents - change"
@@ -242,7 +243,7 @@ SSWReStoreRefreshTest >> test24 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test25 [
 
 	"owned collections - refresh with contents - change & add"
@@ -272,7 +273,7 @@ SSWReStoreRefreshTest >> test25 [
 	self assert: (inst2 ownedOrdered first name = 'test25')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test26 [
 
 	"owned collections - refresh with contents - change & add - ensure changes make it to copy collection"
@@ -303,7 +304,7 @@ SSWReStoreRefreshTest >> test26 [
 	self deny: inst2 hasChanged
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test31 [
 
 	"owned collections - refresh with contents - change auto-detect/touch of single object"
@@ -343,7 +344,7 @@ SSWReStoreRefreshTest >> test31 [
 		self assert: (test1 _version = (ver1 + 1))]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test32 [
 
 	"general collections - refresh with contents - change auto-detect/touch of single object"
@@ -377,7 +378,7 @@ SSWReStoreRefreshTest >> test32 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test33 [
 
 	"owned collections - refresh with contents - change auto-detect/touch of collection object"
@@ -423,7 +424,7 @@ SSWReStoreRefreshTest >> test33 [
 	self assert: (inst2 ownedOrdered last name = 'testA2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test34 [
 
 	"general collections - refresh with contents - change auto-detect/touch of collection object"
@@ -469,7 +470,7 @@ SSWReStoreRefreshTest >> test34 [
 	self assert: (inst2 ordered last name = 'testB2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test35 [
 
 	"test only actual changed things are updated"
@@ -515,7 +516,7 @@ SSWReStoreRefreshTest >> test35 [
 	self assert: (inst1 refreshCount = 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 
 	"Check it doesn't update when toched/does when not touched"
@@ -570,7 +571,7 @@ SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> testGeneralCollectionRefreshQueryCount [
 
 	"test one query is needed to refresh a general collection, even with a change"
@@ -595,7 +596,7 @@ SSWReStoreRefreshTest >> testGeneralCollectionRefreshQueryCount [
 	self assert: inst1 ordered first name equals: 'testB1'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> testOwnedCollectionRefreshQueryCount [
 
 	"test one query is needed to refresh a owned collection, even with a change"
@@ -619,7 +620,7 @@ SSWReStoreRefreshTest >> testOwnedCollectionRefreshQueryCount [
 	self assert: inst1 ownedOrdered first name equals: 'testB1'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> testRefreshOfCopyObject [
 
 	| inst1 inst2 |
@@ -642,7 +643,7 @@ SSWReStoreRefreshTest >> testRefreshOfCopyObject [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 
 	"Test previously-failing case where refreshing an object with an onRollback implementation which references an also-refreshed linked persistent object caused incorrect proxy swapping"
@@ -673,7 +674,7 @@ SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 			removeSelector: #onRollback fromClass: OwnerTest]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRefreshTest >> testSwapCollectionProxyBeforeFaultInParentAfterRefresh [
 	| owner coll |
 	owner := (OwnerTest storedInstancesIn: reStore) first.
@@ -696,7 +697,7 @@ SSWReStoreRefreshTest >> testSwapCollectionProxyBeforeFaultInParentAfterRefresh 
 	self shouldnt: [owner ownedOrdered first] raise: Error.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreRefreshTest >> usesVersioning [
 
 	^true

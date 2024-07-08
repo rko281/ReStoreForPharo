@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreProductOrdersTest,
-	#superclass : #SSWReStoreQueryTest,
+	#name : 'SSWReStoreProductOrdersTest',
+	#superclass : 'SSWReStoreQueryTest',
 	#instVars : [
 		'widget',
 		'gadget',
@@ -15,22 +15,23 @@ Class {
 		'customer3',
 		'customer4'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreProductOrdersTest class >> isAbstract [
 
 	^self == SSWReStoreProductOrdersTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreProductOrdersTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProductOrdersTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -39,7 +40,7 @@ SSWReStoreProductOrdersTest >> addClassesTo: aReStore [
 	(aReStore tableForClass: SimplePerson) define: #orders as: self ordersCollectionDefinition
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProductOrdersTest >> createTestData [
 
 	| products customers |
@@ -61,7 +62,7 @@ SSWReStoreProductOrdersTest >> createTestData [
 	customer4 := customers last
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreProductOrdersTest >> ordersCollectionDefinition [
 
 	"Owned collection"

@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGenericRelatedCollectionTest,
-	#superclass : #SSWReStoreGenericCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreGenericRelatedCollectionTest',
+	#superclass : 'SSWReStoreGenericCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericRelatedCollectionTest class >> isAbstract [
 
 	^self == SSWReStoreGenericRelatedCollectionTest
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeDeeplyFrom: anObject [
 
 	| component originalName changedName |
@@ -35,7 +36,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeDee
 	self assert: (anObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeFrom: anObject [
 
 	| component originalName changedName |
@@ -53,7 +54,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCheckHasChangedComponentChangeFro
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeDeeplyFrom: anObject [
 
 	| component originalName changedName oldTestObject anObject2 |
@@ -84,7 +85,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeDeeplyFrom: 
 	self deny: (self anySatisfy: [ :each | each deepTest ifNil: [false] ifNotNil: [ :dt | dt name = originalName]])
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeFrom: anObject [
 
 	| component originalName changedName oldTestObject anObject2 |
@@ -115,7 +116,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testCommitComponentChangeFrom: anObje
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeDeeplyFrom: anObject [
 
 	| component originalName changedName |
@@ -135,7 +136,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeDeeplyFrom:
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeFrom: anObject [
 
 	| component originalName changedName |
@@ -154,7 +155,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeFrom: anObj
 	self assert: (component name = changedName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedDeeplyFrom: anObject [
 
 	| component originalName changedName |
@@ -174,7 +175,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedDe
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedFrom: anObject [
 
 	| component originalName changedName |
@@ -193,7 +194,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeIfUpdatedFr
 	self assert: (component name = changedName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeWithExclusionFrom: anObject [
 
 	| component originalName changedName |
@@ -213,7 +214,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeWithExclusi
 	self assert: (component name = changedName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDeeplyFrom: anObject [
 
 	| component originalName changedName |
@@ -233,7 +234,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDee
 	self assert: (component deepTest name = originalName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDeeplyIfUpdatedFrom: anObject [
 
 	| component originalName changedName |
@@ -253,7 +254,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeDee
 	self assert: (component deepTest name = originalName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeFrom: anObject [
 
 	| component originalName changedName |
@@ -273,7 +274,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeFro
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeIfUpdatedFrom: anObject [
 
 	| component originalName changedName |
@@ -293,7 +294,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshRollbackComponentChangeIfU
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeDeeplyFrom: anObject [
 
 	| component originalName changedName |
@@ -313,7 +314,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeDeeplyFrom
 	self assert: (component deepTest name = originalName)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeFrom: anObject [
 
 	| component originalName changedName |
@@ -333,7 +334,7 @@ SSWReStoreGenericRelatedCollectionTest >> _testRollbackComponentChangeFrom: anOb
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentAddition [
 
 	self addToCollection.
@@ -346,19 +347,19 @@ SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentAddition [
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentChange [
 
 	self _testCheckHasChangedComponentChangeFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentChangeDeeply [
 
 	self _testCheckHasChangedComponentChangeDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentRemoval [
 
 	self removeFromCollection.
@@ -371,7 +372,7 @@ SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentRemoval [
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentReplace [
 
 	self replaceInCollection.
@@ -384,85 +385,85 @@ SSWReStoreGenericRelatedCollectionTest >> testCheckHasChangedComponentReplace [
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionCheckHasChangedComponentChange [
 
 	self _testCheckHasChangedComponentChangeFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionCheckHasChangedComponentChangeDeeply [
 
 	self _testCheckHasChangedComponentChangeDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionCommitComponentChange [
 
 	self _testCommitComponentChangeFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionCommitComponentChangeDeeply [
 
 	self _testCommitComponentChangeDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshComponentChange [
 
 	self _testRefreshComponentChangeFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshComponentChangeDeeply [
 
 	self _testRefreshComponentChangeDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshComponentChangeIfUpdated [
 
 	self _testRefreshComponentChangeIfUpdatedFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshComponentChangeIfUpdatedDeeply [
 
 	self _testRefreshComponentChangeIfUpdatedDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshComponentChangeWithExclusion [
 
 	self _testRefreshComponentChangeWithExclusionFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshRollbackComponentChange [
 
 	self _testRefreshRollbackComponentChangeFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRefreshRollbackComponentChangeDeeply [
 
 	self _testRefreshRollbackComponentChangeDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRollbackComponentChange [
 
 	self _testRollbackComponentChangeFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCollectionRollbackComponentChangeDeeply [
 
 	self _testRollbackComponentChangeDeeplyFrom: collection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCommitComponentAddition [
 
 	| original added |
@@ -484,19 +485,19 @@ SSWReStoreGenericRelatedCollectionTest >> testCommitComponentAddition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCommitComponentChange [
 
 	self _testCommitComponentChangeFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCommitComponentChangeDeeply [
 
 	self _testCommitComponentChangeDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testCommitComponentRemoval [
 
 	| originalAndReplacement |
@@ -517,7 +518,7 @@ SSWReStoreGenericRelatedCollectionTest >> testCommitComponentRemoval [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentAddition [
 
 	| originalSize added | 
@@ -536,13 +537,13 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentAddition [
 	self assert: (self select: [ :each | each name = added name]) size equals: 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChange [
 
 	self _testRefreshComponentChangeFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeAndRemoval [
 
 	| component originalSize originalName changedName removed | 
@@ -574,31 +575,31 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeAndRemoval [
 		ifFalse: [self assert: component name equals: changedName]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeDeeply [
 
 	self _testRefreshComponentChangeDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeIfUpdated [
 
 	self _testRefreshComponentChangeIfUpdatedFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeIfUpdatedDeeply [
 
 	self _testRefreshComponentChangeIfUpdatedDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentChangeWithExclusion [
 
 	self _testRefreshComponentChangeWithExclusionFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentRemoval [
 
 	| component originalSize originalName changedName removed | 
@@ -629,7 +630,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentRemoval [
 		ifFalse: [self assert: component name equals: originalName]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentReplace [
 
 	| originalSize originalAndReplacement original replacement | 
@@ -654,7 +655,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshComponentReplace [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshIfUpdatedComponentChangeAndRemoval [
 
 	| component originalSize originalName changedName removed | 
@@ -684,7 +685,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshIfUpdatedComponentChangeAnd
 	self componentDefinitionIsDependent ifFalse: [self assert: component name equals: changedName]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRefreshesComponentChange [
 
 	| added originalName |
@@ -701,7 +702,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRefreshesComponentChange [
 	self assert: (added name = originalName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentAddition [
 
 	| original added |
@@ -721,31 +722,31 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentAddition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentChange [
 
 	self _testRefreshRollbackComponentChangeFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentChangeDeeply [
 
 	self _testRefreshRollbackComponentChangeDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentChangeIfUpdated [
 
 	self _testRefreshComponentChangeIfUpdatedFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentChangeIfUpdatedDeeply [
 
 	self _testRefreshComponentChangeIfUpdatedDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentRemoval [
 
 	| original removed |
@@ -764,7 +765,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentRemoval [
 	self assert: (collection size = original size)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentReplace [
 
 	| originalAndReplacement |
@@ -782,7 +783,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRefreshRollbackComponentReplace [
 	self deny: (self includes: originalAndReplacement value)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentAddition [
 
 	| original added |
@@ -802,19 +803,19 @@ SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentAddition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentChange [
 
 	self _testRollbackComponentChangeFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentChangeDeeply [
 
 	self _testRollbackComponentChangeDeeplyFrom: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentRemoval [
 
 	| original removed |
@@ -833,7 +834,7 @@ SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentRemoval [
 	self assert: (collection size = original size)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericRelatedCollectionTest >> testRollbackComponentReplace [
 
 	| originalAndReplacement |

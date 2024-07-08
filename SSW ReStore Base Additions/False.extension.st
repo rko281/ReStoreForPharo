@@ -1,6 +1,6 @@
-Extension { #name : #False }
+Extension { #name : 'False' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 False >> asInteger [
 
 	"For DB support"

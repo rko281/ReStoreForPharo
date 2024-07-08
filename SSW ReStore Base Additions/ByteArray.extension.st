@@ -1,6 +1,6 @@
-Extension { #name : #ByteArray }
+Extension { #name : 'ByteArray' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 ByteArray class >> maxSize: anInteger [
 
 	^SSWDBByteArrayWithInfo new

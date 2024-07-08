@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBKeyedCollectionEntry,
-	#superclass : #SSWDBCollectionEntry,
+	#name : 'SSWDBKeyedCollectionEntry',
+	#superclass : 'SSWDBCollectionEntry',
 	#instVars : [
 		'index'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #persistence }
+{ #category : 'persistence' }
 SSWDBKeyedCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 
 	| table |
@@ -24,13 +25,13 @@ SSWDBKeyedCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 	^table
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBKeyedCollectionEntry >> addTargetTo: aCollection [
 
 	aCollection _dbAdd: self target suggestedIndex: self index
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBKeyedCollectionEntry >> copyTargetTo: aCollection [
 
 	self hasMutableIndex 
@@ -42,13 +43,13 @@ SSWDBKeyedCollectionEntry >> copyTargetTo: aCollection [
 		[aCollection _dbAdd: self target copy suggestedIndex: self index]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBKeyedCollectionEntry >> hasMutableIndex [
 
 	^self index class isMutableDirectlyPersistedNonBaseClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBKeyedCollectionEntry >> index [
 
 	"index stores the index (key) of the target object in the collection"
@@ -56,7 +57,7 @@ SSWDBKeyedCollectionEntry >> index [
 	^index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBKeyedCollectionEntry >> index: anInteger [
 
 	"index stores the index (key) of the target object in the collection"
@@ -64,7 +65,7 @@ SSWDBKeyedCollectionEntry >> index: anInteger [
 	index := anInteger
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBKeyedCollectionEntry >> prepareToCommitFor: anSSWDBCachingCollectionProxy [
 
 	^self index _ensureActiveIn: anSSWDBCachingCollectionProxy _reStore

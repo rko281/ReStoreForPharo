@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreCommitTests,
-	#superclass : #SSWReStorePersonTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreCommitTests',
+	#superclass : 'SSWReStorePersonTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreCommitTests >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -18,7 +19,7 @@ SSWReStoreCommitTests >> addClassesTo: aReStore [
 		addClass: Test
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCommitTests >> test01SelfReference [
 
 	| obj |
@@ -35,7 +36,7 @@ SSWReStoreCommitTests >> test01SelfReference [
 	
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCommitTests >> test02MultiCommitSameObject [
 
 	| obj success people|
@@ -58,7 +59,7 @@ SSWReStoreCommitTests >> test02MultiCommitSameObject [
 	self assert: (obj firstName = 'David')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCommitTests >> test03MultiStoreSameObject [
 
 	| obj success people |
@@ -74,7 +75,7 @@ SSWReStoreCommitTests >> test03MultiStoreSameObject [
 	self assert: (obj firstName = 'Dave')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCommitTests >> test04MultiStoreSameObjectViaRelationships [
 
 	| obj1 obj2 tst success ownerTests tests |

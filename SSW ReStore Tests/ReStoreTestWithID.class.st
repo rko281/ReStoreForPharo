@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #ReStoreTestWithID,
-	#superclass : #Object,
+	#name : 'ReStoreTestWithID',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'nmbr',
 		'other'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 ReStoreTestWithID class >> name: aString nmbr: anInteger [
 
 	^self new
@@ -23,7 +24,7 @@ ReStoreTestWithID class >> name: aString nmbr: anInteger [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 ReStoreTestWithID class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -33,38 +34,38 @@ ReStoreTestWithID class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 ReStoreTestWithID class >> shouldSubclassesInheritPersistency [
 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> name: anObject [
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> nmbr [
 	^nmbr
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> nmbr: anObject [
 	nmbr := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> other [
 	^other
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithID >> other: anObject [
 	other := anObject
 ]

@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBArrayedStaticCollectionSpec,
-	#superclass : #SSWDBOrderedStaticCollectionSpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBArrayedStaticCollectionSpec',
+	#superclass : 'SSWDBOrderedStaticCollectionSpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBArrayedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries.

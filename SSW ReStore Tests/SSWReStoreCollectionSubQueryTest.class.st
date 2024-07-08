@@ -4,28 +4,29 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreCollectionSubQueryTest,
-	#superclass : #SSWReStoreProductOrdersTest,
+	#name : 'SSWReStoreCollectionSubQueryTest',
+	#superclass : 'SSWReStoreProductOrdersTest',
 	#instVars : [
 		'customers',
 		'goldPlatedWobulator'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCollectionSubQueryTest class >> isAbstract [
 
 	^self == SSWReStoreCollectionSubQueryTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCollectionSubQueryTest class >> myTestSelectors [
 
 	^SSWReStoreCollectionSubQueryTest testSelectors
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreCollectionSubQueryTest >> createTestData [
 
 	| orders |
@@ -63,7 +64,7 @@ SSWReStoreCollectionSubQueryTest >> createTestData [
 	customers := SimplePerson storedInstancesIn: reStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testAnySatisfyDeep [
 
 	| matches |
@@ -90,7 +91,7 @@ SSWReStoreCollectionSubQueryTest >> testAnySatisfyDeep [
 	self assert: (matches isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testAnySatisfyPersistent [
 
 	| matches |
@@ -117,7 +118,7 @@ SSWReStoreCollectionSubQueryTest >> testAnySatisfyPersistent [
 	self assert: (matches isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testAnySatisfySimple [
 
 	| matches |
@@ -148,7 +149,7 @@ SSWReStoreCollectionSubQueryTest >> testAnySatisfySimple [
 	self assert: (matches isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testCollectFirst [
 
 	| results |
@@ -163,7 +164,7 @@ SSWReStoreCollectionSubQueryTest >> testCollectFirst [
 	self assert: ((results at: customer4) isNil)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testCollectLast [
 
 	| results |
@@ -178,7 +179,7 @@ SSWReStoreCollectionSubQueryTest >> testCollectLast [
 	self assert: ((results at: customer4) isNil)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testCollectSize [
 
 	| results |
@@ -192,7 +193,7 @@ SSWReStoreCollectionSubQueryTest >> testCollectSize [
 	self assert: (results at: customer4) equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testCollectionSize [
 
 	| matches |
@@ -221,7 +222,7 @@ SSWReStoreCollectionSubQueryTest >> testCollectionSize [
 	self assert: (matches first = customer4).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSize [
 
 	"Test for a previously-failing case where a size expression in a collect: block overwrote and removed conditions expressed in an earlier satisfying: block"
@@ -238,7 +239,7 @@ SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSize [
 	self assert: (results asSortedCollection: [ :a :b | a first <= b first]) asArray equals: {{jim fullName. jim orderCount}. {zoe fullName. zoe orderCount}}
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSubQuery [
 
 	"Test for a previously-erroring case where a subquery expression in a collect: block gave SSWDBStaticField MNU: #hasAggregateFunction"
@@ -254,7 +255,7 @@ SSWReStoreCollectionSubQueryTest >> testConditionAndCollectWithSubQuery [
 	self assert: (results asSortedCollection: [ :a :b | a first <= b first]) asArray equals: {{jim fullName. jim orderCount > 0}. {zoe fullName. zoe orderCount > 0}}
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testIncludes [
 
 	{customer1. customer2. customer3} do:
@@ -273,7 +274,7 @@ SSWReStoreCollectionSubQueryTest >> testIncludes [
 		self assert: (otherCustomers allSatisfy: [ :otherCustomer | matches includes: otherCustomer])]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testIsEmpty [
 
 	| matches |
@@ -283,7 +284,7 @@ SSWReStoreCollectionSubQueryTest >> testIsEmpty [
 	self assert: (matches first == customer4)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testIsNotEmpty [
 
 	| matches |
@@ -293,7 +294,7 @@ SSWReStoreCollectionSubQueryTest >> testIsNotEmpty [
 	self deny: (matches anySatisfy: [ :each | each == customer4])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testSelectSimpleCollectFirst [
 
 	| results |
@@ -306,7 +307,7 @@ SSWReStoreCollectionSubQueryTest >> testSelectSimpleCollectFirst [
 	self assert: ((results at: customer3) quantity = 100)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testSelectSimpleCollectSize [
 
 	| results |
@@ -319,7 +320,7 @@ SSWReStoreCollectionSubQueryTest >> testSelectSimpleCollectSize [
 	self assert: ((results at: customer3) = 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectionSubQueryTest >> testSelectSimpleSizeComparison [
 
 	| matches |

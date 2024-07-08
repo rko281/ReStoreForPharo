@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBVersionedCachingObjectProxy,
-	#superclass : #SSWDBCachingObjectProxy,
+	#name : 'SSWDBVersionedCachingObjectProxy',
+	#superclass : 'SSWDBCachingObjectProxy',
 	#instVars : [
 		'version'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBVersionedCachingObjectProxy class >> _forNewObject: anObject withID: anInteger inReStore: aReStore [
 
 	"Overriden to set initial version number"
@@ -22,7 +23,7 @@ SSWDBVersionedCachingObjectProxy class >> _forNewObject: anObject withID: anInte
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBVersionedCachingObjectProxy class >> controlFields [
 
 	"Overriden to set version controlField"
@@ -32,7 +33,7 @@ SSWDBVersionedCachingObjectProxy class >> controlFields [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBVersionedCachingObjectProxy class >> modifyUpdatesFor: anSSWDBTable [
 
 	^(super modifyUpdatesFor: anSSWDBTable)
@@ -41,7 +42,7 @@ SSWDBVersionedCachingObjectProxy class >> modifyUpdatesFor: anSSWDBTable [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBVersionedCachingObjectProxy class >> new [
 
 	"Overriden to set initial version number"
@@ -51,17 +52,17 @@ SSWDBVersionedCachingObjectProxy class >> new [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBVersionedCachingObjectProxy class >> versionControlField [
 
-	^SSWDBStaticField new
+	^SSWDBControlField new
 		accessor: SSWDBVersionAccessor new;
 		targetClass: Integer;
 		yourself
 	
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBVersionedCachingObjectProxy >> _commitUpdates [
 
 	"Reimplemented to include version increment"
@@ -78,7 +79,7 @@ SSWDBVersionedCachingObjectProxy >> _commitUpdates [
 		(reStore applyUpdates: updates toObject: self)]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBVersionedCachingObjectProxy >> _incrementVersion [
 
 	version == nil
@@ -86,7 +87,7 @@ SSWDBVersionedCachingObjectProxy >> _incrementVersion [
 		ifFalse: [version := version + 1]
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBVersionedCachingObjectProxy >> _incrementVersionUpdate [
 
 	"Create and return an update that will increment the version number
@@ -97,7 +98,7 @@ SSWDBVersionedCachingObjectProxy >> _incrementVersionUpdate [
 		ifFalse: [SSWSQLFieldAssignment field: (self _dbTable fieldAccessing: #_version) value: (version + 1)]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBVersionedCachingObjectProxy >> _matchStateOf: aProxy [
 
 	"Match the internal proxy (non data) state of aProxy"
@@ -105,7 +106,7 @@ SSWDBVersionedCachingObjectProxy >> _matchStateOf: aProxy [
 	version := aProxy _version
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBVersionedCachingObjectProxy >> _postCommitUpdates [
 
 	"Reimplemented to increment version"
@@ -119,7 +120,7 @@ SSWDBVersionedCachingObjectProxy >> _postCommitUpdates [
 		self _incrementVersion]
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBVersionedCachingObjectProxy >> _refreshIfUpdated [
 
 	"Using the receiver's version it is possible to refresh the receiver only if it has actually been updated in the database"
@@ -130,7 +131,7 @@ SSWDBVersionedCachingObjectProxy >> _refreshIfUpdated [
 			self _acquireCopyObject]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBVersionedCachingObjectProxy >> _version [
 
 	"version stores an Integer representing the version or revision number
@@ -141,7 +142,7 @@ SSWDBVersionedCachingObjectProxy >> _version [
 	^version
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBVersionedCachingObjectProxy >> _version: anInteger [
 
 	"version stores an Integer representing the version or revision number

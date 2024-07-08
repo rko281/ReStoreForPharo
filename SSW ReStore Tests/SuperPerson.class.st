@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SuperPerson,
-	#superclass : #Object,
+	#name : 'SuperPerson',
+	#superclass : 'Object',
 	#instVars : [
 		'firstName',
 		'superFlags',
 		'surname'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SuperPerson class >> mutableAspects [
 	^#(#superFlags).
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SuperPerson class >> reStoreDefinition [
 	^super reStoreDefinition
 		define: #surname as: (String maxSize: 255);
@@ -28,42 +29,42 @@ SuperPerson class >> reStoreDefinition [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> firstName [
 
 	^firstName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> firstName: a [
 
 	firstName := a
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> fullName [
 
 	^self firstName, ' ', self surname
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SuperPerson >> initialize [
 	super initialize.
 	superFlags := TestBitmask new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> superFlags [
 	^superFlags.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> surname [
 
 	^surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SuperPerson >> surname: a [
 
 	surname := a

@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWMutableInstVarAccessor,
-	#superclass : #SSWInstVarAccessor,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWMutableInstVarAccessor',
+	#superclass : 'SSWInstVarAccessor',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWMutableInstVarAccessor >> copyValue: anObject in: targetObject [
 
 	"Since the receiver accesses mutable objects we must perform a copy"
@@ -12,7 +13,7 @@ SSWMutableInstVarAccessor >> copyValue: anObject in: targetObject [
 	self value: anObject copy in: targetObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWMutableInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 
 	"Since the receiver accesses mutable objects we must perform a copy"

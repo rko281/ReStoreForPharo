@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreAggregateQueryTest,
-	#superclass : #SSWReStoreProductOrdersTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreAggregateQueryTest',
+	#superclass : 'SSWReStoreProductOrdersTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreAggregateQueryTest >> createTestData [
 
 	| orders |
@@ -25,7 +26,7 @@ SSWReStoreAggregateQueryTest >> createTestData [
 	orders storeAllIn: reStore
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreAggregateQueryTest >> testAll [
 
 	| orders mins maxs sums avgs counts |
@@ -69,7 +70,7 @@ SSWReStoreAggregateQueryTest >> testAll [
 	self assert: (avgs at: wobulator) = 150
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupWithObject [
 
 	| uniqueProducts |
@@ -82,7 +83,7 @@ SSWReStoreAggregateQueryTest >> testGroupWithObject [
 	self assert: (uniqueProducts size = 3)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupedAverage [
 
 	| orders results |
@@ -101,7 +102,7 @@ SSWReStoreAggregateQueryTest >> testGroupedAverage [
 	self assert: (results at: wobulator) = 150
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupedCount [
 
 	| orders results |
@@ -117,7 +118,7 @@ SSWReStoreAggregateQueryTest >> testGroupedCount [
 	self assert: (results at: wobulator) = 2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupedMaximum [
 
 	| orders results |
@@ -133,7 +134,7 @@ SSWReStoreAggregateQueryTest >> testGroupedMaximum [
 	self assert: (results at: wobulator) = 200
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupedMinimum [
 
 	| orders results |
@@ -149,7 +150,7 @@ SSWReStoreAggregateQueryTest >> testGroupedMinimum [
 	self assert: (results at: wobulator) = 100
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testGroupedSum [
 
 	| orders results |
@@ -165,7 +166,7 @@ SSWReStoreAggregateQueryTest >> testGroupedSum [
 	self assert: (results at: wobulator) = 300
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testMultiGroupedCount [
 
 	| orders results |
@@ -191,7 +192,7 @@ SSWReStoreAggregateQueryTest >> testMultiGroupedCount [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleAverage [
 
 	| orders |
@@ -201,7 +202,7 @@ SSWReStoreAggregateQueryTest >> testSimpleAverage [
 	self assert: (orders project: [ :each | each quantity average]) asArray first truncated = 29
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleCount [
 
 	| orders |
@@ -211,7 +212,7 @@ SSWReStoreAggregateQueryTest >> testSimpleCount [
 	self assert: (orders project: [ :each | each count]) asArray = #(17)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleGroup [
 
 	| people  uniqueSurnames |
@@ -224,7 +225,7 @@ SSWReStoreAggregateQueryTest >> testSimpleGroup [
 	self assert: (uniqueSurnames asSortedCollection asArray = #('Brown' 'Smith' 'Smythe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleMaximum [
 
 	| orders |
@@ -234,7 +235,7 @@ SSWReStoreAggregateQueryTest >> testSimpleMaximum [
 	self assert: (orders project: [ :each | each quantity maximum]) asArray = #(200)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleMinimum [
 
 	| orders |
@@ -244,7 +245,7 @@ SSWReStoreAggregateQueryTest >> testSimpleMinimum [
 	self assert: (orders project: [ :each | each quantity minimum]) asArray = #(1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSimpleSum [
 
 	| orders |
@@ -254,7 +255,7 @@ SSWReStoreAggregateQueryTest >> testSimpleSum [
 	self assert: (orders project: [ :each | each quantity sum]) asArray = #(505)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAggregateQueryTest >> testSize_ie_Count [
 
 	"InstancesCollection size is implemented via the aggregation mechanism using COUNT"

@@ -1,6 +1,6 @@
-Extension { #name : #Process }
+Extension { #name : 'Process' }
 
-{ #category : #'*SSW ReStore Tests' }
+{ #category : '*SSW ReStore Tests' }
 Process >> isInIDECallStackAlwaysTrue [
 
 	^true

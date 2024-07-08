@@ -4,21 +4,21 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBInstancesCollection,
-	#superclass : #Object,
+	#name : 'SSWDBInstancesCollection',
+	#superclass : 'Object',
 	#instVars : [
 		'reStore',
 		'instancesClass',
 		'parser',
 		'sortBlock',
-		'preFetchComponents',
 		'preReadActions',
 		'postReadActions'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBInstancesCollection class >> forClass: aClass in: anSSWReStore [
 
 	^self new
@@ -28,7 +28,7 @@ SSWDBInstancesCollection class >> forClass: aClass in: anSSWReStore [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBInstancesCollection class >> new [
 
 	^super new
@@ -37,7 +37,7 @@ SSWDBInstancesCollection class >> new [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBInstancesCollection >> addAll: anSSWDBInstancesCollection [
 
 	"'Add' the given instances collection to the receiver so that its elements
@@ -55,7 +55,7 @@ SSWDBInstancesCollection >> addAll: anSSWDBInstancesCollection [
 	^anSSWDBInstancesCollection
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> allSatisfy: aBlock [
 
 	"Uses two queries"
@@ -63,13 +63,13 @@ SSWDBInstancesCollection >> allSatisfy: aBlock [
 	^self size = (self satisfying: aBlock) size
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> anyOne [
 
 	^self first
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> anySatisfy: aBlock [
 	
 	"Uses one query"
@@ -77,19 +77,19 @@ SSWDBInstancesCollection >> anySatisfy: aBlock [
 	^(self satisfying: aBlock) isEmpty not
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBInstancesCollection >> asOrderedCollection [
 
 	^self collectInto: (OrderedCollection new: 16)
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBInstancesCollection >> asSet [
 
 	^self collectInto: (Set new: 16)
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBInstancesCollection >> asSortedCollection [
 
 	"If a sort is already defined, use that, else use the standard sort block"
@@ -99,7 +99,7 @@ SSWDBInstancesCollection >> asSortedCollection [
 		ifFalse: [self asSortedCollection: SortedCollection defaultSortBlock]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBInstancesCollection >> asSortedCollection: aTwoArgBlock [
 
 	^self copy
@@ -107,7 +107,7 @@ SSWDBInstancesCollection >> asSortedCollection: aTwoArgBlock [
 		asSortedCollection
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> beOrdered [
 
 	"Order the receiver based on the ID field.
@@ -116,7 +116,7 @@ SSWDBInstancesCollection >> beOrdered [
 	self sortBlock: [ :a :b | a _id < b _id]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> beSorted [
 
 	"Order the receiver based on the default sort for the instanceClass"
@@ -124,13 +124,13 @@ SSWDBInstancesCollection >> beSorted [
 	self sortBlock: SortedCollection defaultSortBlock
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> collect: collectBlock [
 	
 	^self collect: collectBlock into: (OrderedCollection new: 16)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> collect: collectBlock into: aCollection [
 
 	"Private - Add the objects resulting from collectBlock to aCollection.
@@ -139,7 +139,7 @@ SSWDBInstancesCollection >> collect: collectBlock into: aCollection [
 	^self query: (self parser collectQueryFrom: collectBlock) into: aCollection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> collectInto: aCollection [
 
 	"Private - Add the objects resulting from the receiver to aCollection.
@@ -148,20 +148,20 @@ SSWDBInstancesCollection >> collectInto: aCollection [
 	^self collect: [ :object | object] into: aCollection
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> createParser [
 
 	self parser: (SSWDBBlockParser newForReStore: self reStore argumentClass: self instancesClass)
 
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> detect: detectBlock [
 
 	^self detect: detectBlock ifNone: [self errorNotFound: detectBlock]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> detect: detectBlock ifNone: noneBlock [
 
 	| query |
@@ -171,7 +171,7 @@ SSWDBInstancesCollection >> detect: detectBlock ifNone: noneBlock [
 	^self reStore fetchObjectOfClass: self instancesClass withQuery: query ifNone: noneBlock
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> do: aBlock [
 
 	"Use the streamed #do: to avoid creating a (potentially large) temporary collection"
@@ -183,7 +183,7 @@ SSWDBInstancesCollection >> do: aBlock [
 	[stream do: aBlock] ensure: [stream close]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> fetchObjectsFromTable: aDBTable withQuery: aQuery into: aCollection [
 
 	self preReadActions do: [ :each | each value].
@@ -195,25 +195,25 @@ SSWDBInstancesCollection >> fetchObjectsFromTable: aDBTable withQuery: aQuery in
 	^aCollection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> fetchObjectsWithQuery: aQuery into: aCollection [
 
 	^self fetchObjectsFromTable: self table withQuery: aQuery into: aCollection
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> first [
 
 	^self detect: [ :each | true] ifNone: [#() errorSubscriptBounds: 1]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> first: anInteger [
 
 	^self readStream next: anInteger
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> include: aSymbol [
 
 	"Arrange for the content of the inst var named aSymbol to be bulk fetched when elements of the receiver are read from the database"
@@ -221,7 +221,7 @@ SSWDBInstancesCollection >> include: aSymbol [
 	self includeAll: (Array with: aSymbol)
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> includeAll: aCollectionOfInstVarNames [
 
 	"Arrange for the contents of aCollectionOfInstVarNames (representing components of the receiver) to be bulk fetched when elements of the receiver are read from the database"
@@ -229,7 +229,7 @@ SSWDBInstancesCollection >> includeAll: aCollectionOfInstVarNames [
 	self includeTableComponents: (aCollectionOfInstVarNames collect: [ :instVarName | self table componentAccessing: instVarName])
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> includeDependentComponents [
 
 	"Arrange for dependent contents to be bulk pre-fetched when elements of the receiver are read from the database"
@@ -237,7 +237,7 @@ SSWDBInstancesCollection >> includeDependentComponents [
 	self includeTableComponents: self table dependentComponents
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> includeRelatedComponents [
 
 	"Arrange for related contents to be bulk pre-fetched when elements of the receiver are read from the database"
@@ -245,7 +245,7 @@ SSWDBInstancesCollection >> includeRelatedComponents [
 	self includeTableComponents: self table relatedComponents
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> includeTableComponents: aCollectionOfTableComponents [
 
 	"Private - Arrange for the contents of aCollectionOfTableComponents to be bulk fetched when elements of the receiver are read from the database"
@@ -255,7 +255,7 @@ SSWDBInstancesCollection >> includeTableComponents: aCollectionOfTableComponents
 		self postReadActions add: [ :elements | component readAllFor: elements]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBInstancesCollection >> includes: anObject [
 
 	| id |
@@ -265,7 +265,7 @@ SSWDBInstancesCollection >> includes: anObject [
 	^(self detect: [ :each | each _id = id] ifNone: [nil]) == anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> instancesClass [
 
 	"instancesClass stores the Class of persistent object which form the receiver's 'elements'	"
@@ -273,7 +273,7 @@ SSWDBInstancesCollection >> instancesClass [
 	^instancesClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> instancesClass: aClass [
 
 	"instancesClass stores the Class of persistent object which form the receiver's 'elements'	"
@@ -281,37 +281,37 @@ SSWDBInstancesCollection >> instancesClass: aClass [
 	instancesClass := aClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBInstancesCollection >> isEmpty [
 
 	^self size = 0
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBInstancesCollection >> isSorted [
 
 	^self sortBlock notNil
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> last [
 
 	^self reverse first
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> last: anInteger [
 
 	^(self reverse first: anInteger) reverse
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> lookup: aBlock [
 
 	^self detect: aBlock ifNone: [nil]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> modify: aBlock [
 
 	"Iterate over the elements in the database, modifying each according to aBlock.
@@ -339,7 +339,7 @@ SSWDBInstancesCollection >> modify: aBlock [
 	^rows
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> parser [
 
 	"parser stores an SSWDBBlockParser which parses enumerating blocks
@@ -348,7 +348,7 @@ SSWDBInstancesCollection >> parser [
 	^parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> parser: anSSWDBBlockParser [
 
 	"parser stores an SSWDBBlockParser which parses enumerating blocks
@@ -357,13 +357,13 @@ SSWDBInstancesCollection >> parser: anSSWDBBlockParser [
 	parser := anSSWDBBlockParser
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 SSWDBInstancesCollection >> postCopy [
 
 	self parser: self parser copy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> postReadActions [
 
 	"postReadActions stores an OrderedCollection of actions (1-arg Blocks or MessageSends) which are evaluated with a collection of the receiver's elements after they are read from the database"
@@ -371,7 +371,7 @@ SSWDBInstancesCollection >> postReadActions [
 	^postReadActions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> postReadActions: anOrderedCollection [
 
 	"postReadActions stores an OrderedCollection of actions (1-arg Blocks or MessageSends) which are evaluated with a collection of the receiver's elements after they are read from the database"
@@ -379,7 +379,7 @@ SSWDBInstancesCollection >> postReadActions: anOrderedCollection [
 	postReadActions := anOrderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> preReadActions [
 
 	"preReadActions stores an OrderedCollection of actions (zero-arg Blocks or MessageSends) which are evaluated before the receiver's elements are read from the database"
@@ -387,7 +387,7 @@ SSWDBInstancesCollection >> preReadActions [
 	^preReadActions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> preReadActions: anOrderedCollection [
 
 	"preReadActions stores an OrderedCollection of actions (zero-arg Blocks or MessageSends) which are evaluated before the receiver's elements are read from the database"
@@ -395,13 +395,13 @@ SSWDBInstancesCollection >> preReadActions: anOrderedCollection [
 	preReadActions := anOrderedCollection
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> project: projectBlock [
 	
 	^self project: projectBlock into: (OrderedCollection new: 16)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> project: projectBlock into: aCollection [
 
 	"Private - Add the objects resulting from projectBlock to aCollection.
@@ -410,7 +410,7 @@ SSWDBInstancesCollection >> project: projectBlock into: aCollection [
 	^self query: (self parser projectQueryFrom: projectBlock) into: aCollection
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> qualifyWith: aBlock [
 
 	"Modify the receiver's parser so that it always qualifies any query it creates
@@ -420,7 +420,7 @@ SSWDBInstancesCollection >> qualifyWith: aBlock [
 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBInstancesCollection >> query: query into: aCollection [
 
 	"Private - Add the objects resulting from query to aCollection.
@@ -447,7 +447,7 @@ SSWDBInstancesCollection >> query: query into: aCollection [
 		ifFalse: [aCollection]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> reStore [
 
 	"reStore stores the SSWReStore in which the receiver's 'elements' reside"
@@ -455,7 +455,7 @@ SSWDBInstancesCollection >> reStore [
 	^reStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> reStore: anSSWReStore [
 
 	"reStore stores the SSWReStore in which the receiver's 'elements' reside"
@@ -463,7 +463,7 @@ SSWDBInstancesCollection >> reStore: anSSWReStore [
 	reStore := anSSWReStore
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> readStream [
 
 	"Create and return an appropraite ReadStream-like object on the receiver"
@@ -473,7 +473,7 @@ SSWDBInstancesCollection >> readStream [
 		yourself
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBInstancesCollection >> refreshed [
 
 	"Arrange for a softRollback to take place immediately before reading the receiver's elements from the database.
@@ -482,7 +482,7 @@ SSWDBInstancesCollection >> refreshed [
 	self preReadActions add: [self reStore softRollback]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> reject: rejectBlock [
 	
 	| query results |
@@ -496,7 +496,7 @@ SSWDBInstancesCollection >> reject: rejectBlock [
 	^results
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> resultSet [
 
 	"Private - Return a DBResultSet (open query results) onto the collection of rows represented by the receiver"
@@ -508,7 +508,7 @@ SSWDBInstancesCollection >> resultSet [
 	^self reStore executeQuery: query cursoredFetch: true
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> reverse [
 
 	"Return a copy of the receiver with reversed ordering"
@@ -525,7 +525,7 @@ SSWDBInstancesCollection >> reverse [
 	^reversed
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> satisfying: aOneArgBlock [
 
 	"Return a copy of the receiver, but with its members qualified by aOneArgBlock,
@@ -543,7 +543,7 @@ SSWDBInstancesCollection >> satisfying: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> select: selectBlock [
 	
 	| query results |
@@ -557,7 +557,7 @@ SSWDBInstancesCollection >> select: selectBlock [
 	^results
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBInstancesCollection >> select: selectBlock thenCollect: collectBlock [
 
 	"This method is compatible with Collection>>select:thenCollect: but uses satisfying: to avoid faulting in all instances of the receiver's instanceClass"
@@ -565,7 +565,7 @@ SSWDBInstancesCollection >> select: selectBlock thenCollect: collectBlock [
 	^(self satisfying: selectBlock) collect: collectBlock
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> size [
 
 	"Evaluate the 'size' (number of persistent instances) of the receiver via a COUNT query"
@@ -582,7 +582,7 @@ SSWDBInstancesCollection >> size [
 	^size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> sortBlock [
 
 	"Order the receiver's elements by aTwoArgBlock - a 'simple' sort block:
@@ -596,7 +596,7 @@ SSWDBInstancesCollection >> sortBlock [
 	^sortBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> sortBlock: aTwoArgBlock [
 
 	"Order the receiver's elements by aTwoArgBlock - a 'simple' sort block:
@@ -614,7 +614,7 @@ SSWDBInstancesCollection >> sortBlock: aTwoArgBlock [
 		ifFalse: [self parser sortBlock: aTwoArgBlock]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> table [
 
 	"Return the table associated with the receiver's instancesClass"
@@ -623,7 +623,7 @@ SSWDBInstancesCollection >> table [
 	^self parser argumentTable
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBInstancesCollection >> unstore: aBlock [
 
 	"Unstore elements of the receiver satisfying aBlock from the database
@@ -638,7 +638,7 @@ SSWDBInstancesCollection >> unstore: aBlock [
 	^rows
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBInstancesCollection >> unstoreAll [
 
 	"Unstore all elements of the receiver from the database"
@@ -646,7 +646,7 @@ SSWDBInstancesCollection >> unstoreAll [
 	^self unstore: [ :each | true]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBInstancesCollection >> withoutInheritance [
 
 	"If the receiver's instancesClass has persistent subclasses, then by default

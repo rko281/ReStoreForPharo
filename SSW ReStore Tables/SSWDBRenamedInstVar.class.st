@@ -1,13 +1,14 @@
 Class {
-	#name : #SSWDBRenamedInstVar,
-	#superclass : #SSWDBInstVarDefinition,
+	#name : 'SSWDBRenamedInstVar',
+	#superclass : 'SSWDBInstVarDefinition',
 	#instVars : [
 		'previousName'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBRenamedInstVar >> databaseFieldNameIn: anSSWDBTable [
 
 	"Base the field name on the previousName"
@@ -15,12 +16,12 @@ SSWDBRenamedInstVar >> databaseFieldNameIn: anSSWDBTable [
 	^anSSWDBTable dbNameFor: self previousName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBRenamedInstVar >> previousName [
 	^previousName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBRenamedInstVar >> previousName: anObject [
 	previousName := anObject
 ]

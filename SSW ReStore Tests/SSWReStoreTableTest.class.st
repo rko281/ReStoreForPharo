@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreTableTest,
-	#superclass : #SSWReStorePersonTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreTableTest',
+	#superclass : 'SSWReStorePersonTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreTableTest >> createTestData [
 
 	| people detailedPeople |
@@ -86,7 +87,7 @@ SSWReStoreTableTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreTableTest >> ensureHierarchyColumnsAllPresent [
 
 	| table columns expected |
@@ -100,7 +101,7 @@ SSWReStoreTableTest >> ensureHierarchyColumnsAllPresent [
 	self assert: (expected allSatisfy: [ :each | columns includes: each])
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreTableTest >> renameClass [
 
 	reStore renamedClass: SimplePerson2 from: #SimplePerson.
@@ -109,7 +110,7 @@ SSWReStoreTableTest >> renameClass [
 	reStore tableCache removeKey: SimplePerson
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreTableTest >> renameDetailedClass [
 
 	reStore renamedClass: DetailedPerson2 from: #DetailedPerson.
@@ -118,13 +119,13 @@ SSWReStoreTableTest >> renameDetailedClass [
 	reStore tableCache removeKey: DetailedPerson
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreTableTest >> sampleSize [
 
 	^10
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableTest >> setUp [
 
 	DetailedPerson2 
@@ -135,7 +136,7 @@ SSWReStoreTableTest >> setUp [
 	super setUp
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreTableTest >> shouldDestroyClasses [
 
 	"For table tests we need a fresh database"
@@ -143,13 +144,13 @@ SSWReStoreTableTest >> shouldDestroyClasses [
 	^true
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test01VerifySetup [
 
 	self assert: ((SimplePerson storedInstancesIn: reStore) size = (self sampleSize * 2))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test02RenameClass [
 
 	| people table |
@@ -166,7 +167,7 @@ SSWReStoreTableTest >> test02RenameClass [
 	self assert: (((SSWDBTableRecord storedInstancesIn: reStore) detect: [ :seq | seq tableName = table name]) nextID >= (self sampleSize + 1))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test03RenameInstVar [
 
 	| people |
@@ -184,7 +185,7 @@ SSWReStoreTableTest >> test03RenameInstVar [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test04RenameInstVarPersistent [
 
 	| people |
@@ -199,7 +200,7 @@ SSWReStoreTableTest >> test04RenameInstVarPersistent [
 	self assert: ((people detect: [ :each | each firstName = 'John']) bestFriend firstName = 'Sam')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test06ChangeInstVarClass [
 
 	| table originalSize origField people |
@@ -233,7 +234,7 @@ SSWReStoreTableTest >> test06ChangeInstVarClass [
 	self assert: (people allSatisfy: [ :each | (each notes size > originalSize) and: [each notes endsWith: 'longer']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test07AlterInstVar [
 
 	| table originalSize origField people newSize |
@@ -276,7 +277,7 @@ SSWReStoreTableTest >> test07AlterInstVar [
 	self assert: ((SimplePerson2 storedInstancesIn: reStore) asOrderedCollection allSatisfy: [ :each | (each notes size = newSize) and: [each notes allSatisfy: [ :char | char = each surname first]]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test09DestroyTable [
 
 	| table |
@@ -288,7 +289,7 @@ SSWReStoreTableTest >> test09DestroyTable [
 	self deny: (reStore dbIncludesTable: table)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test11VerifySetup [
 
 	self assert: (SuperPerson storedInstancesIn: reStore) size = ((self sampleSize * 3) + 3). "1 x super + 2 x Detailed + (1 custom super + 2 custom detailed)" 
@@ -296,7 +297,7 @@ SSWReStoreTableTest >> test11VerifySetup [
 	self assert: (DetailedPerson storedInstancesIn: reStore) size = ((self sampleSize * 2) + 2) "+2 custom detailed"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test12Unstore [
 
 	self assert: (((SuperPerson storedInstancesIn: reStore) satisfying: [ :each | each firstName = 'James']) size = 2).
@@ -314,7 +315,7 @@ SSWReStoreTableTest >> test12Unstore [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test13RenameClassHierarchy [
 
 	| people table |
@@ -334,7 +335,7 @@ SSWReStoreTableTest >> test13RenameClassHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test14RenameInstVarHierarchy [
 
 	| people |
@@ -351,7 +352,7 @@ SSWReStoreTableTest >> test14RenameInstVarHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test15RenameInstVarPersistentHierarchy [
 
 	| people |
@@ -368,7 +369,7 @@ SSWReStoreTableTest >> test15RenameInstVarPersistentHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 
 	| table originalSize origField people |
@@ -407,7 +408,7 @@ SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test17AlterInstVarHierarchy [
 
 	| table originalSize origField people newSize |
@@ -455,7 +456,7 @@ SSWReStoreTableTest >> test17AlterInstVarHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test19DestroyTable [
 
 	self renameDetailedClass.
@@ -464,7 +465,7 @@ SSWReStoreTableTest >> test19DestroyTable [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 
 	"Issue 120-015"
@@ -489,7 +490,7 @@ SSWReStoreTableTest >> test20QueryRelatedHierarchy [
 	self assert: (((DetailedPerson1 storedInstancesIn: reStore) detect: [ :e | 'Jon*' match: e friend2 surname]) firstName = 'John')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableTest >> test22VerifyUnderscoreFormat [
 
 	"General testing of sswInUnderscoreFormat"
@@ -503,7 +504,7 @@ SSWReStoreTableTest >> test22VerifyUnderscoreFormat [
 	self assert: #basic1Two sswInUnderscoreFormat equals: 'basic1_two'
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTableTest >> test30VerifySpecifiedFieldNames [
 
 	| table instances |

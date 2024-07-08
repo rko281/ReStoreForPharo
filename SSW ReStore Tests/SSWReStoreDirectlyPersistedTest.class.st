@@ -1,13 +1,14 @@
 Class {
-	#name : #SSWReStoreDirectlyPersistedTest,
-	#superclass : #SSWReStore2Test,
+	#name : 'SSWReStoreDirectlyPersistedTest',
+	#superclass : 'SSWReStore2Test',
 	#instVars : [
 		'owner'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testCollection: aSymbol [
 
 	| collection |
@@ -20,7 +21,7 @@ SSWReStoreDirectlyPersistedTest >> _testCollection: aSymbol [
 	self assert: collection asArray equals: ((1 to: 8) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testCollectionMutationCommit: aSymbol [
 
 	| collection |
@@ -39,7 +40,7 @@ SSWReStoreDirectlyPersistedTest >> _testCollectionMutationCommit: aSymbol [
 	self assert: collection asArray equals: ((129 to: 136) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testCollectionMutationHasChanged: aSymbol [
 
 	| collection |
@@ -54,7 +55,7 @@ SSWReStoreDirectlyPersistedTest >> _testCollectionMutationHasChanged: aSymbol [
 	self assert: collection hasChanged.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testCollectionMutationRefresh: aSymbol [
 
 	| owner2 collection |
@@ -74,7 +75,7 @@ SSWReStoreDirectlyPersistedTest >> _testCollectionMutationRefresh: aSymbol [
 	self assert: collection asArray equals: ((129 to: 136) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testCollectionMutationRollback: aSymbol [
 
 	| collection |
@@ -95,7 +96,7 @@ SSWReStoreDirectlyPersistedTest >> _testCollectionMutationRollback: aSymbol [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionCommit: aSymbol [
 
 	| collection |
@@ -113,7 +114,7 @@ SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionCommit: aSymbol [
 	self assert: collection asArray equals: (#(3 4 5 99) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionRefresh: aSymbol [
 
 	| owner2 collection |
@@ -133,7 +134,7 @@ SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionRefresh: aSymbol [
 	self assert: collection asArray equals: (#(3 4 5 99) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionRollback: aSymbol [
 
 	| collection |
@@ -162,7 +163,7 @@ SSWReStoreDirectlyPersistedTest >> _testSequenceableCollectionRollback: aSymbol 
 	self _testCollection: aSymbol
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDirectlyPersistedTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -170,7 +171,7 @@ SSWReStoreDirectlyPersistedTest >> addClassesTo: aReStore [
 	aReStore addClass: TestWithBitmask
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDirectlyPersistedTest >> createTestData [
 
 	| collection dictionary |
@@ -191,13 +192,13 @@ SSWReStoreDirectlyPersistedTest >> createTestData [
 			yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDirectlyPersistedTest >> reReadTestData [
 
 	owner := (TestWithBitmask storedInstancesIn: reStore) detect: [ :each | each name = 'owner']
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreDirectlyPersistedTest >> storeNewOwnersWithBitmaskValues: aCollection [
 
 	^(aCollection collect: 
@@ -207,13 +208,13 @@ SSWReStoreDirectlyPersistedTest >> storeNewOwnersWithBitmaskValues: aCollection 
 			yourself]) storeAllIn: reStore; yourself
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArray [
 
 	self _testCollection: #array
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayCommit [
 
 	| collection |
@@ -231,31 +232,31 @@ SSWReStoreDirectlyPersistedTest >> testArrayCommit [
 	self assert: collection asArray equals: (#(nil 2 3 4 5 6 7 99) collect: [ :each | each ifNotNil: [TestBitmask value: each]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayMutationCommit [
 
 	self _testCollectionMutationCommit: #array
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayMutationHasChanged [
 
 	self _testCollectionMutationHasChanged: #array
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayMutationRefresh [
 
 	self _testCollectionMutationRefresh: #array
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayMutationRollback [
 
 	self _testCollectionMutationRollback: #array
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayRefresh [
 
 	| owner2 collection |
@@ -274,7 +275,7 @@ SSWReStoreDirectlyPersistedTest >> testArrayRefresh [
 	self assert: collection asArray equals: (#(nil 2 3 4 5 6 7 99) collect: [ :each | each ifNotNil: [TestBitmask value: each]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testArrayRollback [
 
 	owner array at: 1 put: nil; at: 8 put: (TestBitmask new value: 99).
@@ -283,7 +284,7 @@ SSWReStoreDirectlyPersistedTest >> testArrayRollback [
 	self testArray
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testAutoRefresh [
 
 	self assert: owner bitmask value equals: 0.
@@ -304,7 +305,7 @@ SSWReStoreDirectlyPersistedTest >> testAutoRefresh [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testCollectQuery [
 
 	| instances |
@@ -315,7 +316,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQuery [
 	self assert: (instances collect: [ :each | each bitmask]) asArray equals: ((0 to: 8) collect: [ :each | TestBitmask new value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testCollectQueryOnValue [
 
 	| instances |
@@ -326,7 +327,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQueryOnValue [
 	self assert: (instances collect: [ :each | each bitmask value]) asArray equals: (0 to: 8) asArray
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testCollectQueryWithMethod [
 
 	| instances |
@@ -338,7 +339,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQueryWithMethod [
 	self assert: (instances collect: [ :each | each bitmask isBitSet: 2]) asArray equals: ((0 to: 8) collect: [ :each | each isBitSet: 2])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testCommit [
 
 	self assert: owner bitmask value equals: 0.
@@ -352,7 +353,7 @@ SSWReStoreDirectlyPersistedTest >> testCommit [
 	self assert: owner bitmask value equals: 99
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDeletedObjectRecovery [
 
 	"Verify recovery of a deleted object containing a mutable directly persisted object (previously caused an error)"
@@ -374,7 +375,7 @@ SSWReStoreDirectlyPersistedTest >> testDeletedObjectRecovery [
 	self assert: person friend isDBDeleted.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDictionary [
 
 	self assert: owner dictionary size equals: 8.
@@ -388,7 +389,7 @@ SSWReStoreDirectlyPersistedTest >> testDictionary [
 	owner dictionary keysAndValuesDo: [ :key :value | self assert: value value equals: key value + 256]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDictionaryCommit [
 
 	owner dictionary removeKey: (TestBitmask value: 1); removeKey: (TestBitmask value: 2); removeKey: (TestBitmask value: 6); removeKey: (TestBitmask value: 7); removeKey: (TestBitmask value: 8); at: (TestBitmask value: 9) put: (TestBitmask value: 265).
@@ -408,7 +409,7 @@ SSWReStoreDirectlyPersistedTest >> testDictionaryCommit [
 	owner dictionary keysAndValuesDo: [ :key :bitmask | self assert: bitmask value equals: key value + 256]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDictionaryMutationCommit [
 
 	(owner dictionary at: (TestBitmask value: 1)) bitSet: 8.
@@ -431,7 +432,7 @@ SSWReStoreDirectlyPersistedTest >> testDictionaryMutationCommit [
 				ifFalse: [self assert: bitmask value equals: key value + 256]]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDictionaryMutationHasChanged [
 
 	self deny: owner hasChanged.
@@ -443,7 +444,7 @@ SSWReStoreDirectlyPersistedTest >> testDictionaryMutationHasChanged [
 	self assert: owner dictionary hasChanged.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testDictionaryRollback [
 
 	owner dictionary removeKey: (TestBitmask value: 1); removeKey: (TestBitmask value: 2); removeKey: (TestBitmask value: 7); removeKey: (TestBitmask value: 8).
@@ -467,7 +468,7 @@ SSWReStoreDirectlyPersistedTest >> testDictionaryRollback [
 	self testDictionary
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testHasChanged [
 
 	self deny: owner hasChanged.
@@ -484,7 +485,7 @@ SSWReStoreDirectlyPersistedTest >> testHasChanged [
 	self deny: owner hasChanged
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testMutationCommit [
 
 	self assert: owner bitmask value equals: 0.
@@ -498,7 +499,7 @@ SSWReStoreDirectlyPersistedTest >> testMutationCommit [
 	self assert: owner bitmask value equals: 4
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testMutationRollback [
 
 	self assert: owner bitmask value equals: 0.
@@ -517,55 +518,55 @@ SSWReStoreDirectlyPersistedTest >> testMutationRollback [
 	self assert: owner bitmask value equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollection [
 
 	self _testCollection: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionCommit [
 
 	self _testSequenceableCollectionCommit: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionMutationCommit [
 
 	self _testCollectionMutationCommit: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionMutationHasChanged [
 
 	self _testCollectionMutationHasChanged: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionMutationRefresh [
 
 	self _testCollectionMutationRefresh: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionMutationRollback [
 
 	self _testCollectionMutationRollback: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionRefresh [
 
 	self _testSequenceableCollectionRefresh: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testOrderedCollectionRollback [
 
 	self _testSequenceableCollectionRollback: #orderedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testQuery [
 
 	| newOwners instances |
@@ -580,7 +581,7 @@ SSWReStoreDirectlyPersistedTest >> testQuery [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testQueryByExample [
 
 	| template matches |
@@ -618,7 +619,7 @@ SSWReStoreDirectlyPersistedTest >> testQueryByExample [
 	self assert: matches first identicalTo: owner
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testQueryOnValue [
 
 	| newOwners instances |
@@ -633,7 +634,7 @@ SSWReStoreDirectlyPersistedTest >> testQueryOnValue [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testQueryWithMethod [
 
 	| newOwners instances |
@@ -647,7 +648,7 @@ SSWReStoreDirectlyPersistedTest >> testQueryWithMethod [
 	self assert: (instances detect: [ :each | each bitmask isBitSet: 4]) identicalTo: newOwners last	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testRefresh [
 
 	self assert: owner bitmask value equals: 0.
@@ -667,7 +668,7 @@ SSWReStoreDirectlyPersistedTest >> testRefresh [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testRollback [
 
 	self assert: owner bitmask value equals: 0.
@@ -678,13 +679,13 @@ SSWReStoreDirectlyPersistedTest >> testRollback [
 	self assert: owner bitmask value equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSet [
 
 	self _testCollection: #set
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetCommit [
 
 	| collection |
@@ -703,31 +704,31 @@ SSWReStoreDirectlyPersistedTest >> testSetCommit [
 	self assert: collection asArray equals: (#(3 4 5 99) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetMutationCommit [
 
 	self _testCollectionMutationCommit: #set
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetMutationHasChanged [
 
 	self _testCollectionMutationHasChanged: #set
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetMutationRefresh [
 
 	self _testCollectionMutationRefresh: #set
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetMutationRollback [
 
 	self _testCollectionMutationRollback: #set
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetRefresh [
 
 	| owner2 collection |
@@ -748,7 +749,7 @@ SSWReStoreDirectlyPersistedTest >> testSetRefresh [
 	self assert: collection asArray equals: (#(3 4 5 99) collect: [ :each | TestBitmask value: each])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSetRollback [
 
 	| collection |
@@ -761,7 +762,7 @@ SSWReStoreDirectlyPersistedTest >> testSetRollback [
 	self testSet
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollection [
 
 	self _testCollection: #sortedCollection.
@@ -776,43 +777,43 @@ SSWReStoreDirectlyPersistedTest >> testSortedCollection [
 	self assert: owner sortedCollection first value equals: -1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionCommit [
 
 	self _testSequenceableCollectionCommit: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionMutationCommit [
 
 	self _testCollectionMutationCommit: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionMutationHasChanged [
 
 	self _testCollectionMutationHasChanged: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionMutationRefresh [
 
 	self _testCollectionMutationRefresh: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionMutationRollback [
 
 	self _testCollectionMutationRollback: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionRefresh [
 
 	self _testSequenceableCollectionRefresh: #sortedCollection
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDirectlyPersistedTest >> testSortedCollectionRollback [
 
 	self _testSequenceableCollectionRollback: #sortedCollection

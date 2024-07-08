@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBTableComponent }
+Extension { #name : 'SSWDBTableComponent' }
 
-{ #category : #'*SSW ReStore Tests' }
+{ #category : '*SSW ReStore Tests' }
 SSWDBTableComponent >> _readAllStatement [
 
 	^readAllStatement 

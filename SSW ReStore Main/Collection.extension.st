@@ -1,6 +1,6 @@
-Extension { #name : #Collection }
+Extension { #name : 'Collection' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> hasAnyChanged [
 
 	"Return whether any elements of the receiver or their related objects have changed in the image since loading from the ReStore instance in which they reside"
@@ -8,7 +8,7 @@ Collection >> hasAnyChanged [
 	^self isEmpty not and: [(self anyOne _reStoreIfNone: [self errorNotPersistent]) haveAnyChanged: (self collect: [ :each | each withRelatedComponents])]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> refreshAll [
 
 	"Refresh the elements of the receiver and their related objects to their stored state in the ReStore in which they reside"
@@ -16,7 +16,7 @@ Collection >> refreshAll [
 	self isEmpty ifFalse: [(self anyOne _reStoreIfNone: [self errorNotPersistent]) refreshAll: (self collect: [ :each | each withRelatedComponents])]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> rollbackAll [
 
 	"Rollback the elements of the receiver and their related objects to their previous state in the ReStore in which they reside"
@@ -24,7 +24,7 @@ Collection >> rollbackAll [
 	self isEmpty ifFalse: [(self anyOne _reStoreIfNone: [self errorNotPersistent]) rollbackAll: (self collect: [ :each | each withRelatedComponents])]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> store [
 
 	"Override to prevent attempt to store a non-persistent collection independently of its owner"
@@ -32,7 +32,7 @@ Collection >> store [
 	^self storeIn: (self _reStoreIfNone: [self errorNotPersistent])
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> storeAll [
 
 	"Store the elements of the receiver and their related objects in their ReStore or the default ReStore if not yet persistent, returning success.
@@ -46,7 +46,7 @@ Collection >> storeAll [
 		ifFalse: [self storeAllIn: (self anyOne _reStoreIfNone: [SSWReStore default])]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> storeAllIn: aReStore [
 
 	"Private - Store the elements of the receiver and their related objects in aReStore; return success.
@@ -58,7 +58,7 @@ Collection >> storeAllIn: aReStore [
 		ifFalse: [StoreFailure signalWith: aReStore. false]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> unstoreAll [
 
 	"Unstore (delete) the elements of the receiver in the ReStore in which they reside. 
@@ -69,13 +69,13 @@ Collection >> unstoreAll [
 		ifFalse: [(self anyOne _reStoreIfNone: [self errorNotPersistent]) commitAll: (self collect: [ :each | each unstored])]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> withComponents [
 
 	^SSWDBCollectionWithContents on: self
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Collection >> withRelatedComponents [
 
 	^SSWDBCollectionWithRelatedContents on: self

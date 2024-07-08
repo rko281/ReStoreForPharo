@@ -1,6 +1,6 @@
-Extension { #name : #Dictionary }
+Extension { #name : 'Dictionary' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> _dbAdd: targetObject suggestedIndex: keyObject [
 
 	"Make the receiver polymorphic with an indexed collection. keyObject = index"
@@ -8,7 +8,7 @@ Dictionary >> _dbAdd: targetObject suggestedIndex: keyObject [
 	^self at: keyObject put: targetObject
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> of: anAssociation [
 
 	"ReStore specification method - specify a Dictionary which stores instances of the class which is the value of anAssociation.
@@ -26,7 +26,7 @@ Dictionary >> of: anAssociation [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> of: targetClass keyClass: keyClass [
 
 	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
@@ -38,7 +38,7 @@ Dictionary >> of: targetClass keyClass: keyClass [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> of: targetClass keyedOn: aSymbolOrBlock [
 
 	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
@@ -60,7 +60,7 @@ Dictionary >> of: targetClass keyedOn: aSymbolOrBlock [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> of: anAssociation owner: aSymbol [
 
 	"Private - ReStore specification method - specify a Dictionary which stores instances of the class which is the value of anAssociation.
@@ -70,7 +70,7 @@ Dictionary >> of: anAssociation owner: aSymbol [
 	^self of: anAssociation value owner: aSymbol keyedOn: anAssociation key
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> of: targetClass owner: ownerSymbol keyedOn: aSymbol [
 
 	"Private - ReStore specification method - specify a Dictionary which stores instances of targetClass.
@@ -93,25 +93,25 @@ Dictionary >> of: targetClass owner: ownerSymbol keyedOn: aSymbol [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> ownedCacheDictionarySpecClass [
 
 	^SSWDBOwnedCacheDictionarySpec
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> ownedMultiValueCacheDictionarySpecClass [
 
 	^SSWDBOwnedMultiValueCacheDictionarySpec
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> staticCacheDictionarySpecClass [
 
 	^SSWDBStaticCacheDictionarySpec
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> staticCollectionSpecClass [ 
 
 	"Do not implement this method, the staticCollectionSpecClass for Dictionaries varies
@@ -122,13 +122,13 @@ Dictionary >> staticCollectionSpecClass [
 
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> staticDictionarySpecClass [
 
 	^SSWDBStaticDictionarySpec
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Dictionary >> staticMultiValueCacheDictionarySpecClass [
 
 	^SSWDBStaticMultiValueCacheDictionarySpec

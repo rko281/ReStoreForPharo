@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreUpdateClashTest,
-	#superclass : #SSWReStore2Test,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreUpdateClashTest',
+	#superclass : 'SSWReStore2Test',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTest >> createTestData [
 
 	self createStandardTestInstance.
@@ -17,7 +18,7 @@ SSWReStoreUpdateClashTest >> createTestData [
 	self refreshDelay
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTest >> prvTestOwnerTest: anOwnerTest in: aReStore [
 
 	| oldName oldNumber |
@@ -53,7 +54,7 @@ SSWReStoreUpdateClashTest >> prvTestOwnerTest: anOwnerTest in: aReStore [
 	self assert: (anOwnerTest number = (oldNumber + 123))
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTest >> prvTestTest: aTest in: aReStore [
 
 	| oldName |
@@ -77,7 +78,7 @@ SSWReStoreUpdateClashTest >> prvTestTest: aTest in: aReStore [
 	self assert: (aTest name = ('xxx', oldName, 'xxx'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 
 	"Check detect and pass (independent changes)"
@@ -115,7 +116,7 @@ SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 	self prvTestOwnerTest: inst2 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 
 	"Check detect and fail (independent changes but merge prevented)"
@@ -147,7 +148,7 @@ SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 
 	"Check detect-fail-rollback"
@@ -178,7 +179,7 @@ SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 	self prvTestTest: inst2 single1 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 
 	"Check detect-fail-rollforward"
@@ -211,7 +212,7 @@ SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 	self assert: (inst2 single1 name = 'single3:2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 
 	"Check detect-fail-handle-pass"
@@ -245,7 +246,7 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: (inst2 name = 'test4:2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test06DetectFailNoHandle [
 
 	"Check detect-fail-handle-fail"
@@ -283,7 +284,7 @@ SSWReStoreUpdateClashTest >> test06DetectFailNoHandle [
 	self prvTestTest: inst2 single1 in: reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test07DetectFailWithDeleteRollback [
 
 	"Check detect-fail handling of transaction with a deletion (previously handled incorrectly)"
@@ -310,7 +311,7 @@ SSWReStoreUpdateClashTest >> test07DetectFailWithDeleteRollback [
 	self assert: ((cls storedInstancesIn: reStore2) detect: [ :each | each _id = id]) == single2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test08DetectFailWithDeleteRollforward [
 
 	"Check detect-fail-rollforward handling of transaction with a deletion (previously handled incorrectly)"
@@ -336,7 +337,7 @@ SSWReStoreUpdateClashTest >> test08DetectFailWithDeleteRollforward [
 	self deny: ((inst2 single1 class storedInstancesIn: reStore2) anySatisfy: [ :each | each _id = id])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 
 	"Check update clashes to the NEXT_ID table are correctly handled, and without failing the transaction"
@@ -377,7 +378,7 @@ SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 	self assert: record1 nextID equals: nextID + 2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 
 	"Check update clashes to the NEXT_ID table for collection tables are correctly handled, and without failing the transaction"
@@ -421,7 +422,7 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 	self assert: record1 nextID equals: nextID + 2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTest >> test12RollforwardNextIDAllocations [
 
 	"Check originally-allocated IDs are preserved following detect-fail-rollforward"

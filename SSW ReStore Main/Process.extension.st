@@ -1,6 +1,6 @@
-Extension { #name : #Process }
+Extension { #name : 'Process' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Process >> reStore [
 
 	"Return the affiliated ReStore instance for this process.
@@ -9,7 +9,7 @@ Process >> reStore [
 	^(SSWReStore affiliateFor: self) ifNil: [SSWReStore globalDefault]
 ]
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 Process >> reStore: aReStoreOrNil [
 
 	"Set aReStore(OrNil) as the affiliated instance in this process.

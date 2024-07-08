@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreSortTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
+	#name : 'SSWReStoreSortTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
 	#instVars : [
 		'simplePersonCompareMethod'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #inverse }
+{ #category : 'inverse' }
 SSWReStoreSortTest >> _testClassSortImplementationInverted [
 
 	| instances |
@@ -23,7 +24,7 @@ SSWReStoreSortTest >> _testClassSortImplementationInverted [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #inverse }
+{ #category : 'inverse' }
 SSWReStoreSortTest >> _testClassSortImplementationWithBlocksInverted [
 
 	| instances |
@@ -34,7 +35,7 @@ SSWReStoreSortTest >> _testClassSortImplementationWithBlocksInverted [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #inverse }
+{ #category : 'inverse' }
 SSWReStoreSortTest >> _testSortInverted [
 
 	| instances |
@@ -46,7 +47,7 @@ SSWReStoreSortTest >> _testSortInverted [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
 
-{ #category : #inverse }
+{ #category : 'inverse' }
 SSWReStoreSortTest >> _testSortWithBlocksInverted [
 
 	| instances |
@@ -58,7 +59,7 @@ SSWReStoreSortTest >> _testSortWithBlocksInverted [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreSortTest >> changeDavidToJohn [
 
 	| davidToJohn |
@@ -68,7 +69,7 @@ SSWReStoreSortTest >> changeDavidToJohn [
 	davidToJohn store
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreSortTest >> setUp [
 
 	super setUp.
@@ -77,7 +78,7 @@ SSWReStoreSortTest >> setUp [
 	simplePersonCompareMethod := (SimplePerson>>#<=)
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreSortTest >> tearDown [
 
 	super tearDown.
@@ -85,7 +86,7 @@ SSWReStoreSortTest >> tearDown [
 	self addMethod: simplePersonCompareMethod withSelector: #<= toClass: SimplePerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementation [
 
 	| instances |
@@ -95,7 +96,7 @@ SSWReStoreSortTest >> testClassSortImplementation [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 
 	| instances |
@@ -117,7 +118,7 @@ SSWReStoreSortTest >> testClassSortImplementationOnPersistentObject [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementationReversed [
 
 	| instances |
@@ -127,7 +128,7 @@ SSWReStoreSortTest >> testClassSortImplementationReversed [
 	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementationWithBlocks [
 
 	| instances |
@@ -138,7 +139,7 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocks [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testClassSortImplementationWithBlocksOnPersistentObject [
 
 	| instances |
@@ -154,7 +155,7 @@ SSWReStoreSortTest >> testClassSortImplementationWithBlocksOnPersistentObject [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testDeepSort [
 
 	| instances |
@@ -169,7 +170,7 @@ SSWReStoreSortTest >> testDeepSort [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'David Smythe' 'Zoe Brown' 'John Smith' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testDeepSortWithBlocks [
 
 	| instances |
@@ -184,7 +185,7 @@ SSWReStoreSortTest >> testDeepSortWithBlocks [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'David Smythe' 'Zoe Brown' 'John Smith' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testSortImplementation [
 
 	| instances |
@@ -194,7 +195,7 @@ SSWReStoreSortTest >> testSortImplementation [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testSortImplementationOnPersistentObject [
 
 	| instances |
@@ -209,7 +210,7 @@ SSWReStoreSortTest >> testSortImplementationOnPersistentObject [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testSortImplementationOnPersistentObjectWithBlocks [
 
 	| instances |
@@ -224,7 +225,7 @@ SSWReStoreSortTest >> testSortImplementationOnPersistentObjectWithBlocks [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testSortImplementationReversed [
 
 	| instances |
@@ -234,7 +235,7 @@ SSWReStoreSortTest >> testSortImplementationReversed [
 	self assert: (instances reverse asOrderedCollection collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ) reverse
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testSortImplementationWithBlocks [
 
 	| instances |
@@ -244,7 +245,7 @@ SSWReStoreSortTest >> testSortImplementationWithBlocks [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testStandardSort [
 
 	| instances |
@@ -256,7 +257,7 @@ SSWReStoreSortTest >> testStandardSort [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('Jim Brown' 'John Smith' 'John Smythe' 'Zoe Brown'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testStandardSortOnPersistentObject [
 
 	| instances |
@@ -271,7 +272,7 @@ SSWReStoreSortTest >> testStandardSortOnPersistentObject [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testStandardSortOnPersistentObjectWithBlocks [
 
 	| instances |
@@ -287,7 +288,7 @@ SSWReStoreSortTest >> testStandardSortOnPersistentObjectWithBlocks [
 	self assert: ((instances collect: [ :each | each fullName]) asArray = #('David Smythe' 'John Smith' 'Zoe Brown' 'Jim Brown' ))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testStandardSortWithBlocks [
 
 	| instances |

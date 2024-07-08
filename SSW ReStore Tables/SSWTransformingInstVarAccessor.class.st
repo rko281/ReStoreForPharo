@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWTransformingInstVarAccessor,
-	#superclass : #SSWInstVarAccessor,
+	#name : 'SSWTransformingInstVarAccessor',
+	#superclass : 'SSWInstVarAccessor',
 	#instVars : [
 		'transformation'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWTransformingInstVarAccessor class >> newWithTransformation: aMonadicValuable [
 
 	^self new
@@ -20,7 +21,7 @@ SSWTransformingInstVarAccessor class >> newWithTransformation: aMonadicValuable 
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWTransformingInstVarAccessor >> transformation [
 
 	"transformation stores a monadic valuable (zero-arg Message or 1-arg block)
@@ -29,7 +30,7 @@ SSWTransformingInstVarAccessor >> transformation [
 	^transformation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWTransformingInstVarAccessor >> transformation: aMonadicValuable [
 
 	"transformation stores a monadic valuable (zero-arg Message or 1-arg block)
@@ -38,7 +39,7 @@ SSWTransformingInstVarAccessor >> transformation: aMonadicValuable [
 	transformation := aMonadicValuable
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWTransformingInstVarAccessor >> valueIn: anObject [
 
 	"Override to apply the transformation.

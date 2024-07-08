@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLJoinedTableCollection }
+Extension { #name : 'SSWSQLJoinedTableCollection' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLJoinedTableCollection >> add: anSSWDBTable joinedWithField: anSSWDBField [
 
 	"Patched for issue 120-001 (revised, replaces original patch)
@@ -11,7 +11,7 @@ SSWSQLJoinedTableCollection >> add: anSSWDBTable joinedWithField: anSSWDBField [
 	self add: anSSWDBTable joinedWith: (SSWSQLCondition field: anSSWDBTable idField equalTo: anSSWDBField)
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLJoinedTableCollection >> addAliasingDuplicates: anSSWDBTable joinedWithField: anSSWDBField [
 
 	"Add the given table joined with the given field; return the table added.
@@ -28,7 +28,7 @@ SSWSQLJoinedTableCollection >> addAliasingDuplicates: anSSWDBTable joinedWithFie
 					joinedWithField: anSSWDBField]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLJoinedTableCollection >> joinFields [
 
 	| joinFields |
@@ -41,7 +41,7 @@ SSWSQLJoinedTableCollection >> joinFields [
 	^joinFields
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLJoinedTableCollection >> lastJoinField [
 
 	"Patched for issue 120-001(revised)"

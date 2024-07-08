@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreDefaultReadTest,
-	#superclass : #SSWReStoreDefaultTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDefaultReadTest',
+	#superclass : 'SSWReStoreDefaultTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultReadTest >> testDefaultWithOtherReStore [
 
 	"Test separation of the default ReStore and another instance"
@@ -27,7 +28,7 @@ SSWReStoreDefaultReadTest >> testDefaultWithOtherReStore [
 	self assert: zoe2 _reStore = reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultReadTest >> testStoredInstances [
 
 	"Test simple querying using <Class> storedInstances"

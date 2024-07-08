@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBSingleTransaction,
-	#superclass : #SSWDBAbstractSingleTransaction,
+	#name : 'SSWDBSingleTransaction',
+	#superclass : 'SSWDBAbstractSingleTransaction',
 	#instVars : [
 		'updateStatementsCache'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> commitTo: aDBConnection [
 
 	"Commit the receiver's objects without any checking (done in prepareToCommit).
@@ -32,19 +33,19 @@ SSWDBSingleTransaction >> commitTo: aDBConnection [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> freeStatements [
 
 	self updateStatementsCache do: [ :stmts | stmts do: [ :stmt | stmt free]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBSingleTransaction >> hasChanges [
 
 	^self currentReferencedObjects anySatisfy: [ :obj | obj _checkHasChanged]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBSingleTransaction >> hasFailedCommit [
 
 	"The receiver does not support commit-time checking of update clashes.
@@ -54,7 +55,7 @@ SSWDBSingleTransaction >> hasFailedCommit [
 	^false
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> postCommit [
 
 	self postCommitAllocatedIDs.
@@ -62,20 +63,20 @@ SSWDBSingleTransaction >> postCommit [
 	self freeStatements
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> postRollback [
 
 	self endObjectCollection
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> preCommit [
 
 	self updateStatementsCache: IdentityDictionary new.
 	self commitAllocatedIDs
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBSingleTransaction >> rollback [
 
 	| rolledBack |
@@ -95,19 +96,19 @@ SSWDBSingleTransaction >> rollback [
 	^rolledBack
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBSingleTransaction >> statementForUpdateQuery: anUpdateQuery ifAbsent: aBlock [
 
 	^(self updateStatementsCache at: anUpdateQuery table ifAbsentPut: [Dictionary new])
 		at: anUpdateQuery updatedFields ifAbsentPut: [aBlock value]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBSingleTransaction >> updateStatementsCache [
 	^updateStatementsCache
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBSingleTransaction >> updateStatementsCache: anObject [
 	updateStatementsCache := anObject
 ]

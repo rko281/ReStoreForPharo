@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBProxy,
-	#superclass : #SSWDBProtoObject,
+	#name : 'SSWDBProxy',
+	#superclass : 'SSWDBProtoObject',
 	#instVars : [
 		'proxiedObject',
 		'reStore',
@@ -16,10 +16,11 @@ Class {
 		'IsPersistentMask',
 		'IsSwappedMask'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 SSWDBProxy class >> initialize [
 
 	IsSwappedMask := 1.
@@ -27,7 +28,7 @@ SSWDBProxy class >> initialize [
 	IsDeletedMask := 4
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBProxy class >> new [
 
 	"Create and answer a new instance of the receiver.
@@ -38,7 +39,7 @@ SSWDBProxy class >> new [
 		yourself
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> __ensureActive [
 
 	"Check if the receiver is in its reStore's current transaction. If not, add it to the transaction
@@ -52,7 +53,7 @@ SSWDBProxy >> __ensureActive [
 	(reStore transaction includesProxy: self) ifFalse: [self _referenced]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> __proxiedObject: anObject [
 
 	"Private - Guaranteed direct assignment with no additional functionality - do not override"
@@ -60,13 +61,13 @@ SSWDBProxy >> __proxiedObject: anObject [
 	proxiedObject := anObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> __referenced [
 
 	reStore proxy: self forwarded: (Message selector: #_referenced)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _changedObjectsIn: aReStore [
 
 	^(self _checkHasChangedIn: aReStore)
@@ -74,7 +75,7 @@ SSWDBProxy >> _changedObjectsIn: aReStore [
 		ifFalse: [#()]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _checkHasChanged [
 
 	"Return whether the receiver's proxiedObject has been changed 
@@ -86,13 +87,13 @@ SSWDBProxy >> _checkHasChanged [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _checkHasChangedIn: aReStore [
 
 	^self _isRecovered and: [self _hasChanged]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _clearDeleted [
 
 	"Private - Clear deleted status"
@@ -100,7 +101,7 @@ SSWDBProxy >> _clearDeleted [
 	flags := flags maskClear: IsDeletedMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _commitChanges [
 
 	"Commit to the reStore changes to the receiver's proxiedObject.
@@ -109,7 +110,7 @@ SSWDBProxy >> _commitChanges [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _commitChangesPhase1 [
 
 	"Commit to the reStore changes to the receiver's proxiedObject - phase 1 of 2.
@@ -119,7 +120,7 @@ SSWDBProxy >> _commitChangesPhase1 [
 	^self _commitChanges
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _commitChangesPhase2 [
 
 	"Commit to the reStore changes to the receiver's proxiedObject - phase 2 of 2.
@@ -129,7 +130,7 @@ SSWDBProxy >> _commitChangesPhase2 [
 	^true
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _commitIn: anSSWReStore [
 
 	"Add the receiver to the referenced set (if it is recovered) for subsequent commit"
@@ -139,7 +140,7 @@ SSWDBProxy >> _commitIn: anSSWReStore [
 	self _isRecovered ifTrue: [self _referenced]
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> _dbProxyIfNone: aBlock [
 
 	"Private - Received if the receiver has been swapped from a real object back to a proxy"
@@ -147,13 +148,13 @@ SSWDBProxy >> _dbProxyIfNone: aBlock [
 	^self
 ]
 
-{ #category : #'accessing:direct' }
+{ #category : 'accessing:direct' }
 SSWDBProxy >> _dbProxyIn: aReStore [
 	
 	^self _dbProxyIn: aReStore ifNone: [self error: 'proxy does not belong to aReStore']
 ]
 
-{ #category : #'accessing:direct' }
+{ #category : 'accessing:direct' }
 SSWDBProxy >> _dbProxyIn: aReStore ifNone: aBlock [
 	
 	^aReStore == reStore
@@ -161,7 +162,7 @@ SSWDBProxy >> _dbProxyIn: aReStore ifNone: aBlock [
 		ifFalse: [aBlock value]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _dbProxyReStore [
 	"Private - As #_reStore, but do not perform a reverse lookup if sent to a regular object.
 	Used internally by #doesNotUnderstand: to safely retrieve the ReStore in order to enter a critical section.
@@ -171,7 +172,7 @@ SSWDBProxy >> _dbProxyReStore [
 	^reStore
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> _debugPrintString [
 
 	"Do not fault the receiver just for a debugger"
@@ -181,7 +182,7 @@ SSWDBProxy >> _debugPrintString [
 		ifFalse: ['<', proxiedObject debugPrintString, '>']
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _ensureActiveIn: anSSWReStore [
 
 	"Ensure that the receiver is 'active' in the given ReStore 
@@ -197,7 +198,7 @@ SSWDBProxy >> _ensureActiveIn: anSSWReStore [
 	self _referenced
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _ensurePersistentIn: anSSWReStore [
 
 	"Check if the receiver is persistent in the given SSWReStore"
@@ -206,19 +207,19 @@ SSWDBProxy >> _ensurePersistentIn: anSSWReStore [
 	self validateReStore: anSSWReStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _flags [
 
 	^flags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _flags: aSmallInteger [
 
 	flags := aSmallInteger
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _forceRefresh [
 
 	"Simple - just forget then re-recover the proxied object"
@@ -228,7 +229,7 @@ SSWDBProxy >> _forceRefresh [
 		_recoverProxiedObject
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _forceRefreshIn: aReStore [
 
 	self validateReStore: aReStore.
@@ -236,7 +237,7 @@ SSWDBProxy >> _forceRefreshIn: aReStore [
 	self _forceRefresh
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _forceRefreshWithContents [
 
 	"Refresh the receiver and its contents (if any). Return any refreshed contents (if any)"
@@ -246,7 +247,7 @@ SSWDBProxy >> _forceRefreshWithContents [
 	^#()
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _forgetProxiedObject [
 
 	"Dispose of the reference to the receiver's proxiedObject"
@@ -254,7 +255,7 @@ SSWDBProxy >> _forgetProxiedObject [
 	proxiedObject := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _frontFace [
 	"Private - Answer the 'front face' identity associated with the receiver--the identity that should be referenced by other persisted objects.
 	When the receiver is swapped, this is the proxiedObject.
@@ -264,7 +265,7 @@ SSWDBProxy >> _frontFace [
 	^self _isSwapped ifTrue: [self _proxiedObject] ifFalse: [self].
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _hasChanged [
 
 	"Return whether the receiver's proxiedObject has been changed
@@ -277,13 +278,13 @@ SSWDBProxy >> _hasChanged [
 	^self _checkHasChanged
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _hasChangedFrom: anObject [
 
 	^(self == anObject) not
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _isDeleted [
 
 	"Return a Boolean indicating whether the receiver is marked as deleted"
@@ -291,7 +292,7 @@ SSWDBProxy >> _isDeleted [
 	^flags anyMask: IsDeletedMask
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _isPersistent [
 
 	"Return a Boolean indicating whether the receiver is persistent
@@ -300,13 +301,13 @@ SSWDBProxy >> _isPersistent [
 	^flags anyMask: IsPersistentMask
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _isRecovered [
 
 	^proxiedObject ~~ nil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _isSwapped [
 
 	"Return a Boolean indicating whether the receiver has been swapped such that all references point to the proxiedObject.
@@ -315,7 +316,7 @@ SSWDBProxy >> _isSwapped [
 	^flags anyMask: IsSwappedMask
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _lazyRefresh [
 
 	"Simple - just forget the proxied object"
@@ -323,7 +324,7 @@ SSWDBProxy >> _lazyRefresh [
 	self _forgetProxiedObject
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _lazyRefreshIn: aReStore [
 
 	self validateReStore: aReStore.
@@ -331,7 +332,7 @@ SSWDBProxy >> _lazyRefreshIn: aReStore [
 	self _lazyRefresh
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _newProxiedObject: anObject [
 
 	"Set proxiedObject, but the implication is anObject is new, i.e. not yet persistent.
@@ -340,7 +341,7 @@ SSWDBProxy >> _newProxiedObject: anObject [
 	self _setProxiedObject: anObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _postCommitChanges [
 
 	"The receiver's changes have been successfully committed.
@@ -349,7 +350,7 @@ SSWDBProxy >> _postCommitChanges [
 	^self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _postSwapReferences [
 
 	"Carry out any tidying up actions required after a _swapReferences"
@@ -357,7 +358,7 @@ SSWDBProxy >> _postSwapReferences [
 	^self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _prepareToCommit [
 
 	"Prepare to commit changes to the receiver's proxiedObject"
@@ -365,7 +366,7 @@ SSWDBProxy >> _prepareToCommit [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _prepareToCommitPhase1 [
 
 	"Prepare to commit changes to the receiver's proxiedObject - pass 1 of 2.
@@ -376,7 +377,7 @@ SSWDBProxy >> _prepareToCommitPhase1 [
 	^false
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _prepareToCommitPhase2 [
 
 	"Prepare to commit changes to the receiver's proxiedObject - pass 2 of 2."
@@ -385,7 +386,7 @@ SSWDBProxy >> _prepareToCommitPhase2 [
 	^self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> _proxiedClassIsDefinitive [
 
 	"Private - Is the class of the proxied object definitively known?"
@@ -393,7 +394,7 @@ SSWDBProxy >> _proxiedClassIsDefinitive [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _proxiedObject [
 
 	"proxiedObject stores the actual object which the receiver is a proxy for"
@@ -401,7 +402,7 @@ SSWDBProxy >> _proxiedObject [
 	^proxiedObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _proxiedObject: anObject [
 
 	"proxiedObject stores the actual object which the receiver is a proxy for"
@@ -409,7 +410,7 @@ SSWDBProxy >> _proxiedObject: anObject [
 	proxiedObject := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _proxiedObjectClass [
 
 	"Answer the class of the proxiedObject (or best guess) without needing to have the proxiedObject itself"
@@ -417,7 +418,7 @@ SSWDBProxy >> _proxiedObjectClass [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _reStore [
 
 	"reStore stores the SSWReStore which owns the object for which the receiver is a proxy"
@@ -425,7 +426,7 @@ SSWDBProxy >> _reStore [
 	^reStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _reStore: anSSWReStore [
 
 	"reStore stores the SSWReStore which owns the object for which the receiver is a proxy"
@@ -433,13 +434,13 @@ SSWDBProxy >> _reStore: anSSWReStore [
 	reStore := anSSWReStore
 ]
 
-{ #category : #'accessing:direct' }
+{ #category : 'accessing:direct' }
 SSWDBProxy >> _reStoreIfNone: aBlock [
 
 	^reStore
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _recoverProxiedObject [
 
 	"Recover the receiver's proxiedObject from the database"
@@ -447,7 +448,7 @@ SSWDBProxy >> _recoverProxiedObject [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _recoveredProxiedObject [
 
 	"Answer the proxiedObject, recovering it from the database if necessary"
@@ -456,7 +457,7 @@ SSWDBProxy >> _recoveredProxiedObject [
 	^proxiedObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _referenced [
 
 	"This message is sent by clients of the receiver which access the proxiedObject directly,
@@ -477,7 +478,7 @@ SSWDBProxy >> _referenced [
 	^me
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refresh [
 
 	"Refresh the receiver with its current database version according to its own preferred strategy.
@@ -486,7 +487,7 @@ SSWDBProxy >> _refresh [
 	self _refreshIfUpdated
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refreshIfUpdated [
 
 	"Refresh the receiver if it has been updated in the database.
@@ -496,7 +497,7 @@ SSWDBProxy >> _refreshIfUpdated [
 	self _forceRefresh
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refreshIfUpdatedIn: aReStore [
 
 	self validateReStore: aReStore.
@@ -504,7 +505,7 @@ SSWDBProxy >> _refreshIfUpdatedIn: aReStore [
 	self _refreshIfUpdated
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refreshIn: aReStore [
 
 	self validateReStore: aReStore.
@@ -512,7 +513,7 @@ SSWDBProxy >> _refreshIn: aReStore [
 	self _refresh
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refreshWithContents [
 
 	"Refresh the receiver and its contents (if any). Return any refreshed contents (if any)"
@@ -521,7 +522,7 @@ SSWDBProxy >> _refreshWithContents [
 	^self _refreshWithContentsIfUpdated
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBProxy >> _refreshWithContentsIfUpdated [
 
 	"Refresh the receiver and its contents (if any) if they are updated. Return the refreshed contents (if any)"
@@ -530,7 +531,7 @@ SSWDBProxy >> _refreshWithContentsIfUpdated [
 	^#()
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _rollbackChanges [
 
 	"Forget changes to the receiver.
@@ -539,7 +540,7 @@ SSWDBProxy >> _rollbackChanges [
 	self _forgetProxiedObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _rollbackIn: aReStore [
 
 	"Add the receiver to the referenced set (if it is recovered) for subsequent rollback"
@@ -549,7 +550,7 @@ SSWDBProxy >> _rollbackIn: aReStore [
 	self _isRecovered ifTrue: [self _referenced]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setDeleted [
 
 	"Private - Set the receiver's state to mark it as deleted from the database (assuming the commit completes)"
@@ -557,7 +558,7 @@ SSWDBProxy >> _setDeleted [
 	flags := flags maskSet: IsDeletedMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setNewNonPersistent [
 
 	"Initialize the receiver as a new non-persistent object"
@@ -565,19 +566,19 @@ SSWDBProxy >> _setNewNonPersistent [
 	flags := (flags maskClear: IsPersistentMask) maskSet: IsSwappedMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setNonPersistent [
 
 	flags := flags maskClear: IsPersistentMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setPersistent [
 
 	flags := flags maskSet: IsPersistentMask
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _setProxiedObject: anObject [
 
 	"Set proxiedObject ONLY - no other actions.
@@ -586,7 +587,7 @@ SSWDBProxy >> _setProxiedObject: anObject [
 	proxiedObject := anObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setSwapped [
 
 	"Set the receiver to mark that all references are now pointing to the proxied object.
@@ -595,7 +596,7 @@ SSWDBProxy >> _setSwapped [
 	flags := flags maskSet: IsSwappedMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _setUnswapped [
 
 	"Set the receiver to mark that all references are pointing to the receiver rather than the proxied object.
@@ -604,7 +605,7 @@ SSWDBProxy >> _setUnswapped [
 	flags := flags maskClear: IsSwappedMask
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _swap [
 
 	| newFlags |
@@ -616,7 +617,7 @@ SSWDBProxy >> _swap [
 	^self _swapReferences
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _swapReferences [
 
 	"Private - this method should only be sent from _swap or _unswap.
@@ -640,13 +641,13 @@ SSWDBProxy >> _swapReferences [
 	^me
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> _unrecoveredProxyString [
 
 	^'%<an unrecovered <1p>%>' expandMacrosWith: self _proxiedObjectClass
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _unstore [
 
 	"Mark the receiver in such a way that it will be deleted from the database on commit"
@@ -654,7 +655,7 @@ SSWDBProxy >> _unstore [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> _unswap [
 
 	| newFlags |
@@ -666,7 +667,7 @@ SSWDBProxy >> _unswap [
 	^self _swapReferences
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBProxy >> class [
 
 	"No need to bother the proxiedObject, except where needed to definitively determine their class"
@@ -686,7 +687,7 @@ SSWDBProxy >> class [
 				[self class]]]
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> commit [
 
 	"Commit the receiver and its related objects.
@@ -697,7 +698,7 @@ SSWDBProxy >> commit [
 	^self store
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> debugPrintString [
 
 	^self _dbProxyReStore 
@@ -711,7 +712,7 @@ SSWDBProxy >> debugPrintString [
 				ifFalse: [self debugPrintString]]]
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBProxy >> doesNotUnderstand: aMessage [
 
 	"Patched for issue 120-011"
@@ -730,7 +731,7 @@ SSWDBProxy >> doesNotUnderstand: aMessage [
 	^aMessage value: self
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> halt [
 
 	"Go via the reStore so we use debug mode"
@@ -738,7 +739,7 @@ SSWDBProxy >> halt [
 	reStore isNil ifTrue: [super halt] ifFalse: [reStore halt]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> includedIn: aCollection [
 
 	"Reciprocal of Collection>>includes: 
@@ -747,7 +748,7 @@ SSWDBProxy >> includedIn: aCollection [
 	^aCollection includes: self
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBProxy >> instVarAt: anInteger [
 
 	"Avoiding the ProtoObject implementation, selectively forward the message directly to the proxiedObject.
@@ -768,13 +769,13 @@ SSWDBProxy >> instVarAt: anInteger [
 				[self instVarAt: anInteger]]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBProxy >> isDBProxy [
 
 	^true
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> isInteger [
 
 	"No need to bother the proxiedObject"
@@ -783,7 +784,7 @@ SSWDBProxy >> isInteger [
 
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBProxy >> isKindOf: aClass [
 
 	"No need to bother the proxiedObject if its class is definitively known"
@@ -803,7 +804,7 @@ SSWDBProxy >> isKindOf: aClass [
 				[self isKindOf: aClass]]]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> onRollback [
 
 	"Sent immediately after rollback. Normally sent direct to the rolled-back object, not via the proxy. 
@@ -812,19 +813,19 @@ SSWDBProxy >> onRollback [
 	^proxiedObject onRollback
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> printOn: aStream [
 
 	^aStream nextPutAll: self debugPrintString
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> printString [
 
 	^self debugPrintString
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> refresh [
 
 	"Refresh the receiver and its related objects to their stored state"
@@ -832,7 +833,7 @@ SSWDBProxy >> refresh [
 	reStore refresh: self withRelatedComponents
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> rollback [
 
 	"Rollback the receiver and its related objects to their previous state"
@@ -840,7 +841,7 @@ SSWDBProxy >> rollback [
 	reStore rollback: self withRelatedComponents
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> softRollback [
 
 	"Carry out a 'soft rollback' on the receiver. This does not rollback any changes but makes the receiver effectively an 'untouched' persistent object and thus eligible for automatic/transparent refresh if its database row is encountered.
@@ -849,7 +850,7 @@ SSWDBProxy >> softRollback [
 	
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> store [
 
 	"Store the receiver and its related objects; return success.
@@ -862,9 +863,10 @@ SSWDBProxy >> store [
 	ifNil: 
 		[self store]
 	ifNotNil: 
-		[ :proxyReStore || wasTransactionInProgress |
+		[ :proxyReStore |
 		proxyReStore transactionCritical: 
-			[self isDBProxy 
+			[| wasTransactionInProgress |
+			self isDBProxy 
 			ifTrue: 
 				[wasTransactionInProgress := reStore isTransactionInProgress.
 				(reStore commit: self withRelatedComponents)
@@ -874,7 +876,7 @@ SSWDBProxy >> store [
 				[self store]]]
 ]
 
-{ #category : #'actions-api' }
+{ #category : 'actions-api' }
 SSWDBProxy >> storeIn: aReStore [
 
 	"Store the receiver and its related objects.
@@ -885,13 +887,13 @@ SSWDBProxy >> storeIn: aReStore [
 	^self store
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBProxy >> validateReStore: aReStore [
 
 	(reStore notNil and: [reStore ~~ reStore]) ifTrue: [self error: 'Attempt to move object between ReStores - Invalid']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> withComponents [
 
 	"Avoid faulting in the proxied object"
@@ -899,7 +901,7 @@ SSWDBProxy >> withComponents [
 	^SSWDBObjectWithComponents on: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBProxy >> withRelatedComponents [
 
 	"Avoid faulting in the proxied object"
@@ -907,7 +909,7 @@ SSWDBProxy >> withRelatedComponents [
 	^SSWDBObjectWithRelatedComponents on: self
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBProxy >> yourself [
 
 	"No need to bother the proxiedObject"

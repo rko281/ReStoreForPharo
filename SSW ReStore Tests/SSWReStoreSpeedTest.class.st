@@ -4,30 +4,32 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreSpeedTest,
-	#superclass : #SSWReStorePersonTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreSpeedTest',
+	#superclass : 'SSWReStorePersonTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreSpeedTest >> sampleSet [
 
 	^(1 to: self sampleSize) collect: 
 		[ :e | 
 		SimplePerson new 
+			time: nil;
 			surname: 'Smith'; 
 			firstName: 'John'; 
 			emailAddress: 'john@something'; 
 			yourself]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreSpeedTest >> sampleSize [
 
-	^100
+	^1000
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test1Write [
 
 	| people time |
@@ -44,7 +46,7 @@ SSWReStoreSpeedTest >> test1Write [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test2Read [
 
 	| people time |
@@ -65,7 +67,7 @@ SSWReStoreSpeedTest >> test2Read [
 	self assert: (time < (self sampleSize // 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test3Update [
 
 	| people time |
@@ -99,7 +101,7 @@ SSWReStoreSpeedTest >> test3Update [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test3UpdateViaTransactionNoChange [
 
 	| people time |
@@ -120,7 +122,7 @@ SSWReStoreSpeedTest >> test3UpdateViaTransactionNoChange [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test3UpdateViaTransactionWithChange [
 
 	| people time |
@@ -154,7 +156,7 @@ SSWReStoreSpeedTest >> test3UpdateViaTransactionWithChange [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test4RefreshNoChange [
 
 	| people time |
@@ -174,7 +176,7 @@ SSWReStoreSpeedTest >> test4RefreshNoChange [
 	self assert: (time < (self sampleSize * 2)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test5RefreshWithChange [
 
 	| people time |
@@ -208,7 +210,7 @@ SSWReStoreSpeedTest >> test5RefreshWithChange [
 	self assert: (time < (self sampleSize * 3)) "Fairly arbitrary but keeps an eye on things"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreSpeedTest >> test9Delete [
 
 	| people time |

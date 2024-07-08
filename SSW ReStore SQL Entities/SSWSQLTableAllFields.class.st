@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLTableAllFields,
-	#superclass : #SSWSQLTableComponent,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLTableAllFields',
+	#superclass : 'SSWSQLTableComponent',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWSQLTableAllFields >> collect: aBlock [
 
 	^aBlock value: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableAllFields >> fieldNamed: aString [
 
 	"Return the individual field with the given name"
@@ -23,13 +24,13 @@ SSWSQLTableAllFields >> fieldNamed: aString [
 	^self table fieldNamed: aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> hasAggregateFunction [
 
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> isAll [
 
 	"Since the receiver is (conceptually) multiple fields, make it polymorphic with a field collection.
@@ -38,13 +39,13 @@ SSWSQLTableAllFields >> isAll [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> isAllInTable [
 
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> isEmpty [
 
 	"Assume a table will always have at least one field"
@@ -52,7 +53,7 @@ SSWSQLTableAllFields >> isEmpty [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> isFieldCollection [
 
 	"Effectively, yes"
@@ -60,7 +61,7 @@ SSWSQLTableAllFields >> isFieldCollection [
 	^true
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWSQLTableAllFields >> reject: aBlock [
 
 	"The receiver is indivisible"
@@ -68,14 +69,14 @@ SSWSQLTableAllFields >> reject: aBlock [
 	^self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTableAllFields >> requiresAliasing [
 
 	"The 'all fields' concept does not require aliasing"
 	^false
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTableAllFields >> writeAliasedSQLOn: aStream [
 
 	"Workaround for SQLite which gives error with namespace.table_name.* "
@@ -87,7 +88,7 @@ SSWSQLTableAllFields >> writeAliasedSQLOn: aStream [
 	self writeSQLOn: aStream
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTableAllFields >> writeSQLOn: aStream [
 	
 	"Use an empty (i.e. 'all') field collection to handle the SQL representation of 'all'"

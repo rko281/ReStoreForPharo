@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRelatedKeyDictionaryTest,
-	#superclass : #SSWReStoreRelatedDictionaryTest,
+	#name : 'SSWReStoreRelatedKeyDictionaryTest',
+	#superclass : 'SSWReStoreRelatedDictionaryTest',
 	#instVars : [
 		'inverseDictionary'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedKeyDictionaryTest >> addToCollection: aCollection [
 
 	"We're interested in the key"
@@ -20,7 +21,7 @@ SSWReStoreRelatedKeyDictionaryTest >> addToCollection: aCollection [
 	^(self addToCollectionAnsweringAssociation: aCollection) key
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> allSatisfy: aBlock [
 
 	collection keysDo: [ :each | (aBlock value: each) ifFalse: [^false]].
@@ -28,13 +29,13 @@ SSWReStoreRelatedKeyDictionaryTest >> allSatisfy: aBlock [
 	^true
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> anyOne [
 
 	^collection keysDo: [ :key | ^key]
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> anySatisfy: aBlock [
 
 	collection keysDo: [ :each | (aBlock value: each) ifTrue: [^true]].
@@ -42,13 +43,13 @@ SSWReStoreRelatedKeyDictionaryTest >> anySatisfy: aBlock [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedKeyDictionaryTest >> componentDefinition [
 
 	^(Dictionary of: GenericOwnedTest related -> GenericOwnedTest)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreRelatedKeyDictionaryTest >> componentDefinitionIsDependent [
 
 	"We're interested in the key"
@@ -56,14 +57,14 @@ SSWReStoreRelatedKeyDictionaryTest >> componentDefinitionIsDependent [
 	^self componentDefinition isKeyDependent
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> detect: aBlock [
 
 	^self detect: aBlock ifNone: [self error: 'not found']
 
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> detect: aBlock ifNone: absentBlock [
 
 	collection keysDo: [ :each | (aBlock value: each) ifTrue: [^each]].
@@ -71,7 +72,7 @@ SSWReStoreRelatedKeyDictionaryTest >> detect: aBlock ifNone: absentBlock [
 	^absentBlock value
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRelatedKeyDictionaryTest >> fetchTestObjects [
 
 	super fetchTestObjects.
@@ -81,7 +82,7 @@ SSWReStoreRelatedKeyDictionaryTest >> fetchTestObjects [
 	testObject component keysAndValuesDo: [ :eachKey :eachValue | inverseDictionary at: eachValue put: eachKey]
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> includes: anObject [
 
 	^(collection includesKey: anObject) or: 
@@ -90,14 +91,14 @@ SSWReStoreRelatedKeyDictionaryTest >> includes: anObject [
 		false]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedKeyDictionaryTest >> remove: anObject fromCollection: aCollection [
 
 	aCollection removeKey: anObject.
 	^anObject
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedKeyDictionaryTest >> replaceInCollection: aCollection [
 
 	"We need to replace a key, not a value"
@@ -110,13 +111,13 @@ SSWReStoreRelatedKeyDictionaryTest >> replaceInCollection: aCollection [
 	^oldKey -> newKey
 ]
 
-{ #category : #'collection behavior' }
+{ #category : 'collection behavior' }
 SSWReStoreRelatedKeyDictionaryTest >> select: aBlock [
 
 	^collection keys select: aBlock
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedKeyDictionaryTest >> testDependencyDeleteOnRepeatedRemoval [
 
 	"Check that non-dependent collection contents are or are not deleted when removed, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not)."
@@ -124,7 +125,7 @@ SSWReStoreRelatedKeyDictionaryTest >> testDependencyDeleteOnRepeatedRemoval [
 	"Not an appropriate test here since each key can only exist in the collection once"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedKeyDictionaryTest >> testIncludes [
 
 	| instances existing template matches |

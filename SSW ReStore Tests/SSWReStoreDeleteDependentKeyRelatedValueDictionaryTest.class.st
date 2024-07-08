@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest,
-	#superclass : #SSWReStoreDeleteRelatedDictionaryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest',
+	#superclass : 'SSWReStoreDeleteRelatedDictionaryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> deleteQueriesCount [
 
 	"How many queries to delete a collection?"
@@ -13,13 +14,13 @@ SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> deleteQueriesCount [
 		ifFalse: [2 "one query for entries, one for keys"]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> ordersCollectionDefinition [
 
 	^Dictionary of: (SimpleAddress dependent -> SimpleProductOrder related)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> testDeleteProxiedCollection [
 
 	| keyTable allKeysCount customer2EntriesCount |
@@ -34,7 +35,7 @@ SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> testDeleteProxiedColle
 	self assert: (reStore executeSQL: 'select count(id_) from <1s>' << keyTable) results first contents first equals: (allKeysCount - customer2EntriesCount)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentKeyRelatedValueDictionaryTest >> testDeleteUnproxiedCollection [
 
 	| keyTable allKeysCount customer1EntriesCount |

@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBBlockReceiver,
-	#superclass : #SSWDBBlockArgument,
+	#name : 'SSWDBBlockReceiver',
+	#superclass : 'SSWDBBlockArgument',
 	#instVars : [
 		'currentTable',
 		'path'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> _id [
 
 	"Query on the ID field of the receiver's currentTable. 
@@ -22,19 +23,19 @@ SSWDBBlockReceiver >> _id [
 	self finalField: self finalField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> currentTable [
 
 	^currentTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> currentTable: anSSWDBTable [
 
 	currentTable := anSSWDBTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> finalField [
 
 	"If the receiver is parsing a comparison on a joining field (rather than a plain text/number etc.) then finalField will not have been set"
@@ -55,24 +56,24 @@ SSWDBBlockReceiver >> finalField [
 	^SSWDBQueryTableField forField: finalField in: finalField table
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockReceiver >> forModify [
 
 	^self
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockReceiver >> newReceiverFor: aField [
 
 	^super newReceiverFor: (self queryFieldFor: aField)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> path [
 	^path
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockReceiver >> path: anObject [
 	path := anObject
 ]

@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #DetailedPerson,
-	#superclass : #SuperPerson,
+	#name : 'DetailedPerson',
+	#superclass : 'SuperPerson',
 	#instVars : [
 		'dob',
 		'dateOfBirth',
 		'friend',
 		'bestFriend'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson class >> reStoreDefinition [
 
 	| definition | 
@@ -33,77 +34,77 @@ DetailedPerson class >> reStoreDefinition [
 	^definition
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson class >> useBestFriend [
 
 	^DetailedPerson2 useBestFriend
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 DetailedPerson class >> useDateOfBirth [
 
 	^DetailedPerson2 useDateOfBirth
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DetailedPerson >> = aDetailedPerson [
 
 	^self fullName = aDetailedPerson fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> bestFriend [
 	^bestFriend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> bestFriend: anObject [
 	bestFriend := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> dateOfBirth [
 	^dateOfBirth
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> dateOfBirth: anObject [
 	dateOfBirth := anObject
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 DetailedPerson >> displayOn: aStream [
 
 	aStream display: self firstName; space; display: self surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> dob [
 	^dob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> dob: anObject [
 	dob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> friend [
 	^friend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DetailedPerson >> friend: anObject [
 	friend := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DetailedPerson >> hash [
 
 	^self fullName hash
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 DetailedPerson >> printOn: aStream [
 	"Answer the name of the receiver as a developer would wish to see it ."
 

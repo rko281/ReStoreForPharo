@@ -4,13 +4,14 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLTableCollection,
-	#superclass : #SSWSQLCollection,
-	#type : #variable,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLTableCollection',
+	#superclass : 'SSWSQLCollection',
+	#type : 'variable',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTableCollection >> allFields [
 
 	"Return an SSWLSQLFieldCollection which represents all fields in each of the receiver's tables"
@@ -24,7 +25,7 @@ SSWSQLTableCollection >> allFields [
 	^allFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableCollection >> soleTable [
 
 	"Return the single member of the receiver.
@@ -35,7 +36,7 @@ SSWSQLTableCollection >> soleTable [
 		ifFalse: [self error: 'Should be only one table']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableCollection >> soleTable: anSSWDBTable [
 
 	"Set the single member of the receiver to anSSWDBTable"
@@ -45,7 +46,7 @@ SSWSQLTableCollection >> soleTable: anSSWDBTable [
 		add: anSSWDBTable
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTableCollection >> sqlConcatenator [
 
 	"A comma is used to separate a list of tables in SQL"

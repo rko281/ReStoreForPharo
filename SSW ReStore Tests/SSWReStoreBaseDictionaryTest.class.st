@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWReStoreBaseDictionaryTest,
-	#superclass : #SSWReStoreBaseCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreBaseDictionaryTest',
+	#superclass : 'SSWReStoreBaseCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseDictionaryTest >> addToCollection: anObject at: anInteger [
 
 	testObject component at: anInteger put: anObject.
@@ -12,25 +13,25 @@ SSWReStoreBaseDictionaryTest >> addToCollection: anObject at: anInteger [
 	^anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseDictionaryTest >> collectionClass [
 
 	^Dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseDictionaryTest >> componentDefinition [
 
 	^Dictionary of: Integer -> (String maxSize: 64)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseDictionaryTest >> removeFromCollection: anObject [
 
 	^self removeFromCollection: anObject at: (testObject component keyAtEqualValue: anObject ifAbsent: [])
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseDictionaryTest >> removeFromCollection: anObject at: aKey [
 
 	testObject component removeKey: aKey.

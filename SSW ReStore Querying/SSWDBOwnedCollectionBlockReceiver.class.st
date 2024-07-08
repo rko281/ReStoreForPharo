@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBOwnedCollectionBlockReceiver,
-	#superclass : #SSWDBCollectionBlockReceiver,
-	#category : #'SSW ReStore Querying'
+	#name : 'SSWDBOwnedCollectionBlockReceiver',
+	#superclass : 'SSWDBCollectionBlockReceiver',
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionBlockReceiver >> targetField [
 
 	self collectionSpec ownerField isNil ifTrue: [self collectionSpec setOwnerFieldFrom: self reStore].
@@ -17,13 +18,13 @@ SSWDBOwnedCollectionBlockReceiver >> targetField [
 	^self collectionSpec ownerField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionBlockReceiver >> targetFieldCollectQuery [
 
 	^self collectionParser collectQueryFrom: [ :each | (each perform: self targetField accessor name) _id]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBOwnedCollectionBlockReceiver >> targetTableFromParser [
 
 	"Ensure the target collection table is included in the parser.

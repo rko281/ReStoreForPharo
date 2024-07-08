@@ -4,33 +4,34 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBDumbArgument,
-	#superclass : #Object,
+	#name : 'SSWDBDumbArgument',
+	#superclass : 'Object',
 	#classInstVars : [
 		'current'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDumbArgument class >> current [
 
 	^current ifNil: [current := self new]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDumbArgument class >> icon [
 
 	^DeafObject icon
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 SSWDBDumbArgument class >> reset [
 
 	current := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDumbArgument >> _id [
 
 	"Avoid the superclass implementation"
@@ -38,7 +39,7 @@ SSWDBDumbArgument >> _id [
 	^self
 ]
 
-{ #category : #exceptions }
+{ #category : 'exceptions' }
 SSWDBDumbArgument >> doesNotUnderstand: aMessage [
 	"The receiver is deaf to all requests. Answer the current instance to ensure that our answers are also dumb"
 	

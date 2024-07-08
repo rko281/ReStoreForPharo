@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStaticCacheDictionarySpec,
-	#superclass : #SSWDBHashedStaticCollectionSpec,
+	#name : 'SSWDBStaticCacheDictionarySpec',
+	#superclass : 'SSWDBHashedStaticCollectionSpec',
 	#instVars : [
 		'keyAccessor'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticCacheDictionarySpec >> createNonProxiedInstanceFromRow: aDBRow [
 
 	"Overridden to set keyAccessor (issue#0001)"
@@ -22,14 +23,14 @@ SSWDBStaticCacheDictionarySpec >> createNonProxiedInstanceFromRow: aDBRow [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBStaticCacheDictionarySpec >> entryClass [
 	"Return the class of collection entry appropriate for the receiver"
 
 	^SSWDBCacheDictionaryEntry
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCacheDictionarySpec >> keyAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"
@@ -37,7 +38,7 @@ SSWDBStaticCacheDictionarySpec >> keyAccessor [
 	^keyAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCacheDictionarySpec >> keyAccessor: anSSWInstVarAccessor [
 
 	"keyAccessor stores an a 1-arg block that is evaluated with a targetObject to determine the key at which that object should be stored in the dictionary"
@@ -45,7 +46,7 @@ SSWDBStaticCacheDictionarySpec >> keyAccessor: anSSWInstVarAccessor [
 	keyAccessor := anSSWInstVarAccessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 
 	"If aSymbolOrBlock is aSymbol it should be an inst var name"
@@ -55,7 +56,7 @@ SSWDBStaticCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 		ifFalse: [self keyAccessor: aSymbolOrBlock]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticCacheDictionarySpec >> readAllFor: aCollection [
 
 	"Using a single query (ideally, multiple batched queries if aCollection is too large), read all unrecovered collections specified by the receiver for members of aCollection"

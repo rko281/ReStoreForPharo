@@ -1,29 +1,30 @@
 Class {
-	#name : #SSWReStoreResourcesTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreResourcesTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreResourcesTest >> testStatementFreedAfterDetect [
 
 	self _testStatementFreedAfter: [(SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'John']]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreResourcesTest >> testStatementFreedAfterModify [
 
 	self _testStatementFreedAfter: [(SimplePerson storedInstancesIn: reStore) modify: [ :each | each age: 21]]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreResourcesTest >> testStatementFreedAfterQuery [
 
 	self _testStatementFreedAfter: [(SimplePerson storedInstancesIn: reStore) size]
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreResourcesTest >> testStatementFreedAfterStreaming [
 
 	self _testStatementFreedAfter: 
@@ -35,7 +36,7 @@ SSWReStoreResourcesTest >> testStatementFreedAfterStreaming [
 		stream class = SSWDBForwardOnlyReadStream ifFalse: [stream close]]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SSWReStoreResourcesTest >> testStatementFreedAfterUpdate [
 
 	| john table |

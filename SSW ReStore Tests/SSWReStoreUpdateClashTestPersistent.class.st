@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreUpdateClashTestPersistent,
-	#superclass : #SSWReStore2Test,
+	#name : 'SSWReStoreUpdateClashTestPersistent',
+	#superclass : 'SSWReStore2Test',
 	#instVars : [
 		'singleA1',
 		'singleB1',
@@ -14,10 +14,11 @@ Class {
 		'singleB2',
 		'singleC2'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTestPersistent >> createStandardTestInstance [
 
 	super createStandardTestInstance.
@@ -29,7 +30,7 @@ SSWReStoreUpdateClashTestPersistent >> createStandardTestInstance [
 	self assert: ((Array with: singleA1 with: singleB1 with: singleC1) storeAllIn: reStore)
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTestPersistent >> createTestData [
 
 	self createStandardTestInstance.
@@ -37,7 +38,7 @@ SSWReStoreUpdateClashTestPersistent >> createTestData [
 	self refreshDelay
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTestPersistent >> reinitSingles1 [
 
 	singleA1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'singleA'].
@@ -45,7 +46,7 @@ SSWReStoreUpdateClashTestPersistent >> reinitSingles1 [
 	singleC1 := (Test storedInstancesIn: reStore) detect: [ :e | e name = 'singleC']
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreUpdateClashTestPersistent >> reinitSingles2 [
 
 	singleA2 := (Test storedInstancesIn: reStore2) detect: [ :e | e name = 'singleA'].
@@ -53,7 +54,7 @@ SSWReStoreUpdateClashTestPersistent >> reinitSingles2 [
 	singleC2 := (Test storedInstancesIn: reStore2) detect: [ :e | e name = 'singleC']
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTestPersistent >> test01 [
 
 	"Check detect and pass (independent changes)"
@@ -79,7 +80,7 @@ SSWReStoreUpdateClashTestPersistent >> test01 [
 	self assert: (inst2 single2 name = 'single1')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreUpdateClashTestPersistent >> test02 [
 
 	"Check detect-fail-rollback"

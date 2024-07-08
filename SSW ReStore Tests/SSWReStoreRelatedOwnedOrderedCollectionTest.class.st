@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRelatedOwnedOrderedCollectionTest,
-	#superclass : #SSWReStoreGenericRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRelatedOwnedOrderedCollectionTest',
+	#superclass : 'SSWReStoreGenericRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedOwnedOrderedCollectionTest class >> allTestSelectors [
 
 	^super allTestSelectors 
@@ -17,7 +18,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest class >> allTestSelectors [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> _testCollectionElementTransferOf: element from: collection1 ownedBy: owner1 to: collection2 ownedBy: owner2 [
 
 	collection1 remove: element.
@@ -33,19 +34,19 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> _testCollectionElementTransferOf:
 	self assert: element owner equals: owner2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> componentDefinition [
 
 	^OrderedCollection of: GenericOwnedTest related owner: #owner
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> replaceInCollection: aCollection [
 
 	^(aCollection at: aCollection size) -> (aCollection at: aCollection size put: self templateComponent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> templateCollection [
 
 	^OrderedCollection 
@@ -54,7 +55,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh, even when the original collection is deleted"
@@ -76,7 +77,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElement
 	self assert: element owner equals: template2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithDirectCollectionStore [
 
 	"Verify that an element removed from the collection is stored correctly when the collection (rather than its owner) is stored.
@@ -101,7 +102,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithD
 	self _testComponentExistenceOnDependency: element
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithNilBackpointer [
 
 	"Verify that an element removed from the collection is stored correctly even if the backpointer is manually nil'd out"
@@ -126,7 +127,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithN
 	self _testComponentExistenceOnDependency: element
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh.

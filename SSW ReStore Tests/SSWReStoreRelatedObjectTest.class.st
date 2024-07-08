@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRelatedObjectTest,
-	#superclass : #SSWReStoreGenericObjectTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRelatedObjectTest',
+	#superclass : 'SSWReStoreGenericObjectTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedObjectTest >> componentDefinition [
 
 	^GenericOwnedTest related
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChange [
 
 	| originalName changedName |
@@ -32,7 +33,7 @@ SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChange [
 	self assert: ((reStore selectChanged: (Array with: testObject withRelatedComponents)) asArray = (Array with: component))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeDeeply [
 
 	| originalName changedName |
@@ -53,7 +54,7 @@ SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeDeeply [
 	self assert: ((reStore selectChanged: (Array with: component withRelatedComponents)) asArray = (Array with: component deepTest))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -70,7 +71,7 @@ SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeWithExclusion [
 	self assert: ((reStore selectChanged: (Array with: (testObject withRelatedComponents without: component))) isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeWithExclusionDeeply [
 
 	| originalName changedName |
@@ -99,7 +100,7 @@ SSWReStoreRelatedObjectTest >> testChangedObjectsComponentChangeWithExclusionDee
 	self assert: ((reStore selectChanged: (Array with: (testObject withRelatedComponents without: component deepTest))) asArray = (Array with: component))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChange [
 
 	| originalName changedName |
@@ -116,7 +117,7 @@ SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChange [
 	self assert: (reStore hasChanged: testObject withRelatedComponents)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeDeeply [
 
 	| originalName changedName |
@@ -136,7 +137,7 @@ SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeDeeply [
 	self assert: (reStore hasChanged: component withRelatedComponents)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -153,7 +154,7 @@ SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeWithExclusion [
 	self deny: (reStore hasChanged: (testObject withRelatedComponents without: component))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeWithExclusionDeeply [
 
 	| originalName changedName |
@@ -183,7 +184,7 @@ SSWReStoreRelatedObjectTest >> testCheckHasChangedComponentChangeWithExclusionDe
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCommitComponentChange [
 
 	| originalName changedName |
@@ -204,7 +205,7 @@ SSWReStoreRelatedObjectTest >> testCommitComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCommitComponentChangeDeeply [
 
 	| originalName changedName |
@@ -227,7 +228,7 @@ SSWReStoreRelatedObjectTest >> testCommitComponentChangeDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCommitComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -247,7 +248,7 @@ SSWReStoreRelatedObjectTest >> testCommitComponentChangeWithExclusion [
 	self assert: (component name = originalName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testCommitComponentChangeWithExclusionDeeply [
 
 	| originalName changedName |
@@ -279,7 +280,7 @@ SSWReStoreRelatedObjectTest >> testCommitComponentChangeWithExclusionDeeply [
 	self assert: (component deepTest name = originalName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testForceRefreshComponent [
 
 	| originalName changedName |
@@ -303,7 +304,7 @@ SSWReStoreRelatedObjectTest >> testForceRefreshComponent [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testForceRefreshComponentDeeply [
 
 	| originalName changedName |
@@ -327,7 +328,7 @@ SSWReStoreRelatedObjectTest >> testForceRefreshComponentDeeply [
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testForceRefreshComponentWithExclusion [
 
 	| originalName changedName |
@@ -351,7 +352,7 @@ SSWReStoreRelatedObjectTest >> testForceRefreshComponentWithExclusion [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testForceRefreshComponentWithExclusionDeeply [
 
 	| originalName changedName |
@@ -402,7 +403,7 @@ SSWReStoreRelatedObjectTest >> testForceRefreshComponentWithExclusionDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdated [
 
 	| originalName changedName |
@@ -427,7 +428,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdated [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedDeeply [
 
 	| originalName changedName |
@@ -452,7 +453,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedDeeply [
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusion [
 
 	| originalName changedName |
@@ -477,7 +478,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusion [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusionDeeply [
 
 	| originalName changedName |
@@ -508,7 +509,7 @@ SSWReStoreRelatedObjectTest >> testRefreshComponentIfUpdatedWithExclusionDeeply 
 	self assert: (component deepTest name = originalName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshIfUpdatedRollbackRemovedComponentChange [
 
 	| originalName changedName |
@@ -527,7 +528,7 @@ SSWReStoreRelatedObjectTest >> testRefreshIfUpdatedRollbackRemovedComponentChang
 	self assert: (component name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChange [
 
 	| originalName changedName |
@@ -549,7 +550,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -571,7 +572,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRemovedLocallyComponentChangeWithExclu
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChange [
 
 	| originalName changedName |
@@ -590,7 +591,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeDeeply [
 
 	| originalName changedName |
@@ -610,7 +611,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdated [
 
 	| originalName changedName changedName2 |
@@ -634,7 +635,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdated [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedDeeply [
 
 	| originalName changedName changedName2 |
@@ -661,7 +662,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedDeeply
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithExclusion [
 
 	| originalName changedName changedName2 |
@@ -684,7 +685,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithEx
 	self assert: (component name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithExclusionDeeply [
 
 	| originalName changedName changedName2 |
@@ -715,7 +716,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeIfUpdatedWithEx
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -734,7 +735,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeWithExclusion [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeWithExclusionDeeply [
 
 	| originalName changedName |
@@ -759,7 +760,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackComponentChangeWithExclusionDe
 	self assert: (component deepTest name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChange [
 
 	| originalName changedName |
@@ -776,7 +777,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -793,7 +794,7 @@ SSWReStoreRelatedObjectTest >> testRefreshRollbackRemovedComponentChangeWithExcl
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRollbackComponentChange [
 
 	| originalName changedName |
@@ -812,7 +813,7 @@ SSWReStoreRelatedObjectTest >> testRollbackComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRollbackComponentChangeDeeply [
 
 	| originalName changedName |
@@ -832,7 +833,7 @@ SSWReStoreRelatedObjectTest >> testRollbackComponentChangeDeeply [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRollbackComponentChangeWithExclusion [
 
 	| originalName changedName |
@@ -851,7 +852,7 @@ SSWReStoreRelatedObjectTest >> testRollbackComponentChangeWithExclusion [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedObjectTest >> testRollbackComponentChangeWithExclusionDeeply [
 
 	| originalName changedName |

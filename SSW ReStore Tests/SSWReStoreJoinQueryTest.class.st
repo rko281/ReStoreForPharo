@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreJoinQueryTest,
-	#superclass : #SSWReStoreQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreJoinQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreJoinQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testCollectWithAlreadyJoinedTable [
 
 	"Previously-failing case - where collect: requiring joins is used with a collection with joined table(s), the last joined table could be lost when adding a result on another table not requiring a join"
@@ -47,7 +48,7 @@ SSWReStoreJoinQueryTest >> testCollectWithAlreadyJoinedTable [
 	self assert: ((results collect: [ :each | each last]) asArray = {false. false})
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testJoinFieldMultipleConditional [
 
 	"Ensure a query with multiple conditionals on a join field does not result in the joined table being included"
@@ -69,7 +70,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldMultipleConditional [
 	self assert: ((results collect: [ :e | e firstName]) asSortedCollection asArray = #('David' 'Jim' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testJoinFieldReusedConditional [
 
 	"Ensure a query with a conditional on a join field does not result in an earlier required use of that join field being removed"
@@ -84,7 +85,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldReusedConditional [
 	self assert: ((results collect: [ :e | e firstName]) asSortedCollection asArray = #('David' 'Jim' 'John'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testJoinFieldSoleConditional [
 
 	"Ensure a query with a sole conditional on a join field does not result in the joined table being included"
@@ -105,7 +106,7 @@ SSWReStoreJoinQueryTest >> testJoinFieldSoleConditional [
 	self assert: ((results collect: [ :e | e firstName]) asSortedCollection asArray = #('David' 'Jim'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testMultipleJoinFieldConditional [
 
 	"Ensure a query with multiple conditionals on a join field actually uses the correct joined tables (previously failing case)"
@@ -122,7 +123,7 @@ SSWReStoreJoinQueryTest >> testMultipleJoinFieldConditional [
 	self assert: ((results collect: [ :e | e firstName]) asSortedCollection asArray = #('David' 'Jim' 'John'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testNestedJoinFieldConditional [
 
 	"Ensure a query with conditionals the same join/table combination, but nested, is handled correctly (previously failing case)"
@@ -139,7 +140,7 @@ SSWReStoreJoinQueryTest >> testNestedJoinFieldConditional [
 	self assert: ((results collect: [ :e | e firstName]) asSortedCollection asArray = #('John' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testSatisfyingWithAlreadyJoinedTable [
 
 	"Previously-failing case - where satisfying: requiring joins is used with a collection with already-joined table(s), the last joined table could be lost when adding a result on another table not requiring a join"
@@ -168,7 +169,7 @@ SSWReStoreJoinQueryTest >> testSatisfyingWithAlreadyJoinedTable [
 	self shouldnt: [self assert: (results asOrderedCollection includes: zoe)] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreJoinQueryTest >> testSelectWithAlreadyJoinedTable [
 
 	"Previously-failing case - where select: requiring joins is used with a collection with already-joined table(s), the last joined table could be lost when adding a result on another table not requiring a join"

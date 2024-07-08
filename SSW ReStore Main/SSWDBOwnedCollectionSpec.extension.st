@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBOwnedCollectionSpec }
+Extension { #name : 'SSWDBOwnedCollectionSpec' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 SSWDBOwnedCollectionSpec >> collectionProxyClass [
 
 	^SSWDBOwnedCollectionProxy
