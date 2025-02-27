@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWInstVarAccessor,
-	#superclass : #SSWAccessor,
+	#name : 'SSWInstVarAccessor',
+	#superclass : 'SSWAccessor',
 	#instVars : [
 		'ownerClass',
 		'slot',
 		'name'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWInstVarAccessor class >> toAccess: anInstVarName in: aClass [
 
 	^self new
@@ -22,13 +23,13 @@ SSWInstVarAccessor class >> toAccess: anInstVarName in: aClass [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInstVarAccessor >> = anSSWAccessor [
 
 	^(self ownerClass = anSSWAccessor ownerClass) and: [self slot = anSSWAccessor slot]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWInstVarAccessor >> access: aSymbol in: aClass [
 
 	"Configure the receiver to access the inst var of aClass which is named aSymbol"
@@ -46,19 +47,19 @@ SSWInstVarAccessor >> access: aSymbol in: aClass [
 		name: instVarName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInstVarAccessor >> accesses: aSymbol [
 
 	^self name = aSymbol
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInstVarAccessor >> accessesDeeply: aSymbol [
 
 	^false
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInstVarAccessor >> copyValue: valueObject in: targetObject [
 
 	"Set the instance variable of targetObject represented by the receiver to valueObject.
@@ -69,7 +70,7 @@ SSWInstVarAccessor >> copyValue: valueObject in: targetObject [
 	^self value: valueObject in: targetObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 
 	"targetObject is a shallow copy of sourceObject.Perform any additional copying necessary.
@@ -78,13 +79,13 @@ SSWInstVarAccessor >> copyValueIn: sourceObject to: targetObject [
 	^self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWInstVarAccessor >> hash [
 
 	^self ownerClass hash + self slot hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> name [
 
 	"name stores the name of the instance variable accessed by the receiver,
@@ -93,7 +94,7 @@ SSWInstVarAccessor >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> name: aSymbol [
 
 	"name stores the name of the instance variable accessed by the receiver,
@@ -102,7 +103,7 @@ SSWInstVarAccessor >> name: aSymbol [
 	name := aSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> ownerClass [
 
 	"ownerClass stores the class whose instance variable is accessed by the receiver"
@@ -110,7 +111,7 @@ SSWInstVarAccessor >> ownerClass [
 	^ownerClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> ownerClass: aClass [
 
 	"ownerClass stores the class whose instance variable is accessed by the receiver"
@@ -118,7 +119,7 @@ SSWInstVarAccessor >> ownerClass: aClass [
 	ownerClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> slot [
 
 	"slot stores the index of the instance variable accessed by the receiver"
@@ -126,7 +127,7 @@ SSWInstVarAccessor >> slot [
 	^slot
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWInstVarAccessor >> slot: anInteger [
 
 	"slot stores the index of the instance variable accessed by the receiver"
@@ -134,7 +135,7 @@ SSWInstVarAccessor >> slot: anInteger [
 	slot := anInteger
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWInstVarAccessor >> value: targetObject [
 
 	"Polymorphic with Blocks and Messages"
@@ -142,7 +143,7 @@ SSWInstVarAccessor >> value: targetObject [
 	^targetObject perform: self name
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWInstVarAccessor >> value: valueObject in: targetObject [
 
 	"Set the instance variable of targetObject represented by the receiver to valueObject"
@@ -150,7 +151,7 @@ SSWInstVarAccessor >> value: valueObject in: targetObject [
 	^targetObject _instVarAt: self slot put: valueObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWInstVarAccessor >> valueIn: targetObject [
 
 	"Return the value of the instance variable of targetObject represented by the receiver"

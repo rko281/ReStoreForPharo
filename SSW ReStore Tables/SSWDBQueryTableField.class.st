@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBQueryTableField,
-	#superclass : #SSWDBQueryField,
+	#name : 'SSWDBQueryTableField',
+	#superclass : 'SSWDBQueryField',
 	#instVars : [
 		'table',
 		'accessorPath'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBQueryTableField class >> forField: anSSWDBField in: anSSWDBQueryTable [
 
 	^self forField: anSSWDBField in: anSSWDBQueryTable path: #()
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBQueryTableField class >> forField: anSSWDBField in: anSSWDBQueryTable path: anArray [
 
 	^self new
@@ -29,13 +30,19 @@ SSWDBQueryTableField class >> forField: anSSWDBField in: anSSWDBQueryTable path:
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBQueryTableField >> = anSSWDBField [
 
 	^self == anSSWDBField or: [anSSWDBField = self field and: [anSSWDBField table = self table]]
 ]
 
-{ #category : #accessing }
+{ #category : 'testing' }
+SSWDBQueryTableField >> accesses: aSymbol [
+
+	^self field accesses: aSymbol
+]
+
+{ #category : 'accessing' }
 SSWDBQueryTableField >> accessorPath [
 
 	"The path of accessors from some originating table to this field"
@@ -43,7 +50,7 @@ SSWDBQueryTableField >> accessorPath [
 	^accessorPath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTableField >> accessorPath: anObject [
 
 	"The path of accessors from some originating table to this field"
@@ -51,19 +58,19 @@ SSWDBQueryTableField >> accessorPath: anObject [
 	accessorPath := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBQueryTableField >> hash [
 
 	^self table hash bitXor: self name hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBQueryTableField >> isInlined [
 
 	^self field isInlined
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBQueryTableField >> printOn: aStream [
 
 	super printOn: aStream.
@@ -75,7 +82,7 @@ SSWDBQueryTableField >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTableField >> table [
 
 	"The receiver is created to stand in place of a regular SSWDBField when that field 
@@ -89,7 +96,7 @@ SSWDBQueryTableField >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBQueryTableField >> table: anSSWDBQueryTable [
 
 	"The receiver is created to stand in place of a regular SSWDBField when that field 
@@ -103,7 +110,7 @@ SSWDBQueryTableField >> table: anSSWDBQueryTable [
 	table := anSSWDBQueryTable
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBQueryTableField >> writeAliasedSQLOn: aStream [
 
 	"For situations where duplicate field names are anticipated
@@ -111,7 +118,7 @@ SSWDBQueryTableField >> writeAliasedSQLOn: aStream [
 	aStream nextPutAliasedField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBQueryTableField >> writeSQLOn: aStream [
 
 	"Use <table name>.<field name> notation to avoid ambiguity"

@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionSpec,
-	#superclass : #SSWDBTableComponent,
+	#name : 'SSWDBCollectionSpec',
+	#superclass : 'SSWDBTableComponent',
 	#instVars : [
 		'templateCollection',
 		'isValueDependent',
@@ -15,11 +15,12 @@ Class {
 		'refreshWithContentsIfUpdatedStatement',
 		'deleteStatement'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #actions }
-SSWDBCollectionSpec >> applyTo: anObject withID: anInteger in: anSSWReStore [
+{ #category : 'actions' }
+SSWDBCollectionSpec >> applyTo: anObject in: anSSWReStore [
 
 	"'Apply' the one-to-many relationship expressed by this object to the 'one' object anObject.
 	This is done by assigning (using the receiver's accessor) a suitable proxy that can
@@ -35,31 +36,31 @@ SSWDBCollectionSpec >> applyTo: anObject withID: anInteger in: anSSWReStore [
 	self accessor value: proxyCollection in: anObject
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBCollectionSpec >> beValueDependent [
 
 	isValueDependent := true
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBCollectionSpec >> beValueRelated [
 
 	isValueRelated := true
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBCollectionSpec >> beValueUnrelated [
 
 	isValueRelated := false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> collectionClass [
 
 	^self templateCollection class
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBCollectionSpec >> collectionProxyClass [
 
 	"Return the class of collection proxy to use for collections created by the receiver"
@@ -67,7 +68,7 @@ SSWDBCollectionSpec >> collectionProxyClass [
 	^self subclassResponsibility
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> containedTables [
 
 	"By default, no tables are contained"
@@ -75,7 +76,7 @@ SSWDBCollectionSpec >> containedTables [
 	^#()
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> dbInstancesFor: aCollectionProxy [
 
 	"Return a DBInstancesCollection representing the instances owned by aCollectionProxy
@@ -84,7 +85,7 @@ SSWDBCollectionSpec >> dbInstancesFor: aCollectionProxy [
 	^self subclassResponsibility
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBCollectionSpec >> defineAs: aSymbol in: anSSWDBTable [
 
 	"The receiver has been specified as the kind of object held in inst var named aSymbol
@@ -96,7 +97,7 @@ SSWDBCollectionSpec >> defineAs: aSymbol in: anSSWDBTable [
 
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBCollectionSpec >> deleteQuery [
 
 	"Return a SQL query for deleting the elements of this collection"
@@ -104,7 +105,7 @@ SSWDBCollectionSpec >> deleteQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> deleteStatement [
 
 	"Return a prepared statement for deleting this collection"
@@ -112,7 +113,7 @@ SSWDBCollectionSpec >> deleteStatement [
 	^deleteStatement ifNil: [deleteStatement := self reStore prepareStatementForQuery: self deleteQuery]
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBCollectionSpec >> freePreparedStatements [
 
 	super freePreparedStatements.
@@ -126,7 +127,7 @@ SSWDBCollectionSpec >> freePreparedStatements [
 	refreshWithContentsIfUpdatedStatement := nil
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBCollectionSpec >> initialize [
 
 	super initialize.
@@ -135,7 +136,7 @@ SSWDBCollectionSpec >> initialize [
 	isValueRelated := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionSpec >> isKeyDependent [
 
 	"isKeyDependent indicates whether the key objects of the specified collection are dependent on the existence of the owner of that collection for their own existence.
@@ -146,7 +147,7 @@ SSWDBCollectionSpec >> isKeyDependent [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionSpec >> isKeyRelated [
 
 	"isKeyRelated indicates whether the key elements of the collection represented by the receiver are related to the owning/source object.
@@ -157,13 +158,13 @@ SSWDBCollectionSpec >> isKeyRelated [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionSpec >> isRelated [
 
 	^self isValueRelated or: [self isKeyRelated]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionSpec >> isValueDependent [
 
 	"isValueDependent indicates whether the value objects of the specified collection are dependent on the existence of the owner of that collection for their own existence.
@@ -172,7 +173,7 @@ SSWDBCollectionSpec >> isValueDependent [
 	^isValueDependent
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionSpec >> isValueRelated [
 
 	"isValueRelated indicates whether elements of the collection represented by the receiver are related to the owning/source object, such that they will be commited/rolled-back with that object when withRelatedComponents is used.
@@ -181,13 +182,13 @@ SSWDBCollectionSpec >> isValueRelated [
 	^isValueRelated
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> newCollection [
 
 	^self templateCollection copy
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> newProxydCollectionFor: aProxyObject [
 
 	^self collectionProxyClass new
@@ -198,7 +199,7 @@ SSWDBCollectionSpec >> newProxydCollectionFor: aProxyObject [
 		yourself
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBCollectionSpec >> readQuery [
 
 	"Return a SQL query for reading this collection"
@@ -206,7 +207,7 @@ SSWDBCollectionSpec >> readQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> readStatement [
 
 	"Return a prepared statement for reading this collection"
@@ -214,7 +215,7 @@ SSWDBCollectionSpec >> readStatement [
 	^readStatement ifNil: [readStatement := self reStore prepareStatementForQuery: self readQuery]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 
 	"Recover and return the collection defined by the receiver 
@@ -223,7 +224,7 @@ SSWDBCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 	^self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 
 	"Refresh as opposed to read - just fetch the IDs. 
@@ -232,7 +233,7 @@ SSWDBCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 	^self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionSpec >> refreshCollectionIfUpdatedForProxy: aCollectionProxy [
 
 	"No versioning on collections themselves, so revert to a standard refresh"
@@ -240,7 +241,7 @@ SSWDBCollectionSpec >> refreshCollectionIfUpdatedForProxy: aCollectionProxy [
 	^self refreshCollectionForProxy: aCollectionProxy
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionSpec >> refreshCollectionWithContentsForProxy: aCollectionProxy [
 
 	"Refresh the receiver collection and its contents. Essentially, the same as recovering the collection.
@@ -249,7 +250,7 @@ SSWDBCollectionSpec >> refreshCollectionWithContentsForProxy: aCollectionProxy [
 	^self recoverCollectionForProxy: aCollectionProxy
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCollectionProxy [
 
 	"Refresh the receiver collection and its contents if they have been updated
@@ -258,7 +259,7 @@ SSWDBCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCollecti
 	^self subclassResponsibility
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBCollectionSpec >> refreshQuery [
 
 	"Return a SQL query for refreshing this collection"
@@ -266,7 +267,7 @@ SSWDBCollectionSpec >> refreshQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> refreshStatement [
 
 	"Return a prepared statement for refreshing this collection"
@@ -274,7 +275,7 @@ SSWDBCollectionSpec >> refreshStatement [
 	^refreshStatement ifNil: [refreshStatement := self reStore prepareStatementForQuery: self refreshQuery]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 
 	"Return a SQL query for refreshing this collection together with its updated contents"
@@ -282,7 +283,7 @@ SSWDBCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> refreshWithContentsIfUpdatedStatement [
 
 	"Return a prepared statement for refreshing this collection together with its updated contents"
@@ -290,7 +291,7 @@ SSWDBCollectionSpec >> refreshWithContentsIfUpdatedStatement [
 	^refreshWithContentsIfUpdatedStatement ifNil: [refreshWithContentsIfUpdatedStatement := self reStore prepareStatementForQuery: self refreshWithContentsIfUpdatedQuery]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionSpec >> relatedComponentsOf: anObject do: aBlock [
 
 	"We consider a collection always related to the source object since, in ReStore, a collection cannot exist without the source object.
@@ -299,7 +300,7 @@ SSWDBCollectionSpec >> relatedComponentsOf: anObject do: aBlock [
 	self componentsOf: anObject do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> targetClass [
 
 	"The homogeous (super)class of elements of the receiver"
@@ -307,7 +308,7 @@ SSWDBCollectionSpec >> targetClass [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> templateCollection [
 
 	"collection stores an empty collection that is used as the template 
@@ -316,7 +317,7 @@ SSWDBCollectionSpec >> templateCollection [
 	^templateCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionSpec >> templateCollection: aCollection [
 
 	"collection stores an empty collection that is used as the template 

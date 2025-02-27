@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBAbstractSubTable,
-	#superclass : #SSWDBInheritedTable,
+	#name : 'SSWDBAbstractSubTable',
+	#superclass : 'SSWDBInheritedTable',
 	#instVars : [
 		'rootClass',
 		'classCondition'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBAbstractSubTable class >> forClass: aClass [
 
 	"Overriden to set the rootClass"
@@ -24,13 +25,13 @@ SSWDBAbstractSubTable class >> forClass: aClass [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSubTable >> _classCondition [
 
 	^SSWSQLCondition field: self classField equalTo: self instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSubTable >> classCondition [
 
 	"classCondition stores an SSWSQLCondition(Collection) which is applied to all SELECTs 
@@ -39,7 +40,7 @@ SSWDBAbstractSubTable >> classCondition [
 	^classCondition ifNil: [classCondition := self _classCondition]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSubTable >> defaultName [
 
 	"Overriden to use the rootClass name"
@@ -47,7 +48,7 @@ SSWDBAbstractSubTable >> defaultName [
 	^self sqlDialect transformClassName: self rootClass name
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSubTable >> forCreation [
 
 	"The receiver should not CREATE TABLE (its persistent superclass will take care of this).
@@ -56,19 +57,34 @@ SSWDBAbstractSubTable >> forCreation [
 	^nil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBAbstractSubTable >> hasStaticConditions [
 
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBAbstractSubTable >> isRootTable [
 
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'initializing' }
+SSWDBAbstractSubTable >> postCreate [
+
+	| rootTable |
+
+	super postCreate.
+
+	"For efficient field lookup share control fields with the rootTable"
+	rootTable := self rootTable.
+	self
+		idField: rootTable idField;
+		controlFields: rootTable controlFields;
+		classField: rootTable classField
+]
+
+{ #category : 'evaluating' }
 SSWDBAbstractSubTable >> registerClass [
 
 	"Objects created from this table are registered under the rootClass"
@@ -76,7 +92,7 @@ SSWDBAbstractSubTable >> registerClass [
 	^self rootClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSubTable >> rootClass [
 
 	"rootClass stores the Class which is the root of the persistent class hierarchy
@@ -85,7 +101,7 @@ SSWDBAbstractSubTable >> rootClass [
 	^rootClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAbstractSubTable >> rootClass: aClass [
 
 	"rootClass stores the Class which is the root of the persistent class hierarchy
@@ -94,7 +110,7 @@ SSWDBAbstractSubTable >> rootClass: aClass [
 	rootClass := aClass
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSubTable >> rootTable [
 
 	"For a sub-table, the root table is the table of the rootClass"
@@ -102,7 +118,7 @@ SSWDBAbstractSubTable >> rootTable [
 	^self reStore tableForClass: self rootClass
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBAbstractSubTable >> sqlAndStaticConditionsWith: anSQLConditionCollection [
 
 	"Return the receiver's staticConditions ANDed with anSQLConditionCollection"
@@ -113,7 +129,7 @@ SSWDBAbstractSubTable >> sqlAndStaticConditionsWith: anSQLConditionCollection [
 		ifFalse: [self staticConditions sqlAnd: anSQLConditionCollection]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBAbstractSubTable >> staticConditions [
 
 	^self classCondition

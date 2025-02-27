@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionProxy,
-	#superclass : #SSWDBProxy,
+	#name : 'SSWDBCollectionProxy',
+	#superclass : 'SSWDBProxy',
 	#instVars : [
 		'collectionSpec',
 		'owner'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _collectionSpec [
 
 	"collectionSpec stores the SSWDBCollectionSpec which, given the receiver's ownerID,
@@ -22,7 +23,7 @@ SSWDBCollectionProxy >> _collectionSpec [
 	^collectionSpec
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _collectionSpec: anSSWDBCollectionSpec [
 
 	"dbCollectionSpec stores the SSWDBCollectionSpec which, given the receiver's ownerID,
@@ -31,13 +32,13 @@ SSWDBCollectionProxy >> _collectionSpec: anSSWDBCollectionSpec [
 	collectionSpec := anSSWDBCollectionSpec
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBCollectionProxy >> _forceRefresh [
 
 	self _isRecovered ifTrue: [collectionSpec refreshCollectionForProxy: self]
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBCollectionProxy >> _forceRefreshWithContents [
 
 	"Return the refreshed elements"
@@ -47,7 +48,7 @@ SSWDBCollectionProxy >> _forceRefreshWithContents [
 		ifFalse: [#()]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _owner [
 
 	"owner stores the proxy of the object to which the collection proxy'd by the receiver belongs.
@@ -58,7 +59,7 @@ SSWDBCollectionProxy >> _owner [
 	^owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _owner: anObject [
 
 	"owner stores the object to which the collection proxy'd by the receiver belongs.
@@ -69,7 +70,7 @@ SSWDBCollectionProxy >> _owner: anObject [
 	owner := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _ownerID [
 
 	"Return the unique ID (Integer) of the object to which the collection proxy'd by the receiver belongs"
@@ -77,7 +78,7 @@ SSWDBCollectionProxy >> _ownerID [
 	^owner _id
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCollectionProxy >> _postSwapReferences [
 
 	"Inform the owner"
@@ -85,7 +86,7 @@ SSWDBCollectionProxy >> _postSwapReferences [
 	owner _collectionProxySwapped: self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCollectionProxy >> _prepareToCommit [
 
 	"Default: no action for collections"
@@ -93,25 +94,25 @@ SSWDBCollectionProxy >> _prepareToCommit [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _proxiedObjectClass [
 	
 	^collectionSpec collectionClass
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCollectionProxy >> _recoverProxiedObject [
 
 	collectionSpec recoverCollectionForProxy: self
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBCollectionProxy >> _refreshIfUpdated [
 
 	self _isRecovered ifTrue: [collectionSpec refreshCollectionIfUpdatedForProxy: self]
 ]
 
-{ #category : #'actions-refresh' }
+{ #category : 'actions-refresh' }
 SSWDBCollectionProxy >> _refreshWithContentsIfUpdated [
 
 	"Return the refreshed elements"
@@ -121,7 +122,7 @@ SSWDBCollectionProxy >> _refreshWithContentsIfUpdated [
 		ifFalse: [#()]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCollectionProxy >> _rollbackChanges [
 
 	"Forget any changes by reinstantiating the unchanged collection.
@@ -142,7 +143,7 @@ SSWDBCollectionProxy >> _rollbackChanges [
 	changedCollection getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _unchangedCollection [
 
 	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"
@@ -150,7 +151,7 @@ SSWDBCollectionProxy >> _unchangedCollection [
 	^self subclassResponsibility
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCollectionProxy >> _unstore [
 
 	self _isDeleted ifTrue: [^self].
@@ -160,7 +161,7 @@ SSWDBCollectionProxy >> _unstore [
 		ifFalse: [reStore removeFromTransaction: self]
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBCollectionProxy >> orRemote [
 
 	"Use the proxied collection, if in memory, otherwise the remote collection"
@@ -173,13 +174,13 @@ SSWDBCollectionProxy >> orRemote [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> remote [
 
 	^collectionSpec dbInstancesFor: self
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBCollectionProxy >> size [
 
 	"Optimisation for collections - go direct.
@@ -196,7 +197,7 @@ SSWDBCollectionProxy >> size [
 				ifFalse: [self size]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> withComponents [
 
 	"Avoid faulting in the proxied object"
@@ -204,7 +205,7 @@ SSWDBCollectionProxy >> withComponents [
 	^SSWDBCollectionWithContents on: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> withRelatedComponents [
 
 	"Avoid faulting in the proxied object"

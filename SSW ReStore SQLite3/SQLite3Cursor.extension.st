@@ -4,6 +4,6 @@ Extension { #name : 'SQLite3Cursor' }
 SQLite3Cursor >> asSSWSQLite3ResultSet [
 
 	^SSWSQLite3ResultSet new
-		statement: statement moreRows: moreRows rows: rows mutators: mutators;
+		statement: statement moreRows: moreRows rows: rows;
 		yourself 
 ]

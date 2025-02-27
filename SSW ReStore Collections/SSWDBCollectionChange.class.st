@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionChange,
-	#superclass : #Object,
+	#name : 'SSWDBCollectionChange',
+	#superclass : 'Object',
 	#instVars : [
 		'affectedEntry'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBCollectionChange class >> added: anObject [
 
 	^self newWithEntry:
@@ -21,7 +22,7 @@ SSWDBCollectionChange class >> added: anObject [
 			yourself)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBCollectionChange class >> newWithEntry: anSSWDBCollectionEntry [
 
 	^self new
@@ -29,7 +30,7 @@ SSWDBCollectionChange class >> newWithEntry: anSSWDBCollectionEntry [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionChange >> affectedEntry [
 
 	"affectedEntry stores the Collection Entry affected (added/removed/altered) by the
@@ -38,7 +39,7 @@ SSWDBCollectionChange >> affectedEntry [
 	^affectedEntry
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionChange >> affectedEntry: anSSWDBCollectionEntry [
 
 	"affectedEntry stores the Collection Entry affected (added/removed/altered) by the
@@ -47,7 +48,7 @@ SSWDBCollectionChange >> affectedEntry: anSSWDBCollectionEntry [
 	affectedEntry := anSSWDBCollectionEntry
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionChange >> applyTo: aCollectionOfEntries [
 
 	"Apply the change represented by the receiver to the given collection
@@ -56,7 +57,7 @@ SSWDBCollectionChange >> applyTo: aCollectionOfEntries [
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionChange >> commitFor: aCollectionProxy [
 
 	"Apply the change represented by the receiver onto the ReStore in which
@@ -65,7 +66,7 @@ SSWDBCollectionChange >> commitFor: aCollectionProxy [
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionChange >> prepareToCommitFor: anSSWDBCachingCollectionProxy [
 
 	^self affectedEntry prepareToCommitFor: anSSWDBCachingCollectionProxy

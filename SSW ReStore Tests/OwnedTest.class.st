@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #OwnedTest,
-	#superclass : #Test,
+	#name : 'OwnedTest',
+	#superclass : 'Test',
 	#instVars : [
 		'owner'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 OwnedTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -20,21 +21,21 @@ OwnedTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnedTest >> owner [
 	"Private - Answer the value of the receiver's ''owner'' instance variable."
 
 	^owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OwnedTest >> owner: anObject [
 	"Private - Set the value of the receiver's ''owner'' instance variable to the argument, anObject."
 
 	owner := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 OwnedTest >> testOnRollback [
 
 	self owner name

@@ -1,6 +1,6 @@
-Extension { #name : #SSWPostgreSQLDialect }
+Extension { #name : 'SSWPostgreSQLDialect' }
 
-{ #category : #'*SSW ReStore Tests' }
+{ #category : '*SSW ReStore Tests' }
 SSWPostgreSQLDialect >> shouldDropTablesForTestCases [
 
 	^true

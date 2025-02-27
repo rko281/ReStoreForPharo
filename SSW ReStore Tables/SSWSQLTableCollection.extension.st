@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLTableCollection }
+Extension { #name : 'SSWSQLTableCollection' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLTableCollection >> occurrencesOfIncludingRepetitions: aTable [
 
 	"Return the number of occurrences of the given table in the receiver.

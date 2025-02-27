@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBBlockEvaluator,
-	#superclass : #SSWDBProtoObject,
+	#name : 'SSWDBBlockEvaluator',
+	#superclass : 'SSWDBProtoObject',
 	#instVars : [
 		'parser'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'message sending' }
+{ #category : 'message sending' }
 SSWDBBlockEvaluator >> chainPerform: aCollection [
 
 	"perform: each member (Symbol) of aCollection against the receiver as a chain
@@ -22,7 +23,7 @@ SSWDBBlockEvaluator >> chainPerform: aCollection [
 
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockEvaluator >> concatenatedWith: aCollection [
 
 	| queryCollection |
@@ -34,19 +35,19 @@ SSWDBBlockEvaluator >> concatenatedWith: aCollection [
 	^queryCollection concatenateCondition: self forConcatenation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> currentTable [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockEvaluator >> finalField [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBBlockEvaluator >> forConcatenation [
 
 	"When received by an instance of this class, the current final field (rather than an actual condition) is being concatenated with another object, e.g. [ :person | person firstName || person surname]
@@ -60,13 +61,13 @@ SSWDBBlockEvaluator >> forConcatenation [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockEvaluator >> hasFinalField [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockEvaluator >> imageDo: imageBlock databaseDo: databaseBlock [
 
 	"Allow different code to be 'evaluated' depending on whether execution is in-image or 'in' the database (in the latter case code is not actually executed but converted to SQL)"
@@ -74,31 +75,31 @@ SSWDBBlockEvaluator >> imageDo: imageBlock databaseDo: databaseBlock [
 	^databaseBlock value
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockEvaluator >> isSimilarTo: anObject [
 
 	^self perform: anObject similarityComparator with: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> newCondition [
 
 	^self parser newCondition
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> parser [
 
 	^parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> parser: anSSWDBBlockParser [
 
 	parser := anSSWDBBlockParser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> path [
 
 	"The path of accessors form which this evaluator was created"
@@ -106,19 +107,19 @@ SSWDBBlockEvaluator >> path [
 	^#()
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockEvaluator >> printOn: aStream [
 
 	aStream nextPutAll: 'an '; print: self basicClass
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockEvaluator >> printString [
 
 	^'an ', self basicClass name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockEvaluator >> reStore [
 
 	"reStore stores the SSWReStore for which the receiver parses blocks"
@@ -126,7 +127,7 @@ SSWDBBlockEvaluator >> reStore [
 	^self parser reStore
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockEvaluator >> || aBlockEvaluatorOrCondition [
 
 	"Concatenate with another block evaluator or condition (primarily for multi-field collect: and project:)"

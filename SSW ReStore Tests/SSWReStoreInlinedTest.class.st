@@ -4,21 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreInlinedTest,
-	#superclass : #SSWReStorePersonTest,
+	#name : 'SSWReStoreInlinedTest',
+	#superclass : 'SSWReStorePersonTest',
 	#instVars : [
 		'persons'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreInlinedTest >> addClassesTo: aReStore [
 
 	reStore addClass: InlinedTestPerson; addClass: SimpleAddress
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreInlinedTest >> createTestData [ 
 
 	(Array 
@@ -76,7 +77,7 @@ SSWReStoreInlinedTest >> createTestData [
 	persons := (InlinedTestPerson storedInstancesIn: reStore) sortBlock: [ :p1 :p2 | p1 firstName <= p2 firstName]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test01Verify [
 
 	persons := persons asSortedCollection.
@@ -142,7 +143,7 @@ SSWReStoreInlinedTest >> test01Verify [
 	self assert: (persons last address3 postcode = 'e3 3aa')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test02QuerySimple [
 
 	| dave john |
@@ -163,7 +164,7 @@ SSWReStoreInlinedTest >> test02QuerySimple [
 	self assert: (john isNil)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test03QueryFirstLevelInlined [
 
 	| dave john |
@@ -192,7 +193,7 @@ SSWReStoreInlinedTest >> test03QueryFirstLevelInlined [
 	self assert: john firstName equals: 'John'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test03QueryFirstLevelInlinedEquality [
 
 	"Test correct use of inlined classes own definitions of equality"
@@ -240,7 +241,7 @@ SSWReStoreInlinedTest >> test03QueryFirstLevelInlinedEquality [
 	self assert: (john isNil).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test04QuerySecondLevelInlined [
 
 	| dave john daveAndJohn |
@@ -277,7 +278,7 @@ SSWReStoreInlinedTest >> test04QuerySecondLevelInlined [
 	self assert: (john isNil)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test05QueryDisambiguation [
 
 	| dave john |
@@ -312,7 +313,7 @@ SSWReStoreInlinedTest >> test05QueryDisambiguation [
 	self assert: (john isNil).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test06QueryByExampleSimple [
 
 	| exDave similar |
@@ -327,7 +328,7 @@ SSWReStoreInlinedTest >> test06QueryByExampleSimple [
 	self assert: (similar isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test07QueryByExampleFirstLevelInlined [
 
 	| exDave similar |
@@ -352,7 +353,7 @@ SSWReStoreInlinedTest >> test07QueryByExampleFirstLevelInlined [
 	self assert: (similar isEmpty)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test08QueryByExampleSecondLevelInlined [
 
 	| exDave similar |
@@ -396,7 +397,7 @@ SSWReStoreInlinedTest >> test08QueryByExampleSecondLevelInlined [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test09QueryByExampleDisambiguation [
 
 	| exDave exJohn similar |
@@ -439,7 +440,7 @@ SSWReStoreInlinedTest >> test09QueryByExampleDisambiguation [
 	self assert: (similar isEmpty).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test09QueryInlinedEquality [
 
 	"Test correct use of inlined classes own definitions of equality"
@@ -493,7 +494,7 @@ SSWReStoreInlinedTest >> test09QueryInlinedEquality [
 	self assert: (john isNil).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test10TransactionUpdateFirstLevelInlined [
 
 	| daves |
@@ -514,7 +515,7 @@ SSWReStoreInlinedTest >> test10TransactionUpdateFirstLevelInlined [
 	self assert: (daves first address1 line1 = '1a some road')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test11TransactionUpdateSecondLevelInlined [
 
 	| daves |
@@ -535,7 +536,7 @@ SSWReStoreInlinedTest >> test11TransactionUpdateSecondLevelInlined [
 	self assert: (daves first address1 postcode code2 = '11aa')"changed"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test12TransactionReplaceFirstLevelInlined [
 
 	| daves |
@@ -550,7 +551,7 @@ SSWReStoreInlinedTest >> test12TransactionReplaceFirstLevelInlined [
 	self assert: (daves first address1 postcode code2 = '1zz')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test13TransactionReplaceSecondLevelInlined [
 
 	| daves |
@@ -564,7 +565,7 @@ SSWReStoreInlinedTest >> test13TransactionReplaceSecondLevelInlined [
 	self assert: (daves first address2 postcode code2 = '1zz')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test15ManualUpdateFirstLevelInlined [
 
 	| daves dave |
@@ -589,7 +590,7 @@ SSWReStoreInlinedTest >> test15ManualUpdateFirstLevelInlined [
 	self assert: (daves first address1 line1 = '123 some ave')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test16ManualUpdateSecondLevelInlined [
 
 	| daves dave |
@@ -614,7 +615,7 @@ SSWReStoreInlinedTest >> test16ManualUpdateSecondLevelInlined [
 	self assert: (daves first address1 postcode code2 = '16aa'). "unchanged"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test17ManualReplaceFirstLevelInlined [
 
 	| daves dave |
@@ -631,7 +632,7 @@ SSWReStoreInlinedTest >> test17ManualReplaceFirstLevelInlined [
 	self assert: (daves first address1 postcode code2 = '1zz')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test18ManualReplaceSecondLevelInlined [
 
 	| daves dave |
@@ -648,7 +649,7 @@ SSWReStoreInlinedTest >> test18ManualReplaceSecondLevelInlined [
 	self assert: (daves first address2 postcode code2 = '1zz')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test20ModifySimple [
 
 	| daves |
@@ -665,7 +666,7 @@ SSWReStoreInlinedTest >> test20ModifySimple [
 	self assert: (daves first firstName = 'Dave')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test21ModifyFirstLevelInlined [
 
 	| daves |
@@ -688,7 +689,7 @@ SSWReStoreInlinedTest >> test21ModifyFirstLevelInlined [
 	self assert: (persons allSatisfy: [ :each | each line1 ~= '456 some close'])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test22ModifySecondLevelInlined [
 
 	| daves |
@@ -714,7 +715,7 @@ SSWReStoreInlinedTest >> test22ModifySecondLevelInlined [
 	self assert: (persons allSatisfy: [ :each | each code1 ~= '9xx']).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreInlinedTest >> test23ModifyDisambiguation [
 
 	| daves |

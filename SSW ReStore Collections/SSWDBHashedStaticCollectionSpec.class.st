@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBHashedStaticCollectionSpec,
-	#superclass : #SSWDBStaticCollectionSpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBHashedStaticCollectionSpec',
+	#superclass : 'SSWDBStaticCollectionSpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBHashedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries"
@@ -14,7 +15,7 @@ SSWDBHashedStaticCollectionSpec >> changesTo: aCollection from: aCollectionOfEnt
 		ifFalse: [self identityChangesTo: aCollection from: aCollectionOfEntries]
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBHashedStaticCollectionSpec >> equalityChangesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via equality (=)"
@@ -30,7 +31,7 @@ SSWDBHashedStaticCollectionSpec >> equalityChangesTo: aCollection from: aCollect
 	^changes
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBHashedStaticCollectionSpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via identity (==)"

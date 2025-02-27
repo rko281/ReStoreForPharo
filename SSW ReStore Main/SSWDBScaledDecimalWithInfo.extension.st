@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBScaledDecimalWithInfo }
+Extension { #name : 'SSWDBScaledDecimalWithInfo' }
 
-{ #category : #'*SSW ReStore Main' }
+{ #category : '*SSW ReStore Main' }
 SSWDBScaledDecimalWithInfo >> instanceFromDBValue: aValue in: aReStore [
 
 	"Handle SQL dialects which do not explicity support decimals"

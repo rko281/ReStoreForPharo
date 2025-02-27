@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreNonRelatedOwnedOrderedCollectionTest,
-	#superclass : #SSWReStoreGenericNonRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreNonRelatedOwnedOrderedCollectionTest',
+	#superclass : 'SSWReStoreGenericNonRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest class >> allTestSelectors [
 
 	^super allTestSelectors 
@@ -17,7 +18,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest class >> allTestSelectors [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> _testCollectionElementTransferOf: element from: collection1 to: collection2 ownerBy: template2 [
 
 	collection1 remove: element.
@@ -33,19 +34,19 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest >> _testCollectionElementTransfer
 	self assert: element owner equals: template2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> componentDefinition [
 
 	^OrderedCollection of: GenericOwnedTest owner: #owner
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> replaceInCollection: aCollection [
 
 	^(aCollection at: aCollection size) -> (aCollection at: aCollection size put: self templateComponent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> templateCollection [
 
 	^OrderedCollection 
@@ -54,7 +55,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest >> templateCollection [
 		with: self templateComponent
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh, even when the original collection is deleted"
@@ -76,7 +77,7 @@ SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElem
 	self assert: element owner equals: template2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreNonRelatedOwnedOrderedCollectionTest >> testCollectionElementTransfer [
 
 	"Verify that an element transferred between owner collections retains its new owner link after commit/refresh.

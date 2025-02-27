@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBObjectProxy,
-	#superclass : #SSWDBProxy,
+	#name : 'SSWDBObjectProxy',
+	#superclass : 'SSWDBProxy',
 	#instVars : [
 		'class',
 		'id',
 		'collectionProxies'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBObjectProxy class >> _forNewObject: anObject withID: anInteger inReStore: aReStore [
 
 	^(self _forObjectOfClass: anObject class withID: anInteger  inReStore: aReStore)
@@ -24,7 +25,7 @@ SSWDBObjectProxy class >> _forNewObject: anObject withID: anInteger inReStore: a
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBObjectProxy class >> _forObjectOfClass: aClass withID: anObject inReStore: aReStore [
 
 	^self new
@@ -34,7 +35,7 @@ SSWDBObjectProxy class >> _forObjectOfClass: aClass withID: anObject inReStore: 
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBObjectProxy class >> controlFields [
 
 	"Return any fields required by instances of the receiver 
@@ -45,13 +46,13 @@ SSWDBObjectProxy class >> controlFields [
 	^SSWSQLFieldCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBObjectProxy class >> isAbstract [
 
 	^self == SSWDBObjectProxy or: [super isAbstract]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBObjectProxy class >> modifyUpdatesFor: anSSWDBTable [
 
 	"Return any updates that should be applied to rows in anSSWDBTable when carrying out a modify: update.
@@ -61,7 +62,7 @@ SSWDBObjectProxy class >> modifyUpdatesFor: anSSWDBTable [
 	^OrderedCollection new
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> = anotherObject [
 
 	"No need to fetch the object if #= == #=="
@@ -81,7 +82,7 @@ SSWDBObjectProxy >> = anotherObject [
 				[self = anotherObject]]]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _acquireCollectionProxiesUsing: collectionSpecs [
 
 	"Cache the proxiedObject's collection proxies, and set the backwards owner reference.
@@ -100,7 +101,7 @@ SSWDBObjectProxy >> _acquireCollectionProxiesUsing: collectionSpecs [
 		[collectionSpecs do: [ :spec | self _updateCollectionProxyUsing: spec]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _class [
 
 	"class stores the Class of the object for which the receiver is a proxy"
@@ -108,7 +109,7 @@ SSWDBObjectProxy >> _class [
 	^class
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _class: aClass [
 
 	"class stores the Class of the object for which the receiver is a proxy"
@@ -116,7 +117,7 @@ SSWDBObjectProxy >> _class: aClass [
 	class := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _collectionProxies [
 
 	"collectionProxies stores an IdentityDictionary mapping each of 
@@ -127,7 +128,7 @@ SSWDBObjectProxy >> _collectionProxies [
 	^collectionProxies
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _collectionProxies: anIdentityDictionary [
 
 	"collectionProxies stores an IdentityDictionary mapping each of 
@@ -138,7 +139,7 @@ SSWDBObjectProxy >> _collectionProxies: anIdentityDictionary [
 	collectionProxies := anIdentityDictionary
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> _collectionProxyFor: aCollectionSpec [
 
 	"Look up the collection proxy specified by the given spec.
@@ -148,7 +149,7 @@ SSWDBObjectProxy >> _collectionProxyFor: aCollectionSpec [
 		[aCollectionSpec newProxydCollectionFor: self]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _collectionProxySwapped: aCollectionProxy [
 
 	"The given collection proxy has swapped its references.
@@ -157,7 +158,7 @@ SSWDBObjectProxy >> _collectionProxySwapped: aCollectionProxy [
 	^collectionProxies at: aCollectionProxy _collectionSpec put: aCollectionProxy
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _commitChanges [
 
 	"Return a Boolean indicating whether the commit succeeds"
@@ -171,7 +172,7 @@ SSWDBObjectProxy >> _commitChanges [
 		[self _commitStore]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _commitStore [
 
 	"Private - Return a Boolean indicating whether the commit succeeds"
@@ -182,7 +183,7 @@ SSWDBObjectProxy >> _commitStore [
 	^true
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _commitUnstore [
 
 	"Private - Return a Boolean indicating whether the commit succeeds"
@@ -194,7 +195,7 @@ SSWDBObjectProxy >> _commitUnstore [
 
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _commitUpdates [
 
 	"Private - Return a Boolean indicating whether the commit succeeds"
@@ -208,7 +209,7 @@ SSWDBObjectProxy >> _commitUpdates [
 		ifFalse: [reStore applyUpdates: updates toObject: self]
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> _currentVersion [
 
 	"Re-read the receiver's proxiedObject from the database,
@@ -225,13 +226,13 @@ SSWDBObjectProxy >> _currentVersion [
 	^newProxy
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> _dbTable [
 
 	^reStore tableForClass: class
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBObjectProxy >> _debugPrintString [
 
 	^self _isDeleted 
@@ -239,7 +240,7 @@ SSWDBObjectProxy >> _debugPrintString [
 		ifFalse: [super _debugPrintString]
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> _fieldUpdates [
 
 	"Return a collection of SSWSQLFieldAssignments representing changes made to the receiver"
@@ -247,7 +248,7 @@ SSWDBObjectProxy >> _fieldUpdates [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _id [
 
 	"id stores the unique ID (Integer) of the object for which the receiver is a proxy"
@@ -255,7 +256,7 @@ SSWDBObjectProxy >> _id [
 	^id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _id: anInteger [
 
 	"dbID stores the unique ID (Integer) of the object for which the receiver is a proxy"
@@ -263,7 +264,7 @@ SSWDBObjectProxy >> _id: anInteger [
 	id := anInteger
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> _idIn: aReStore [
 
 	"Polymorphic with Object"
@@ -273,7 +274,7 @@ SSWDBObjectProxy >> _idIn: aReStore [
 		ifFalse: [nil error: 'incorrect ReStore parameter']
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> _instVarAt: anInteger [
 
 	"Sent from internal code to access the proxiedObject directly.
@@ -282,7 +283,7 @@ SSWDBObjectProxy >> _instVarAt: anInteger [
 	^proxiedObject instVarAt: anInteger
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> _instVarAt: anInteger put: anObject [
 
 	"Sent from internal code to access the proxiedObject directly.
@@ -291,7 +292,7 @@ SSWDBObjectProxy >> _instVarAt: anInteger put: anObject [
 	^proxiedObject instVarAt: anInteger put: anObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _intern [
 
 	"Register the receiver in its reStore"
@@ -299,7 +300,7 @@ SSWDBObjectProxy >> _intern [
 	reStore registerProxy: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBObjectProxy >> _isNew [
 
 	"Return a Boolean indicating whether the receiver does not yet exist in the database"
@@ -307,7 +308,7 @@ SSWDBObjectProxy >> _isNew [
 	^self _isPersistent not
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postCommitChanges [
 
 	"The receiver's changes have successfully been committed.
@@ -322,7 +323,7 @@ SSWDBObjectProxy >> _postCommitChanges [
 		[self _postCommitStore]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postCommitStore [
 
 	"Private - The receiver has been inserted into the database.
@@ -334,7 +335,7 @@ SSWDBObjectProxy >> _postCommitStore [
 		_intern	"Re-register"
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postCommitUnstore [
 
 	"Private - The receiver has been successfully deleted from the database.
@@ -353,14 +354,14 @@ SSWDBObjectProxy >> _postCommitUnstore [
 	me _proxiedObjectMissing
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postCommitUpdates [
 
 	"Private - The receiver has been successfully updated in the database.
 	Complete follow-on work and notify interest parties"
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postRecovered [
 
 	"Inform the proxiedObject recovery is done"
@@ -368,7 +369,7 @@ SSWDBObjectProxy >> _postRecovered [
 	proxiedObject onRecovered
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _postSwapReferences [
 
 	"Inform the collectionProxies"
@@ -376,25 +377,25 @@ SSWDBObjectProxy >> _postSwapReferences [
 	collectionProxies do: [ :proxy | proxy _owner: self]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _prepareToCommit [
 
 	self _isDeleted ifFalse: [self _storeNonPersistentComponents]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBObjectProxy >> _proxiedClassIsDefinitive [
 
 	^proxiedObject notNil or: [self _dbTable class == SSWDBTable]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _proxiedObjectClass [
 	
 	^class
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _proxiedObjectMissing [
 
 	"The receiver's proxiedObject (as specified by class/id) is missing.
@@ -405,13 +406,13 @@ SSWDBObjectProxy >> _proxiedObjectMissing [
 		_collectionProxies: IdentityDictionary new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _proxyString [
 
 	^'%<<1?an un:a >recovered <2p> id=<3p>%>' expandMacrosWith: proxiedObject isNil with: class with: id
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _recoverProxiedObject [
 
 	"Recover the receiver's proxiedObject from the database"
@@ -419,7 +420,7 @@ SSWDBObjectProxy >> _recoverProxiedObject [
 	reStore recoverObjectOfClass: class withID: id into: self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 
 	"Return whether the proxiedObject was refreshed at all.
@@ -430,7 +431,7 @@ SSWDBObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 		ifFalse: [false]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _rollbackChanges [
 
 	self _isPersistent
@@ -442,7 +443,7 @@ SSWDBObjectProxy >> _rollbackChanges [
 		[self _rollbackStore]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _rollbackStore [
 
 	"Private - The receiver was a newly-persisted object - deregister from the reStore"
@@ -451,7 +452,7 @@ SSWDBObjectProxy >> _rollbackStore [
 	self _unswap
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _rollbackUnstore [
 
 	self 
@@ -459,7 +460,7 @@ SSWDBObjectProxy >> _rollbackUnstore [
 		_rollbackUpdates
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _rollbackUpdates [
 
 	"Rollback any changes made to the receiver"
@@ -467,7 +468,7 @@ SSWDBObjectProxy >> _rollbackUpdates [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _storeNonPersistentComponents [
 
 	"Ensure that each non-persistent component of the proxiedObject exists in the receiver's reStore"
@@ -497,13 +498,13 @@ SSWDBObjectProxy >> _storeNonPersistentComponents [
 						_referenced]]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _unrecoveredProxyString [
 
 	^'%<an unrecovered <1p> id=<2p>%>' expandMacrosWith: class with: id
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _unstore [
 
 	"Unstore the receiver's proxyObject - set the receiver's state so that the receiver is recognised as unstored and hence will be deleted at the next commit"
@@ -524,7 +525,7 @@ SSWDBObjectProxy >> _unstore [
 	collectionProxies do: [ :each | each _unstore]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
 	"Assign the correct collection proxy for <aCollectionSpec> to the proxied object. Return the collection proxy.
 	Note that we may actually assign the proxied collection itself, if the collection proxy is swapped--what is important
@@ -534,7 +535,7 @@ SSWDBObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
 		in: proxiedObject.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectProxy >> _valuesForAccessor: anInstVarAccessor [
 
 	"Private - Return the value(s) in the receiver's proxy object(s) which could be accessed by anInstVarAccessor"
@@ -544,7 +545,7 @@ SSWDBObjectProxy >> _valuesForAccessor: anInstVarAccessor [
 		ifNotNil: [{anInstVarAccessor valueIn: proxiedObject}]
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> currentVersion [
 
 	"Re-read the receiver's proxiedObject from the database,
@@ -554,7 +555,7 @@ SSWDBObjectProxy >> currentVersion [
 	^self _currentVersion _proxiedObject
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBObjectProxy >> deletedDebugPrintString [
 
 	"Private - The receiver is a deleted proxy; answer an appropriate debugPrintString"
@@ -562,7 +563,7 @@ SSWDBObjectProxy >> deletedDebugPrintString [
 	^'%<a marked-for-deletion <1p>%>' << class
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> hash [
 
 	"No need to fetch the object if hash == identityHash"
@@ -582,7 +583,7 @@ SSWDBObjectProxy >> hash [
 				[self hash]]]
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBObjectProxy >> isSQLNull [
 
 	"No need to bother the proxiedObject"
@@ -590,13 +591,13 @@ SSWDBObjectProxy >> isSQLNull [
 	^false
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> isValidForPersistence [
 
 	^true
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> printOn: aStream [
 
 	"Do not error on printString to a deleted object"
@@ -620,7 +621,7 @@ SSWDBObjectProxy >> printOn: aStream [
 				[self printOn: aStream]]]
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> printString [
 
 	"Do not error on printString to a deleted object"
@@ -644,13 +645,13 @@ SSWDBObjectProxy >> printString [
 				[self printString]]]
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBObjectProxy >> reStoreValue [
 
 	^id reStoreValue
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> sqlStringIn: anSSWSQLDialect [
 
 	| stream |
@@ -663,7 +664,7 @@ SSWDBObjectProxy >> sqlStringIn: anSSWSQLDialect [
 
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> unstore [
 
 	"Unstore the receiver's proxiedObject, returning the proxiedObject.
@@ -702,7 +703,7 @@ SSWDBObjectProxy >> unstore [
 				[self unstore]]]
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBObjectProxy >> unstored [
 
 	"Return the receiver in an UnstoreWrapper"
@@ -710,7 +711,7 @@ SSWDBObjectProxy >> unstored [
 	^SSWDBUnstoreWrapper on: self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> writeSQLOn: aStream [
 
 	"The SQL for a persistent object is its id"
@@ -718,13 +719,13 @@ SSWDBObjectProxy >> writeSQLOn: aStream [
 	id writeSQLOn: aStream
 ]
 
-{ #category : #'non forwarding' }
+{ #category : 'non forwarding' }
 SSWDBObjectProxy >> writeSQLOn: aStream forCondition: aSQLCondition [
 
 	^self writeSQLOn: aStream forField: aSQLCondition field
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBObjectProxy >> writeSQLOn: aStream forField: aField [
 
 	"The SQL for a persistent object is its id"

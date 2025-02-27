@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreCollectQueryTest,
-	#superclass : #SSWReStoreQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreCollectQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCollectQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testCollectQueryWithConstantFirst [
 
 	| instances results |
@@ -27,7 +28,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantFirst [
 	self assert: (results asSortedCollection: [ :r1 :r2 | r1 last <= r2 last]) asArray = #(#('hello' 'David') #('hello' 'Jim') #('hello' 'John') #('hello' 'Zoe')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testCollectQueryWithConstantLast [
 
 	| instances results |
@@ -39,7 +40,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantLast [
 	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' 'goodbye') #('Jim' 'goodbye') #('John' 'goodbye') #('Zoe' 'goodbye')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testCollectQueryWithConstantMid [
 
 	| instances results |
@@ -51,7 +52,7 @@ SSWReStoreCollectQueryTest >> testCollectQueryWithConstantMid [
 	self assert: (results asSortedCollection: [ :r1 :r2 | r1 first <= r2 first]) asArray = #(#('David' '-' 'Smythe') #('Jim' '-' 'Brown') #('John' '-' 'Smith') #('Zoe' '-' 'Brown')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testComplexMathFunctionCollectQuery [
 
 	| instances results |
@@ -69,7 +70,7 @@ SSWReStoreCollectQueryTest >> testComplexMathFunctionCollectQuery [
 	self assert: (results last = #('Zoe' 23)).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testFunctionCollectQuery [
 
 	| instances results |
@@ -84,7 +85,7 @@ SSWReStoreCollectQueryTest >> testFunctionCollectQuery [
 	self assert: (results detect: [ :each | each first = 'David Smythe']) last = ('David Smythe' size)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testIsNilFirstCollectQuery [
 
 	| instances results |
@@ -100,7 +101,7 @@ SSWReStoreCollectQueryTest >> testIsNilFirstCollectQuery [
 	self assert: (results detect: [ :each | each last = 'David Smythe']) first
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testIsNilInlinedOrCollectQuery [
 
 	| instances results |
@@ -116,7 +117,7 @@ SSWReStoreCollectQueryTest >> testIsNilInlinedOrCollectQuery [
 	self deny: (results detect: [ :each | each last = 'Zoe Brown']) first
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testIsNilLastCollectQuery [
 
 	| instances results |
@@ -132,7 +133,7 @@ SSWReStoreCollectQueryTest >> testIsNilLastCollectQuery [
 	self assert: (results detect: [ :each | each first = 'David Smythe']) last
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testIsNilMultipleCollectQuery [
 
 	| instances results |
@@ -154,7 +155,7 @@ SSWReStoreCollectQueryTest >> testIsNilMultipleCollectQuery [
 	self deny: (results detect: [ :each | each last = 'David Smythe']) second
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testIsNilOrCollectQuery [
 
 	| instances results |
@@ -170,7 +171,7 @@ SSWReStoreCollectQueryTest >> testIsNilOrCollectQuery [
 	self deny: (results detect: [ :each | each last = 'Zoe Brown']) first
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testJoinedFieldCollectQuery [
 
 	| instances results |
@@ -196,7 +197,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldCollectQuery [
 	self assert: (results last last = 'Smith')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testJoinedFieldFirstCollectQuery [
 
 	| instances results |
@@ -222,7 +223,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldFirstCollectQuery [
 	self assert: (results last last = 'Brown')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testJoinedFieldOnlyCollectQuery [
 
 	| instances results |
@@ -238,7 +239,7 @@ SSWReStoreCollectQueryTest >> testJoinedFieldOnlyCollectQuery [
 	self assert: (results anySatisfy: [ :each | each first = 'John' and: [each last = 'Smith']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMathFunctionCollectQuery [
 
 	| instances results |
@@ -256,7 +257,7 @@ SSWReStoreCollectQueryTest >> testMathFunctionCollectQuery [
 	self assert: (results last = #('Zoe' 25)).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleConditionalFirstCollectQuery [
 
 	| instances results |
@@ -280,7 +281,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalFirstCollectQuery [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleConditionalLastCollectQuery [
 
 	| instances results |
@@ -304,7 +305,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalLastCollectQuery [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleConditionalOnSameFieldCollectQuery [
 
 	| instances results |
@@ -324,7 +325,7 @@ SSWReStoreCollectQueryTest >> testMultipleConditionalOnSameFieldCollectQuery [
 	self assert: (results detect: [ :each | each first = 'David Smythe']) last "David -> nil -> nil"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleFieldCollectQuery [
 
 	| instances results |
@@ -342,7 +343,7 @@ SSWReStoreCollectQueryTest >> testMultipleFieldCollectQuery [
 	self assert: (results last = #('Zoe' 'Brown' 20 'Zoe Brown')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleInlinedFunctionCollectQuery [
 
 	| instances results |
@@ -357,7 +358,7 @@ SSWReStoreCollectQueryTest >> testMultipleInlinedFunctionCollectQuery [
 	self assert: (results detect: [ :each | each last = 'David Smythe']) first = false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testMultipleInlinedMethodFunctionCollectQuery [
 
 	| instances results |
@@ -372,7 +373,7 @@ SSWReStoreCollectQueryTest >> testMultipleInlinedMethodFunctionCollectQuery [
 	self assert: (results detect: [ :each | each last = 'David Smythe']) first = false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testNotNilFirstCollectQuery [
 
 	| instances results |
@@ -388,7 +389,7 @@ SSWReStoreCollectQueryTest >> testNotNilFirstCollectQuery [
 	self deny: (results detect: [ :each | each last = 'David Smythe']) first
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testNotNilLastCollectQuery [
 
 	| instances results |
@@ -404,7 +405,7 @@ SSWReStoreCollectQueryTest >> testNotNilLastCollectQuery [
 	self deny: (results detect: [ :each | each first = 'David Smythe']) last
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testObjectFieldCollectQuery [
 
 	| instances results |
@@ -426,7 +427,7 @@ SSWReStoreCollectQueryTest >> testObjectFieldCollectQuery [
 	self assert: (results last last fullName = 'John Smith')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testObjectFieldOnlyDifferentClassCollectQuery [
 
 	"Test returning a single object of a different class in a collect: query.
@@ -450,7 +451,7 @@ SSWReStoreCollectQueryTest >> testObjectFieldOnlyDifferentClassCollectQuery [
 	self assert: (results anySatisfy: [ :each | each notNil and: [each line1 = 'David Smythe']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testObjectFieldOnlySameClassCollectQuery [
 
 	| instances results |
@@ -466,7 +467,7 @@ SSWReStoreCollectQueryTest >> testObjectFieldOnlySameClassCollectQuery [
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'John Smith']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlyDifferentClassCollectQuery [
 
 	| instances withoutFriends results |
@@ -487,7 +488,7 @@ SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlyDifferentClassCollectQ
 	self assert: (results anySatisfy: [ :each | each notNil and: [each name = 'David Smythe']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlySameClassCollectQuery [
 
 	"Verified use of originalTable in SSWDBQueryTable>>recoverInstanceFromRow:
@@ -511,7 +512,7 @@ SSWReStoreCollectQueryTest >> testObjectHierarchyFieldOnlySameClassCollectQuery 
 	self assert: (results anySatisfy: [ :each | each notNil and: [each fullName = 'David Smythe']])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testSingleConditionCollectQuery [
 
 	| instances results |
@@ -525,7 +526,7 @@ SSWReStoreCollectQueryTest >> testSingleConditionCollectQuery [
 	self assert: ((results reject: [ :each | each]) size = 2)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testSingleFieldCollectQuery [
 
 	| instances results |
@@ -538,7 +539,7 @@ SSWReStoreCollectQueryTest >> testSingleFieldCollectQuery [
 	self assert: (results asSortedCollection asArray = #('Brown' 'Brown' 'Smith' 'Smythe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testSingleInlinedFunctionCollectQuery [
 
 	| instances results |
@@ -552,7 +553,7 @@ SSWReStoreCollectQueryTest >> testSingleInlinedFunctionCollectQuery [
 	self assert: (results reject: [ :each | each]) size = 3
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCollectQueryTest >> testThisObjectFieldOnlyCollectQuery [
 
 	| instances results |

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRelatedCacheDictionaryTest,
-	#superclass : #SSWReStoreRelatedDictionaryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRelatedCacheDictionaryTest',
+	#superclass : 'SSWReStoreRelatedDictionaryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedCacheDictionaryTest class >> allTestSelectors [
 
 	^super allTestSelectors 
@@ -17,7 +18,7 @@ SSWReStoreRelatedCacheDictionaryTest class >> allTestSelectors [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedCacheDictionaryTest >> addToCollectionAnsweringAssociation: aCollection [
 
 	| component |
@@ -29,19 +30,19 @@ SSWReStoreRelatedCacheDictionaryTest >> addToCollectionAnsweringAssociation: aCo
 	^component key -> component
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedCacheDictionaryTest >> componentDefinition [
 
 	^(Dictionary of: #key -> GenericOwnedTest related)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedCacheDictionaryTest >> remove: anObject fromCollection: aCollection [
 
 	^aCollection removeKey: anObject key
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRelatedCacheDictionaryTest >> replaceInCollection: aCollection [
 
 	| key old |
@@ -51,7 +52,7 @@ SSWReStoreRelatedCacheDictionaryTest >> replaceInCollection: aCollection [
 	^old -> (aCollection at: key put: (self templateComponent key: key; yourself))
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedCacheDictionaryTest >> templateCollection [
 
 	| templateCollection |
@@ -66,7 +67,7 @@ SSWReStoreRelatedCacheDictionaryTest >> templateCollection [
 	^templateCollection
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRelatedCacheDictionaryTest >> templateComponent [
 
 	| component |

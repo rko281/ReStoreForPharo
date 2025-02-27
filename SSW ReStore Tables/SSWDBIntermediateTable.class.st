@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBIntermediateTable,
-	#superclass : #SSWDBAbstractSubTable,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBIntermediateTable',
+	#superclass : 'SSWDBAbstractSubTable',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBIntermediateTable >> _classCondition [
 
 	"For an intermediate table we have to consider subclasses"
@@ -24,7 +25,7 @@ SSWDBIntermediateTable >> _classCondition [
 	^conditions
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBIntermediateTable >> subclasses [
 
 	"Return those classes which inherit persistency from the receiver"

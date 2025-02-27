@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStaticCollectionSpec,
-	#superclass : #SSWDBGeneralCollectionSpec,
+	#name : 'SSWDBStaticCollectionSpec',
+	#superclass : 'SSWDBGeneralCollectionSpec',
 	#instVars : [
 		'targetClass',
 		'deleteEntriesStatement'
@@ -13,16 +13,17 @@ Class {
 	#classVars : [
 		'NilCookie'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticCollectionSpec class >> initialize [
 
 	NilCookie := Object new
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticCollectionSpec >> createCollectionTable [
 
 	"Intercept to set the Class of the source and target fields in the collection table"
@@ -33,15 +34,15 @@ SSWDBStaticCollectionSpec >> createCollectionTable [
 	self targetField targetClass: self targetClass
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> createNonProxiedInstanceFromRow: aDBRow [
 
-	^(self collectionTable createNonProxiedInstanceFromRow: aDBRow)
+	^(self collectionTable createInstanceFromRow: aDBRow)
 		table: self collectionTable;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 
 	"Return a DBInstancesCollection representing the instances owned by aCollectionProxy
@@ -63,7 +64,7 @@ SSWDBStaticCollectionSpec >> dbInstancesFor: aCollectionProxy [
 	^instances
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> deleteEntriesQuery [
 
 	^SSWSQLDeleteQuery new
@@ -72,7 +73,7 @@ SSWDBStaticCollectionSpec >> deleteEntriesQuery [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> deleteEntriesStatement [
 
 	"Return a prepared statement for deleting the entry table entries for this collection"
@@ -80,7 +81,7 @@ SSWDBStaticCollectionSpec >> deleteEntriesStatement [
 	^deleteEntriesStatement ifNil: [deleteEntriesStatement := self reStore prepareStatementForQuery: self deleteEntriesQuery]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> deleteQuery [
 
 	^self sqlDialect supportsDeleteWithJoin
@@ -88,7 +89,7 @@ SSWDBStaticCollectionSpec >> deleteQuery [
 		ifFalse: [self deleteQueryWithSubQuery]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> deleteQueryWithJoin [
 
 	| query |
@@ -106,7 +107,7 @@ SSWDBStaticCollectionSpec >> deleteQueryWithJoin [
 	^query
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> deleteQueryWithSubQuery [
 
 	| subquery |
@@ -123,7 +124,7 @@ SSWDBStaticCollectionSpec >> deleteQueryWithSubQuery [
 		yourself
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> preserveCollectionEntries: aCollection [
 
 	"Private - If the collection stored mutatable directly-persisted objects then we must use a shallowCopy of these for change detection"
@@ -131,7 +132,7 @@ SSWDBStaticCollectionSpec >> preserveCollectionEntries: aCollection [
 	self targetClass isMutableDirectlyPersistedNonBaseClass ifTrue: [aCollection do: [ :each | each target: each target shallowCopy]]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticCollectionSpec >> readAllEntriesFor: ids [
 
 	| stream targetTable allEntries |
@@ -154,7 +155,7 @@ SSWDBStaticCollectionSpec >> readAllEntriesFor: ids [
 	^allEntries
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticCollectionSpec >> readAllFor: aCollection [
 
 	"Using a single query (ideally, multiple batched queries if aCollection is too large), read all unrecovered collections specified by the receiver for members of aCollection"
@@ -177,7 +178,7 @@ SSWDBStaticCollectionSpec >> readAllFor: aCollection [
 			_collectionEntries: entries]
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> readAllQuery [
 
 	| params |
@@ -190,7 +191,7 @@ SSWDBStaticCollectionSpec >> readAllQuery [
 		yourself
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> readQuery [
 
 	| query |
@@ -201,7 +202,7 @@ SSWDBStaticCollectionSpec >> readQuery [
 	^query
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> recoverBaseClassCollectionForProxy: aCollectionProxy [
 
 	"Private - Recover a collection of base class (String, Date, Number...) objects.
@@ -227,7 +228,7 @@ SSWDBStaticCollectionSpec >> recoverBaseClassCollectionForProxy: aCollectionProx
 	^#()
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 
 	"Return the recovered member objects"
@@ -237,7 +238,7 @@ SSWDBStaticCollectionSpec >> recoverCollectionForProxy: aCollectionProxy [
 		ifFalse: [self recoverModelClassCollectionForProxy: aCollectionProxy]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> recoverModelClassCollectionForProxy: aCollectionProxy [
 
 	"Recover a collection of model class (non-base, specifying a table) instances.
@@ -270,7 +271,7 @@ SSWDBStaticCollectionSpec >> recoverModelClassCollectionForProxy: aCollectionPro
 	^collection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 
 	"Refresh as opposed to read - just fetch the IDs.
@@ -281,7 +282,7 @@ SSWDBStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 		ifFalse: [self refreshModelClassCollectionForProxy: aCollectionProxy]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCollectionProxy [
 
 	"Refresh the receiver collection and its contents if they have been updated
@@ -292,7 +293,7 @@ SSWDBStaticCollectionSpec >> refreshCollectionWithContentsIfUpdatedForProxy: aCo
 		ifFalse: [self refreshModelClassCollectionWithContentsIfUpdatedForProxy: aCollectionProxy]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> refreshModelClassCollectionForProxy: aCollectionProxy [
 
 	"Refresh as opposed to read - just fetch the IDs.
@@ -318,7 +319,7 @@ SSWDBStaticCollectionSpec >> refreshModelClassCollectionForProxy: aCollectionPro
 	^#()
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBStaticCollectionSpec >> refreshModelClassCollectionWithContentsIfUpdatedForProxy: aCollectionProxy [
 
 	"Private - Refresh as opposed to read - just fetch the IDs"
@@ -338,7 +339,7 @@ SSWDBStaticCollectionSpec >> refreshModelClassCollectionWithContentsIfUpdatedFor
 	self reStore rowsFromStatement: statement do:
 		[ :row || entry |
 		entry := self createNonProxiedInstanceFromRow: row.
-		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (row lookupField: versionField)]]) ifTrue:
+		(entry target isDBProxy and: [entry target _isRecovered and: [entry target _version < (versionField lookupIn: row)]]) ifTrue:
 			["Out-of-date target object - forget it"
 			entry target _forgetProxiedObject].
 		entry
@@ -352,7 +353,7 @@ SSWDBStaticCollectionSpec >> refreshModelClassCollectionWithContentsIfUpdatedFor
 	^collection
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> refreshQuery [
 
 	^(self selectQueryIn: self reStore)
@@ -360,7 +361,7 @@ SSWDBStaticCollectionSpec >> refreshQuery [
 		yourself
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 
 	| query |
@@ -371,7 +372,7 @@ SSWDBStaticCollectionSpec >> refreshWithContentsIfUpdatedQuery [
 	^query
 ]
 
-{ #category : #'accessing-queries' }
+{ #category : 'accessing-queries' }
 SSWDBStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 
 	"Return a Query for recovering a collection represented by the receiver from anSSWReStore"
@@ -381,7 +382,7 @@ SSWDBStaticCollectionSpec >> selectQueryIn: anSSWReStore [
 		yourself
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBStaticCollectionSpec >> setTargetClass: aClass [
 
 	"Double-despatch to the argument"
@@ -389,7 +390,7 @@ SSWDBStaticCollectionSpec >> setTargetClass: aClass [
 	aClass beTargetClassOf: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> targetClass [
 
 	"targetClass stores the single Class of the objects stored in the collection modelled by the receiver.
@@ -398,7 +399,7 @@ SSWDBStaticCollectionSpec >> targetClass [
 	^targetClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> targetClass: aClass [
 
 	"targetClass stores the single Class of the objects stored in the collection modelled by the receiver.
@@ -407,7 +408,7 @@ SSWDBStaticCollectionSpec >> targetClass: aClass [
 	targetClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticCollectionSpec >> targetTable [ 
 
 	^self reStore tableForClass: self targetClass

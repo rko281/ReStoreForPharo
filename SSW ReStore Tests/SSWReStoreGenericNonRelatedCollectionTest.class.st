@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGenericNonRelatedCollectionTest,
-	#superclass : #SSWReStoreGenericCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreGenericNonRelatedCollectionTest',
+	#superclass : 'SSWReStoreGenericCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest class >> isAbstract [
 
 	^self == SSWReStoreGenericNonRelatedCollectionTest
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentAddition [
 
 	self addToCollection.
@@ -28,7 +29,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentAdditio
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentChange [
 
 	| component originalName changedName |
@@ -47,7 +48,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentChange 
 	self deny: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentRemoval [
 
 	self removeFromCollection.
@@ -60,7 +61,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentRemoval
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentReplace [
 
 	self replaceInCollection.
@@ -73,7 +74,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCheckHasChangedComponentReplace
 	self assert: (testObject withRelatedComponents _checkHasChangedIn: reStore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCollectionRefreshComponentChange [
 
 	| component originalName changedName |
@@ -92,7 +93,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCollectionRefreshComponentChang
 	self assert: (component name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCollectionRefreshComponentChangeIfUpdated [
 
 	| component originalName changedName |
@@ -111,7 +112,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCollectionRefreshComponentChang
 	self assert: (component name = changedName)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentAddition [
 
 	| original added |
@@ -134,7 +135,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentAddition [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentChange [
 
 	| component originalName changedName |
@@ -157,7 +158,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentChange [
 	self assert: (component name = originalName).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentRemoval [
 
 	| removed |
@@ -176,7 +177,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentRemoval [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentReplace [
 
 	| originalAndReplacement |
@@ -197,7 +198,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testCommitComponentReplace [
 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentAddition [
 
 	| originalSize added | 
@@ -216,7 +217,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentAddition [
 	self assert: (collection select: [ :each | each name = added name]) size equals: 1
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentChange [
 
 	| component originalName changedName |
@@ -235,7 +236,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentChange [
 	self assert: (component name = changedName)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentChangeIfUpdated [
 
 	| component originalName changedName |
@@ -254,7 +255,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentChangeIfUpdated
 	self assert: (component name = changedName)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentRemoval [
 
 	| component originalSize removed | 
@@ -276,7 +277,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentRemoval [
 	self deny: (self includes: component)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentReplace [
 
 	| originalSize originalAndReplacement original replacement | 
@@ -301,7 +302,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRefreshComponentReplace [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentAddition [
 
 	| original added |
@@ -320,7 +321,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentAddition [
 	self assert: (collection size = original size)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentChange [
 
 	| component originalName changedName |
@@ -340,7 +341,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentChange [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentRemoval [
 
 	| original removed |
@@ -359,7 +360,7 @@ SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentRemoval [
 	self assert: (collection size = original size)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGenericNonRelatedCollectionTest >> testRollbackComponentReplace [
 
 	| originalAndReplacement |

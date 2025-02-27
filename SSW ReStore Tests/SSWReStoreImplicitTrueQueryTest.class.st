@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreImplicitTrueQueryTest,
-	#superclass : #SSWReStoreTest,
+	#name : 'SSWReStoreImplicitTrueQueryTest',
+	#superclass : 'SSWReStoreTest',
 	#instVars : [
 		'instances'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -20,7 +21,7 @@ SSWReStoreImplicitTrueQueryTest >> addClassesTo: aReStore [
 		addClass: TypeTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> createTestData [
 
 	reStore evaluateAsTransaction: 
@@ -57,7 +58,7 @@ SSWReStoreImplicitTrueQueryTest >> createTestData [
 	instances := TypeTest storedInstancesIn: reStore
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testImplicitTrueNotSoleCondition [
 
 	| results |
@@ -68,7 +69,7 @@ SSWReStoreImplicitTrueQueryTest >> testImplicitTrueNotSoleCondition [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1false' '2false')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testImplicitTrueSoleCondition [
 
 	| results |
@@ -79,7 +80,7 @@ SSWReStoreImplicitTrueQueryTest >> testImplicitTrueSoleCondition [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1true' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedAndFirst [
 
 	| results |
@@ -90,7 +91,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedAndFirst [
 	self assert: results first varchar = '1true'
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedAndLast [
 
 	| results |
@@ -101,7 +102,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedAndLast [
 	self assert: results first varchar = '1true'
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedAndMid [
 
 	| results |
@@ -121,7 +122,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedAndMid [
 	self assert: results isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedOrFirst [
 
 	| results |
@@ -132,7 +133,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedOrFirst [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1false' '1true' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedOrLast [
 
 	| results |
@@ -143,7 +144,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedOrLast [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1false' '1true' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testInlinedOrMid [
 
 	| results |
@@ -165,7 +166,7 @@ SSWReStoreImplicitTrueQueryTest >> testInlinedOrMid [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1true' '2false' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndFirst [
 
 	| results |
@@ -176,7 +177,7 @@ SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndFirst [
 	self assert: results first varchar = '1true'
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndLast [
 
 	| results |
@@ -187,7 +188,7 @@ SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndLast [
 	self assert: results first varchar = '1true'
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndMid [
 
 	| results |
@@ -207,7 +208,7 @@ SSWReStoreImplicitTrueQueryTest >> testNonInlinedAndMid [
 	self assert: results isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedOrFirst [
 
 	| results |
@@ -218,7 +219,7 @@ SSWReStoreImplicitTrueQueryTest >> testNonInlinedOrFirst [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1false' '1true' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedOrLast [
 
 	| results |
@@ -229,7 +230,7 @@ SSWReStoreImplicitTrueQueryTest >> testNonInlinedOrLast [
 	self assert: (results collect: [ :each | each varchar]) asSortedCollection asArray = #('1false' '1true' '2true')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreImplicitTrueQueryTest >> testNonInlinedOrMid [
 
 	| results |

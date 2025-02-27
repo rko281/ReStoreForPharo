@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGeneralTest,
-	#superclass : #SSWReStoreTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreGeneralTest',
+	#superclass : 'SSWReStoreTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> _test21GeneralDictionaryRefresh [
 
 	"Currently not working - issues around rebuilding a Dictionary (needing rehash = needs access to key objects) during refresh"
@@ -36,14 +37,14 @@ SSWReStoreGeneralTest >> _test21GeneralDictionaryRefresh [
 	self assert: (value name = valueOrig)
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreGeneralTest >> createTestData [
 
 	self createStandardTestInstance.
 	reStore simulateReconnect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test01Events [
 
 	"Check persistency of events"
@@ -70,7 +71,7 @@ SSWReStoreGeneralTest >> test01Events [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test02Rollback [
 
 	| t kd |
@@ -170,7 +171,7 @@ SSWReStoreGeneralTest >> test02Rollback [
 		self assert: (key name last = value name last)]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test02RollbackManual [
 
 	| t n |
@@ -195,7 +196,7 @@ SSWReStoreGeneralTest >> test02RollbackManual [
 	self assert: (t ordered last name = 'ordered2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test03Commit [
 
 	| t kd |
@@ -305,7 +306,7 @@ SSWReStoreGeneralTest >> test03Commit [
 		key name = 'key4' ifTrue: [self assert: (value name = 'value4')]].
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test03CommitManual [
 
 	| t prevSize |
@@ -338,7 +339,7 @@ SSWReStoreGeneralTest >> test03CommitManual [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test03LinkedQuery [
 
 	| owner |
@@ -350,7 +351,7 @@ SSWReStoreGeneralTest >> test03LinkedQuery [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test04 [
 
 	| t prevName r |
@@ -374,7 +375,7 @@ SSWReStoreGeneralTest >> test04 [
 	self assert: r isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test05 [
 
 	| t r d c id |
@@ -398,7 +399,7 @@ SSWReStoreGeneralTest >> test05 [
 	self assert: r isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test06 [
 
 	| t r |
@@ -420,7 +421,7 @@ SSWReStoreGeneralTest >> test06 [
 	self deny: (r anySatisfy: [ :each | each name = 'ordered1'])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test07 [
 
 	| t |
@@ -442,7 +443,7 @@ SSWReStoreGeneralTest >> test07 [
 	self assert: (t ordered last name = 'ordered1')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test08 [
 
 	| t |
@@ -465,7 +466,7 @@ SSWReStoreGeneralTest >> test08 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test09 [
 
 	| t |
@@ -486,7 +487,7 @@ SSWReStoreGeneralTest >> test09 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test10 [
 
 	| t |
@@ -508,7 +509,7 @@ SSWReStoreGeneralTest >> test10 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test11 [
 
 	| t |
@@ -528,7 +529,7 @@ SSWReStoreGeneralTest >> test11 [
 	self assert: ((Test storedInstancesIn: reStore) satisfying: [ :each | each name = 'list1']) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test12 [
 
 	| t |
@@ -550,7 +551,7 @@ SSWReStoreGeneralTest >> test12 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test13 [
 
 	| t |
@@ -569,7 +570,7 @@ SSWReStoreGeneralTest >> test13 [
 	self assert: ((Test storedInstancesIn: reStore) satisfying: [ :each | each name = 'aspdic2']) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test14 [
 
 	| t |
@@ -590,7 +591,7 @@ SSWReStoreGeneralTest >> test14 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test15 [
 
 	| t |
@@ -610,7 +611,7 @@ SSWReStoreGeneralTest >> test15 [
 	self assert: ((Test storedInstancesIn: reStore) satisfying: [ :each | each name = 'keydic1a']) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test16 [
 
 	| t |
@@ -632,7 +633,7 @@ SSWReStoreGeneralTest >> test16 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test17 [
 
 	| t |
@@ -656,7 +657,7 @@ SSWReStoreGeneralTest >> test17 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test18 [
 
 	| t key3 |
@@ -685,7 +686,7 @@ SSWReStoreGeneralTest >> test18 [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test20GeneralDictionaryRollback [
 
 	| t key value keyOrig valueOrig |
@@ -710,7 +711,7 @@ SSWReStoreGeneralTest >> test20GeneralDictionaryRollback [
 	self assert: (value name = valueOrig)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test30GeneralCollectionRollback [
 
 	| t value valueOrig |
@@ -727,7 +728,7 @@ SSWReStoreGeneralTest >> test30GeneralCollectionRollback [
 	self assert: (value name = valueOrig)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test31GeneralCollectionRefresh [
 
 	| t value valueOrig |
@@ -744,7 +745,7 @@ SSWReStoreGeneralTest >> test31GeneralCollectionRefresh [
 	self assert: (value name = valueOrig)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test40OwnedSortedCollectionRollback [
 
 	"Ensure resorting after rollback"
@@ -772,7 +773,7 @@ SSWReStoreGeneralTest >> test40OwnedSortedCollectionRollback [
 	self assert: (t ownedSorted collect: [ :each | each name]) asArray equals: #('owned2' 'owned3')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralTest >> test99 [
 
 	| t |

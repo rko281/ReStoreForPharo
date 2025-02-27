@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SimpleAddress,
-	#superclass : #Object,
+	#name : 'SimpleAddress',
+	#superclass : 'Object',
 	#instVars : [
 		'line1',
 		'postcode'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SimpleAddress class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -22,22 +23,22 @@ SimpleAddress class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleAddress >> line1 [
 	^line1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleAddress >> line1: anObject [
 	line1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleAddress >> postcode [
 	^postcode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimpleAddress >> postcode: anObject [
 	postcode := anObject
 ]

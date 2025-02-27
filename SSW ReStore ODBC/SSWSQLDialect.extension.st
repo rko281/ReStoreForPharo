@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLDialect }
+Extension { #name : 'SSWSQLDialect' }
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> canDescribeParameters [
 
 	"Does this dialect support the SQLDescribeParam function?"
@@ -8,19 +8,19 @@ SSWSQLDialect >> canDescribeParameters [
 	^true
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> catalogNameForTable: aDBTable [
 
 	^nil
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> createNamespaceSQLFor: aString [
 
 	^'CREATE SCHEMA ', (self asIdentifier: aString)
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> cursorType [
 
 	"Return the Symbol-ic name of the ODBC cursor type that will be used when creating statements. 
@@ -29,19 +29,19 @@ SSWSQLDialect >> cursorType [
 	^#forwardOnly
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> dropNamespaceSQLFor: aString [
 
 	^'DROP SCHEMA ', (self asIdentifier: aString)
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> schemaNameForTable: aDBTable [
 
 	^aDBTable namespace
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> shouldCheckAutoCommit [
 
 	"Return whether the ODBCConnection should check the status of autoCommit prior to attempting a change"
@@ -49,7 +49,7 @@ SSWSQLDialect >> shouldCheckAutoCommit [
 	^false
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> shouldMaskSuccessWithInfo [
 
 	"Some ODBC databases/drivers send many SQLSuccessWithInfo results.
@@ -58,7 +58,7 @@ SSWSQLDialect >> shouldMaskSuccessWithInfo [
 	^true
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> shouldRollbackOnQuery [
 
 	"Should the ODBC connection rollbackTxn following a query outside a Txn?"
@@ -66,7 +66,7 @@ SSWSQLDialect >> shouldRollbackOnQuery [
 	^false
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> shouldUseColumnsStatement [
 
 	"Return whether this dialect should use ODBCColumnsStatement to interrogate the details of a table's columns (true, default) or a SELECT * query (false).
@@ -77,7 +77,7 @@ SSWSQLDialect >> shouldUseColumnsStatement [
 	^true
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLDialect >> tableNamesInNamespace: aStringOrNil for: anODBCConnection [
 
 	^anODBCConnection tables: nil owners: (aStringOrNil ifNil: [self standardNamespace]) tables: nil types: '''TABLE'''

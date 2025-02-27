@@ -4,23 +4,24 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBTableRecord,
-	#superclass : #Object,
+	#name : 'SSWDBTableRecord',
+	#superclass : 'Object',
 	#instVars : [
 		'tableName',
 		'fullTableName',
 		'nextID'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #persistence }
+{ #category : 'persistence' }
 SSWDBTableRecord class >> preferredObjectProxyClass [ 
 
 	^SSWDBCachingObjectProxy
 ]
 
-{ #category : #persistence }
+{ #category : 'persistence' }
 SSWDBTableRecord class >> tableIn: anSSWReStore [
 
 	| table |
@@ -39,7 +40,7 @@ SSWDBTableRecord class >> tableIn: anSSWReStore [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> _proxiedObject [
 
 	"The receiver is always non-persistent. 
@@ -48,7 +49,7 @@ SSWDBTableRecord >> _proxiedObject [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> fullTableName [
 
 	"fullTableName stores the full-length name of the table related to the receiver.
@@ -60,7 +61,7 @@ SSWDBTableRecord >> fullTableName [
 	^fullTableName ifNil: [tableName]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> fullTableName: aString [
 
 	"fullTableName stores the full-length name of the table related to the receiver.
@@ -71,13 +72,13 @@ SSWDBTableRecord >> fullTableName: aString [
 	fullTableName := aString
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 SSWDBTableRecord >> incrementNextIDBy: anInteger [
 
 	self nextID: (self nextID + anInteger)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> nextID [
 
 	"nextID stores the next available ID value for the receiver's table, as stored in the database"
@@ -85,7 +86,7 @@ SSWDBTableRecord >> nextID [
 	^nextID
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> nextID: anInteger [
 
 	"nextID stores the next available ID value for the receiver's table, as stored in the database"
@@ -93,7 +94,7 @@ SSWDBTableRecord >> nextID: anInteger [
 	nextID := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> tableName [
 
 	"tableName stores the name (String) of the SSWDBTable 
@@ -102,7 +103,7 @@ SSWDBTableRecord >> tableName [
 	^tableName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTableRecord >> tableName: aString [
 
 	"tableName stores the name (String) of the SSWDBTable 

@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBMultiValueCacheDictionaryWrapper,
-	#superclass : #SSWDBCacheDictionaryWrapper,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBMultiValueCacheDictionaryWrapper',
+	#superclass : 'SSWDBCacheDictionaryWrapper',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 SSWDBMultiValueCacheDictionaryWrapper >> _dbAdd: targetObject [
 
 	"Add the targetObject to the dictionary at the key derived by the keyAccessor"

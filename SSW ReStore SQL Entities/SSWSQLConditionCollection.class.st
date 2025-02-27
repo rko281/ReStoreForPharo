@@ -4,28 +4,29 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLConditionCollection,
-	#superclass : #SSWSQLCollection,
-	#type : #variable,
+	#name : 'SSWSQLConditionCollection',
+	#superclass : 'SSWSQLCollection',
+	#type : 'variable',
 	#instVars : [
 		'sqlConcatenator'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #utility }
+{ #category : 'utility' }
 SSWSQLConditionCollection class >> concatenatorForAND [
 
 	^' AND '
 ]
 
-{ #category : #utility }
+{ #category : 'utility' }
 SSWSQLConditionCollection class >> concatenatorForOR [
 
 	^' OR '
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLConditionCollection class >> forAND [
 
 	^self new
@@ -33,7 +34,7 @@ SSWSQLConditionCollection class >> forAND [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLConditionCollection class >> forOR [
 	
 	^self new
@@ -41,7 +42,7 @@ SSWSQLConditionCollection class >> forOR [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> & aCondition [
 
 	"Double-dispatch to handle unexpected arguments"
@@ -49,7 +50,7 @@ SSWSQLConditionCollection >> & aCondition [
 	^aCondition sqlAndWithCondition: self
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLConditionCollection >> _add: aConditionOrCollection [
 
 	"Bypass the automerge of add:"
@@ -57,7 +58,7 @@ SSWSQLConditionCollection >> _add: aConditionOrCollection [
 	^super add: aConditionOrCollection
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLConditionCollection >> add: aConditionOrCollection [
 
 	"If the operand is another collection with the same concatenator, the receiver can merge with it"
@@ -68,7 +69,7 @@ SSWSQLConditionCollection >> add: aConditionOrCollection [
 			ifFalse: [self _add: aConditionOrCollection]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionCollection >> aggregatedConditions [
 
 	"Assumes aggregates are in top level only"
@@ -77,7 +78,7 @@ SSWSQLConditionCollection >> aggregatedConditions [
 
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWSQLConditionCollection >> anySatisfy: aBlock [
 
 	"Recursive version needed since the receiver will hold conditions or other condition collections"
@@ -87,7 +88,7 @@ SSWSQLConditionCollection >> anySatisfy: aBlock [
 	^false
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> asFieldAssignment [
 
 	"Polymorphic with SQLCondition implementation"
@@ -104,19 +105,25 @@ SSWSQLConditionCollection >> asFieldAssignment [
 
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLConditionCollection >> beAND [
 
 	self sqlConcatenator: self class concatenatorForAND
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLConditionCollection >> beOR [
 
 	self sqlConcatenator: self class concatenatorForOR
 ]
 
-{ #category : #evaluating }
+{ #category : 'accessing' }
+SSWSQLConditionCollection >> columnIndex: anInteger [
+
+	"Polymorphic with SSWDBField"
+]
+
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> copy [
 
 	^super copy
@@ -124,7 +131,7 @@ SSWSQLConditionCollection >> copy [
 		yourself
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 SSWSQLConditionCollection >> copyEmpty: anInteger [
 
 	^(super copyEmpty: anInteger)
@@ -133,7 +140,7 @@ SSWSQLConditionCollection >> copyEmpty: anInteger [
 
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> flattened [
 
 	"Return a flat collection of the receiver's conditions.
@@ -147,19 +154,19 @@ SSWSQLConditionCollection >> flattened [
 	^flattened
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLConditionCollection >> hasAggregateFunction [
 
 	^self anySatisfy: [:each | each hasAggregateFunction]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLConditionCollection >> isAND [
 
 	^self sqlConcatenator = self class concatenatorForAND
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLConditionCollection >> isEmpty [
 
 	"Account for a collection of empty collections"
@@ -167,13 +174,13 @@ SSWSQLConditionCollection >> isEmpty [
 	^super isEmpty or: [self allSatisfy: [ :each | each isEmpty]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLConditionCollection >> isOR [
 
 	^self sqlConcatenator = self class concatenatorForOR
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> not [
 
 	"Invert the receiver
@@ -189,7 +196,7 @@ SSWSQLConditionCollection >> not [
 	^self
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> sqlAnd: aConditionOrCollection [
 
 	"Return an SQLConditionCollection consisting of the receiver ANDed with the given
@@ -203,7 +210,7 @@ SSWSQLConditionCollection >> sqlAnd: aConditionOrCollection [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> sqlAndWithCondition: aConditionOrCollection [
 
 	"Double-despatch entry point"
@@ -211,7 +218,7 @@ SSWSQLConditionCollection >> sqlAndWithCondition: aConditionOrCollection [
 	^aConditionOrCollection sqlAnd: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionCollection >> sqlConcatenator [
 
 	"sqlConcatenator stores the String which merges these conditions 
@@ -220,7 +227,7 @@ SSWSQLConditionCollection >> sqlConcatenator [
 	^sqlConcatenator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionCollection >> sqlConcatenator: aString [
 
 	"sqlConcatenator stores the String which merges these conditions 
@@ -229,7 +236,7 @@ SSWSQLConditionCollection >> sqlConcatenator: aString [
 	sqlConcatenator := aString
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> sqlOr: aConditionOrCollection [
 
 	"Return an SQLConditionCollection consisting of the receiver ORed with the given
@@ -241,7 +248,7 @@ SSWSQLConditionCollection >> sqlOr: aConditionOrCollection [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> sqlOrWithCondition: aConditionOrCollection [
 
 	"Double-despatch entry point"
@@ -249,7 +256,7 @@ SSWSQLConditionCollection >> sqlOrWithCondition: aConditionOrCollection [
 	^aConditionOrCollection sqlOr: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionCollection >> unaggregatedConditions [
 
 	"Assumes aggregates are in top level only"
@@ -258,7 +265,7 @@ SSWSQLConditionCollection >> unaggregatedConditions [
 
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLConditionCollection >> writeSQLOn: aStream [
 
 	"Wrap in parantheses"
@@ -268,7 +275,7 @@ SSWSQLConditionCollection >> writeSQLOn: aStream [
 	aStream nextPut: $)
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionCollection >> | aCondition [
 
 	"Double-dispatch to handle unexpected arguments"

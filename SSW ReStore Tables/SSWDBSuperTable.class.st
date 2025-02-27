@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBSuperTable,
-	#superclass : #SSWDBInheritedTable,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBSuperTable',
+	#superclass : 'SSWDBInheritedTable',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBSuperTable >> forCreation [
 
 	"Create and return a new SSWDBSuperTable with merged fields
@@ -22,13 +23,9 @@ SSWDBSuperTable >> forCreation [
 		name: self name;
 		fullName: self fullName;
 		namespace: self namespace.
-	self idDataField ifNotNil: 
-		[ :field | 
-		tableForCreation 
-			idField: field; 
-			idDataField: field].
+	
 	tableForCreation initializeIn: self reStore.
-	self instanceClass addClassDefinitionTo: tableForCreation.
+	self instanceClass reStoreDefinition addDefinitionToTable: tableForCreation.
 	
 	self instanceClass subclassesInheritingPersistency do:
 		[ :cls || table |
@@ -48,7 +45,16 @@ SSWDBSuperTable >> forCreation [
 	^tableForCreation
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'defining' }
+SSWDBSuperTable >> initializeIn: anSSWReStore [
+
+	"Overriden to setup the classField"
+
+	super initializeIn: anSSWReStore.
+	self setDefaultClassField
+]
+
+{ #category : 'instance creation' }
 SSWDBSuperTable >> refreshProxy: aProxy whereChangedFromRow: aDBRow [
 
 	"Redirect to the relevant concrete class"

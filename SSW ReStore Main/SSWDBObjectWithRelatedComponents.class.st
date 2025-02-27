@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBObjectWithRelatedComponents,
-	#superclass : #SSWDBObjectWithComponents,
-	#category : #'SSW ReStore Main'
+	#name : 'SSWDBObjectWithRelatedComponents',
+	#superclass : 'SSWDBObjectWithComponents',
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBObjectWithRelatedComponents >> componentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet [
 
 	(aReStore tableForClass: self object class ifAbsent: [nil]) ifNotNil: 
@@ -23,7 +24,7 @@ SSWDBObjectWithRelatedComponents >> componentsIn: aReStore do: aBlock visited: v
 					withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectWithRelatedComponents >> withRelatedComponents [
 
 	^self

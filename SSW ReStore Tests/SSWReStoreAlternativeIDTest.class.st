@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreAlternativeIDTest,
-	#superclass : #SSWReStoreIDTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreAlternativeIDTest',
+	#superclass : 'SSWReStoreIDTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreAlternativeIDTest class >> isAbstract [
 
 	^self == SSWReStoreAlternativeIDTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreAlternativeIDTest >> createTestData [
 	
 	(self testClass new name: 'test') storeIn: reStore.
@@ -18,13 +19,13 @@ SSWReStoreAlternativeIDTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWReStoreAlternativeIDTest >> shouldDestroyClasses [
 
 	^true
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAlternativeIDTest >> testForeignIDCollection [
 
 	| obj id owner id2 |
@@ -48,7 +49,7 @@ SSWReStoreAlternativeIDTest >> testForeignIDCollection [
 	self assert: ((GenericTest storedInstancesIn: reStore) detect: [ :each | each component includes: owner component second]) identicalTo: owner.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAlternativeIDTest >> testForeignIDObject [
 
 	| obj id owner |
@@ -70,7 +71,7 @@ SSWReStoreAlternativeIDTest >> testForeignIDObject [
 	self assert: ((GenericTest storedInstancesIn: reStore) detect: [ :each | each component _id = id]) identicalTo: owner.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAlternativeIDTest >> testForeignIDOwnedCollection [
 
 	| obj id owner id2 |
@@ -94,7 +95,7 @@ SSWReStoreAlternativeIDTest >> testForeignIDOwnedCollection [
 	self assert: ((GenericTest storedInstancesIn: reStore) detect: [ :each | each component includes: owner component second]) identicalTo: owner.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAlternativeIDTest >> testSourceIDCollection [
 
 	"Ensure collections work with a source object with a non-Integer ID"
@@ -103,7 +104,7 @@ SSWReStoreAlternativeIDTest >> testSourceIDCollection [
 	[self testForeignIDCollection] ensure: [GenericTest reStoreIDClass: nil]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreAlternativeIDTest >> testSourceIDOwnedCollection [
 
 	"Ensure owned collections work with a source object with a non-Integer ID"

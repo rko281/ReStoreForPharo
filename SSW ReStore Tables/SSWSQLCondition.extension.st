@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLCondition }
+Extension { #name : 'SSWSQLCondition' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 SSWSQLCondition >> copyForQueryTable: aQueryTable [
 
 	"Created for issue 120-015

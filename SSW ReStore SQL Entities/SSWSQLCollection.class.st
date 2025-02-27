@@ -4,13 +4,14 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLCollection,
-	#superclass : #OrderedCollection,
-	#type : #variable,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLCollection',
+	#superclass : 'OrderedCollection',
+	#type : 'variable',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWSQLCollection >> asOrderedCollection [
 	"Answer an OrderedCollection containing the same elements as the receiver.
 	The elements of the OrderedCollection will be sorted (at least initially) in the
@@ -22,13 +23,13 @@ SSWSQLCollection >> asOrderedCollection [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLCollection >> isFieldCollection [
 
 	^false
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLCollection >> sqlConcatenator [
 
 	"Return the String that concatenates the list of SQL entities held by the receiver
@@ -37,7 +38,7 @@ SSWSQLCollection >> sqlConcatenator [
 	^self subclassResponsibility
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLCollection >> writeSQLOn: aStream [
 
 	self isEmpty ifTrue: [^self].

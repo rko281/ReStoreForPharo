@@ -4,19 +4,20 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRemoteTest,
-	#superclass : #SSWReStoreTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRemoteTest',
+	#superclass : 'SSWReStoreTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreRemoteTest >> createTestData [
 
 	self createStandardTestInstance.
 	reStore simulateReconnect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRemoteTest >> test1OwnedRemote [
 
 	| inst |
@@ -45,7 +46,7 @@ SSWReStoreRemoteTest >> test1OwnedRemote [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRemoteTest >> test2GeneralRemote [
 
 	| inst |

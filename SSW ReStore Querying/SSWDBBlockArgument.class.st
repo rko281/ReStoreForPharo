@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBBlockArgument,
-	#superclass : #SSWDBBlockEvaluator,
+	#name : 'SSWDBBlockArgument',
+	#superclass : 'SSWDBBlockEvaluator',
 	#instVars : [
 		'currentClass',
 		'isForModify',
 		'finalFields'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBBlockArgument class >> new [
 
 	^super new
@@ -22,7 +23,7 @@ SSWDBBlockArgument class >> new [
 		yourself
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> & aValue [
 
 	"Sent in case of an implicit '= true' expression, or possibly Integer bit manipulation"
@@ -32,7 +33,7 @@ SSWDBBlockArgument >> & aValue [
 		ifNotNil: [ :result | result & aValue]
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> -> aBlockEvaluator [
 
 	"Convenience method for collect: and project: query blocks returning two results; allow the results to be returned as an Association"
@@ -42,7 +43,7 @@ SSWDBBlockArgument >> -> aBlockEvaluator [
 	^self || aBlockEvaluator
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> _cacheDictionaryKey_ [
 
 	"Special selector to locate the key for general cache dictionaries.
@@ -56,7 +57,7 @@ SSWDBBlockArgument >> _cacheDictionaryKey_ [
 	^frame receiver collectionSpec keyAccessor value: (self doesNotUnderstand: (Message selector: #target))
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 
 	| selector arguments |
@@ -96,7 +97,7 @@ SSWDBBlockArgument >> _doesNotUnderstand: aMessage [
 		self sqlConditionFor: aMessage]
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> applyFunction: aString withArguments: aCollection [
 
 	"Apply the given SQL function String to the finalField"
@@ -104,7 +105,7 @@ SSWDBBlockArgument >> applyFunction: aString withArguments: aCollection [
 	self finalField: (self parser applyFunction: aString toResultOf: [self finalField] withArguments: aCollection)
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> asSQLConditions [
 
 	"Polymorphic with DBQueryCondition(Collection)"
@@ -114,7 +115,7 @@ SSWDBBlockArgument >> asSQLConditions [
 		ifFalse: [self error: 'cannot determine a valid condition']
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> asSQLFields [
 
 	"Polymorphic with DBQueryCondition(Collection), DBQueryFieldCollection.
@@ -125,7 +126,7 @@ SSWDBBlockArgument >> asSQLFields [
 		ifFalse: [SSWSQLTableAllFields forTable: self currentTable]
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> at: anIndex [
 
 	"SQL does not differentiate between 1-char Strings and Characters.
@@ -134,7 +135,7 @@ SSWDBBlockArgument >> at: anIndex [
 	^self midString: 1 from: anIndex
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> class [
 
 	"Override to handle as DNU (happens automatically but this implementation makes this explicit)
@@ -145,7 +146,7 @@ SSWDBBlockArgument >> class [
 	^self doesNotUnderstand: (Message selector: #class arguments: #())
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> copyFrom: startPos to: endPos [
 
 	"Turn into a midString:from: (handled via DNU)"
@@ -153,7 +154,7 @@ SSWDBBlockArgument >> copyFrom: startPos to: endPos [
 	self midString: ((endPos - startPos) + 1) from: startPos
 ]
 
-{ #category : #'parsing - aggregations' }
+{ #category : 'parsing - aggregations' }
 SSWDBBlockArgument >> count [
 
 	"Turn into SQL function via DNU - typically COUNT(field)"
@@ -164,7 +165,7 @@ SSWDBBlockArgument >> count [
 	^self doesNotUnderstand: (Message selector: #count arguments: #())
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> currentClass [
 
 	"currentClass stores the class of object which is the receiver of the next message in the block being parsed"
@@ -172,7 +173,7 @@ SSWDBBlockArgument >> currentClass [
 	^currentClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> currentClass: aClass [
 
 	"currentClass stores the class of object which is the receiver of the next message in the block being parsed"
@@ -180,7 +181,7 @@ SSWDBBlockArgument >> currentClass: aClass [
 	currentClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> currentTable [
 
 	"Return the table associated with the currentClass. By default, this is requested from the parser.
@@ -189,7 +190,7 @@ SSWDBBlockArgument >> currentTable [
 	^self parser tableForClass: self currentClass
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> doesNotUnderstand: aMessage [
 
 	self parser activeReceiver: self.
@@ -197,7 +198,7 @@ SSWDBBlockArgument >> doesNotUnderstand: aMessage [
 	^self postProcessDNU: (self _doesNotUnderstand: aMessage)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> finalField [
 
 	"Return the last field in the finalFields queue; error if none.
@@ -212,7 +213,7 @@ SSWDBBlockArgument >> finalField [
 		ifFalse: [self currentTable ifNil: [self parseError: 'No finalField set' with: #finalField] ifNotNil: [ :table | table idField copy targetClass: table instanceClass; yourself]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> finalField: aField [
 
 	"Add aField to the end of the finalFields queue.
@@ -223,7 +224,7 @@ SSWDBBlockArgument >> finalField: aField [
 	self finalFields addLast: aField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> finalFields [
 
 	"finalFields stores an OrderedCollection of SSWDBQueryFields as a queue of 'final fields' encountered during parsing;
@@ -239,7 +240,7 @@ SSWDBBlockArgument >> finalFields [
 	^finalFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> finalFields: anOrderedCollection [
 
 	"finalFields stores an OrderedCollection of SSWDBQueryFields as a queue of 'final fields' encountered during parsing;
@@ -255,7 +256,7 @@ SSWDBBlockArgument >> finalFields: anOrderedCollection [
 	finalFields := anOrderedCollection
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> first [
 
 	"Turn into at: 1"
@@ -263,19 +264,19 @@ SSWDBBlockArgument >> first [
 	^self at: 1
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> forModify [
 
 	^self parser newBlockArgument
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockArgument >> hasFinalField [
 
 	^self finalFields isEmpty not
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> implicitEqualsTrue [
 
 	"If the receiver has parsed an implicait Boolean test (e.g. [ :cd | cd isDeleted]),
@@ -288,7 +289,7 @@ SSWDBBlockArgument >> implicitEqualsTrue [
 		ifFalse: [nil]
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> implyTrue: aCondition [
 
 	"Private - Initialize aCondition to represent the implicit truth of the receiver's finalField, returning the condition"
@@ -301,7 +302,7 @@ SSWDBBlockArgument >> implyTrue: aCondition [
 	^aCondition
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> indexOf: aCharacter [
 
 	"SQL does not differentiate between Characters and Strings.
@@ -310,7 +311,7 @@ SSWDBBlockArgument >> indexOf: aCharacter [
 	^self indexOfSubCollection: (String with: aCharacter)
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> isEmpty [
 
 	"Turn into the message sequence 'size = 0';
@@ -321,19 +322,19 @@ SSWDBBlockArgument >> isEmpty [
 		ifFalse: [self size = 0]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> isForModify [
 
 	^isForModify ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockArgument >> isForModify: aBoolean [
 
 	isForModify := aBoolean
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> isKindOf: aClass [ 
 
 	"Overriden due to 'odd' behaviour of #class in the receiver"
@@ -344,7 +345,7 @@ SSWDBBlockArgument >> isKindOf: aClass [
 		with: SSWDBBlockReceiver) includes: aClass
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> leftString: lenInteger [
 
 	"Dolphin #leftString:from: message - turn into a midString:from: (handled via DNU)"
@@ -352,7 +353,7 @@ SSWDBBlockArgument >> leftString: lenInteger [
 	^self midString: lenInteger from: 1
 ]
 
-{ #category : #'parsing - comparisons' }
+{ #category : 'parsing - comparisons' }
 SSWDBBlockArgument >> matches: aString [
 
 	"Essentially the inverse of match: (ie pattern is the argument, not the receiver)	
@@ -367,7 +368,7 @@ SSWDBBlockArgument >> matches: aString [
 			fixedChar])
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> mustBeBoolean [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -375,7 +376,7 @@ SSWDBBlockArgument >> mustBeBoolean [
 	^self implicitEqualsTrue 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockArgument >> newCollectionReceiverFor: aCollectionSpec [
 
 	^aCollectionSpec dbBlockCollectionReceiver
@@ -383,7 +384,7 @@ SSWDBBlockArgument >> newCollectionReceiverFor: aCollectionSpec [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockArgument >> newInlinedReceiverFor: aSymbol [
 
 	^SSWDBInlinedBlockReceiver new
@@ -393,7 +394,7 @@ SSWDBBlockArgument >> newInlinedReceiverFor: aSymbol [
 		yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockArgument >> newReceiverFor: aField [
 
 	"Create and return a new SSWDBBlockReceiver to receive (and parse) messages for the class of object which is referenced by aField"
@@ -410,7 +411,7 @@ SSWDBBlockArgument >> newReceiverFor: aField [
 	^newReceiver
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> not [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -418,19 +419,19 @@ SSWDBBlockArgument >> not [
 	^self implicitEqualsTrue not
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> parseError: aString [
 
 	^self parser parseError: aString
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> parseError: aString with: anObject [
 
 	^self parser parseError: aString with: anObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBBlockArgument >> peekFinalField [
 
 	"Return the first field in the finalFields queue (if any) WITHOUT modifying the queue.
@@ -441,13 +442,13 @@ SSWDBBlockArgument >> peekFinalField [
 		ifFalse: [nil]
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> queryFieldFor: aField [
 
 	^SSWDBQueryTableField forField: aField in: self currentTable path: self path
 ]
 
-{ #category : #'parsing - functions' }
+{ #category : 'parsing - functions' }
 SSWDBBlockArgument >> replaceFrom: start to: stop with: replacementElements startingAt: startAt [
 
 	"Turn this into replaceFrom:length:with: (handled via DNU) which is supported by some DBs"
@@ -459,7 +460,7 @@ SSWDBBlockArgument >> replaceFrom: start to: stop with: replacementElements star
 	^self replaceFrom: start length: length with: (replacementElements copyFrom: startAt to: ((startAt + length) - 1))
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockArgument >> simulateMessageSend: aMessage [
 
 	"Attempt to simulate the method named aSymbol in the current class's methodDictionary, turning it into equivalent SQL function(s).
@@ -474,7 +475,7 @@ SSWDBBlockArgument >> simulateMessageSend: aMessage [
 		ifNotNil: [ :method | self simulateMethod: method withArguments: aMessage arguments]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBBlockArgument >> simulateMessageSendToFinalField: aMessage [
 
 	"Private - Attempt to simulate sending aMessage to the targetClass of the receiver's finalField.
@@ -502,7 +503,7 @@ SSWDBBlockArgument >> simulateMessageSendToFinalField: aMessage [
 	^self simulateMethod: method withArguments: aMessage arguments
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> sqlAnd: anSQLCondition [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -512,7 +513,7 @@ SSWDBBlockArgument >> sqlAnd: anSQLCondition [
 	
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> sqlAndWithCondition: anSQLCondition [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -521,7 +522,7 @@ SSWDBBlockArgument >> sqlAndWithCondition: anSQLCondition [
 	
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockArgument >> sqlConditionFor: aMessage [
 
 	| argument |
@@ -538,7 +539,7 @@ SSWDBBlockArgument >> sqlConditionFor: aMessage [
 		to: argument
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> sqlOr: anSQLCondition [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -548,7 +549,7 @@ SSWDBBlockArgument >> sqlOr: anSQLCondition [
 	
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> sqlOrWithCondition: anSQLCondition [
 
 	"Only sent in case of an implicit '= true' expression (or an error)"
@@ -556,7 +557,7 @@ SSWDBBlockArgument >> sqlOrWithCondition: anSQLCondition [
 	^anSQLCondition sqlOr: self implicitEqualsTrue
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> writeSQLOn: aStream [
 
 	"If the receiver has been sent this message,
@@ -575,7 +576,7 @@ SSWDBBlockArgument >> writeSQLOn: aStream [
 	^(condition ifNil: [self finalField]) writeSQLOn: aStream
 ]
 
-{ #category : #'parsing - implicit true' }
+{ #category : 'parsing - implicit true' }
 SSWDBBlockArgument >> | aValue [
 
 	"Sent in case of an implicit '= true' expression, or possibly Integer bit manipulation"

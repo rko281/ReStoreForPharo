@@ -5,16 +5,17 @@ https://github.com/rko281/ReStoreForDolphin
 https://github.com/rko281/ReStoreForPharo
 "
 Class {
-	#name : #SSWDBInlinedBlockReceiver,
-	#superclass : #SSWDBBlockArgument,
+	#name : 'SSWDBInlinedBlockReceiver',
+	#superclass : 'SSWDBBlockArgument',
 	#instVars : [
 		'inlinedInstVar',
 		'inlinedFields'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 SSWDBInlinedBlockReceiver >> _doesNotUnderstand: aMessage [
 
 	| result matchingFields |
@@ -45,13 +46,13 @@ SSWDBInlinedBlockReceiver >> _doesNotUnderstand: aMessage [
 			self]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> currentClass [
 
 	^self inlinedFields first accessor inlinedClassDeeply
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> finalField [
 
 	^self hasFinalField
@@ -59,41 +60,41 @@ SSWDBInlinedBlockReceiver >> finalField [
 		ifFalse: [self parseError: 'Parse error in inlined table']
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBInlinedBlockReceiver >> hasFinalField [
 
 	^self inlinedFields size = 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> inlinedFields [
 
 	^inlinedFields ifNil: [inlinedFields := (self parser tableForClass: self rootClass) fieldsAccessing: self inlinedInstVar]
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> inlinedFields: anObject [
 	inlinedFields := anObject
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 SSWDBInlinedBlockReceiver >> inlinedFieldsAccessing: aSymbol [
 
 	^self inlinedFields select: [ :each | each accessor accessesDeeply: aSymbol]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> inlinedInstVar [
 	^inlinedInstVar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> inlinedInstVar: anObject [
 	inlinedInstVar := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> peekFinalField [
 
 	^self hasFinalField
@@ -101,13 +102,13 @@ SSWDBInlinedBlockReceiver >> peekFinalField [
 		ifFalse: [nil]
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 SSWDBInlinedBlockReceiver >> reset [
 
 	self inlinedFields: nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInlinedBlockReceiver >> rootClass [
 
 	^super currentClass

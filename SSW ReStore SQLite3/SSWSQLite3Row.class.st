@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : 'accessing' }
-SSWSQLite3Row >> columns: aCollection [
+SSWSQLite3Row >> at: aKey put: anObject [
 
-	columns := aCollection
+	^values at: aKey put: anObject
 ]
 
 { #category : 'accessing' }

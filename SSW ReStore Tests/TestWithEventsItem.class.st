@@ -1,30 +1,31 @@
 Class {
-	#name : #TestWithEventsItem,
-	#superclass : #TestWithEventsAbstract,
+	#name : 'TestWithEventsItem',
+	#superclass : 'TestWithEventsAbstract',
 	#instVars : [
 		'owner'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 TestWithEventsItem >> onAboutToUnstore [
 
 	self name: '<unstored>'
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 TestWithEventsItem >> onUnstored [
 
 	owner isNil ifFalse: [owner removeItem: self]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEventsItem >> owner [
 	^owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEventsItem >> owner: anObject [
 	owner := anObject
 ]

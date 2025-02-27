@@ -4,15 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStringWithInfo,
-	#superclass : #SSWDBClassWithInfo,
+	#name : 'SSWDBStringWithInfo',
+	#superclass : 'SSWDBClassWithInfo',
 	#instVars : [
 		'fieldSize'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #accessing }
+{ #category : 'instance creation' }
+SSWDBStringWithInfo class >> instanceFromDBValue: aValue in: aReStore [
+
+	^aValue
+]
+
+{ #category : 'accessing' }
 SSWDBStringWithInfo >> fieldSize [
 
 	"fieldSize stores the size of the field in which 'instances' of this 'class' will live.
@@ -21,7 +28,7 @@ SSWDBStringWithInfo >> fieldSize [
 	^fieldSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStringWithInfo >> fieldSize: anInteger [
 
 	"fieldSize stores the size of the field in which 'instances' of this 'class' will live.
@@ -30,7 +37,7 @@ SSWDBStringWithInfo >> fieldSize: anInteger [
 	fieldSize := anInteger
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBStringWithInfo >> infoClass [
 
 	^String

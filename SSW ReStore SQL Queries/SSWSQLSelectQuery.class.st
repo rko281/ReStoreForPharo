@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLSelectQuery,
-	#superclass : #SSWSQLConditionalQuery,
+	#name : 'SSWSQLSelectQuery',
+	#superclass : 'SSWSQLConditionalQuery',
 	#instVars : [
 		'fields',
 		'fieldAliases'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLSelectQuery class >> new [
 
 	^super new
@@ -21,7 +22,7 @@ SSWSQLSelectQuery class >> new [
 		yourself
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLSelectQuery >> actualFields [
 
 	"If the receiver represents the selection of all fields from multiple tables, 
@@ -32,7 +33,7 @@ SSWSQLSelectQuery >> actualFields [
 		ifFalse: [self fields]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWSQLSelectQuery >> asAggregatedQuery [
 
 	| aggregated |
@@ -44,7 +45,7 @@ SSWSQLSelectQuery >> asAggregatedQuery [
 	^aggregated
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLSelectQuery >> field: anSSWDBField [
 
 	"Set a single field as the result field for the receiver"
@@ -52,7 +53,7 @@ SSWSQLSelectQuery >> field: anSSWDBField [
 	^self fields: (SSWSQLFieldCollection with: anSSWDBField)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSelectQuery >> fieldAliases [
 
 	"fieldAliases stores an IdentityDictionary mapping SSWSQLFields to an aliased name
@@ -61,7 +62,7 @@ SSWSQLSelectQuery >> fieldAliases [
 	^fieldAliases
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSelectQuery >> fieldAliases: anIdentityDictionary [
 
 	"fieldAliases stores an IdentityDictionary mapping SSWSQLFields to an aliased name
@@ -70,7 +71,7 @@ SSWSQLSelectQuery >> fieldAliases: anIdentityDictionary [
 	fieldAliases := anIdentityDictionary
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLSelectQuery >> fieldNamed: aString [
 
 	"Return the field with the given name (which must be an alias if the receiver has fieldAliases)"
@@ -80,7 +81,7 @@ SSWSQLSelectQuery >> fieldNamed: aString [
 		ifFalse: [self fieldWithAlias: aString]
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLSelectQuery >> fieldWithAlias: aString [
 
 	"Return the field with the given name (which must be an alias if the receiver has fieldAliases)"
@@ -90,7 +91,7 @@ SSWSQLSelectQuery >> fieldWithAlias: aString [
 	^nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSelectQuery >> fields [
 
 	"fields stores the collection of SSWSQLFields read by the receiver.
@@ -99,7 +100,7 @@ SSWSQLSelectQuery >> fields [
 	^fields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSelectQuery >> fields: anSSWSQLFieldCollection [
 
 	"fields stores the collection of SSWSQLFields read by the receiver.
@@ -108,19 +109,19 @@ SSWSQLSelectQuery >> fields: anSSWSQLFieldCollection [
 	fields := anSSWSQLFieldCollection
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLSelectQuery >> hasOrdering [
 
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLSelectQuery >> isReadQuery [
 
 	^true
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWSQLSelectQuery >> preExecIn: anSSWReStore [
 
 	"The receiver is about to be executed in anSSWReStore.
@@ -139,7 +140,7 @@ SSWSQLSelectQuery >> preExecIn: anSSWReStore [
 			fullTable])
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLSelectQuery >> writeSQLOn: aStream [
 
 	aStream nextPutAll: 'SELECT '.

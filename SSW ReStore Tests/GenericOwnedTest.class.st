@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #GenericOwnedTest,
-	#superclass : #Test,
+	#name : 'GenericOwnedTest',
+	#superclass : 'Test',
 	#instVars : [
 		'owner',
 		'key',
 		'deepTest'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 GenericOwnedTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -24,34 +25,34 @@ GenericOwnedTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> deepTest [
 	^deepTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> deepTest: anObject [
 	deepTest := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> key [
 	^key
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> key: anObject [
 	key := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> owner [
 	"Private - Answer the value of the receiver's ''owner'' instance variable."
 
 	^owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericOwnedTest >> owner: anObject [
 	"Private - Set the value of the receiver's ''owner'' instance variable to the argument, anObject."
 

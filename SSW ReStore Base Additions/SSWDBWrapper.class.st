@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBWrapper,
-	#superclass : #Object,
+	#name : 'SSWDBWrapper',
+	#superclass : 'Object',
 	#instVars : [
 		'object'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBWrapper class >> on: anObject [
 
 	^self new
@@ -21,7 +22,7 @@ SSWDBWrapper class >> on: anObject [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBWrapper >> object [
 
 	"object stores the Object being wrapped"
@@ -29,7 +30,7 @@ SSWDBWrapper >> object [
 	^object
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBWrapper >> object: anObject [
 
 	"object stores the Object being wrapped"

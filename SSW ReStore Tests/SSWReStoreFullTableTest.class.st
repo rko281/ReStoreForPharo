@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreFullTableTest,
-	#superclass : #SSWReStoreTableTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreFullTableTest',
+	#superclass : 'SSWReStoreTableTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreFullTableTest >> createTestData [
 
 	reStore destroyAllClasses.
@@ -20,7 +21,7 @@ SSWReStoreFullTableTest >> createTestData [
 	^super createTestData 
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreFullTableTest >> renamedTableName [
 
 	"SIMPLE_PERSON and SIMPLE_ADDRESS use us SIMPL_0 and SIMPL_1"

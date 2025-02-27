@@ -1,6 +1,6 @@
-Extension { #name : #SSWMySQLDialect }
+Extension { #name : 'SSWMySQLDialect' }
 
-{ #category : #'*SSW ReStore Tests' }
+{ #category : '*SSW ReStore Tests' }
 SSWMySQLDialect >> shouldDropTablesForTestCases [
 
 	^false

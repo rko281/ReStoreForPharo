@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreQueryByExampleTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreQueryByExampleTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreQueryByExampleTest >> test1Simple [
 
 	| template instances |
@@ -35,7 +36,7 @@ SSWReStoreQueryByExampleTest >> test1Simple [
 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreQueryByExampleTest >> test2Wildcards [
 
 	| template instances |
@@ -57,7 +58,7 @@ SSWReStoreQueryByExampleTest >> test2Wildcards [
 	self assert: (instances anySatisfy: [ :each | each firstName = 'David'])
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreQueryByExampleTest >> test3NilRequired [
 
 	| template instances |
@@ -71,7 +72,7 @@ SSWReStoreQueryByExampleTest >> test3NilRequired [
 	self assert: (instances first firstName = 'Zoe')
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreQueryByExampleTest >> test4PersistentByValue [
 
 	| template instances |
@@ -91,7 +92,7 @@ SSWReStoreQueryByExampleTest >> test4PersistentByValue [
 	self assert: (instances size = 0)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreQueryByExampleTest >> test5PersistentByRef [
 
 	| template instances |

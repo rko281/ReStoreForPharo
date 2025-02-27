@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreBlockAndOrQueryTest,
-	#superclass : #SSWReStoreQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreBlockAndOrQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreBlockAndOrQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockAnd [
 
 	| instances results |
@@ -33,7 +34,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockAnd [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockAndNonBlockOrBlockAndCombination [
 
 	| instances results |
@@ -87,7 +88,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockAndNonBlockOrBlockAndCombination [
 	self assert: results first fullName = 'David Smythe'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockAndNonBlockOrCombination [
 
 	| instances results |
@@ -122,7 +123,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockAndNonBlockOrCombination [
 	self assert: ((results collect: [ :each | each firstName]) asSortedCollection asArray = #('John' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockAndOrAndCombination [
 
 	| instances results |
@@ -155,7 +156,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockAndOrAndCombination [
 	self assert: results first fullName = 'David Smythe'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockAndOrCombination [
 
 	| instances results |
@@ -176,7 +177,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockAndOrCombination [
 	self assert: ((results collect: [ :each | each firstName]) asSortedCollection asArray = #('John' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockOr [
 
 	| instances results |
@@ -192,7 +193,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockOr [
 	self assert: ((results collect: [ :each | each firstName]) asSortedCollection asArray = #('Jim' 'John' 'Zoe'))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockOrAndCombination [
 
 	| instances results |
@@ -214,7 +215,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockOrAndCombination [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockOrAndOrCombination [
 
 	| instances results |
@@ -235,7 +236,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockOrAndOrCombination [
 	self assert: ((results collect: [ :each | each firstName]) asSortedCollection asArray = #('David' 'Jim' 'John')).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testBlockOrNonBlockAndCombination [
 
 	| instances results |
@@ -268,7 +269,7 @@ SSWReStoreBlockAndOrQueryTest >> testBlockOrNonBlockAndCombination [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockAndOrQueryTest >> testMixBlockNonBlockAndOrCombinations [
 
 	| instances results |

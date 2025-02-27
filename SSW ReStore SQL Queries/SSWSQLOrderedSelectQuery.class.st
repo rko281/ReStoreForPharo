@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLOrderedSelectQuery,
-	#superclass : #SSWSQLSelectQuery,
+	#name : 'SSWSQLOrderedSelectQuery',
+	#superclass : 'SSWSQLSelectQuery',
 	#instVars : [
 		'orderingSpecs'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLOrderedSelectQuery class >> new [
 
 	^super new
@@ -20,31 +21,31 @@ SSWSQLOrderedSelectQuery class >> new [
 		yourself
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWSQLOrderedSelectQuery >> forgetOrdering [
 
 	self orderingSpecs: OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLOrderedSelectQuery >> hasOrdering [
 
 	^self orderingSpecs isEmpty not
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWSQLOrderedSelectQuery >> orderAscendingBy: anSSWSQLDatabaseField [
 
 	self orderingSpecs add: (SSWDBOrderingSpec ascending: anSSWSQLDatabaseField)
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWSQLOrderedSelectQuery >> orderDescendingBy: anSSWSQLDatabaseField [
 
 	self orderingSpecs add: (SSWDBOrderingSpec descending: anSSWSQLDatabaseField)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOrderedSelectQuery >> orderingSpecs [
 
 	"orderingSpecs stores an OrderedCollection of SSWDBOrderingSpecs
@@ -53,7 +54,7 @@ SSWSQLOrderedSelectQuery >> orderingSpecs [
 	^orderingSpecs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLOrderedSelectQuery >> orderingSpecs: anOrderedCollection [
 
 	"orderingSpecs stores an OrderedCollection of SSWDBOrderingSpecs
@@ -62,7 +63,7 @@ SSWSQLOrderedSelectQuery >> orderingSpecs: anOrderedCollection [
 	orderingSpecs := anOrderedCollection
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLOrderedSelectQuery >> writeOrderingSQLOn: aStream [
 	
 	self orderingSpecs isEmpty ifTrue: [^self].
@@ -77,7 +78,7 @@ SSWSQLOrderedSelectQuery >> writeOrderingSQLOn: aStream [
 			ifFalse: [aStream nextPutAll: ' DESC ']] separatedBy: [aStream nextPutAll: ', ']
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLOrderedSelectQuery >> writeSQLOn: aStream [
 
 	self
@@ -85,7 +86,7 @@ SSWSQLOrderedSelectQuery >> writeSQLOn: aStream [
 		writeOrderingSQLOn: aStream
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLOrderedSelectQuery >> writeUnorderedSQLOn: aStream [
 
 	super writeSQLOn: aStream

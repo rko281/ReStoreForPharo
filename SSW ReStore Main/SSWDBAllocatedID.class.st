@@ -4,56 +4,57 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBAllocatedID,
-	#superclass : #Object,
+	#name : 'SSWDBAllocatedID',
+	#superclass : 'Object',
 	#instVars : [
 		'tableRecord',
 		'offset',
 		'object'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBAllocatedID >> asInteger [
 
 	^self id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> id [
 
 	^self nextID + self offset
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> nextID [
 
 	"tableRecord should always be a proxy at this point"
 	^self tableRecord _proxiedObject nextID
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> object [
 	^object
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> object: anObject [
 	object := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> offset [
 	^offset
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> offset: anObject [
 	offset := anObject
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWDBAllocatedID >> postCommit [
 
 	"Update the object with the real ID and update the ReStore cache to match"
@@ -67,23 +68,23 @@ SSWDBAllocatedID >> postCommit [
 			removeKey: self]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> reStoreValue [
 
 	^self id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> tableRecord [
 	^tableRecord
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBAllocatedID >> tableRecord: anObject [
 	tableRecord := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWDBAllocatedID >> writeSQLOn: aStream [
 
 	self id writeSQLOn: aStream

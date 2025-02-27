@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #TypeTest,
-	#superclass : #Object,
+	#name : 'TypeTest',
+	#superclass : 'Object',
 	#instVars : [
 		'char',
 		'varchar',
@@ -29,10 +29,11 @@ Class {
 		'falseBoolean',
 		'uuid'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 TypeTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -65,252 +66,252 @@ TypeTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> char [
 	"Private - Answer the value of the receiver's ''char'' instance variable."
 
 	^char
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> char: anObject [
 	"Private - Set the value of the receiver's ''char'' instance variable to the argument, anObject."
 
 	char := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> date [
 	"Private - Answer the value of the receiver's ''date'' instance variable."
 
 	^date
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> date: anObject [
 	"Private - Set the value of the receiver's ''date'' instance variable to the argument, anObject."
 
 	date := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> datetime [
 	"Private - Answer the value of the receiver's ''datetime'' instance variable."
 
 	^datetime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> datetime: anObject [
 	"Private - Set the value of the receiver's ''datetime'' instance variable to the argument, anObject."
 
 	datetime := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> datetimeWithMilliseconds [
 	^datetimeWithMilliseconds
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> datetimeWithMilliseconds: anObject [
 	datetimeWithMilliseconds := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> decimal [
 	"Private - Answer the value of the receiver's ''decimal'' instance variable."
 
 	^decimal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> decimal: anObject [
 	"Private - Set the value of the receiver's ''decimal'' instance variable to the argument, anObject."
 
 	decimal := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> falseBoolean [
 	"Private - Answer the value of the receiver's ''falseBoolean'' instance variable."
 
 	^falseBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> falseBoolean: anObject [
 	"Private - Set the value of the receiver's ''falseBoolean'' instance variable to the argument, anObject."
 
 	falseBoolean := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> float [
 	"Private - Answer the value of the receiver's ''float'' instance variable."
 
 	^float
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> float: anObject [
 	"Private - Set the value of the receiver's ''float'' instance variable to the argument, anObject."
 
 	float := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> integer [
 	"Private - Answer the value of the receiver's ''integer'' instance variable."
 
 	^integer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> integer: anObject [
 	"Private - Set the value of the receiver's ''integer'' instance variable to the argument, anObject."
 
 	integer := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeBlob [
 	^largeBlob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeBlob: anObject [
 	largeBlob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeInteger [
 	^largeInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeInteger: anObject [
 	largeInteger := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeText [
 	"Private - Answer the value of the receiver's ''largeText'' instance variable."
 
 	^largeText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> largeText: anObject [
 	"Private - Set the value of the receiver's ''largeText'' instance variable to the argument, anObject."
 
 	largeText := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> medBlob [
 	^medBlob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> medBlob: anObject [
 	medBlob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> medText [
 	"Private - Answer the value of the receiver's ''medText'' instance variable."
 
 	^medText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> medText: anObject [
 	"Private - Set the value of the receiver's ''medText'' instance variable to the argument, anObject."
 
 	medText := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> time [
 	"Private - Answer the value of the receiver's ''time'' instance variable."
 
 	^time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> time: anObject [
 	"Private - Set the value of the receiver's ''time'' instance variable to the argument, anObject."
 
 	time := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> tinyBlob [
 	^tinyBlob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> tinyBlob: anObject [
 	tinyBlob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> trueBoolean [
 	"Private - Answer the value of the receiver's ''trueBoolean'' instance variable."
 
 	^trueBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> trueBoolean: anObject [
 	"Private - Set the value of the receiver's ''trueBoolean'' instance variable to the argument, anObject."
 
 	trueBoolean := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> unsizedBlob [
 	^unsizedBlob
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> unsizedBlob: anObject [
 	unsizedBlob := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> unsizedText [
 	"Private - Answer the value of the receiver's ''unsizedText'' instance variable."
 
 	^unsizedText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> unsizedText: anObject [
 	"Private - Set the value of the receiver's ''unsizedText'' instance variable to the argument, anObject."
 
 	unsizedText := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> uuid [
 	^uuid
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> uuid: anObject [
 	uuid := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> varchar [
 	"Private - Answer the value of the receiver's ''varchar'' instance variable."
 
 	^varchar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TypeTest >> varchar: anObject [
 	"Private - Set the value of the receiver's ''varchar'' instance variable to the argument, anObject."
 

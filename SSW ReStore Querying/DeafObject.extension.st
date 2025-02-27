@@ -1,6 +1,6 @@
-Extension { #name : #DeafObject }
+Extension { #name : 'DeafObject' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 DeafObject >> _id [
 
 	^self

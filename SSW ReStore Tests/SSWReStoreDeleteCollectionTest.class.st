@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreDeleteCollectionTest,
-	#superclass : #SSWReStoreReadWithComponentsTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteCollectionTest',
+	#superclass : 'SSWReStoreReadWithComponentsTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteCollectionTest class >> isAbstract [
 
 	^self = SSWReStoreDeleteCollectionTest
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteCollectionTest >> _testDeleteAll [
 
 	customers := customers asOrderedCollection.
@@ -18,47 +19,47 @@ SSWReStoreDeleteCollectionTest >> _testDeleteAll [
 	Transcript cr; print: (Time millisecondsToRun: [reStore evaluateAsTransaction: [customers unstoreAll]]); flush
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> deleteCustomer1QueriesCount [
 
 	"How many queries to delete customer1?"
 	^1 + self deleteQueriesCount "delete customer + delete collection"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> deleteCustomer2QueriesCount [
 
 	"How many queries to delete customer2?"
 	^1 + self deleteQueriesCount "delete customer + delete collection"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> deleteProxiedCollectionQueryCount [
 
 	^3 + self deleteCustomer2QueriesCount "read customer + read collection + delete customer + delete query(s)"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> deleteQueriesCount [
 
 	"How many queries to delete a collection?"
 	^self subclassResponsibility
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> deproxyQueryCount [
 
 	^2 "read customer + read collection"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteCollectionTest >> otherCustomersSize [
 
 	"Not used here"
 	^0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteCollectionTest >> testDeleteProxiedCollectionQueryCount [
 
 	self assert: customer2 isDBProxy.
@@ -68,7 +69,7 @@ SSWReStoreDeleteCollectionTest >> testDeleteProxiedCollectionQueryCount [
 	self assert: self queryCount equals: self deproxyQueryCount + self deleteCustomer2QueriesCount
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteCollectionTest >> testDeleteUnproxiedCollectionQueryCount [
 
 	customer1 orders _deproxify.

@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreDeleteRelatedDictionaryTest,
-	#superclass : #SSWReStoreDeleteRelatedGeneralCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteRelatedDictionaryTest',
+	#superclass : 'SSWReStoreDeleteRelatedGeneralCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteRelatedDictionaryTest class >> isAbstract [
 
 	^self = SSWReStoreDeleteRelatedDictionaryTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDeleteRelatedDictionaryTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	"Need to convert orders to Dictionary if not already done - ensure unproxied before transformation"

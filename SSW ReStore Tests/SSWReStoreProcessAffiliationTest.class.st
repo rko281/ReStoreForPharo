@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreProcessAffiliationTest,
-	#superclass : #SSWReStoreDefaultTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreProcessAffiliationTest',
+	#superclass : 'SSWReStoreDefaultTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDefaultStoredInstancesWithProcessWithOtherReStore [
 
 	"Test use of storedInstances with the default ReStore and another instance affiliated to another process"
@@ -33,7 +34,7 @@ SSWReStoreProcessAffiliationTest >> testDefaultStoredInstancesWithProcessWithOth
 	self assert: zoe2 _reStore = reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDefaultStoredInstancesWithProcessWithSameReStore [
 
 	"Test use of storedInstances with the default ReStore in a forked process"
@@ -55,7 +56,7 @@ SSWReStoreProcessAffiliationTest >> testDefaultStoredInstancesWithProcessWithSam
 	self assert: zoe2 _reStore = reStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDefaultWithProcessWithOtherReStore [
 
 	"Test separation of the default ReStore and another instance affiliated to another process"
@@ -75,7 +76,7 @@ SSWReStoreProcessAffiliationTest >> testDefaultWithProcessWithOtherReStore [
 	sem wait
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDefaultWithProcessWithSameReStore [
 
 	"Test use of the default ReStore in a forked process"
@@ -94,7 +95,7 @@ SSWReStoreProcessAffiliationTest >> testDefaultWithProcessWithSameReStore [
 	sem wait
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDisaffiliation [
 
 	"Test a process disaffiliated from its ReStore returns to the default global ReStore"
@@ -117,7 +118,7 @@ SSWReStoreProcessAffiliationTest >> testDisaffiliation [
 	sem wait
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testDynamicChangeOfProcessReStore [
 
 	"Test switching of a process's reStore"
@@ -142,7 +143,7 @@ SSWReStoreProcessAffiliationTest >> testDynamicChangeOfProcessReStore [
 	self assert: zoe1A _reStore = reStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testExistingStoreInProcessWithOtherReStore [
 
 	"Test that a store of an existing object commits in the object's reStore, not the current default (process or global)"
@@ -177,7 +178,7 @@ SSWReStoreProcessAffiliationTest >> testExistingStoreInProcessWithOtherReStore [
 	self assert: (SimplePerson storedInstances detect: [ :each | each emailAddress = 'jtest2']) == john1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testNewStoreInProcessWithOtherReStore [
 
 	"Test that a store in a process with another reStore commits in that ReStore, not the default"
@@ -197,7 +198,7 @@ SSWReStoreProcessAffiliationTest >> testNewStoreInProcessWithOtherReStore [
 	self assert: alan _reStore == reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testObjectReStoreInProcessWithOtherReStore [
 
 	"Test that a check for an existing object's reStore returns the object's reStore, not the current default (process or global)"
@@ -232,7 +233,7 @@ SSWReStoreProcessAffiliationTest >> testObjectReStoreInProcessWithOtherReStore [
 	self assert: zoe2 _reStore == reStore2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessAffiliationTest >> testTwoProcessesWithSameReStore [
 
 	"Test a ReStore affiliated with two different processes results in the same objects"

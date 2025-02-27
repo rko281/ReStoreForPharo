@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreUnstoreTests,
-	#superclass : #SSWReStoreObjectAPITests,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreUnstoreTests',
+	#superclass : 'SSWReStoreObjectAPITests',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests class >> allTestSelectors [
 
 	^self testSelectors
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreUnstoreTests >> _testCreateObjectWithCollection [
 
 	| obj |
@@ -23,7 +24,7 @@ SSWReStoreUnstoreTests >> _testCreateObjectWithCollection [
 		
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testNiledDependentCollectionUnstore [
 
 	"Verify a dependent collection's elements are still unstored with its owner, even if it has been nil'd out in its owner prior to the unstore"
@@ -38,7 +39,7 @@ SSWReStoreUnstoreTests >> testNiledDependentCollectionUnstore [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testNiledDependentUnstore [
 
 	"Verify a dependent object is still unstored with its owner, even if it has been nil'd out in its owner prior to the unstore"
@@ -53,7 +54,7 @@ SSWReStoreUnstoreTests >> testNiledDependentUnstore [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPostNiledDependentCollectionUnstoreTransaction [
 
 	"Verify a dependent collection's elements are still unstored with its owner, even if it has been nil'd out in its owner prior to the unstore, subsequent to the owner's unstore"
@@ -70,7 +71,7 @@ SSWReStoreUnstoreTests >> testPostNiledDependentCollectionUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPostNiledDependentUnstoreTransaction [
 
 	"Verify a dependent object is still unstored with its owner, even if it has been nil'd out in its owner in the same transaction, subsequent to the owner's unstore"
@@ -87,7 +88,7 @@ SSWReStoreUnstoreTests >> testPostNiledDependentUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPostRemovedDependentCollectionUnstoreTransaction [
 
 	"Verify a dependent collection's elements are still unstored with its owner, even if it has been changed to something else in its owner (i.e. removed from, but not nil'd) prior to the unstore, subsequent to the owner's unstore"
@@ -104,7 +105,7 @@ SSWReStoreUnstoreTests >> testPostRemovedDependentCollectionUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPostRemovedDependentUnstoreTransaction [
 
 	"Verify a dependent object is still unstored with its owner, even it has been changed to something else in its owner (i.e. removed from, but not nil'd) the same transaction, subsequent to the owner's unstore"
@@ -121,7 +122,7 @@ SSWReStoreUnstoreTests >> testPostRemovedDependentUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPreNiledDependentCollectionUnstoreTransaction [
 
 	"Verify a dependent collection's elements are still unstored with its owner, even if it has been nil'd out in its owner prior to the unstore, prior to the owner's unstore"
@@ -138,7 +139,7 @@ SSWReStoreUnstoreTests >> testPreNiledDependentCollectionUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPreNiledDependentUnstoreTransaction [
 
 	"Verify a dependent object is still unstored with its owner, even if it has been nil'd out in its owner in the same transaction, prior to the owner's unstore"
@@ -155,7 +156,7 @@ SSWReStoreUnstoreTests >> testPreNiledDependentUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPreRemovedDependentCollectionUnstoreTransaction [
 
 	"Verify a dependent collection's elements are still unstored with its owner,  even if it has been changed to something else in its owner (i.e. removed from, but not nil'd) prior to the unstore, prior to the owner's unstore"
@@ -172,7 +173,7 @@ SSWReStoreUnstoreTests >> testPreRemovedDependentCollectionUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testPreRemovedDependentUnstoreTransaction [
 
 	"Verify a dependent object is still unstored with its owner, even if it has been changed to something else in its owner (i.e. removed from, but not nil'd) in the same transaction, prior to the owner's unstore"
@@ -189,7 +190,7 @@ SSWReStoreUnstoreTests >> testPreRemovedDependentUnstoreTransaction [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testRemovedDependentCollectionUnstore [
 
 	"Verify a dependent collection's elements are still unstored with its owner,  even if it has been changed to something else in its owner (i.e. removed from, but not nil'd) prior to the unstore"
@@ -204,7 +205,7 @@ SSWReStoreUnstoreTests >> testRemovedDependentCollectionUnstore [
 	self assert: ((Test storedInstancesIn: reStore) select: [ :each | depIds includes: each _id]) isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testRemovedDependentUnstore [
 
 	"Verify a dependent object is still unstored with its owner, even it has been changed to something else in its owner (i.e. removed from, but not nil'd) prior to the unstore"
@@ -219,7 +220,7 @@ SSWReStoreUnstoreTests >> testRemovedDependentUnstore [
 	self assert: ((Test storedInstancesIn: reStore) detect: [ :each | each _id = depId] ifNone: [nil]) isNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testRollbackUnstorePostChange [
 
 	"Verify changes made to an unstored object subseqeunt to it being unstored are rolled back as part of a rollback of the unstore"
@@ -236,7 +237,7 @@ SSWReStoreUnstoreTests >> testRollbackUnstorePostChange [
 	self assert: test name identicalTo: pre
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreUnstoreTests >> testRollbackUnstorePreChange [
 
 	"Verify changes made to an unstored object prior to bit being unstored are rolled back as part of a rollback of the unstore"

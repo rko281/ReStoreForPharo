@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWMSAccess2013Dialect,
-	#superclass : #SSWMSAccessDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWMSAccess2013Dialect',
+	#superclass : 'SSWMSAccessDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccess2013Dialect class >> dbmsVersion [
 
 	^'12.*'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWMSAccess2013Dialect >> maxAllocatedStatements [
 
 	"Access 2013 gives an error about number of open tables around 340 allocated statements"

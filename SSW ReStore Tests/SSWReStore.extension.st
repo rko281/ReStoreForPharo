@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStore }
+Extension { #name : 'SSWReStore' }
 
-{ #category : #'*SSW ReStore Tests' }
+{ #category : '*SSW ReStore Tests' }
 SSWReStore >> simulateReconnect [
 
 	"Simultate a disconnect; reconnect sequence of the receiver, however do not cycle the connection.

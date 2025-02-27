@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBDependentWrapper,
-	#superclass : #SSWDBRelatedWrapper,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBDependentWrapper',
+	#superclass : 'SSWDBRelatedWrapper',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBDependentWrapper >> defineAs: aSymbol in: aDBTable [
 
 	"Define the wrapped object, making the resulting object dependent"
@@ -19,7 +20,7 @@ SSWDBDependentWrapper >> defineAs: aSymbol in: aDBTable [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDependentWrapper >> dependentObject [
 
 	"dependentObject stores the object for which the receiver represents a database-dependent variant.

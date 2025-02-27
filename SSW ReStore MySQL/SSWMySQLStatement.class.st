@@ -14,6 +14,12 @@ SSWMySQLStatement >> adoptResultSet: anSSWMySQLResultSet [
 ]
 
 { #category : 'initialize-release' }
+SSWMySQLStatement >> cursorType: aSymbol [
+
+	self cursoredFetch: aSymbol notNil
+]
+
+{ #category : 'initialize-release' }
 SSWMySQLStatement >> cursoredFetch: aBoolean [ 
 
 	"Set a default fetchSize"
@@ -23,9 +29,13 @@ SSWMySQLStatement >> cursoredFetch: aBoolean [
 ]
 
 { #category : 'accessing' }
-SSWMySQLStatement >> execute [
+SSWMySQLStatement >> executeCommandClass [
+	^SSWMySQLCommandExecute
+]
 
-	^super execute ifNotNil: [ :resultSet | resultSet asSSWMySQLResultSet ]
+{ #category : 'accessing' }
+SSWMySQLStatement >> fetchCommandClass [
+	^SSWMySQLCommandFetch
 ]
 
 { #category : 'initialize-release' }

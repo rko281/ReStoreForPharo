@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBQueryField }
+Extension { #name : 'SSWDBQueryField' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWDBQueryField >> asSQLFields [
 
 	^self

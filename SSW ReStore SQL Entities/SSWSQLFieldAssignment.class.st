@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLFieldAssignment,
-	#superclass : #SSWSQLFieldValueConjunction,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLFieldAssignment',
+	#superclass : 'SSWSQLFieldValueConjunction',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWSQLFieldAssignment >> , anSSWSQLFieldAssignment [
 
 	^SSWSQLFieldAssignmentCollection with: self with: anSSWSQLFieldAssignment
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWSQLFieldAssignment >> applyTo: anObject [
 
 	"The receiver relates a field (which relates to an instance var) to a value (Smalltalk object).
@@ -26,7 +27,7 @@ SSWSQLFieldAssignment >> applyTo: anObject [
 	self field accessor value: self value in: anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWSQLFieldAssignment >> copyTo: anObject [
 
 	"The receiver relates a field (which relates to an instance var) to a value (Smalltalk object).
@@ -38,7 +39,7 @@ SSWSQLFieldAssignment >> copyTo: anObject [
 	self field accessor copyValue: self value in: anObject
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLFieldAssignment >> writeConjunctionSQLOn: aStream [
 
 	"The conjunction for assignment is simply '=' "
@@ -46,7 +47,7 @@ SSWSQLFieldAssignment >> writeConjunctionSQLOn: aStream [
 	aStream nextPut: $=
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLFieldAssignment >> writeFieldSQLOn: aStream [
 
 	"Ensure that the 'update' variant of the field is used"

@@ -1,6 +1,6 @@
-Extension { #name : #SSWPostgreSQLDialect }
+Extension { #name : 'SSWPostgreSQLDialect' }
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWPostgreSQLDialect >> shouldCheckAutoCommit [
 
 	^true

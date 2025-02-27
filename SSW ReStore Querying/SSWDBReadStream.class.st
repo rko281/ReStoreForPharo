@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBReadStream,
-	#superclass : #PositionableStream,
+	#name : 'SSWDBReadStream',
+	#superclass : 'PositionableStream',
 	#instVars : [
 		'instancesCollection',
 		'peeked'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> basicNext [
 
 	peeked ifNotNil: [ :wasPeeked | peeked := nil. ^wasPeeked].
@@ -24,7 +25,7 @@ SSWDBReadStream >> basicNext [
 		ifNotNil: [ :row | self instancesCollection reStore objectFromRow: row table: self instancesCollection table]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBReadStream >> close [
 
 	"Free the DBResultSet (and hence the DBStatement).
@@ -33,7 +34,7 @@ SSWDBReadStream >> close [
 	collection free
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> collectionNext [
 
 	"Private - Check for error - usually 'record deleted' "
@@ -50,7 +51,13 @@ SSWDBReadStream >> collectionNext [
 		exc return: self collectionNext]
 ]
 
-{ #category : #evaluating }
+{ #category : 'accessing' }
+SSWDBReadStream >> cursorType [
+
+	^collection cursorType
+]
+
+{ #category : 'evaluating' }
 SSWDBReadStream >> evaluatePostReadActionsFor: aCollection [
 
 	self instancesCollection postReadActions do: [ :each | each value: aCollection].
@@ -58,7 +65,7 @@ SSWDBReadStream >> evaluatePostReadActionsFor: aCollection [
 	^aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBReadStream >> instancesCollection [
 
 	"instancesCollection stores the SSWDBInstancesCollection which the receiver
@@ -67,7 +74,7 @@ SSWDBReadStream >> instancesCollection [
 	^instancesCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBReadStream >> instancesCollection: anSSWDBInstancesCollection [
 
 	"instancesCollection stores the SSWDBInstancesCollection which the receiver
@@ -76,7 +83,7 @@ SSWDBReadStream >> instancesCollection: anSSWDBInstancesCollection [
 	instancesCollection := anSSWDBInstancesCollection
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> next [
 
 	^self basicNext ifNotNil: 
@@ -85,7 +92,7 @@ SSWDBReadStream >> next [
 		next]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> next: anInteger [
 
 	| results |
@@ -96,7 +103,7 @@ SSWDBReadStream >> next: anInteger [
 	^self evaluatePostReadActionsFor: results
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> nextAvailable: anInteger [
 
 	| results count |
@@ -109,13 +116,13 @@ SSWDBReadStream >> nextAvailable: anInteger [
 	^self evaluatePostReadActionsFor: results
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> peek [
 
 	^peeked ifNil: [peeked := self atEnd ifFalse: [self next]]
 ]
 
-{ #category : #positioning }
+{ #category : 'positioning' }
 SSWDBReadStream >> position: anInteger [
 
 	collection position: anInteger.
@@ -124,40 +131,40 @@ SSWDBReadStream >> position: anInteger [
 	^super position: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBReadStream >> reStore [
 
 	^self instancesCollection reStore
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBReadStream >> reinitialize [
 
 	self resetPeeked.
-	self on: self instancesCollection resultSet.
+	self on: (self instancesCollection resultSet: self cursorType).
 	self setInstancesCollection: self instancesCollection
 ]
 
-{ #category : #positioning }
+{ #category : 'positioning' }
 SSWDBReadStream >> reset [
 
 	self instancesCollection isNil ifFalse: [self resetResultsSet].
 	^super reset
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBReadStream >> resetPeeked [
 
 	peeked := nil
 ]
 
-{ #category : #positioning }
+{ #category : 'positioning' }
 SSWDBReadStream >> resetResultsSet [
 
 	peeked := self instancesCollection reStore objectFromRow: collection resetAndFetchFirst table: self instancesCollection table
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBReadStream >> resync [
 
 	"Private - Reinitialize the receiver by requerying"
@@ -171,7 +178,7 @@ SSWDBReadStream >> resync [
 	self position: oldPosition
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBReadStream >> setInstancesCollection: anSSWDBInstancesCollection [
 
 	self instancesCollection: anSSWDBInstancesCollection.
@@ -180,7 +187,7 @@ SSWDBReadStream >> setInstancesCollection: anSSWDBInstancesCollection [
 	readLimit isNil ifTrue: [readLimit := instancesCollection size]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> upTo: anObject [
 
 	| results nextObject |
@@ -191,7 +198,7 @@ SSWDBReadStream >> upTo: anObject [
 	^self evaluatePostReadActionsFor: results
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBReadStream >> upToEnd [
 
 	| results |

@@ -1,13 +1,14 @@
 Class {
-	#name : #ConcreteA,
-	#superclass : #AbstractB,
+	#name : 'ConcreteA',
+	#superclass : 'AbstractB',
 	#instVars : [
 		'a'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 ConcreteA class >> reStoreDefinition [
 
 	^super reStoreDefinition

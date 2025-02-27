@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBBlockParser,
-	#superclass : #Object,
+	#name : 'SSWDBBlockParser',
+	#superclass : 'Object',
 	#instVars : [
 		'reStore',
 		'argumentClass',
@@ -19,10 +19,11 @@ Class {
 		'isCollectingAssociations',
 		'fieldEncounters'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBBlockParser class >> new [
 
 	^super new
@@ -33,7 +34,7 @@ SSWDBBlockParser class >> new [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBBlockParser class >> newForReStore: anSSWReStore argumentClass: aClass [
 
 	^self platformClass new
@@ -42,7 +43,7 @@ SSWDBBlockParser class >> newForReStore: anSSWReStore argumentClass: aClass [
 		yourself
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> _parse: aOneArgBlock [
 
 	| blockArgument |
@@ -53,7 +54,7 @@ SSWDBBlockParser >> _parse: aOneArgBlock [
 	^aOneArgBlock value: blockArgument
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> _parseSortBlock: aTwoArgBlock inverted: aBoolean [
 
 	| blockArgument |
@@ -67,23 +68,23 @@ SSWDBBlockParser >> _parseSortBlock: aTwoArgBlock inverted: aBoolean [
 		ifFalse: [aTwoArgBlock value: blockArgument value: SSWDBDumbArgument current]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> activeReceiver [
 	^activeReceiver
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> activeReceiver: anObject [
 	activeReceiver := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> allFields [
 
 	^SSWSQLTableAllFields forTable: self argumentTable
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> applyFunction: aString to: aField withArguments: aCollection [
 
 	"Private - Apply the given SQL function String to the given db field.
@@ -92,7 +93,7 @@ SSWDBBlockParser >> applyFunction: aString to: aField withArguments: aCollection
 	^self applyFunction: aString toResultOf: [aField] withArguments: aCollection
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> applyFunction: aSQLFunction toResultOf: aBlock withArguments: aCollection [
 
 	"Private - Apply the given SQL function to the result of aBlock (likely to be a db field).
@@ -113,7 +114,7 @@ SSWDBBlockParser >> applyFunction: aSQLFunction toResultOf: aBlock withArguments
 		ifFalse: [self parseError: 'No Final Field found']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> argumentClass [
 
 	"argumentClass stores the class of object that is intended to be the single argument
@@ -122,7 +123,7 @@ SSWDBBlockParser >> argumentClass [
 	^argumentClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> argumentClass: aClass [
 
 	"argumentClass stores the class of object that is intended to be the single argument
@@ -131,7 +132,7 @@ SSWDBBlockParser >> argumentClass: aClass [
 	argumentClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> argumentTable [
 
 	"argumentTable stores the SSWDBTable associated with the receiver's argumentClass.
@@ -140,7 +141,7 @@ SSWDBBlockParser >> argumentTable [
 	^argumentTable ifNil: [self reStore tableForClass: self argumentClass]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> argumentTable: anSSWDBTable [
 
 	"argumentTable stores the SSWDBTable associated with the receiver's argumentClass.
@@ -149,13 +150,13 @@ SSWDBBlockParser >> argumentTable: anSSWDBTable [
 	argumentTable := anSSWDBTable
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> beUnsorted [
 
 	self orderingSpecs: OrderedCollection new
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> collectQueryFrom: aOneArgBlock [
 
 	"Patched for issue 120-014
@@ -175,7 +176,7 @@ SSWDBBlockParser >> collectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> deleteQueryFrom: aOneArgBlock [
 
 	| conditions |
@@ -191,7 +192,7 @@ SSWDBBlockParser >> deleteQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> fieldEncounters [
 
 	"fieldEncounters stores an OrderedCollection of Associations of fields -> resulting block receiver (or nil if none) encountered during a parse, in the order they were encountered"
@@ -199,7 +200,7 @@ SSWDBBlockParser >> fieldEncounters [
 	^fieldEncounters
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> fieldEncounters: anOrderedCollection [
 
 	"fieldEncounters stores an OrderedCollection of fields -> resulting block receiver (or nil if none) encountered during a parse, in the order they were encountered"
@@ -207,35 +208,35 @@ SSWDBBlockParser >> fieldEncounters: anOrderedCollection [
 	fieldEncounters := anOrderedCollection
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> fieldEncountersWith: aField [
 
 	^(self fieldEncounters select: [ :each | each key = aField]) size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> groupByFields [
 	^groupByFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> groupByFields: anObject [
 	groupByFields := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockParser >> hasGrouping [
 
 	^self groupByFields isEmpty not
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBBlockParser >> hasOrdering [
 
 	^self orderingSpecs isEmpty not
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBBlockParser >> includedTables [
 
 	"Return those tables included in the query generated by the receiver.
@@ -244,24 +245,24 @@ SSWDBBlockParser >> includedTables [
 	^self referencedTables withoutDuplicates
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> invertOrdering [
 
 	self orderingSpecs: (self orderingSpecs collect: [ :each | each inverted])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> isCollectingAssociations [
 
 	^isCollectingAssociations ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> isCollectingAssociations: anObject [
 	isCollectingAssociations := anObject
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> lastFieldEncounterFor: aBlockEvaluator [
 
 	self fieldEncounters reverseDo: [ :each | each value == aBlockEvaluator ifTrue: [^each key]].
@@ -269,7 +270,7 @@ SSWDBBlockParser >> lastFieldEncounterFor: aBlockEvaluator [
 	self error: 'field encounter not found'
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> modifyQueryFrom: aOneArgBlock [
 
 	"Patched for issue 120-009"
@@ -288,7 +289,7 @@ SSWDBBlockParser >> modifyQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBBlockParser >> newBlockArgument [
 
 	"Create and return a new SSWDBBlockArgument to parse a block with"
@@ -299,7 +300,7 @@ SSWDBBlockParser >> newBlockArgument [
 		yourself
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> newCondition [
 
 	^SSWDBQueryCondition new
@@ -307,7 +308,7 @@ SSWDBBlockParser >> newCondition [
 		yourself
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> newConditionCollection [
 
 	^SSWDBQueryConditionCollection new
@@ -315,7 +316,7 @@ SSWDBBlockParser >> newConditionCollection [
 		yourself
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> newReceiverFor: aField from: aBlockEvaluator [
 
 	"Private - Create and return a new SSWDBBlockReceiver to receive (and parse) messages for the class of object which is referenced by aField"
@@ -346,7 +347,7 @@ SSWDBBlockParser >> newReceiverFor: aField from: aBlockEvaluator [
 	^self activeReceiver
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBBlockParser >> newSelectQuery [
 
 	"Return a new, initialized SelectQuery of the approriate class"
@@ -367,7 +368,7 @@ SSWDBBlockParser >> newSelectQuery [
 			[SSWSQLSelectQuery new]]
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> orWith: aBlockParser [
 
 	"'OR' the receiver with the qualifying conditions of aBlockParser"
@@ -376,7 +377,7 @@ SSWDBBlockParser >> orWith: aBlockParser [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> orderingSpecs [
 
 	"orderingSpecs stores an OrderedCollection of SSWDBOrderingSpecs
@@ -387,7 +388,7 @@ SSWDBBlockParser >> orderingSpecs [
 	^orderingSpecs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> orderingSpecs: anOrderedCollection [
 
 	"orderingSpecs stores an OrderedCollection of SSWDBOrderingSpecs
@@ -398,7 +399,7 @@ SSWDBBlockParser >> orderingSpecs: anOrderedCollection [
 	orderingSpecs := anOrderedCollection
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> parse: aOneArgBlock [
 
 	"Parse aOneArgBlock, returning the resulting SSWSQLConditionCollection"
@@ -406,7 +407,7 @@ SSWDBBlockParser >> parse: aOneArgBlock [
 	^(self _parse: aOneArgBlock) asSQLConditions
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> parseError: aString [
 
 	"Raise a suitable error"
@@ -414,7 +415,7 @@ SSWDBBlockParser >> parseError: aString [
 	^self parseError: aString with: nil
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> parseError: aString with: anObject [
 
 	"Private - Raise a suitable error"
@@ -422,7 +423,7 @@ SSWDBBlockParser >> parseError: aString with: anObject [
 	^SSWDBParseError signal: ('Cannot parse block - ', aString) with: anObject
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> parseForModify: aOneArgBlock [
 
 	"Private - Created for issue 120-009
@@ -433,7 +434,7 @@ SSWDBBlockParser >> parseForModify: aOneArgBlock [
 	^aOneArgBlock value: (self newBlockArgument isForModify: true; yourself)
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> parseSortBlock: aTwoArgBlock [
 
 	"Parse aTwoArgBlock, which should be a 'simple' sort block (see SSWDBInstancesCollection>>sortBlock)
@@ -455,7 +456,7 @@ SSWDBBlockParser >> parseSortBlock: aTwoArgBlock [
 	^parseResult
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 SSWDBBlockParser >> postCopy [
 
 	self
@@ -465,7 +466,7 @@ SSWDBBlockParser >> postCopy [
 		groupByFields: self groupByFields copy
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> projectQueryFrom: aOneArgBlock [
 
 	"Enrich the collect query generated from aOneArgBlock to group non-aggregated fields"
@@ -485,7 +486,7 @@ SSWDBBlockParser >> projectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> qualifyWith: aOneArgBlock [
 
 	"Set the receiver's qualifyingCondition based on aOneArgBlock"
@@ -502,7 +503,7 @@ SSWDBBlockParser >> qualifyWith: aOneArgBlock [
 		qualifyingTables: (self qualifyingTables merge: self referencedTables withoutDuplicates)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> qualifyingConditions [
 
 	"qualifyingConditions stores a static condition collection which is ANDed with 
@@ -515,7 +516,7 @@ SSWDBBlockParser >> qualifyingConditions [
 	^qualifyingConditions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> qualifyingConditions: anSSWSQLConditionCollection [
 
 	"qualifyingConditions stores a static condition collection which is ANDed with 
@@ -528,7 +529,7 @@ SSWDBBlockParser >> qualifyingConditions: anSSWSQLConditionCollection [
 	qualifyingConditions := anSSWSQLConditionCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> qualifyingTables [
 
 	"qualifyingTables stores the tables encountered when creating qualifyingConditions"
@@ -536,7 +537,7 @@ SSWDBBlockParser >> qualifyingTables [
 	^qualifyingTables
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> qualifyingTables: anSSWSQLJoinedTableCollection [
 
 	"qualifyingTables stores the tables encountered when creating qualifyingConditions"
@@ -544,7 +545,7 @@ SSWDBBlockParser >> qualifyingTables: anSSWSQLJoinedTableCollection [
 	qualifyingTables := anSSWSQLJoinedTableCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> reStore [
 
 	"reStore stores the SSWReStore for which the receiver parses blocks"
@@ -552,7 +553,7 @@ SSWDBBlockParser >> reStore [
 	^reStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> reStore: anSSWReStore [
 
 	"reStore stores the SSWReStore for which the receiver parses blocks"
@@ -560,7 +561,7 @@ SSWDBBlockParser >> reStore: anSSWReStore [
 	reStore := anSSWReStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> referencedTables [
 
 	"referencedTables stores the SSWDBTables that are referenced when parsing a block,
@@ -570,7 +571,7 @@ SSWDBBlockParser >> referencedTables [
 	^referencedTables
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBBlockParser >> referencedTables: anSSWJoinedTableCollection [
 
 	"referencedTables stores the SSWDBTables that are referenced when parsing a block,
@@ -580,7 +581,7 @@ SSWDBBlockParser >> referencedTables: anSSWJoinedTableCollection [
 	referencedTables := anSSWJoinedTableCollection
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> rejectQueryFrom: aOneArgBlock [
 
 	| conditions |
@@ -596,13 +597,13 @@ SSWDBBlockParser >> rejectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> removeFieldEncountersWith: aField [
 
 	self fieldEncounters: (self fieldEncounters reject: [ :each | each key == aField])
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> reset [
 
 	"Reset the receiver for a new parsing session"
@@ -616,7 +617,7 @@ SSWDBBlockParser >> reset [
 		fieldEncounters: (self referencedTables joinFields collect: [ :each | each -> nil])
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> selectQueryFrom: aOneArgBlock [
 
 	| conditions |
@@ -632,7 +633,7 @@ SSWDBBlockParser >> selectQueryFrom: aOneArgBlock [
 		yourself
 ]
 
-{ #category : #'parsing - api' }
+{ #category : 'parsing - api' }
 SSWDBBlockParser >> sortBlock: aTwoArgBlock [
 
 	| sortConditions |
@@ -654,7 +655,7 @@ SSWDBBlockParser >> sortBlock: aTwoArgBlock [
 	self orderingSpecs: (sortConditions collect: [ :each | each asOrderingSpec])
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBBlockParser >> tableForClass: aClass [
 
 	^aClass == self argumentClass 
@@ -662,7 +663,7 @@ SSWDBBlockParser >> tableForClass: aClass [
 		ifFalse: [self reStore tableForClass: aClass]
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> targetFieldsFrom: aOneArgBlock [
 	
 	| targetFields nonAggregateFields |
@@ -680,19 +681,19 @@ SSWDBBlockParser >> targetFieldsFrom: aOneArgBlock [
 	^targetFields
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> unprocessedConditionsCombinedForConcatenation: aBlockEvaluatorOrCondition [
 
 	^aBlockEvaluatorOrCondition forConcatenation
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> unprocessedConditionsCombinedWithArgument: aCondition [
 
 	^aCondition
 ]
 
-{ #category : #'parsing - internal' }
+{ #category : 'parsing - internal' }
 SSWDBBlockParser >> unprocessedConditionsCombinedWithReceiver: aCondition [
 
 	^aCondition

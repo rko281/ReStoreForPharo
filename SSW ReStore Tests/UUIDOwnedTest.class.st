@@ -1,16 +1,17 @@
 Class {
-	#name : #UUIDOwnedTest,
-	#superclass : #GenericOwnedTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'UUIDOwnedTest',
+	#superclass : 'GenericOwnedTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 UUIDOwnedTest class >> reStoreIDClass [
 
 	^GUID
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 UUIDOwnedTest class >> shouldInheritPersistency [
 
 	^false

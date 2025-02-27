@@ -97,9 +97,13 @@ SSWSQLite3Connection >> execute: aString [
 { #category : 'public API - operating' }
 SSWSQLite3Connection >> finalize: aStatementHandle [
 
-	^dbHandle isNil 
-		ifTrue: [ library apiFinalize: aStatementHandle ]
-		ifFalse: [ super finalize: aStatementHandle ]
+	"Compared to the superclass implementation we skip the OK check since (from sqlite documentation:
+
+		If the most recent evaluation of the statement encountered no errors or or if the statement is never been evaluated, then sqlite3_finalize() returns SQLITE_OK. 
+		If the most recent evaluation of statement S failed, then sqlite3_finalize(S) returns the appropriate error code or extended error code."
+			
+	library apiFinalize: aStatementHandle. 
+	aStatementHandle beNull
 ]
 
 { #category : 'initialization' }
@@ -136,13 +140,6 @@ SSWSQLite3Connection >> open [
 		via: dbHandle.
 		
 	isOpen := true
-]
-
-{ #category : 'connection open/close' }
-SSWSQLite3Connection >> prepareToClose [
-
-	"Allow resources to be finalized"
-	SmalltalkImage current garbageCollectMost
 ]
 
 { #category : 'querying' }

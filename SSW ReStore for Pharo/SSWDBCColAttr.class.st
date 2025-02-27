@@ -5,7 +5,6 @@ Class {
 		'name',
 		'index',
 		'table',
-		'connection',
 		'field'
 	],
 	#category : 'SSW ReStore for Pharo',
@@ -20,12 +19,8 @@ SSWDBCColAttr class >> forString: aString [
 
 { #category : 'accessing' }
 SSWDBCColAttr >> connection [
-	^ connection
-]
 
-{ #category : 'accessing' }
-SSWDBCColAttr >> connection: anObject [
-	connection := anObject
+	^self table reStore connection
 ]
 
 { #category : 'accessing' }

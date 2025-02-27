@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> addClassDefinitionTo: anSSWDBClassDefinition [
 
 	"Add the receiver's ReStore class definition to anSSWDBClassDefinition.
@@ -9,7 +9,7 @@ Object class >> addClassDefinitionTo: anSSWDBClassDefinition [
 	^self
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object >> convertValue: aValue [
 
 	"Field behaviour; needed when the result of a function is a fixed value"
@@ -17,7 +17,7 @@ Object >> convertValue: aValue [
 	^aValue
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object >> dependent [
 
 	"Return a dependent version of the receiver"
@@ -27,7 +27,7 @@ Object >> dependent [
 
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> hasOwnReStoreDefinition [
 
 	"Return whether the receiver specifies a reStoreDefinition itself (i.e. not just inherited)"
@@ -35,7 +35,7 @@ Object class >> hasOwnReStoreDefinition [
 	^(self class includesSelector: #reStoreDefinition) or: ["Backwards compatibility" self class includesSelector: #addClassDefinitionTo:]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> hasPersistentSuperclass [
 
 	"Return whether the receiver has a superclass from which it inherits some elements of persistence"
@@ -51,7 +51,7 @@ Object class >> hasPersistentSuperclass [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> isPersistencyInherited [
 
 	"Return whether the receiver's persistency is inherited by any subclasses"
@@ -59,7 +59,7 @@ Object class >> isPersistencyInherited [
 	^self subclassesInheritingPersistency isEmpty not
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> persistencyRootClass [
 
 	"Return the superclass at which the receiver's inherited persistency begins.
@@ -68,7 +68,7 @@ Object class >> persistencyRootClass [
 	^self allSuperclasses detect: [ :sup | sup reStoreTableClass == SSWDBSuperTable]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreDefinition [
 
 	"Return anSSWDBClassDefinition setting out the details of how the receiver is to be persisted.
@@ -85,7 +85,7 @@ Object class >> reStoreDefinition [
 	^definition
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreIDClass [
 
 	"Return the class used as a unique ID in ReStore.
@@ -95,7 +95,7 @@ Object class >> reStoreIDClass [
 	^Integer
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreInstVarAccessor [
 
 	"Return a new inst var accessor to be used to access instances of this class in another object"
@@ -105,7 +105,7 @@ Object class >> reStoreInstVarAccessor [
 		ifFalse: [SSWInstVarAccessor new]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreInstVarAccessorIn: aSQLDialect [
 
 	"Return a new inst var accessor to be used to access instances of this class in another object, in aSQLDialect"
@@ -114,7 +114,7 @@ Object class >> reStoreInstVarAccessorIn: aSQLDialect [
 	^self reStoreInstVarAccessor
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreNewUnique [
 
 	"Return a new unique instance of the receiver to be used as a ReStore unique ID.
@@ -124,7 +124,7 @@ Object class >> reStoreNewUnique [
 	^self shouldNotImplement
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreTableClass [
 
 	"Deduce and return the correct class to use for the receiver's ReStore Table"
@@ -140,7 +140,7 @@ Object class >> reStoreTableClass [
 			ifFalse: [SSWDBTable]]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> reStoreValueClass [
 
 	"Return the class of object used to represent an instance of the receiver in the database, i.e. the class of the instance's reStoreValue"
@@ -150,7 +150,7 @@ Object class >> reStoreValueClass [
 		ifFalse: [self reStoreIDClass]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object >> related [
 
 	"Return a related version of the receiver"
@@ -160,7 +160,7 @@ Object >> related [
 
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> shouldInheritPersistency [
 
 	"Return a Boolean indicating whether the receiver should inherit persistence
@@ -171,7 +171,7 @@ Object class >> shouldInheritPersistency [
 	^self superclass ~= nil and: [self superclass shouldSubclassesInheritPersistency]
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> shouldInlinePersistency [
 
 	"Return whether this class should always be inlined when referenced from another class's reStoreDefinition"
@@ -179,7 +179,7 @@ Object class >> shouldInlinePersistency [
 	^false
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> shouldSubclassesInheritPersistency [
 
 	"Return a Boolean indicating whether the receiver class' persistency 
@@ -192,7 +192,7 @@ Object class >> shouldSubclassesInheritPersistency [
 	^true
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> subclassesInheritingPersistency [
 
 	"Return a collection of those subclasses of the receiver class
@@ -212,7 +212,7 @@ Object class >> subclassesInheritingPersistency [
 	^inheritingPersistentSubclasses
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object class >> tableIn: anSSWReStore [
 
 	"Private - Create and return an SSWDB(XXX)Table to represent the receiver.
@@ -222,7 +222,7 @@ Object class >> tableIn: anSSWReStore [
 	^self reStoreDefinition asTableIn: anSSWReStore
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object >> targetClass [
 
 	"Required when a static value (e.g. String, Number) is used in place of a field (e.g. in a SQL function)"
@@ -230,7 +230,7 @@ Object >> targetClass [
 	^self class
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Object >> unrelated [
 
 	"Return an unrelated version of the receiver"

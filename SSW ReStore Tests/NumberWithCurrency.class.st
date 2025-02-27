@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #NumberWithCurrency,
-	#superclass : #Object,
+	#name : 'NumberWithCurrency',
+	#superclass : 'Object',
 	#instVars : [
 		'number',
 		'currency'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 NumberWithCurrency class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -21,46 +22,46 @@ NumberWithCurrency class >> reStoreDefinition [
 		define: #currency as: (String maxSize: 3)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 NumberWithCurrency class >> shouldInlinePersistency [
 
 	^true
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 NumberWithCurrency >> = aNumberWithCurrency [
 
 	^(self number = aNumberWithCurrency number) & (self currency = aNumberWithCurrency currency)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NumberWithCurrency >> currency [
 	^currency
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NumberWithCurrency >> currency: anObject [
 	currency := anObject
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 NumberWithCurrency >> displayString [
 
 	^self number printString, ' ', self currency
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NumberWithCurrency >> hash [
 
 	^self number hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NumberWithCurrency >> number [
 	^number
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NumberWithCurrency >> number: anObject [
 	number := anObject
 ]

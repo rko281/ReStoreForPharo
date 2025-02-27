@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #InlinedAddress,
-	#superclass : #Object,
+	#name : 'InlinedAddress',
+	#superclass : 'Object',
 	#instVars : [
 		'line1',
 		'postcode'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 InlinedAddress class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -21,34 +22,34 @@ InlinedAddress class >> reStoreDefinition [
 		define: #postcode as: InlinedPostcode inlined
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 InlinedAddress >> = anotherAddress [
 
 	^(self line1 = anotherAddress line1) & (self postcode = anotherAddress postcode)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedAddress >> hash [
 
 	^self line1 hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedAddress >> line1 [
 	^line1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedAddress >> line1: anObject [
 	line1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedAddress >> postcode [
 	^postcode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedAddress >> postcode: anObject [
 	postcode := anObject
 ]

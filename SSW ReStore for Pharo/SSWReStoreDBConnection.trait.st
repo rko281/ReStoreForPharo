@@ -28,7 +28,6 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 					index: index;
 					table: aDBTable;
 					field: (aDBTable fieldNamed: name);
-					connection: self; 
 					yourself ) ].
 				
 	^columns
@@ -175,7 +174,7 @@ SSWReStoreDBConnection >> exec: aString [
 ]
 
 { #category : 'querying' }
-SSWReStoreDBConnection >> executeQuery: anSQLQuery cursoredFetch: aBoolean [
+SSWReStoreDBConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
 
 	"Entry point for ad-hoc querying"
 
@@ -191,7 +190,7 @@ SSWReStoreDBConnection >> executeQuery: anSQLQuery cursoredFetch: aBoolean [
 	^statement 
 		setQuery: anSQLQuery;
 		values: values;
-		cursoredFetch: aBoolean;
+		cursorType: aSymbol;
 		exec;
 		yourself
 ]
@@ -258,9 +257,7 @@ SSWReStoreDBConnection >> onStartup [
 { #category : 'connection open/close' }
 SSWReStoreDBConnection >> postConnect [
 
-	self sqlDialect postLoginScript ifNotNil: 
-		[ :script | 
-		self evaluateAsTxn: [self exec: script. true]]
+	self sqlDialect onConnected: self
 ]
 
 { #category : 'querying' }
@@ -353,6 +350,12 @@ SSWReStoreDBConnection >> stopQueryCounting [
 	self queryCount: nil
 
 	
+]
+
+{ #category : 'testing' }
+SSWReStoreDBConnection >> supportsScrollableCursors [
+
+	^false
 ]
 
 { #category : 'enquiries' }

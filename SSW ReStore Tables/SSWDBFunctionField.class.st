@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBFunctionField,
-	#superclass : #SSWDBQueryField,
+	#name : 'SSWDBFunctionField',
+	#superclass : 'SSWDBQueryField',
 	#instVars : [
 		'function',
 		'arguments'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBFunctionField >> anySatisfy: aBlock [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -21,7 +22,7 @@ SSWDBFunctionField >> anySatisfy: aBlock [
 	^aBlock value: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBFunctionField >> arguments [
 
 	"arguments stores the collection of objects which are the arguments to the receiver's function.
@@ -30,7 +31,7 @@ SSWDBFunctionField >> arguments [
 	^arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBFunctionField >> arguments: aCollection [
 
 	"arguments stores the collection of objects which are the arguments to the receiver's function.
@@ -39,7 +40,7 @@ SSWDBFunctionField >> arguments: aCollection [
 	arguments := aCollection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBFunctionField >> convertValue: aValue [
 
 	"Convert the given DB value object to the receiver's targetClass.
@@ -48,7 +49,7 @@ SSWDBFunctionField >> convertValue: aValue [
 	^self function convertValue: aValue forFunctionField: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBFunctionField >> fieldAtIndex: anInteger [
 
 	^anInteger = 1
@@ -56,7 +57,7 @@ SSWDBFunctionField >> fieldAtIndex: anInteger [
 		ifFalse: [self arguments at: (anInteger - 1)]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBFunctionField >> function [
 
 	"function stores the SQL string of the function applied to the receiver's field,
@@ -66,7 +67,7 @@ SSWDBFunctionField >> function [
 	^function
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBFunctionField >> function: aString [
 
 	"function stores the SQL string of the function applied to the receiver's field,
@@ -76,13 +77,13 @@ SSWDBFunctionField >> function: aString [
 	function := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBFunctionField >> hasAggregateFunction [
 
 	^self function isAggregateFunction
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBFunctionField >> isEmpty [
 
 	"Make the receiver polymorphic with an SQLConditionCollection"
@@ -90,20 +91,20 @@ SSWDBFunctionField >> isEmpty [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBFunctionField >> requiresAliasing [
 
 	"Function fields need aliasing for effective lookup, e.g. COUNT(ID) AS Field1"
 	^true
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBFunctionField >> targetClass [
 
 	^self function targetClassForFunctionField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBFunctionField >> writeAliasedSQLOn: aStream [
 
 	"The receiver does not support the concept of an 'aliased' name; 
@@ -112,7 +113,7 @@ SSWDBFunctionField >> writeAliasedSQLOn: aStream [
 	^aStream nextPutAliasedField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBFunctionField >> writeSQLOn: aStream [
 
 	| funcStream |

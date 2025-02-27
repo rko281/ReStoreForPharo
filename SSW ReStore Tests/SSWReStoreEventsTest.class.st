@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWReStoreEventsTest,
-	#superclass : #SSWReStore2Test,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreEventsTest',
+	#superclass : 'SSWReStore2Test',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreEventsTest >> _testOnRecovery [
 
 	| obj |
@@ -18,7 +19,7 @@ SSWReStoreEventsTest >> _testOnRecovery [
 	^obj
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreEventsTest >> addClassesTo: aReStore [
 
 	aReStore
@@ -26,7 +27,7 @@ SSWReStoreEventsTest >> addClassesTo: aReStore [
 		addClass: TestWithEventsItem
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreEventsTest >> createTestData [
 
 	TestWithEvents new
@@ -37,7 +38,7 @@ SSWReStoreEventsTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreEventsTest >> testOnAboutToUnstore [
 
 	| obj toUnstore prevCount |
@@ -62,7 +63,7 @@ SSWReStoreEventsTest >> testOnAboutToUnstore [
 	self deny: (obj items includes: toUnstore)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreEventsTest >> testOnRecovery [
 
 	| now obj |
@@ -76,7 +77,7 @@ SSWReStoreEventsTest >> testOnRecovery [
 	obj items do: [ :each | self assert: each recoveryTime >= now]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreEventsTest >> testOnRefresh [
 
 	| obj prevCount obj2 |
@@ -97,7 +98,7 @@ SSWReStoreEventsTest >> testOnRefresh [
 	self assert: obj count equals: prevCount + 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreEventsTest >> testOnRollback [
 
 	| now obj prevCount |
@@ -122,7 +123,7 @@ SSWReStoreEventsTest >> testOnRollback [
 	obj items do: [ :each | self assert: (each recoveryTime < now)]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreEventsTest >> testOnUnstore [
 
 	| obj toUnstore prevCount |

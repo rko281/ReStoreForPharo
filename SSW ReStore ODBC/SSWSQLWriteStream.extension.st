@@ -1,6 +1,6 @@
 Extension { #name : 'SSWSQLWriteStream' }
 
-{ #category : '*SSW ReStore for Pharo' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLWriteStream >> parameterizedColumnsFor: aStatement [
 
 	| parameterizedColumns |

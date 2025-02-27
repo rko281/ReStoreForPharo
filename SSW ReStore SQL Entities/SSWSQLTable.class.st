@@ -4,27 +4,28 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLTable,
-	#superclass : #Object,
+	#name : 'SSWSQLTable',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLTable >> = anSSWSQLTable [
 
 	^self == anSSWSQLTable or: [self name = anSSWSQLTable name]
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 SSWSQLTable >> displayOn: aStream [
 
 	aStream nextPutAll: self name
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLTable >> hasStaticConditions [
 
 	"Return a Boolean indicating if the receiver table has any SSWSQLConditions which are always applied when SELECTing from the receiver table.
@@ -35,13 +36,13 @@ SSWSQLTable >> hasStaticConditions [
 	^false
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWSQLTable >> hash [
 
 	^self name hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTable >> name [
 
 	"name stores the name of this table"
@@ -50,7 +51,7 @@ SSWSQLTable >> name [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTable >> name: aString [
 
 	"name stores the name of this table"
@@ -59,7 +60,13 @@ SSWSQLTable >> name: aString [
 
 ]
 
-{ #category : #displaying }
+{ #category : 'initializing' }
+SSWSQLTable >> postCreate [
+
+	"Private - Carry out an actions necessary after the receiver has been fully created"
+]
+
+{ #category : 'displaying' }
 SSWSQLTable >> printOn: aStream [
 
 	super printOn: aStream.
@@ -69,14 +76,14 @@ SSWSQLTable >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTable >> writeSQLNameOn: aStream [
 
 	aStream nextPutIdentifier: self name
 
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLTable >> writeSQLOn: aStream [
 
 	self writeSQLNameOn: aStream

@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #RequiredUndefinedObject,
-	#superclass : #Object,
+	#name : 'RequiredUndefinedObject',
+	#superclass : 'Object',
 	#classInstVars : [
 		'soleInstance'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RequiredUndefinedObject class >> soleInstance [
 
 	soleInstance isNil ifTrue: [soleInstance := self basicNew].
@@ -20,56 +21,56 @@ RequiredUndefinedObject class >> soleInstance [
 	^soleInstance
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 RequiredUndefinedObject >> = anObject [
 
 	^anObject isNil
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 RequiredUndefinedObject >> hash [
 
 	^nil hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 RequiredUndefinedObject >> isRequiredForSimilarity [
 
 	"This is the purpose of the receiver"
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 RequiredUndefinedObject >> isSQLNull [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RequiredUndefinedObject >> orNilIfEmpty [
 
 	^self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 RequiredUndefinedObject >> printOn: aStream [
 
 	aStream nextPutAll: 'nil (required)'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RequiredUndefinedObject >> qualify: instances in: aReStore via: aCollection [
 
 	^instances qualifyWith: [ :each | (each chainPerform: aCollection) = nil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RequiredUndefinedObject >> reStoreValue [
 
 	^nil
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 RequiredUndefinedObject >> writeSQLOn: aStream forCondition: aSQLCondition [
 
 	nil writeSQLOn: aStream forCondition: aSQLCondition

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreDefaultWriteTest,
-	#superclass : #SSWReStoreDefaultTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDefaultWriteTest',
+	#superclass : 'SSWReStoreDefaultTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreDefaultWriteTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -19,7 +20,7 @@ SSWReStoreDefaultWriteTest >> addClassesTo: aReStore [
 		addClass: OwnedTest
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreDefaultWriteTest >> createTestData [
 
 	super createTestData.
@@ -36,7 +37,7 @@ SSWReStoreDefaultWriteTest >> createTestData [
 		store
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreDefaultWriteTest >> setUp [
 
 	super setUp.
@@ -53,7 +54,7 @@ SSWReStoreDefaultWriteTest >> setUp [
 		store
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testCommitFailure [
 
 	"Test the handling of commit failures"
@@ -92,7 +93,7 @@ SSWReStoreDefaultWriteTest >> testCommitFailure [
 	self assert: zoe2 age = newAge1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRefreshExistingObject [
 
 	"Test the use of the refresh message to refresh an existing object"
@@ -113,7 +114,7 @@ SSWReStoreDefaultWriteTest >> testRefreshExistingObject [
 	self assert: zoe1 age = newAge
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRefreshExistingObjects [
 
 	"Test the use of the refresh message to refresh a collection of existing objects"
@@ -141,7 +142,7 @@ SSWReStoreDefaultWriteTest >> testRefreshExistingObjects [
 	self assert: (john2 address postcode = 'JS1 1JS')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRefreshExistingRelatedObject [
 
 	"Test the use of the refresh message to refresh an existing related object"
@@ -161,7 +162,7 @@ SSWReStoreDefaultWriteTest >> testRefreshExistingRelatedObject [
 	self assert: (john2 address postcode = 'JS1 1JS').
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRefreshPersistentCollection [
 
 	"Test the behaviour of the refresh message when sent to a persistent collection (as opposed to a non-persistent collection of persistent objects)"
@@ -183,7 +184,7 @@ SSWReStoreDefaultWriteTest >> testRefreshPersistentCollection [
 	self assert: owner1 ownedOrdered last name = 'added'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRollbackExistingObject [
 
 	"Test the use of the rollback message with a single object"
@@ -198,7 +199,7 @@ SSWReStoreDefaultWriteTest >> testRollbackExistingObject [
 	self assert: (zoe1 age = (newAge - 1))
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRollbackExistingObjects [
 
 	"Test the use of the rollback message with a collection of objects"
@@ -221,7 +222,7 @@ SSWReStoreDefaultWriteTest >> testRollbackExistingObjects [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRollbackExistingRelatedObject [
 
 	"Test the use of the rollback message with a single related object"
@@ -237,7 +238,7 @@ SSWReStoreDefaultWriteTest >> testRollbackExistingRelatedObject [
 	self assert: (john1 address postcode = oldPostcode)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testRollbackPersistentCollection [
 
 	"Test the behavior of the rollback message when sent to a persistent collection (as opposed to a non-persistent collection of persistent objects)"
@@ -256,7 +257,7 @@ SSWReStoreDefaultWriteTest >> testRollbackPersistentCollection [
 	self assert: owner1 ownedOrdered first name = oldName
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStoreExistingObject [
 
 	"Test the use of the store message to update an existing object"
@@ -272,7 +273,7 @@ SSWReStoreDefaultWriteTest >> testStoreExistingObject [
 	self assert: zoe2 age = newAge
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStoreExistingRelatedObject [
 
 	"Test the use of the store message to update an existing related object"
@@ -287,7 +288,7 @@ SSWReStoreDefaultWriteTest >> testStoreExistingRelatedObject [
 	self assert: (john2 address postcode = 'JS1 1JS').
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStoreMixedObjects [
 
 	"Test the use of the storeAll message to save a collection of new and existing objects"
@@ -314,7 +315,7 @@ SSWReStoreDefaultWriteTest >> testStoreMixedObjects [
 	self assert: ((SimplePerson storedInstancesIn: reStore2) select: [ :each | each fullName = alan fullName]) notNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStoreNewObject [
 
 	"Test the use of the store message to create a new object"
@@ -332,7 +333,7 @@ SSWReStoreDefaultWriteTest >> testStoreNewObject [
 	self assert: (alan2 address postcode = alan address postcode)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStoreNewRelatedObject [
 
 	"Test the use of the store message to update an existing related object"
@@ -349,7 +350,7 @@ SSWReStoreDefaultWriteTest >> testStoreNewRelatedObject [
 	self assert: (zoe2 address postcode = 'Z1 1ZZ').
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testStorePersistentCollection [
 
 	"Test the behaviour of the store message when sent to a persistent collection (as opposed to a non-persistent collection of persistent objects)"
@@ -371,7 +372,7 @@ SSWReStoreDefaultWriteTest >> testStorePersistentCollection [
 	self assert: owner2 ownedOrdered last name = 'added'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testUnstoreAllInstancesCollection [
 
 	"Test the use of the unstore message with an entire InstancesCollection of objects"
@@ -383,7 +384,7 @@ SSWReStoreDefaultWriteTest >> testUnstoreAllInstancesCollection [
 	self assert: SimplePerson storedInstances isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testUnstoreExistingObject [
 
 	"Test the use of the unstore message"
@@ -405,7 +406,7 @@ SSWReStoreDefaultWriteTest >> testUnstoreExistingObject [
 	self assert: (SimpleAddress storedInstances select: [ :each | each postcode = postcode]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testUnstoreExistingObjects [
 
 	"Test the use of the unstore message with a collection of objects"
@@ -430,7 +431,7 @@ SSWReStoreDefaultWriteTest >> testUnstoreExistingObjects [
 	self assert: (SimpleAddress storedInstances select: [ :each | each postcode = postcode]) isEmpty.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDefaultWriteTest >> testUnstoreInstancesCollection [
 
 	"Test the use of the unstore message with an InstancesCollection of objects.

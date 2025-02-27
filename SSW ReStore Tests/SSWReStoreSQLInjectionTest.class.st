@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreSQLInjectionTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreSQLInjectionTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreSQLInjectionTest >> testNumberQueryCriteriaInjection [
 
 	| instances injectedAge matches |
@@ -25,7 +26,7 @@ SSWReStoreSQLInjectionTest >> testNumberQueryCriteriaInjection [
 	self assert: matches isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection1 [
 
 	| instances injectedName results |
@@ -38,7 +39,7 @@ SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection1 [
 	self assert: results isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection2 [
 
 	| instances injectedName results |
@@ -51,7 +52,7 @@ SSWReStoreSQLInjectionTest >> testStringQueryCriteriaInjection2 [
 	self assert: results isEmpty
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreSQLInjectionTest >> testStringUpdateInjection [
 
 	| instances injectedName person |

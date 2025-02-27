@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreObjectAPITests,
-	#superclass : #SSWReStore2Test,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreObjectAPITests',
+	#superclass : 'SSWReStore2Test',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> _test05CommitFailureRefreshAndRollbackDirectedToProxy: aBoolean [
 
 	"Private - aBoolean controls whether the store message is directed to the real object or the proxy.
@@ -60,7 +61,7 @@ SSWReStoreObjectAPITests >> _test05CommitFailureRefreshAndRollbackDirectedToProx
 	self assert: obj1 single2 name = obj1A single2 name
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> _test06StoreFailureRefreshAndRollforwardDirectedToProxy: aBoolean [
 
 	"Private - aBoolean controls whether the store message is directed to the real object or the proxy.
@@ -118,7 +119,7 @@ SSWReStoreObjectAPITests >> _test06StoreFailureRefreshAndRollforwardDirectedToPr
 	self assert: obj1A single2 name = newSingleName
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreObjectAPITests >> _testCreateObject [
 
 	| obj1 |
@@ -140,7 +141,7 @@ SSWReStoreObjectAPITests >> _testCreateObject [
 	^obj1
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreObjectAPITests >> _testCreateObjects [
 
 	| obj1 obj2 |
@@ -168,7 +169,7 @@ SSWReStoreObjectAPITests >> _testCreateObjects [
 	^{obj1. obj2}
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreObjectAPITests >> createReStore [
 
 	"Private - Use the default instance"
@@ -176,7 +177,7 @@ SSWReStoreObjectAPITests >> createReStore [
 	reStore := ReStore
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test01Store [
 
 	| obj1 |
@@ -196,7 +197,7 @@ SSWReStoreObjectAPITests >> test01Store [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test02Rollback [
 
 	| obj1 prevName prevSingleName |
@@ -214,7 +215,7 @@ SSWReStoreObjectAPITests >> test02Rollback [
 	self assert: obj1 single2 name = prevSingleName
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test03Refresh [
 
 	| obj1 obj1A prevName prevSingleName |
@@ -242,7 +243,7 @@ SSWReStoreObjectAPITests >> test03Refresh [
 	self assert: obj1 single2 name = obj1A single2 name
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test04HasChanged [
 
 	| obj1 obj1A prevName prevSingleName |
@@ -273,31 +274,31 @@ SSWReStoreObjectAPITests >> test04HasChanged [
 	self deny: obj1 hasChanged
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test05CommitFailureRefreshAndRollback [
 
 	self _test05CommitFailureRefreshAndRollbackDirectedToProxy: false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test05CommitFailureRefreshAndRollbackDirectedToProxy [
 
 	self _test05CommitFailureRefreshAndRollbackDirectedToProxy: true
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test06StoreFailureRefreshAndRollforward [
 
 	self _test06StoreFailureRefreshAndRollforwardDirectedToProxy: false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test06StoreFailureRefreshAndRollforwardDirectedToProxy [
 
 	self _test06StoreFailureRefreshAndRollforwardDirectedToProxy: true
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test08CantPersistCollection [
 
 	"Can't persist a collection independently of its owner"
@@ -309,7 +310,7 @@ SSWReStoreObjectAPITests >> test08CantPersistCollection [
 	self should: [obj1 ordered store] raise: Error description: ([Object errorNotPersistent] on: Error do: [ :exc | exc return: exc description])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test09UnstoreUnproxied [
 
 	| obj1 prevName prevSingleName prevCount prevSingleCount |
@@ -328,7 +329,7 @@ SSWReStoreObjectAPITests >> test09UnstoreUnproxied [
 	self assert: (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size = (prevSingleCount - 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test10UnstoreProxied [
 
 	| obj1 prevName prevSingleName prevCount prevSingleCount |
@@ -349,7 +350,7 @@ SSWReStoreObjectAPITests >> test10UnstoreProxied [
 	self assert: (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size = (prevSingleCount - 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test11StoreAll [
 
 	| objs obj1 obj2 |
@@ -377,7 +378,7 @@ SSWReStoreObjectAPITests >> test11StoreAll [
 	self assert: obj2 single2 name = 'test2A'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test12RollbackAll [
 
 	| objs obj1 obj2 prevName1 prevSingleName1 prevName2 prevSingleName2 |
@@ -404,7 +405,7 @@ SSWReStoreObjectAPITests >> test12RollbackAll [
 	self assert: obj2 single2 name = prevSingleName2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test13RefreshAll [
 
 	| objs obj1 obj2 obj1A obj2A prevName1 prevSingleName1 prevName2 prevSingleName2 |
@@ -444,7 +445,7 @@ SSWReStoreObjectAPITests >> test13RefreshAll [
 	self assert: obj2 single2 name = obj2A single2 name
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test14HasAnyChanged [
 
 	| objs obj1 obj2 prevName1 prevSingleName1 prevName2 prevSingleName2 |
@@ -490,7 +491,7 @@ SSWReStoreObjectAPITests >> test14HasAnyChanged [
 	self deny: objs hasAnyChanged
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 
 	"Test use of store/unstore methods with an open transaction"
@@ -539,7 +540,7 @@ SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 	self assert: obj3 single2 name equals: 'test3'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test16StoreWithTransactionNonProxied [
 
 	"Test use of store/unstore methods with an open transaction"
@@ -594,7 +595,7 @@ SSWReStoreObjectAPITests >> test16StoreWithTransactionNonProxied [
 	self assert: obj3 single2 name equals: 'test3'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 
 	"Test use of store/unstore methods with an open transaction which is rolled back"
@@ -640,7 +641,7 @@ SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 	self assert: obj3 isNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test18StoreWithTransactionRollbackNonProxied [
 
 	"Test use of store/unstore methods with an open transaction which is rolled back"
@@ -692,7 +693,7 @@ SSWReStoreObjectAPITests >> test18StoreWithTransactionRollbackNonProxied [
 	self assert: obj3 isNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test19UnstoreAll [
 
 	| objs obj1 obj2 prevName1 prevSingleName1 prevName2 prevSingleName2 prevCount1 prevSingleCount1 prevCount2 prevSingleCount2 |

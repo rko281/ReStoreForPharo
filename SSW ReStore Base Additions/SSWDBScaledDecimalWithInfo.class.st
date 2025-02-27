@@ -4,22 +4,23 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBScaledDecimalWithInfo,
-	#superclass : #SSWDBClassWithInfo,
+	#name : 'SSWDBScaledDecimalWithInfo',
+	#superclass : 'SSWDBClassWithInfo',
 	#instVars : [
 		'scale',
 		'precision'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBScaledDecimalWithInfo >> infoClass [
 
 	^ScaledDecimal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBScaledDecimalWithInfo >> precision [
 
 	"precision stores the total number of digits that should be in this pseudo-ScaledDecimal.
@@ -29,7 +30,7 @@ SSWDBScaledDecimalWithInfo >> precision [
 	^precision
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBScaledDecimalWithInfo >> precision: anInteger [
 
 	"precision stores the total number of digits that should be in this pseudo-ScaledDecimal.
@@ -39,7 +40,7 @@ SSWDBScaledDecimalWithInfo >> precision: anInteger [
 	precision := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBScaledDecimalWithInfo >> scale [
 
 	"scale stores the scale of ScaledDecimal which the receiver creates/represents"
@@ -47,7 +48,7 @@ SSWDBScaledDecimalWithInfo >> scale [
 	^scale
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBScaledDecimalWithInfo >> scale: anInteger [
 
 	"scale stores the scale of ScaledDecimal which the receiver creates/represents"

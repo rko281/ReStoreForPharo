@@ -4,30 +4,31 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRelatedDictionaryTest,
-	#superclass : #SSWReStoreGenericRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRelatedDictionaryTest',
+	#superclass : 'SSWReStoreGenericRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedDictionaryTest class >> multipleOccurrenceTestSelectors [
 
 	^super multipleOccurrenceTestSelectors, #(#testDuplicateEntries)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> addToCollection: aCollection [
 
 	^(self addToCollectionAnsweringAssociation: aCollection) value
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> addToCollectionAnsweringAssociation [
 
 	^self addToCollectionAnsweringAssociation: collection
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> addToCollectionAnsweringAssociation: aCollection [
 
 	| newKey |
@@ -37,19 +38,19 @@ SSWReStoreRelatedDictionaryTest >> addToCollectionAnsweringAssociation: aCollect
 	
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> addToCollectionAnsweringKey [
 
 	^self addToCollectionAnsweringAssociation key
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedDictionaryTest >> componentDefinition [
 
 	^(Dictionary of: GenericOwnedTest -> GenericOwnedTest related)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> duplicateInCollection: aCollection [
 
 	| keys |
@@ -58,13 +59,13 @@ SSWReStoreRelatedDictionaryTest >> duplicateInCollection: aCollection [
 	^aCollection at: keys first put: (aCollection at: keys last)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreRelatedDictionaryTest >> remove: anObject fromCollection: aCollection [
 
 	^aCollection removeKey: (aCollection keyAtValue: anObject)
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRelatedDictionaryTest >> replaceInCollection: aCollection [
 
 	| key old |
@@ -74,7 +75,7 @@ SSWReStoreRelatedDictionaryTest >> replaceInCollection: aCollection [
 	^old -> (aCollection at: key put: self templateComponent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreRelatedDictionaryTest >> templateCollection [
 
 	^Dictionary new
@@ -86,7 +87,7 @@ SSWReStoreRelatedDictionaryTest >> templateCollection [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRelatedDictionaryTest >> testDependencyDeleteOnRepeatedRemoval [
 
 	"Check that non-dependent collection contents are or are not deleted when removed, as appropriate for the specified relationship (i.e. delete if dependent, otherwise not).
@@ -129,7 +130,7 @@ SSWReStoreRelatedDictionaryTest >> testDependencyDeleteOnRepeatedRemoval [
 	self _testComponentExistenceOnDependency: component
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedDictionaryTest >> testDuplicateEntries [
 
 	"Ensure duplicate entries are handled correctly"
@@ -141,7 +142,7 @@ SSWReStoreRelatedDictionaryTest >> testDuplicateEntries [
 	self assert: (self countQueriesDuring: [testObject store]) equals: (1 "for the update" + (self componentDefinition isValueDependent ifTrue: [1] ifFalse: [0]) "1 for the deletion of the overwritten item (if dependent)")
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedDictionaryTest >> testIncludesAssociation [
 
 	| instances existingAssoc newAssoc template templateKey matches |
@@ -169,7 +170,7 @@ SSWReStoreRelatedDictionaryTest >> testIncludesAssociation [
 	self assert: matches first == testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreRelatedDictionaryTest >> testIncludesKey [
 
 	| instances existingKey templateKey matches |

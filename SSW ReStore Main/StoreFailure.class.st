@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #StoreFailure,
-	#superclass : #Notification,
-	#category : #'SSW ReStore Main'
+	#name : 'StoreFailure',
+	#superclass : 'Notification',
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> abandon [
 
 	self reStore abandonTransaction
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> commit [
 
 	"Returns success"
@@ -23,7 +24,7 @@ StoreFailure >> commit [
 	^self reStore commitTransaction
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> defaultAction [
 
 	"Default is to abandon the active (failed) transaction"
@@ -31,31 +32,31 @@ StoreFailure >> defaultAction [
 	self abandon
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 StoreFailure >> failedObjects [
 
 	^self reStore transactionCommitFailures
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 StoreFailure >> reStore [
 
 	^self tag
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> refreshAndRollforward [
 
 	self reStore refreshAndRollforwardTransaction
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> rollback [
 
 	self reStore rollbackTransaction
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 StoreFailure >> rollbackAndRefresh [
 
 	self reStore rollbackAndRefreshTransaction

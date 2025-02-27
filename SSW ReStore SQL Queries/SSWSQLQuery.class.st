@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLQuery,
-	#superclass : #Object,
-	#category : #'SSW ReStore SQL Queries'
+	#name : 'SSWSQLQuery',
+	#superclass : 'Object',
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWSQLQuery >> asSubQuery [
 
 	^SSWSQLSubQuery new
@@ -17,7 +18,7 @@ SSWSQLQuery >> asSubQuery [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLQuery >> isReadQuery [
 
 	"Subclasses should override if they read data"
@@ -25,7 +26,7 @@ SSWSQLQuery >> isReadQuery [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLQuery >> isWriteQuery [
 
 	"Subclasses should override if they write data"
@@ -33,11 +34,11 @@ SSWSQLQuery >> isWriteQuery [
 	^false
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWSQLQuery >> preExecIn: anSSWReStore [
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLQuery >> sqlCanBeParameterized [
 
 	^false

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreDataIDTest,
-	#superclass : #SSWReStoreIDTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDataIDTest',
+	#superclass : 'SSWReStoreIDTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDataIDTest >> createTestData [
 	
 	"Write data with assigned id"
@@ -27,7 +28,7 @@ SSWReStoreDataIDTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test1VerifySetUp [
 
 	"Verify setUp data is correct"
@@ -41,7 +42,7 @@ SSWReStoreDataIDTest >> test1VerifySetUp [
 	self assert: obj2 other name equals: 'john'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test2DuplicateCheck [
 
 	"Check can't update to a duplicate assigned ID"
@@ -53,7 +54,7 @@ SSWReStoreDataIDTest >> test2DuplicateCheck [
 	reStore connection rollbackTxn
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test3Update [
 
 	"Check update"
@@ -80,7 +81,7 @@ SSWReStoreDataIDTest >> test3Update [
 	self assert: obj2 other name equals: 'jim'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test4Query [
 
 	| matches |
@@ -93,7 +94,7 @@ SSWReStoreDataIDTest >> test4Query [
 	self assert: matches isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test5QueryByExample [
 
 	| template matches |
@@ -122,7 +123,7 @@ SSWReStoreDataIDTest >> test5QueryByExample [
 	self assert: matches isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test6VerifyIDInCopy [
 
 	"Test issue where data ID value was not set in copyObject"
@@ -135,7 +136,7 @@ SSWReStoreDataIDTest >> test6VerifyIDInCopy [
 	self assert: obj2 other _dbProxy _copyObject nmbr equals: 7
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test7VerifyAssignedID [
 
 	"Test an automatically-assigned ID makes it into a new instance when stored"
@@ -174,7 +175,7 @@ SSWReStoreDataIDTest >> test7VerifyAssignedID [
 	self assert: newObj nmbr equals: 101
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test8CheckForKnownDuplicateID [
 
 	"Check for an attempt to persist an object with the already-allocated ID of an object known to ReStore (i.e. in the image) - this is most likely to arise from a copy.
@@ -188,7 +189,7 @@ SSWReStoreDataIDTest >> test8CheckForKnownDuplicateID [
 	self assert: ([obj2 copy storeIn: reStore. false] on: Error do: [ :exc | self assert: exc description equals: ('<1s>attempt to store object of class <2d> with duplicate ID <3p>' << {self errorPrefix. obj2 class. id}). exc return: true])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDataIDTest >> test9CheckForUnknownDuplicateID [
 
 	"Check for an attempt to persist an object with the already-allocated ID of an object not known to ReStore (i.e not in the image).
@@ -201,7 +202,7 @@ SSWReStoreDataIDTest >> test9CheckForUnknownDuplicateID [
 	self should: [obj2 copy storeIn: reStore. false] raise: Error
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDataIDTest >> testClass [
 
 	^ReStoreTestWithID

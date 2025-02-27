@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBClassWithInfo,
-	#superclass : #Object,
-	#category : #'SSW ReStore Base Additions'
+	#name : 'SSWDBClassWithInfo',
+	#superclass : 'Object',
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBClassWithInfo >> beKeyClassOf: aCollectionSpec [
 
 	"Polymorphic with Class implementation"
@@ -17,7 +18,7 @@ SSWDBClassWithInfo >> beKeyClassOf: aCollectionSpec [
 	aCollectionSpec keyClass: self
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBClassWithInfo >> beTargetClassOf: aCollectionSpec [
 
 	"Polymorphic with Class implementation"
@@ -25,7 +26,7 @@ SSWDBClassWithInfo >> beTargetClassOf: aCollectionSpec [
 	aCollectionSpec targetClass: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassWithInfo >> includesBehavior: aBehavior [
 
 	"Required class-like behavior"
@@ -33,7 +34,7 @@ SSWDBClassWithInfo >> includesBehavior: aBehavior [
 	^self infoClass includesBehavior: aBehavior
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBClassWithInfo >> infoClass [
 
 	"Return the class which the receiver represents a paramterised version of.
@@ -42,32 +43,32 @@ SSWDBClassWithInfo >> infoClass [
 	^self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassWithInfo >> isDirectlyPersisted [
 
 	^self infoClass isDirectlyPersisted
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassWithInfo >> isDirectlyPersistedNonBaseClass [
 
 	^self infoClass isDirectlyPersistedNonBaseClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassWithInfo >> isMutableDirectlyPersistedNonBaseClass [
 
 	^self infoClass isMutableDirectlyPersistedNonBaseClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBClassWithInfo >> isPersistentBaseClass [
 
 	^self infoClass isPersistentBaseClass
 
 ]
 
-{ #category : #'methods-accessing' }
+{ #category : 'methods-accessing' }
 SSWDBClassWithInfo >> lookupMethod: aSymbol [
 
 	"Required class-like behavior"
@@ -75,7 +76,7 @@ SSWDBClassWithInfo >> lookupMethod: aSymbol [
 	^self infoClass lookupMethod: aSymbol
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBClassWithInfo >> new [
 
 	"Create and return an instance of the receiver's infoClass"

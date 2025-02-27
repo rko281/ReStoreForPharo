@@ -4,33 +4,34 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBDateAndTimeWithResolution,
-	#superclass : #SSWDBClassWithInfo,
+	#name : 'SSWDBDateAndTimeWithResolution',
+	#superclass : 'SSWDBClassWithInfo',
 	#instVars : [
 		'resolution'
 	],
-	#category : #'SSW ReStore Base Additions'
+	#category : 'SSW ReStore Base Additions',
+	#package : 'SSW ReStore Base Additions'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBDateAndTimeWithResolution >> beMicrosecondResolution [
 
 	self resolution: 6
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBDateAndTimeWithResolution >> beMillisecondResolution [
 
 	self resolution: 3
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBDateAndTimeWithResolution >> infoClass [
 
 	^DateAndTime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDateAndTimeWithResolution >> resolution [ 
 
 	"resolution is the number of digits after the decimal point following seconds:
@@ -41,7 +42,7 @@ SSWDBDateAndTimeWithResolution >> resolution [
 	^resolution
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBDateAndTimeWithResolution >> resolution: anInteger [
 
 	"resolution is the number of digits after the decimal point following seconds:

@@ -5,8 +5,8 @@ https://github.com/rko281/ReStoreForDolphin
 https://github.com/rko281/ReStoreForPharo
 "
 Class {
-	#name : #SSWFieldInliner,
-	#superclass : #Object,
+	#name : 'SSWFieldInliner',
+	#superclass : 'Object',
 	#instVars : [
 		'table',
 		'instanceClass',
@@ -15,10 +15,11 @@ Class {
 		'inlinedClass',
 		'fields'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWFieldInliner class >> new [
 
 	^super new
@@ -26,14 +27,14 @@ SSWFieldInliner class >> new [
 		yourself
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWFieldInliner >> define: aSymbol as: anObject [
 
 	"Double-despatch; the object knows how to define itself"
 	^anObject defineAs: aSymbol in: self
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWFieldInliner >> define: aSymbol asInstVarHolding: anObject [
 
 	| rootTable cachedInstanceClass field |
@@ -48,7 +49,7 @@ SSWFieldInliner >> define: aSymbol asInstVarHolding: anObject [
 	^self fields add: field
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWFieldInliner >> define: aSymbol asInstVarHoldingInlined: aClass [
 
 	| inliner |
@@ -68,73 +69,73 @@ SSWFieldInliner >> define: aSymbol asInstVarHoldingInlined: aClass [
 	inliner fields do: [ :each | self wrapField: each]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> fields [
 	^fields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> fields: anObject [
 	fields := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedClass [
 	^inlinedClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedClass: anObject [
 	inlinedClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedName [
 	^inlinedName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedName: anObject [
 	inlinedName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedSlot [
 	^inlinedSlot
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> inlinedSlot: anObject [
 	inlinedSlot := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> instanceClass [
 	^instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> instanceClass: anObject [
 	instanceClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> rootTable [
 
 	^self table rootTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWFieldInliner >> table: anObject [
 	table := anObject
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWFieldInliner >> wrapField: aField [
 
 	| prefix |

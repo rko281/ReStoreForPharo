@@ -1,6 +1,6 @@
-Extension { #name : #Class }
+Extension { #name : 'Class' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Class >> beKeyClassOf: aCollectionSpec [
 
 	"The receiver has been specified as the class of objects which are the keys 
@@ -10,7 +10,7 @@ Class >> beKeyClassOf: aCollectionSpec [
 	aCollectionSpec keyClass: self
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 Class >> beTargetClassOf: aCollectionSpec [
 
 	"The receiver has been specified as the class of objects held in 

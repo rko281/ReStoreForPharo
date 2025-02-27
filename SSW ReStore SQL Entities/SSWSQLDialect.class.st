@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLDialect,
-	#superclass : #Object,
+	#name : 'SSWSQLDialect',
+	#superclass : 'Object',
 	#instVars : [
 		'connection',
 		'classNameTransformation',
@@ -19,10 +19,11 @@ Class {
 		'standardNamespace',
 		'nullBoolean'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect class >> dbmsName [
 
 	"Return the name of the database whose dialect is represented by the receiver.
@@ -31,7 +32,7 @@ SSWSQLDialect class >> dbmsName [
 	^self subclassResponsibility
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect class >> dbmsVersion [
 
 	"Return the version of the database whose dialect is represented by the receiver.
@@ -46,7 +47,7 @@ SSWSQLDialect class >> dbmsVersion [
 	^'*'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect class >> isCompatibleWithConnection: aDBConnection [
 
 	"Default implementation uses name and version.
@@ -55,13 +56,13 @@ SSWSQLDialect class >> isCompatibleWithConnection: aDBConnection [
 	^(self dbmsName sameAs: aDBConnection dbmsName) and: [self dbmsVersion match: aDBConnection dbmsVersion]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLDialect class >> new [
 
 	^super new initialize
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLDialect class >> newFor: aDBConnection [
 
 	^(self subclassFor: aDBConnection) new
@@ -69,7 +70,7 @@ SSWSQLDialect class >> newFor: aDBConnection [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect class >> subclassFor: aDBConnection [
 
 	"Return the correct subclass of the receiver to use for the given DBConnection"
@@ -78,7 +79,7 @@ SSWSQLDialect class >> subclassFor: aDBConnection [
 	^(self allSubclasses asSortedCollection: [ :c1 :c2 | c1 dbmsVersion size >= c2 dbmsVersion size]) detect: [ :each | each isCompatibleWithConnection: aDBConnection] ifNone: ["Fallback" self]
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLDialect >> addFields: aCollection to: aTable in: anSSWReStore [
 
 	"Add the given collection of Fields to their table in anSSWReStore's database"
@@ -110,7 +111,7 @@ SSWSQLDialect >> addFields: aCollection to: aTable in: anSSWReStore [
 			anSSWReStore executeSQL: innerStream contents]]
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLDialect >> alterField: aField table: aTable in: aReStore [
 
 	aReStore executeSQLFrom: 
@@ -122,7 +123,7 @@ SSWSQLDialect >> alterField: aField table: aTable in: aReStore [
 		aField writeSQLDefinitionOn: stream]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLDialect >> asIdentifier: aString [
 
 	| stream |
@@ -132,7 +133,7 @@ SSWSQLDialect >> asIdentifier: aString [
 	^stream contents
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> blob [
 
 	"unsizedBlobSize is used to determine the most appropriate column type (see unsizedBlobSize method comment)"
@@ -140,7 +141,7 @@ SSWSQLDialect >> blob [
 	^self blobTypeForSize: self unsizedBlobSize
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> blobTypeForSize: anInteger [
 
 	anInteger <= self maxColumnBytes ifTrue: 
@@ -149,7 +150,7 @@ SSWSQLDialect >> blobTypeForSize: anInteger [
 	self error: 'No Blob type found for size <1p> - consider increasing maxColumnBytes'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> blobTypes [
 
 	"Return a collection of associations between the maximum size of an unsized ByteArray type (i.e. one whose type declaration does not include its size, c.f. varblob), and its name in this dialect.
@@ -161,19 +162,19 @@ SSWSQLDialect >> blobTypes [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> boolean [
 
 	^'BOOLEAN'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> char [
 
 	^'CHAR(<1p>)'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> classNameTransformation [
 
 	"classNmeTransformation stores a one-arg Block which is evaluated with a class name and should deliver an equivalent database name.
@@ -182,7 +183,7 @@ SSWSQLDialect >> classNameTransformation [
 	^classNameTransformation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> classNameTransformation: aBlock [
 
 	"classNmeTransformation stores a one-arg Block which is evaluated with a class name and should deliver an equivalent database name.
@@ -191,7 +192,7 @@ SSWSQLDialect >> classNameTransformation: aBlock [
 	classNameTransformation := aBlock
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> commonFunctions [
 
 	"Return a mapping from Smalltalk method names to an equivalent 'common' SQL function.
@@ -244,86 +245,29 @@ SSWSQLDialect >> commonFunctions [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> connection [
 	^connection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> connection: anObject [
 	connection := anObject
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> date [
 
 	^'DATE'
 ]
 
-{ #category : #constants }
-SSWSQLDialect >> dateAndTimeFormat [
-
-	"The format for DateAndTImes when expressed as Strings"
-
-	^'yyyy-MM-dd HH:mm:ssffffff'
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> dateAndTimeFrom: anObject [
-
-	| stream date time |
-
-	(anObject isKindOf: String) ifTrue: 
-		[stream := anObject readStream.
-		date := Date readFrom: stream format: self dateFormat.
-		stream next.
-		time := Time readFrom: stream.
-		^DateAndTime fromDate: date time: time].
-
-	self error: ('cannot convert <1p> to a DateAndTime' expandMacrosWith: anObject)
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> dateAndTimeStringFor: aDateAndTime [
-
-	"Return the String representation of aDateAndTime in this dialect"
-
-	^aDateAndTime printStringFormat: self dateAndTimeFormat
-]
-
-{ #category : #constants }
-SSWSQLDialect >> dateFormat [
-
-	"The format for Dates when expressed as Strings"
-
-	^'yyyy-MM-dd'
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> dateFrom: anObject [
-
-	anObject class = DateAndTime ifTrue: [^anObject asDate].
-
-	(anObject isKindOf: String) ifTrue: [^Date readFrom: anObject readStream format: self dateFormat].
-
-	self error: ('cannot convert <1p> to a Date' expandMacrosWith: anObject)
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> dateStringFor: aDate [
-
-	"Return the String representation of aDate in this dialect"
-
-	^aDate printStringFormat: self dateFormat
-]
-
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> datetime [
 
 	^'DATETIME'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> datetimeWithResolution [
 
 	"Parameter is resolution (0=seconds, 3=milliseconds etc.)"
@@ -331,19 +275,36 @@ SSWSQLDialect >> datetimeWithResolution [
 	^'DATETIME(<1p>)'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> decimal [
 
 	^'DECIMAL(<1p>,<2p>)'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultClassNameTransformation [
 
 	^[ :name | name sswInUnderscoreFormat]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
+SSWSQLDialect >> defaultCursorType [
+
+	"Return the Symbol-ic name of the cursor type that will be used when creating statements for cursored results in this dialect. 
+	The names are adopted from the Dolphin ODBC package:
+		CursorTypes
+			at: #static put: SQL_CURSOR_STATIC;
+			at: #forwardOnly put: SQL_CURSOR_FORWARD_ONLY;
+			at: #keysetDriven put: SQL_CURSOR_KEYSET_DRIVEN;
+			at: #dynamic put: SQL_CURSOR_DYNAMIC;
+
+	This is mostly relevant for ODBC connections since native connections don't generally support different cursor types.
+	It is included in the main class since specifying a nil cursorType when executing a query is used to indicate no cursor is required - this is relevant to the native MySQL implementation"
+
+	^#forwardOnly
+]
+
+{ #category : 'constants' }
 SSWSQLDialect >> defaultDateTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -351,13 +312,13 @@ SSWSQLDialect >> defaultDateTimeResolution [
 	^0
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultInstVarNameTransformation [
 
 	^[ :name | name sswInUnderscoreFormat]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultMaxColumnBytes [
 
 	"default value for maxColumnBytes - see that method's comment"
@@ -365,27 +326,27 @@ SSWSQLDialect >> defaultMaxColumnBytes [
 	^self connection defaultMaxColumnBytes
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultMaxColumnNameLength [
 
 	"Return an appropriate/known value for when the connection is unable to determine"
 	^self subclassResponsibility
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultMaxTableNameLength [
 
 	"Return an appropriate/known value for when the connection is unable to determine"
 	^self subclassResponsibility
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultNullBoolean [
 
 	^nil
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultSQLFunctions [
 
 	| allDefaults |
@@ -399,13 +360,13 @@ SSWSQLDialect >> defaultSQLFunctions [
 	^allDefaults
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultStandardNamespace [
 
 	^nil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWSQLDialect >> defaultTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -413,7 +374,7 @@ SSWSQLDialect >> defaultTimeResolution [
 	^self defaultDateTimeResolution
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultUnsizedBlobSize [
 
 	"default value for unsizedBlobSize - see that method's comment"
@@ -422,7 +383,7 @@ SSWSQLDialect >> defaultUnsizedBlobSize [
 	^self maxColumnBytes - 1
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultUnsizedStringSize [
 
 	"default value for unsizedStringSize - see that method's comment"
@@ -431,7 +392,7 @@ SSWSQLDialect >> defaultUnsizedStringSize [
 	^self maxColumnBytes - 1
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> dialectSpecificFunctions [
 
 	"Return a mapping from Smalltalk method names to an equivalent SQL function supported by this dialect.
@@ -440,13 +401,13 @@ SSWSQLDialect >> dialectSpecificFunctions [
 	^Dictionary new
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> double [
 
 	^'DOUBLE'
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSWReStore [
 
 	anSSWReStore executeSQLFrom: 
@@ -458,21 +419,13 @@ SSWSQLDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSWReS
 			nextPutIdentifier: colString]
 ]
 
-{ #category : #constants }
-SSWSQLDialect >> falseObject [
-
-	"The object which represents the false Boolean in this dialect"
-
-	^0
-]
-
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> float [
 
 	^'FLOAT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> identifierQuoteClose [
 
 	"Return the closing character used to wrap identifiers in quotes.
@@ -482,7 +435,7 @@ SSWSQLDialect >> identifierQuoteClose [
 	^$`
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> identifierQuoteOpen [
 
 	"Return the opening character used to wrap identifiers in quotes.
@@ -492,7 +445,7 @@ SSWSQLDialect >> identifierQuoteOpen [
 	^$`
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLDialect >> initialize [
 
 	self
@@ -502,7 +455,7 @@ SSWSQLDialect >> initialize [
 		instVarNameTransformation: self defaultInstVarNameTransformation
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLDialect >> initializeFor: aDBConnection [
 
 	self
@@ -515,7 +468,7 @@ SSWSQLDialect >> initializeFor: aDBConnection [
 		standardNamespace: self defaultStandardNamespace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> instVarNameTransformation [
 
 	"classNmeTransformation stores a one-arg Block which is evaluated with an instance variable name and should deliver an equivalent database name.
@@ -524,7 +477,7 @@ SSWSQLDialect >> instVarNameTransformation [
 	^instVarNameTransformation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> instVarNameTransformation: aBlock [
 
 	"classNmeTransformation stores a one-arg Block which is evaluated with an instance variable name and should deliver an equivalent database name.
@@ -533,13 +486,13 @@ SSWSQLDialect >> instVarNameTransformation: aBlock [
 	instVarNameTransformation := aBlock
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> integer [
 
 	^'INTEGER'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> integerMaximum [
 
 	"Typically 4 byte signed"
@@ -547,7 +500,7 @@ SSWSQLDialect >> integerMaximum [
 	^((2 ** 31) - 1)
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> integerMinimum [
 
 	"Typically 4 byte signed"
@@ -555,13 +508,13 @@ SSWSQLDialect >> integerMinimum [
 	^((2 ** 31) negated)
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> largeInteger [
 
 	^'BIGINT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> largeIntegerMaximum [
 
 	"Typically 8 byte signed"
@@ -569,7 +522,7 @@ SSWSQLDialect >> largeIntegerMaximum [
 	^((2 ** 63) - 1)
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> largeIntegerMinimum [
 
 	"Typically 8 byte signed"
@@ -577,13 +530,13 @@ SSWSQLDialect >> largeIntegerMinimum [
 	^((2 ** 63) negated)
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> longText [
 
 	^'TEXT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> maxAllocatedStatements [
 
 	"Return an Integer specifying the maximum number of ODBC statements that should be allocated. 
@@ -594,19 +547,19 @@ SSWSQLDialect >> maxAllocatedStatements [
 	^SmallInteger maximum
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> maxChar [
 
 	^self maxCharacter
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> maxCharacter [
 
 	^255
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxColumnBytes [
 
 	"defaultMaxColumnBytes defines the default maximum size of a column in bytes; this is not really a dialect-specific attribute but its value affects the choice of String column type so we specify it here.
@@ -619,12 +572,12 @@ SSWSQLDialect >> maxColumnBytes [
 	^maxColumnBytes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxColumnBytes: anObject [
 	maxColumnBytes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxColumnNameLength [
 
 	"Initialized from the DB on login but may be set to something else (lower!) if necessary"
@@ -632,12 +585,12 @@ SSWSQLDialect >> maxColumnNameLength [
 	^maxColumnNameLength
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxColumnNameLength: anObject [
 	maxColumnNameLength := anObject
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> maxDateTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -645,7 +598,7 @@ SSWSQLDialect >> maxDateTimeResolution [
 	^6
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxTableNameLength [
 
 	"Initialized from the DB on login but may be set to something else (lower!) if necessary"
@@ -653,12 +606,12 @@ SSWSQLDialect >> maxTableNameLength [
 	^maxTableNameLength
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> maxTableNameLength: anObject [
 	maxTableNameLength := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWSQLDialect >> maxTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -666,13 +619,13 @@ SSWSQLDialect >> maxTimeResolution [
 	^self maxDateTimeResolution
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> maxVarchar [
 
 	^self maxCharacter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> nullBoolean [
 
 	"nullBoolean stores the object used when a NULL value is returned from a Boolean field.
@@ -682,7 +635,7 @@ SSWSQLDialect >> nullBoolean [
 	^nullBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> nullBoolean: anObject [
 
 	"nullBoolean stores the object used when a NULL value is returned from a Boolean field.
@@ -692,7 +645,17 @@ SSWSQLDialect >> nullBoolean: anObject [
 	nullBoolean := anObject
 ]
 
-{ #category : #constants }
+{ #category : 'event handling' }
+SSWSQLDialect >> onConnected: aConnection [
+
+	"Sent to the dialect immediately after login"
+
+	self postLoginScript ifNotNil: 
+		[ :script | 
+		aConnection evaluateAsTxn: [aConnection exec: script. true]]
+]
+
+{ #category : 'constants' }
 SSWSQLDialect >> postLoginScript [
 
 	"Return any SQL String which should be evaluated on each login for this dialect, or nil if none"
@@ -700,14 +663,14 @@ SSWSQLDialect >> postLoginScript [
 	^nil
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLDialect >> printParameterPlaceholder: anInteger on: aStream [
 
 	"Defer to the connection"
 	self connection printParameterPlaceholder: anInteger on: aStream
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLDialect >> renameField: oldField to: newField in: aReStore [
 
 	"Simple implementation for dialects with no explicit rename column support"
@@ -728,7 +691,7 @@ SSWSQLDialect >> renameField: oldField to: newField in: aReStore [
 	self dropColumnNamed: oldField name fromTable: definitionTable in: aReStore
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore executeSQLFrom: 
@@ -740,7 +703,7 @@ SSWSQLDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 			nextPutIdentifier: newTable name]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect >> shouldExpandNamespacedAllFields [
 
 	"Return true if the all fields * pseudo-field should be expanded into a list of fields where the table has a namspace, i.e. namespace.table.field1, namespace.table.field2 etc. instead of namespace.table.*
@@ -749,7 +712,7 @@ SSWSQLDialect >> shouldExpandNamespacedAllFields [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect >> shouldMapEmptyStringsToNil [
 
 	"Return whether empty Strings should be mapped to nil before storage in the database.
@@ -758,13 +721,13 @@ SSWSQLDialect >> shouldMapEmptyStringsToNil [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> sqlFunctionFor: aMessageSelector [
 
 	^self sqlFunctions at: aMessageSelector ifAbsent: [nil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> sqlFunctions [
 
 	"sqlFunctions stores a mapping from Smalltalk method names (which may not actually be implemented!) to an equivalent SQL function.
@@ -777,7 +740,7 @@ SSWSQLDialect >> sqlFunctions [
 	^sqlFunctions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> sqlFunctions: aDictionary [
 
 	"sqlFunctions stores a mapping from Smalltalk method names (which may not actually be implemented!) to an equivalent SQL function.
@@ -790,13 +753,13 @@ SSWSQLDialect >> sqlFunctions: aDictionary [
 	sqlFunctions := aDictionary
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLDialect >> sqlWriteStream [
 
 	^SSWSQLWriteStream newIn: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> standardNamespace [
 
 	"standardNamespace stores the namespace (schema/database) in which unqualified (without a namespace. prefix) table names exist.
@@ -805,7 +768,7 @@ SSWSQLDialect >> standardNamespace [
 	^standardNamespace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> standardNamespace: aString [
 
 	"standardNamespace stores the namespace (schema/database) in which unqualified (without a namespace. prefix) table names exist.
@@ -814,7 +777,7 @@ SSWSQLDialect >> standardNamespace: aString [
 	standardNamespace := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect >> supportsDeleteWithJoin [
 
 	"Answer whether this dialect supports DELETE queries featuring JOINs"
@@ -822,7 +785,7 @@ SSWSQLDialect >> supportsDeleteWithJoin [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect >> supportsImplicitTrueConditions [
 
 	"Does this dialect support implicit true conditions like IS_SOMETHING or does it require IS_SOMETHING = TRUE"
@@ -830,7 +793,7 @@ SSWSQLDialect >> supportsImplicitTrueConditions [
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDialect >> supportsMultipleAddColumns [
 
 	"Return whether this dialect supports multiple 'ADD [COLUMN]' clauses per ALTER TABLE statement (true)
@@ -839,39 +802,13 @@ SSWSQLDialect >> supportsMultipleAddColumns [
 	^false
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> time [
 
 	^'TIME'
 ]
 
-{ #category : #constants }
-SSWSQLDialect >> timeFormat [
-
-	"The format for Times when expressed as Strings"
-
-	^'HH:mm:ss'
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> timeFrom: anObject [
-
-	anObject class = DateAndTime ifTrue: [^anObject asTime].
-
-	(anObject isKindOf: String) ifTrue: [^Time readFrom: anObject readStream].
-
-	self error: ('cannot convert <1p> to a Time' expandMacrosWith: anObject)
-]
-
-{ #category : #conversions }
-SSWSQLDialect >> timeStringFor: aTime [
-
-	"Return the String representation of aTime in this dialect"
-
-	^aTime printStringFormat: self timeFormat
-]
-
-{ #category : #public }
+{ #category : 'public' }
 SSWSQLDialect >> timeWithResolution [
 
 	"Parameter is resolution (0=seconds, 3=milliseconds etc.)"
@@ -879,7 +816,7 @@ SSWSQLDialect >> timeWithResolution [
 	^'TIME(<1p>)'
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLDialect >> transformClassName: aSymbol [
 
 	"Transform the given class name into a DB-style String appropriate/conventional for this dialect"
@@ -887,7 +824,7 @@ SSWSQLDialect >> transformClassName: aSymbol [
 	^self classNameTransformation value: aSymbol
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWSQLDialect >> transformInstVarName: aSymbol [
 
 	"Transform the given inst var name into a DB-style String appropriate/conventional for this dialect"
@@ -895,27 +832,19 @@ SSWSQLDialect >> transformInstVarName: aSymbol [
 	^self instVarNameTransformation value: aSymbol
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWSQLDialect >> translateMessage: aSymbol toFunction: aSQLFunction [
 
 	self sqlFunctions at: aSymbol put: aSQLFunction
 ]
 
-{ #category : #constants }
-SSWSQLDialect >> trueObject [
-
-	"The object which represents the true Boolean in this dialect"
-
-	^1
-]
-
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> unsizedBlob [
 
 	^'BLOB'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> unsizedBlobSize [
 
 	"unsizedBlobSize stores the size assumed for ByteArrays in persistent classes if no explicit size is given.
@@ -927,7 +856,7 @@ SSWSQLDialect >> unsizedBlobSize [
 	^unsizedBlobSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> unsizedBlobSize: anInteger [
 
 	unsizedBlobSize := anInteger.
@@ -936,7 +865,7 @@ SSWSQLDialect >> unsizedBlobSize: anInteger [
 	self maxColumnBytes: (self maxColumnBytes max: (self unsizedBlobSize + 1))
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> unsizedString [
 
 	"Unsized = only limited by the maximum column size.
@@ -947,7 +876,7 @@ SSWSQLDialect >> unsizedString [
 		ifFalse: [self unsizedStringTypeForSize: self unsizedStringSize]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> unsizedStringSize [
 
 	"unsizedStringSize stores the size assumed for Strings in persistent classes if no explicit size is given.
@@ -962,7 +891,7 @@ SSWSQLDialect >> unsizedStringSize [
 	^unsizedStringSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDialect >> unsizedStringSize: anInteger [
 
 	unsizedStringSize := anInteger.
@@ -971,7 +900,7 @@ SSWSQLDialect >> unsizedStringSize: anInteger [
 	self maxColumnBytes: (self maxColumnBytes max: (self unsizedStringSize + 1))
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> unsizedStringTypeForSize: anInteger [
 
 	anInteger <= self maxColumnBytes ifTrue: 
@@ -980,7 +909,7 @@ SSWSQLDialect >> unsizedStringTypeForSize: anInteger [
 	self error: 'No String type found for size <1p> - consider increasing maxColumnBytes'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> unsizedStringTypes [
 
 	"Return a collection of associations between the maximum size of an unsized String type (i.e. one whose type declaration does not include its size, c.f. varchar), and its name in this dialect.
@@ -992,7 +921,7 @@ SSWSQLDialect >> unsizedStringTypes [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLDialect >> updateDelaySeconds [
 
 	"In some DBs, an update may not be immediately visible in other sessions. 
@@ -1002,13 +931,13 @@ SSWSQLDialect >> updateDelaySeconds [
 	^0
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> uuid [
 
 	^(self blobTypeForSize: 16) expandMacrosWith: 16
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLDialect >> varchar [
 
 	^'VARCHAR(<1p>)'

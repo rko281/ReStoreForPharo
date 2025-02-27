@@ -1,6 +1,6 @@
 Class {
-	#name : #SSWReStoreProxyNonForwardingTest,
-	#superclass : #SSWReStoreHierarchyTest,
+	#name : 'SSWReStoreProxyNonForwardingTest',
+	#superclass : 'SSWReStoreHierarchyTest',
 	#instVars : [
 		'sup',
 		'mid',
@@ -11,16 +11,17 @@ Class {
 		'all',
 		'transactionCriticalAction'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreProxyNonForwardingTest class >> allTestSelectors [
 
 	^self testSelectors
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProxyNonForwardingTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -33,7 +34,7 @@ SSWReStoreProxyNonForwardingTest >> addClassesTo: aReStore [
 	(aReStore tableForClass: SimplePerson) define: #orders as: (OrderedCollection of: Integer).
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProxyNonForwardingTest >> createTestData [
 
 	{(SimplePerson new firstName: 'simon'; surname: 'simple'). (SimplePerson2 new firstName: 'simon'; surname: 'simple'). (DetailedPerson new firstName: 'des'; surname: 'detailed')} storeAllIn: reStore.
@@ -50,7 +51,7 @@ SSWReStoreProxyNonForwardingTest >> createTestData [
 	all := {sup. mid. sub. detailed. simple. simple2}
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> critical: aBlock [
 
 	"Private - I'm pretending to be a Mutex"
@@ -63,7 +64,7 @@ SSWReStoreProxyNonForwardingTest >> critical: aBlock [
 	^aBlock value
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> critical: aBlock ifLocked: lockedBlock [
 
 	"Private - I'm pretending to be a Mutex"
@@ -71,7 +72,7 @@ SSWReStoreProxyNonForwardingTest >> critical: aBlock ifLocked: lockedBlock [
 	^self critical: aBlock
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> do: aBlock beforeTransactionCriticalIn: actionBlock [
 
 	| mutex |
@@ -85,7 +86,7 @@ SSWReStoreProxyNonForwardingTest >> do: aBlock beforeTransactionCriticalIn: acti
 		transactionCriticalAction := nil]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> prePreemptDuring: aBlock [
 
 	"Private - Arrange for proxy forwarding methods to be pre-preempted right at the start (i.e. swapped before anything happens)"
@@ -100,13 +101,13 @@ SSWReStoreProxyNonForwardingTest >> prePreemptDuring: aBlock [
 		SSWDBProxy flushMethodCache].
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> preemptAndSwapProxy: aProxy before: actionBlock [
 
 	self do: [aProxy _swap] beforeTransactionCriticalIn: actionBlock
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProxyNonForwardingTest >> readTestDataWithoutObjects [
 
 	| ids |
@@ -125,7 +126,7 @@ SSWReStoreProxyNonForwardingTest >> readTestDataWithoutObjects [
 	all do: [ :each | self assert: each _proxiedObject isNil]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testClassPrePreempted [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -140,7 +141,7 @@ SSWReStoreProxyNonForwardingTest >> testClassPrePreempted [
 		self assert: detailed class equals: DetailedPerson]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testClassPreempted [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -154,7 +155,7 @@ SSWReStoreProxyNonForwardingTest >> testClassPreempted [
 	self preemptAndSwapProxy: detailed before: [self assert: detailed class equals: DetailedPerson]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testClassWithObject [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -170,7 +171,7 @@ SSWReStoreProxyNonForwardingTest >> testClassWithObject [
 	all do: [ :each | self assert: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testClassWithoutObject [
 
 	| supers |
@@ -202,7 +203,7 @@ SSWReStoreProxyNonForwardingTest >> testClassWithoutObject [
 	supers do: [ :each | self assert: each _class equals: each _proxiedObject class]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testDebugPrintStringPrePreempted [
 
 	| expectedPrintStrings |
@@ -217,7 +218,7 @@ SSWReStoreProxyNonForwardingTest >> testDebugPrintStringPrePreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testDebugPrintStringPreempted [
 
 	| expectedPrintStrings |
@@ -232,7 +233,7 @@ SSWReStoreProxyNonForwardingTest >> testDebugPrintStringPreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testDebugPrintStringWithObject [
 
 	| expectedPrintStrings |
@@ -249,7 +250,7 @@ SSWReStoreProxyNonForwardingTest >> testDebugPrintStringWithObject [
 	all do: [ :each | self assert: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testDebugPrintStringWithoutObject [
 
 	| expectedPrintStrings |
@@ -266,7 +267,7 @@ SSWReStoreProxyNonForwardingTest >> testDebugPrintStringWithoutObject [
 	all do: [ :each | self assert: each _proxiedObject isNil]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testEqualsPreempted [
 
 	"= rather than assert:equals: is deliberate in this method"
@@ -284,7 +285,7 @@ SSWReStoreProxyNonForwardingTest >> testEqualsPreempted [
 	self preemptAndSwapProxy: detailed before: [self deny: (detailed = mid)]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testEqualsWithObject [
 
 	"= rather than assert:equals: is deliberate in this method"
@@ -306,7 +307,7 @@ SSWReStoreProxyNonForwardingTest >> testEqualsWithObject [
 	self deny: detailed isDBProxy.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testEqualsWithoutObject [
 
 	"= rather than assert:equals: is deliberate in this method"
@@ -331,7 +332,7 @@ SSWReStoreProxyNonForwardingTest >> testEqualsWithoutObject [
 	self deny: detailed isDBProxy.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testHashPrePreempted [
 
 	self prePreemptDuring: 
@@ -354,7 +355,7 @@ SSWReStoreProxyNonForwardingTest >> testHashPrePreempted [
 		self assert: detailed hash equals: expectedHash]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testHashPreempted [
 
 	| expectedHash |
@@ -376,7 +377,7 @@ SSWReStoreProxyNonForwardingTest >> testHashPreempted [
 	self preemptAndSwapProxy: detailed before: [self assert: detailed hash equals: expectedHash]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testHashWithObject [
 
 	| expectedHash |
@@ -406,7 +407,7 @@ SSWReStoreProxyNonForwardingTest >> testHashWithObject [
 	self deny: detailed isDBProxy.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testHashWithoutObject [
 
 	| expectedHash |
@@ -434,7 +435,7 @@ SSWReStoreProxyNonForwardingTest >> testHashWithoutObject [
 	self deny: detailed isDBProxy.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfCollectionPrePreempted [
 
 	simple orders size.
@@ -446,7 +447,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfCollectionPrePreempted [
 	self prePreemptDuring: [self assert: (simple orders isKindOf: Collection)]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfCollectionPreempted [
 
 	simple orders size.
@@ -458,7 +459,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfCollectionPreempted [
 	self preemptAndSwapProxy: simple orders before: [self assert: (simple orders isKindOf: Collection)]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfPrePreempted [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -469,7 +470,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfPrePreempted [
 		(all first: 4) do: [ :each | self assert: (each isKindOf: SuperPerson)]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfPreempted [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -479,7 +480,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfPreempted [
 	(all first: 4) do: [ :each | self preemptAndSwapProxy: each before: [self assert: (each isKindOf: SuperPerson)]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfWithCollection [
 
 	simple orders size.
@@ -493,7 +494,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfWithCollection [
 	self deny: (simple orders isKindOf: Array).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfWithObject [
 
 	| supers |
@@ -520,7 +521,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfWithObject [
 	all do: [ :each | self assert: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfWithoutCollection [
 
 	self assert: simple orders isDBProxy.
@@ -531,7 +532,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfWithoutCollection [
 	self deny: (simple orders isKindOf: Array).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testIsKindOfWithoutObject [
 
 	| supers |
@@ -569,7 +570,7 @@ SSWReStoreProxyNonForwardingTest >> testIsKindOfWithoutObject [
 	supers do: [ :each | self assert: each _class equals: each _proxiedObject class]. 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintOnPrePreempted [
 
 	| expectedPrintStrings |
@@ -588,7 +589,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintOnPrePreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintOnPreempted [
 
 	| expectedPrintStrings |
@@ -606,7 +607,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintOnPreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintOnWithObject [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -617,7 +618,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintOnWithObject [
 	all do: [ :each | self assert: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintOnWithoutObject [
 
 	| stream |
@@ -649,7 +650,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintOnWithoutObject [
 			ifFalse: ["Needs the proxiedObject to determine the class and/or printString"	self deny: detailed _proxiedObject isNil]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintStringPrePreempted [
 
 	| expectedPrintStrings |
@@ -664,7 +665,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintStringPrePreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintStringPreempted [
 
 	| expectedPrintStrings |
@@ -679,7 +680,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintStringPreempted [
 	all do: [ :each | self deny: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintStringWithObject [
 
 	all do: [ :each | self assert: each isDBProxy].
@@ -690,7 +691,7 @@ SSWReStoreProxyNonForwardingTest >> testPrintStringWithObject [
 	all do: [ :each | self assert: each isDBProxy]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxyNonForwardingTest >> testPrintStringWithoutObject [
 
 	self readTestDataWithoutObjects.

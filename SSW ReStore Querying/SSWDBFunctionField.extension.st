@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBFunctionField }
+Extension { #name : 'SSWDBFunctionField' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 SSWDBFunctionField >> forConcatenation [
 
 	^SSWDBQueryConditionCollection with: self

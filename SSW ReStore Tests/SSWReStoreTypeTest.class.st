@@ -4,24 +4,25 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreTypeTest,
-	#superclass : #SSWReStoreTest,
+	#name : 'SSWReStoreTypeTest',
+	#superclass : 'SSWReStoreTest',
 	#instVars : [
 		'date',
 		'time',
 		'datetime',
 		'typeTest'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTypeTest >> addClassesTo: aReStore [
 
 	aReStore addClass: TypeTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTypeTest >> createTestData [
 
 	datetime := DateAndTime now withResolution: reStore sqlDialect maxDateTimeResolution.
@@ -34,12 +35,12 @@ SSWReStoreTypeTest >> createTestData [
 		varchar: 'VARCHAR';
 		medText: ((String new: 2000) atAllPut: $M; yourself);
 		largeText: ((String new: 5000) atAllPut: $L; yourself);
-		unsizedText: ((String new: 6000) atAllPut: $U; yourself);
+		unsizedText: ((String new: self unsizedSize) atAllPut: $U; yourself);
 
 		tinyBlob: (ByteArray withAll: (0 to: 240));
 		medBlob: ((ByteArray new: 2000) atAllPut: 200; yourself);
 		largeBlob: ((ByteArray new: 5000) atAllPut: 220; yourself);
-		unsizedBlob: ((ByteArray new: 6000) atAllPut: 240; yourself);
+		unsizedBlob: ((ByteArray new: self unsizedSize) atAllPut: 240; yourself);
 
 		integer: 123;
 		largeInteger: 1234567890;
@@ -62,14 +63,14 @@ SSWReStoreTypeTest >> createTestData [
 	self readTypeTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTypeTest >> readTypeTest [
 
 	reStore simulateReconnect.
 	typeTest := (TypeTest storedInstancesIn: reStore) first
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testANSI [
 
 	"Test a String containing only ANSI characters"
@@ -77,7 +78,7 @@ SSWReStoreTypeTest >> testANSI [
 	self testStrings: #[99 97 102 101] asAnsiString "cafe"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testBytes [
 
 	| bytes allBytes tiny med large id |
@@ -114,13 +115,13 @@ SSWReStoreTypeTest >> testBytes [
 		self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each unsizedBlob = allBytes]) identicalTo: typeTest]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testDate [
 
 	self assert: (typeTest date = date)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testDateQuery [
 
 	| t2 |
@@ -131,7 +132,7 @@ SSWReStoreTypeTest >> testDateQuery [
 	self assert: t2 time = typeTest time
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTypeTest >> testDateTime [
 
 	reStore sqlDialect defaultDateTimeResolution = 0
@@ -139,7 +140,7 @@ SSWReStoreTypeTest >> testDateTime [
 		ifFalse: [self assert: (typeTest datetime = (datetime withResolution: reStore sqlDialect defaultDateTimeResolution))]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTypeTest >> testDateTimeQuery [
 
 	| t |
@@ -151,7 +152,7 @@ SSWReStoreTypeTest >> testDateTimeQuery [
 	self assert: t notNil
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTypeTest >> testDateTimeWithMilliseconds [
 
 	reStore sqlDialect maxDateTimeResolution < 3 ifTrue: [^self].
@@ -160,13 +161,13 @@ SSWReStoreTypeTest >> testDateTimeWithMilliseconds [
 	self assert: ((typeTest datetimeWithMilliseconds - (datetime withResolution: 3)) <= 1 milliseconds)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testDecimal [
 
 	self assert: (typeTest decimal = 12345.6789s4)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testExtendedANSI [
 
 	"Test a String containing an extended ANSI character"
@@ -177,22 +178,26 @@ SSWReStoreTypeTest >> testExtendedANSI [
 	self testStrings: #[99 97 102 233] asAnsiString "café"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testGeneral [
 
-	self assert: typeTest char trimBlanks equals: 'CHAR'.
+	self assert: typeTest char trimNulls "<- most dialects pad with nulls" trimBlanks "<- Postgres pads with whitespace" equals: 'CHAR'.
 	self assert: typeTest varchar equals: 'VARCHAR'.
 	self assert: typeTest medText equals: ((String new: 2000) atAllPut: $M; yourself).
 	self assert: typeTest largeText equals: ((String new: 5000) atAllPut: $L; yourself).
-	self assert: typeTest unsizedText equals: ((String new: 6000) atAllPut: $U; yourself).
+	self assert: typeTest unsizedText equals: ((String new: self unsizedSize) atAllPut: $U; yourself).
 	self assert: typeTest integer equals: 123.
 	self assert: typeTest largeInteger equals: 1234567890.
 	self assert: typeTest float equals: 123.456.
 	self assert: typeTest trueBoolean equals: true.
-	self assert: typeTest falseBoolean equals: false
+	self assert: typeTest falseBoolean equals: false.
+	self assert: typeTest tinyBlob equals: (ByteArray withAll: (0 to: 240)).
+	self assert: typeTest medBlob equals: ((ByteArray new: 2000) atAllPut: 200; yourself).
+	self assert: typeTest largeBlob equals: ((ByteArray new: 5000) atAllPut: 220; yourself).
+	self assert: typeTest unsizedBlob equals: ((ByteArray new: self unsizedSize) atAllPut: 240; yourself)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testIntegerRange [
 
 	typeTest integer: reStore sqlDialect integerMaximum; store.
@@ -204,7 +209,7 @@ SSWReStoreTypeTest >> testIntegerRange [
 	self assert: typeTest integer = reStore sqlDialect integerMinimum.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testLargeIntegerRange [
 
 	typeTest largeInteger: reStore sqlDialect largeIntegerMaximum; store.
@@ -216,7 +221,7 @@ SSWReStoreTypeTest >> testLargeIntegerRange [
 	self assert: typeTest largeInteger = reStore sqlDialect largeIntegerMinimum.
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testNullBoolean [
 
 	"Verify a NULL returned in a Boolean field gives the configured nullBoolean object"
@@ -245,7 +250,7 @@ SSWReStoreTypeTest >> testNullBoolean [
 	self assert: typeTest trueBoolean equals: false
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTypeTest >> testStrings: aString [
 
 	| id |
@@ -275,14 +280,14 @@ SSWReStoreTypeTest >> testStrings: aString [
 		[self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each unsizedText = aString]) identicalTo: typeTest]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testTime [
 
 	"Use difference of <= 1 second to take account of different roundings in image and db"
 	self assert: (typeTest time asSeconds - time asSeconds) abs <= 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testTimeQuery [
 
 	| t2 |
@@ -296,7 +301,7 @@ SSWReStoreTypeTest >> testTimeQuery [
 	self assert: t2 date = typeTest date
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUTF8_2 [
 
 	"Test a String containing a 2-byte UTF8 character"
@@ -304,7 +309,7 @@ SSWReStoreTypeTest >> testUTF8_2 [
 	self testStrings: (Utf8String fromByteArray: #[99 97 102 195 169]) "café"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUTF8_3 [
 
 	"Test a String containing a 3-byte UTF8 character"
@@ -312,7 +317,7 @@ SSWReStoreTypeTest >> testUTF8_3 [
 	self testStrings: (Utf8String fromByteArray: #[99 97 102 226 130 172]) "caf€"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUTF8_4 [
 
 	"Test a String containing a 4-byte UTF8 character"
@@ -320,7 +325,7 @@ SSWReStoreTypeTest >> testUTF8_4 [
 	self testStrings: (Utf8String fromByteArray: #[99 97 102 240 160 156 142]) "caf𠜎"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUTF8_mixed [
 
 	"Test a String containing a mixture of UTF8 characters"
@@ -328,13 +333,13 @@ SSWReStoreTypeTest >> testUTF8_mixed [
 	self testStrings: (Utf8String fromByteArray: #[195 156 98 195 168 114 115 116 114 195 174 195 177 103 195 169]) "Übèrstrîñgé"
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUUID [
 
 	self assert: typeTest uuid equals: self uuid
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testUUIDQuery [
 
 	| t1 t2 |
@@ -348,7 +353,57 @@ SSWReStoreTypeTest >> testUUIDQuery [
 	self assert: t2 isNil
 ]
 
-{ #category : #constants }
+{ #category : 'public' }
+SSWReStoreTypeTest >> testVeryLargeBlob [
+
+	| size instance |
+
+	"10MB"
+	size := 10 * 1024 * 1024.
+
+	TypeTest new
+		varchar: 'Very Large Blob';
+		unsizedBlob: ((ByteArray new: size) atAllPut: 128; at: 1 put: 0; at: size put: 255; yourself);
+		storeIn: reStore.
+
+	reStore simulateReconnect.
+
+	instance := (TypeTest storedInstancesIn: reStore) detect: [ :each | each varchar = 'Very Large Blob'].
+	self assert: instance unsizedBlob size equals: size.
+	self assert: instance unsizedBlob first equals: 0.
+	self assert: instance unsizedBlob second equals: 128.
+	self assert: instance unsizedBlob last equals: 255.
+]
+
+{ #category : 'public' }
+SSWReStoreTypeTest >> testVeryLargeString [
+
+	| size instance |
+
+	"10MB"
+	size := 10 * 1024 * 1024.
+
+	TypeTest new
+		varchar: 'Very Large String';
+		unsizedText: ((String new: size) atAllPut: $V; at: 1 put: $A; at: size put: $Z; yourself);
+		storeIn: reStore.
+
+	reStore simulateReconnect.
+
+	instance := (TypeTest storedInstancesIn: reStore) detect: [ :each | each varchar = 'Very Large String'].
+	self assert: instance unsizedText size equals: size.
+	self assert: instance unsizedText first equals: $A.
+	self assert: instance unsizedText second equals: $V.
+	self assert: instance unsizedText last equals: $Z.
+]
+
+{ #category : 'constants' }
+SSWReStoreTypeTest >> unsizedSize [
+
+	^2 ** 17
+]
+
+{ #category : 'constants' }
 SSWReStoreTypeTest >> uuid [
 
 	^GUID fromString: '{e8beea63-43db-41e6-99e4-f31a64abd779}'

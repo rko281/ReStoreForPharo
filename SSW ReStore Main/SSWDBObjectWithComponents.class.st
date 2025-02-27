@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBObjectWithComponents,
-	#superclass : #SSWDBWrapper,
+	#name : 'SSWDBObjectWithComponents',
+	#superclass : 'SSWDBWrapper',
 	#instVars : [
 		'exclusions',
 		'originatingComponent'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBObjectWithComponents class >> new [
 
 	^super new
@@ -21,7 +22,7 @@ SSWDBObjectWithComponents class >> new [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBObjectWithComponents >> _changedObjectsIn: aReStore [
 
 	| allChanged |
@@ -33,7 +34,7 @@ SSWDBObjectWithComponents >> _changedObjectsIn: aReStore [
 	^allChanged
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBObjectWithComponents >> _checkHasChangedIn: aReStore [
 
 	"true if either the object itself has changed, or any of its components (or their components, recursively) have changed"
@@ -43,19 +44,19 @@ SSWDBObjectWithComponents >> _checkHasChangedIn: aReStore [
 	^false
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _commitIn: aReStore [
 
 	self withComponentsIn: aReStore do: [ :each | each _commitIn: aReStore]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _forceRefreshIn: aReStore [
 
 	self _refreshIn: aReStore with: [ :obj | obj _forceRefreshWithContents]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _lazyRefreshIn: aReStore [
 
 	| all |
@@ -67,19 +68,19 @@ SSWDBObjectWithComponents >> _lazyRefreshIn: aReStore [
 	all do: [ :each | each _lazyRefreshIn: aReStore]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _refreshIfUpdatedIn: aReStore [
 
 	self _refreshIn: aReStore with: [ :obj | obj _refreshWithContentsIfUpdated]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _refreshIn: aReStore [
 
 	self _refreshIn: aReStore with: [ :obj | obj _refreshWithContents]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _refreshIn: aReStore with: aBlock [
 
 	"Private - Refresh objects represented by the receiver by evaluating each one with aBlock. Each evaluation should return a collection of refreshed objects"
@@ -100,13 +101,13 @@ SSWDBObjectWithComponents >> _refreshIn: aReStore with: aBlock [
 	all do: [ :each | (evaluated includes: each) ifFalse: [evaluated addAll: (aBlock value: each)]]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBObjectWithComponents >> _rollbackIn: aReStore [
 
 	self withComponentsIn: aReStore do: [ :each | each _rollbackIn: aReStore]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBObjectWithComponents >> componentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet [
 
 	(aReStore tableForClass: self object class ifAbsent: [nil]) ifNotNil: 
@@ -120,39 +121,39 @@ SSWDBObjectWithComponents >> componentsIn: aReStore do: aBlock visited: visitedS
 					withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectWithComponents >> exclusions [
 	^exclusions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectWithComponents >> exclusions: anObject [
 	exclusions := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBObjectWithComponents >> originatingComponent [
 	^originatingComponent
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBObjectWithComponents >> originatingComponent: anObject [
 	originatingComponent := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBObjectWithComponents >> withComponents [
 
 	^self
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBObjectWithComponents >> withComponentsIn: aReStore do: aBlock [
 
 	self withComponentsIn: aReStore do: aBlock visited: self exclusions copy evaluated: IdentitySet new
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBObjectWithComponents >> withComponentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet [
 
 	(self object isNil or: [visitedSet includes: self object]) ifTrue: [^self].
@@ -165,7 +166,7 @@ SSWDBObjectWithComponents >> withComponentsIn: aReStore do: aBlock visited: visi
 	self object _isRecovered ifTrue: [self componentsIn: aReStore do: aBlock visited: visitedSet evaluated: evaluatedSet]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBObjectWithComponents >> without: anObject [
 
 	"Exclude anObject from the components of the receiver's object that will be traversed by the receiver"
@@ -174,7 +175,7 @@ SSWDBObjectWithComponents >> without: anObject [
 	^self
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBObjectWithComponents >> withoutAll: aCollection [
 
 	"Exclude all elements of aCollection from the components of the receiver's object that will be traversed by the receiver"

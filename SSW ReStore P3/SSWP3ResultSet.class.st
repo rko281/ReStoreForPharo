@@ -3,7 +3,9 @@ Class {
 	#superclass : 'P3Result',
 	#instVars : [
 		'query',
-		'dataStream'
+		'dataStream',
+		'columns',
+		'statement'
 	],
 	#category : 'SSW ReStore P3',
 	#package : 'SSW ReStore P3'
@@ -14,6 +16,18 @@ SSWP3ResultSet >> close [
 
 	"In Dolphin this closes the result set, leaving the statement open.
 	Nothing to do here"
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> columns [
+
+	^columns
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> cursorType [
+
+	^#forwardOnly
 ]
 
 { #category : 'accessing' }
@@ -38,6 +52,8 @@ SSWP3ResultSet >> first [
 
 { #category : 'initialize-release' }
 SSWP3ResultSet >> free [
+
+	statement free
 ]
 
 { #category : 'enumerating' }
@@ -86,7 +102,13 @@ SSWP3ResultSet >> query [
 
 { #category : 'accessing' }
 SSWP3ResultSet >> query: anObject [
-	query := anObject
+	query := anObject.
+	columns :=  descriptions collect: 
+		[ :each | 
+		SSWDBCColAttr new 
+			name: each fieldName; 
+			field:  (query fieldNamed: each fieldName);
+			yourself].
 ]
 
 { #category : 'accessing' }
@@ -118,7 +140,10 @@ SSWP3ResultSet >> results: rCollection descriptions: dCollection data: dtCollect
 { #category : 'enumerating' }
 SSWP3ResultSet >> rowWith: someData [
 
-	^SSWP3Row newWithColumns: descriptions data: someData query: self query
+	^SSWP3Row new
+		columns: self columns;
+		data: someData;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -131,4 +156,16 @@ SSWP3ResultSet >> size [
 SSWP3ResultSet >> species [
 
 	^OrderedCollection
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> statement [
+
+	^ statement
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> statement: anObject [
+
+	statement := anObject
 ]

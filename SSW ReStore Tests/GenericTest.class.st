@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #GenericTest,
-	#superclass : #Object,
+	#name : 'GenericTest',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'component'
@@ -14,10 +14,11 @@ Class {
 		'componentDefinition',
 		'reStoreIDClass'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 GenericTest class >> componentDefinition: anObject [
 
 	componentDefinition := anObject
@@ -25,65 +26,65 @@ GenericTest class >> componentDefinition: anObject [
 	
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 GenericTest class >> reStoreDefinition [
 
 	^super reStoreDefinition 
 		define: #name as: (String maxSize: 128);
-		define: #component as: componentDefinition;
+		define: #component as: (componentDefinition ifNil: [Integer] ifNotNil: [ :cd | cd isClass ifTrue: [cd] ifFalse: [cd copy]]);
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest class >> reStoreIDClass [
 	^reStoreIDClass ifNil: [super reStoreIDClass]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest class >> reStoreIDClass: anObject [
 	reStoreIDClass := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GenericTest >> = a [
 
 	^self name = a name
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GenericTest >> addToMultiKeyDictionary: aTest [
 
 	^(self component at: aTest key ifAbsentPut: [OrderedCollection new]) add: aTest
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GenericTest >> addToSingleKeyDictionary: aTest [
 
 	^self component at: aTest key put: aTest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest >> component [
 	^component
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest >> component: anObject [
 	component := anObject
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GenericTest >> hash [
 
 	^self name hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GenericTest >> name: anObject [
 	name := anObject
 ]

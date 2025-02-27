@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreBlockIfNilQueryTest,
-	#superclass : #SSWReStoreQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreBlockIfNilQueryTest',
+	#superclass : 'SSWReStoreQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreBlockIfNilQueryTest class >> shouldInheritSelectors [
 
 	^false
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testCollectPersistentObjectIfNil [
 
 	| results |
@@ -33,7 +34,7 @@ SSWReStoreBlockIfNilQueryTest >> testCollectPersistentObjectIfNil [
 		
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testCollectSimpleObjectIfNil [
 
 	| persons john results |
@@ -47,7 +48,7 @@ SSWReStoreBlockIfNilQueryTest >> testCollectSimpleObjectIfNil [
 	self assert: (results allSatisfy: [ :each | (each first age isNil and: [each last = -1]) or: [each first age notNil and: [each last = each first age]]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testCollectSimpleObjectWithFunctionIfNil [
 
 	| persons results |
@@ -59,7 +60,7 @@ SSWReStoreBlockIfNilQueryTest >> testCollectSimpleObjectWithFunctionIfNil [
 	self assert: (results allSatisfy: [ :each | (each first emailAddress isNil and: [each last = (each first firstName, '@unknown.com')]) or: [each first emailAddress notNil and: [each last = each first emailAddress]]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testSelectPersistentObjectIfNil [
 
 	| persons john results |
@@ -74,7 +75,7 @@ SSWReStoreBlockIfNilQueryTest >> testSelectPersistentObjectIfNil [
 	self assert: (results allSatisfy: [ :each | each == john or: [each friend == john]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testSelectSimpleObjectIfNil [
 
 	| persons john results |
@@ -89,7 +90,7 @@ SSWReStoreBlockIfNilQueryTest >> testSelectSimpleObjectIfNil [
 	self assert: (results allSatisfy: [ :each | each = john or: [each age = 20]])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBlockIfNilQueryTest >> testSelectSimpleObjectWithFunctionIfNil [
 
 	| persons results |

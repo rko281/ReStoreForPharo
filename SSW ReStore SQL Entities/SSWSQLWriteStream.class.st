@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLWriteStream,
-	#superclass : #WriteStream,
+	#name : 'SSWSQLWriteStream',
+	#superclass : 'WriteStream',
 	#instVars : [
 		'dialect',
 		'fieldAliases',
@@ -14,10 +14,11 @@ Class {
 		'parameterizedValues',
 		'placeholderCount'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLWriteStream class >> newIn: anSSWSQLDialect [
 
 	^(self on: (String new: 32))
@@ -30,7 +31,7 @@ SSWSQLWriteStream class >> newIn: anSSWSQLDialect [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> dialect [
 
 	"dialect stores the SSWSQLDialect of the database for which the receiver stream is writing SQL"
@@ -38,7 +39,7 @@ SSWSQLWriteStream >> dialect [
 	^dialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> dialect: anSSWSQLDialect [
 
 	"dialect stores the SSWSQLDialect of the database for which the receiver stream is writing SQL"
@@ -46,7 +47,7 @@ SSWSQLWriteStream >> dialect: anSSWSQLDialect [
 	dialect := anSSWSQLDialect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> fieldAliases [
 
 	"fieldAliases stores an IdentityDictionary mapping SSWSQLFields to an aliased name
@@ -55,7 +56,7 @@ SSWSQLWriteStream >> fieldAliases [
 	^fieldAliases
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> fieldAliases: anIdentityDictionary [
 
 	"fieldAliases stores an IdentityDictionary mapping SSWSQLFields to an aliased name
@@ -64,13 +65,13 @@ SSWSQLWriteStream >> fieldAliases: anIdentityDictionary [
 	fieldAliases := anIdentityDictionary
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLWriteStream >> hasParameterizedFields [
 
 	^self parameterizedFields isEmpty not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> nextFieldAlias [
 
 	^self dialect transformInstVarName: ('field_', (self fieldAliases size + 1) printString) asSymbol
@@ -78,7 +79,7 @@ SSWSQLWriteStream >> nextFieldAlias [
 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPut: anObject forField: aField [
 
 	"Always use a parameterized field if possible"
@@ -88,7 +89,7 @@ SSWSQLWriteStream >> nextPut: anObject forField: aField [
 		ifFalse: [anObject writeSQLOn: self]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutAliasedField: anSSWSQLField [
 
 	"Append to the receiver an aliased representation of anSSWSQLField"
@@ -99,7 +100,7 @@ SSWSQLWriteStream >> nextPutAliasedField: anSSWSQLField [
 		nextPutAll: (self fieldAliases at: anSSWSQLField ifAbsentPut: [self nextFieldAlias])
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutAliasedTable: anSSWSQLTable [
 
 	"Append to the receiver an aliased representation of anSSWSQLTable"
@@ -107,7 +108,7 @@ SSWSQLWriteStream >> nextPutAliasedTable: anSSWSQLTable [
 	self nextPutAll: (self tableAliases at: anSSWSQLTable ifAbsentPut: [self nextTableAlias])
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutIdentifier: aString [
 
 	self 
@@ -116,14 +117,14 @@ SSWSQLWriteStream >> nextPutIdentifier: aString [
 		nextPut: self dialect identifierQuoteClose
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutParameterPlaceholder [
 
 	self placeholderCount: self placeholderCount + 1.
 	self dialect printParameterPlaceholder: self placeholderCount on: self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutParameterizedValue: anObject forField: aField [
 
 	self nextPutParameterPlaceholder.
@@ -131,43 +132,53 @@ SSWSQLWriteStream >> nextPutParameterizedValue: anObject forField: aField [
 	self parameterizedValues add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'printing' }
+SSWSQLWriteStream >> nextPutPossiblyAliasedField: anSSWSQLField [
+
+	"Append to the receiver anSSWSQLField, using any already-defined alias"
+
+	(self fieldAliases at: anSSWSQLField  ifAbsent: [nil])
+		ifNil: [anSSWSQLField writeSQLOn: self]
+		ifNotNil: [ :alias | self nextPutAll: alias]
+]
+
+{ #category : 'accessing' }
 SSWSQLWriteStream >> nextTableAlias [
 
 	^self dialect transformClassName: ('table', (self tableAliases size + 1) printString) asSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> parameterizedFields [
 	^parameterizedFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> parameterizedFields: anObject [
 	parameterizedFields := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> parameterizedValues [
 	^parameterizedValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> parameterizedValues: anObject [
 	parameterizedValues := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> placeholderCount [
 	^placeholderCount
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> placeholderCount: anObject [
 	placeholderCount := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> tableAliases [
 
 	"tableAliases stores an IdentityDictionary mapping SSWSQLTables to an aliased name
@@ -176,7 +187,7 @@ SSWSQLWriteStream >> tableAliases [
 	^tableAliases
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLWriteStream >> tableAliases: anIdentityDictionary [
 
 	"tableAliases stores an IdentityDictionary mapping SSWSQLTables to an aliased name
@@ -185,7 +196,7 @@ SSWSQLWriteStream >> tableAliases: anIdentityDictionary [
 	tableAliases := anIdentityDictionary
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 SSWSQLWriteStream >> writeSQLFor: anObject [
 
 	anObject writeSQLOn: self

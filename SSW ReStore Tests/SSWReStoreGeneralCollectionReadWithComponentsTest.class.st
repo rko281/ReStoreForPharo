@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreGeneralCollectionReadWithComponentsTest,
-	#superclass : #SSWReStoreReadWithComponentsTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreGeneralCollectionReadWithComponentsTest',
+	#superclass : 'SSWReStoreReadWithComponentsTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGeneralCollectionReadWithComponentsTest class >> testSelectors [
 
 	^self myTestSelectors
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreGeneralCollectionReadWithComponentsTest >> ordersCollectionDefinition [
 
 	"General (non-owned) collection"

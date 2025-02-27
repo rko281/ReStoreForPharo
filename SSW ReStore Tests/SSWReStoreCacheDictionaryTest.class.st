@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreCacheDictionaryTest,
-	#superclass : #SSWReStoreGenericTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreCacheDictionaryTest',
+	#superclass : 'SSWReStoreGenericTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreCacheDictionaryTest >> componentDefinition [
 
 	^Dictionary of: #key -> GenericOwnedTest dependent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreCacheDictionaryTest >> templateTestObject [
 
 	| template |
@@ -29,7 +30,7 @@ SSWReStoreCacheDictionaryTest >> templateTestObject [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testIncludes [
 
 	| instances people alan dave |
@@ -49,7 +50,7 @@ SSWReStoreCacheDictionaryTest >> testIncludes [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testIncludesAssociation [
 
 	| instances people alan dave |
@@ -70,7 +71,7 @@ SSWReStoreCacheDictionaryTest >> testIncludesAssociation [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testIncludesKey [
 
 	| instances |
@@ -80,7 +81,7 @@ SSWReStoreCacheDictionaryTest >> testIncludesKey [
 	self deny: (instances anySatisfy: [ :each | each component includesKey: 'z'])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreCacheDictionaryTest >> testNamed: aString [
 
 	^GenericOwnedTest new 
@@ -89,7 +90,7 @@ SSWReStoreCacheDictionaryTest >> testNamed: aString [
 		yourself
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testReadAllFetch [
 
 	| testObjects queryCount |
@@ -110,7 +111,7 @@ SSWReStoreCacheDictionaryTest >> testReadAllFetch [
 	self assert: queryCount equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testReadAllInclude [
 
 	| testObjects queryCount |
@@ -131,7 +132,7 @@ SSWReStoreCacheDictionaryTest >> testReadAllInclude [
 	self assert: queryCount equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRefreshAdditionOfNewKey [
 
 	| dave |
@@ -147,7 +148,7 @@ SSWReStoreCacheDictionaryTest >> testRefreshAdditionOfNewKey [
 	self assert: (testObject component at: 'd') equals: dave
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRefreshRemovalOfAllKeys [
 
 	testObject2 component keys do: [ :each | testObject2 component removeKey: each].
@@ -159,7 +160,7 @@ SSWReStoreCacheDictionaryTest >> testRefreshRemovalOfAllKeys [
 	self assert: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRefreshRemovalOfKey [
 
 	testObject2 component removeKey: 'b'.
@@ -172,7 +173,7 @@ SSWReStoreCacheDictionaryTest >> testRefreshRemovalOfKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRefreshReplacementAtExistingKey [
 
 	| barry bill barryName |
@@ -193,7 +194,7 @@ SSWReStoreCacheDictionaryTest >> testRefreshReplacementAtExistingKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = barryName]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRollbackAdditionOfNewKey [
 
 	| dave |
@@ -207,7 +208,7 @@ SSWReStoreCacheDictionaryTest >> testRollbackAdditionOfNewKey [
 	self assert: testObject component keys asSortedCollection asArray equals: #('a' 'b' 'c')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRollbackRemovalOfAllKeys [
 
 	testObject component keys do: [ :each | testObject component removeKey: each].
@@ -218,7 +219,7 @@ SSWReStoreCacheDictionaryTest >> testRollbackRemovalOfAllKeys [
 	self deny: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRollbackRemovalOfKey [
 
 	testObject component removeKey: 'b'.
@@ -229,7 +230,7 @@ SSWReStoreCacheDictionaryTest >> testRollbackRemovalOfKey [
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testRollbackReplacementAtExistingKey [
 
 	| barry bill |
@@ -244,7 +245,7 @@ SSWReStoreCacheDictionaryTest >> testRollbackReplacementAtExistingKey [
 	self deny: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name = barry name]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testStoreAdditionOfNewKey [
 
 	| dave |
@@ -260,7 +261,7 @@ SSWReStoreCacheDictionaryTest >> testStoreAdditionOfNewKey [
 	self assert: (testObject component at: 'd') equals: dave
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testStoreRemovalOfAllKeys [
 
 	testObject component keys do: [ :each | testObject component removeKey: each].
@@ -272,7 +273,7 @@ SSWReStoreCacheDictionaryTest >> testStoreRemovalOfAllKeys [
 	self assert: (GenericOwnedTest storedInstancesIn: reStore) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testStoreRemovalOfKey [
 
 	testObject component removeKey: 'b'.
@@ -285,7 +286,7 @@ SSWReStoreCacheDictionaryTest >> testStoreRemovalOfKey [
 	self assert: ((GenericOwnedTest storedInstancesIn: reStore) select: [ :each | each name first asLowercase = $b]) isEmpty
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreCacheDictionaryTest >> testStoreReplacementAtExistingKey [
 
 	| barry bill |

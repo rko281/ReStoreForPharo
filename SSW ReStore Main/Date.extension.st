@@ -1,11 +1,7 @@
-Extension { #name : #Date }
+Extension { #name : 'Date' }
 
-{ #category : #'*SSW ReStore Main' }
-Date class >> instanceFromDBValue: aValue in: anSSWReStore [
+{ #category : '*SSW ReStore Main' }
+Date class >> instanceFromDBString: aString [
 
-	"aValue may be some other object which can convert itself to a Date"
-	
-	^(aValue isNil or: [aValue class = Date])
-		ifTrue: [aValue]
-		ifFalse: [anSSWReStore sqlDialect dateFrom: aValue]
+	^self readFrom: aString readStream format: 'yyyy-MM-dd'
 ]

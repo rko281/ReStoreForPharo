@@ -1,14 +1,15 @@
 Class {
-	#name : #TestWithEvents,
-	#superclass : #TestWithEventsAbstract,
+	#name : 'TestWithEvents',
+	#superclass : 'TestWithEventsAbstract',
 	#instVars : [
 		'items',
 		'count'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 TestWithEvents class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -16,46 +17,46 @@ TestWithEvents class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEvents >> _count [
 	^count
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEvents >> count [
 	^count ifNil: [count := self items size]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEvents >> items [
 	^items
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TestWithEvents >> items: anObject [
 	items := anObject
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 TestWithEvents >> onRecovered [
 
 	super onRecovered.
 	count := self items size
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 TestWithEvents >> onRefresh [
 
 	count := self items size
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 TestWithEvents >> onRollback [
 
 	count := nil
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 TestWithEvents >> removeItem: anItem [
 
 	self count.

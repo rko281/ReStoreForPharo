@@ -1,10 +1,11 @@
 Class {
-	#name : #SSWDBSortedOwnedCollectionSpec,
-	#superclass : #SSWDBOwnedCollectionSpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBSortedOwnedCollectionSpec',
+	#superclass : 'SSWDBOwnedCollectionSpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBSortedOwnedCollectionSpec >> hasCollection: updatedCollection anyAdditionsOrRemovalsFrom: originalCollection [
 
 	updatedCollection size = originalCollection size ifFalse: [^true].
@@ -14,7 +15,7 @@ SSWDBSortedOwnedCollectionSpec >> hasCollection: updatedCollection anyAdditionsO
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBSortedOwnedCollectionSpec >> queryClass [
 
 	"Return the correct query class to use for the receiver"
@@ -22,7 +23,7 @@ SSWDBSortedOwnedCollectionSpec >> queryClass [
 	^SSWSQLOrderedSelectQuery
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWDBSortedOwnedCollectionSpec >> setOrderingSpecs [
 
 	self orderingSpecs: (self templateCollection orderingSpecsFor: self targetClass in: self reStore)

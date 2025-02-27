@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionAddition,
-	#superclass : #SSWDBCollectionChange,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBCollectionAddition',
+	#superclass : 'SSWDBCollectionChange',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBCollectionAddition class >> added: anObject at: keyObject [
 
 	^self newWithEntry:
@@ -19,13 +20,13 @@ SSWDBCollectionAddition class >> added: anObject at: keyObject [
 			yourself)
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionAddition >> applyTo: aCollection [
 
 	self affectedEntry addTo: aCollection
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionAddition >> commitFor: aCollectionProxy [
 
 	"	self affectedEntry target isNil
@@ -35,7 +36,7 @@ SSWDBCollectionAddition >> commitFor: aCollectionProxy [
 	aCollectionProxy _collectionSpec insertEntry: self affectedEntry
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionAddition >> prepareToCommitFor: aCollectionProxy [
 
 	| table |

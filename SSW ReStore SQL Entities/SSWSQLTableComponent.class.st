@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLTableComponent,
-	#superclass : #Object,
+	#name : 'SSWSQLTableComponent',
+	#superclass : 'Object',
 	#instVars : [
 		'table'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLTableComponent class >> forTable: anSSWDBTable [
 
 	^self new
@@ -20,7 +21,7 @@ SSWSQLTableComponent class >> forTable: anSSWDBTable [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableComponent >> table [
 
 	"table stores the SQLTable to which the receiver belongs"
@@ -28,7 +29,7 @@ SSWSQLTableComponent >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableComponent >> table: anSSWDBTable [
 
 	"table stores the SQLTable to which the receiver belongs"

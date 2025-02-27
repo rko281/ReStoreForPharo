@@ -4,17 +4,18 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionBlockReceiver,
-	#superclass : #SSWDBBlockEvaluator,
+	#name : 'SSWDBCollectionBlockReceiver',
+	#superclass : 'SSWDBBlockEvaluator',
 	#instVars : [
 		'collectionSpec',
 		'collection',
 		'currentMode'
 	],
-	#category : #'SSW ReStore Querying'
+	#category : 'SSW ReStore Querying',
+	#package : 'SSW ReStore Querying'
 }
 
-{ #category : #'parsing-comparisons' }
+{ #category : 'parsing-comparisons' }
 SSWDBCollectionBlockReceiver >> <= aValue [
 
 	self validateSizeMode.
@@ -22,7 +23,7 @@ SSWDBCollectionBlockReceiver >> <= aValue [
 	^self conditionWithAggregatedQuery: (self localSelectQueryFrom: [ :each | each count <= aValue])
 ]
 
-{ #category : #'parsing-comparisons' }
+{ #category : 'parsing-comparisons' }
 SSWDBCollectionBlockReceiver >> = aValue [
 
 	self validateSizeMode.
@@ -32,7 +33,7 @@ SSWDBCollectionBlockReceiver >> = aValue [
 		ifFalse: [self conditionWithAggregatedQuery: (self localSelectQueryFrom: [ :each | each count = aValue])]
 ]
 
-{ #category : #'parsing-comparisons' }
+{ #category : 'parsing-comparisons' }
 SSWDBCollectionBlockReceiver >> > aValue [
 
 	self validateSizeMode.
@@ -40,7 +41,7 @@ SSWDBCollectionBlockReceiver >> > aValue [
 	^self conditionWithAggregatedQuery: (self localSelectQueryFrom: [ :each | each count > aValue])
 ]
 
-{ #category : #'parsing-comparisons' }
+{ #category : 'parsing-comparisons' }
 SSWDBCollectionBlockReceiver >> >= aValue [
 
 	self validateSizeMode.
@@ -48,7 +49,7 @@ SSWDBCollectionBlockReceiver >> >= aValue [
 	^self conditionWithAggregatedQuery: (self localSelectQueryFrom: [ :each | each count >= aValue])
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> anySatisfy: aBlock [
 
 	"Return an appropriate subquery condition"
@@ -61,29 +62,29 @@ SSWDBCollectionBlockReceiver >> anySatisfy: aBlock [
 			yourself)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> collection [
 
 	^collection ifNil: [collection := self reStore instancesOf: self collectionSpec targetClass]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> collectionParser [
 
 	^self collection parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> collectionSpec [
 	^collectionSpec
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> collectionSpec: anObject [
 	collectionSpec := anObject
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> conditionWithAggregatedQuery: aQuery [
 
 	^self conditionWithQuery:
@@ -93,7 +94,7 @@ SSWDBCollectionBlockReceiver >> conditionWithAggregatedQuery: aQuery [
 			yourself)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> conditionWithQuery: aQuery [
 
 	^self newCondition 
@@ -102,7 +103,7 @@ SSWDBCollectionBlockReceiver >> conditionWithQuery: aQuery [
 		to: aQuery asSubQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> currentMode [
 
 	"currentMode stores a Symbol indicating the mode in which the next message send will be interpreted - this denotes any special handling of the next message.
@@ -111,7 +112,7 @@ SSWDBCollectionBlockReceiver >> currentMode [
 	^currentMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> currentMode: aSymbol [
 
 	"currentMode stores a Symbol indicating the mode in which the next message send will be interpreted - this denotes any special handling of the next message.
@@ -120,13 +121,13 @@ SSWDBCollectionBlockReceiver >> currentMode: aSymbol [
 	currentMode := aSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> currentTable [
 
 	self error: 'not appropriate'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> finalField [
 
 	self parser qualifyingConditions: (self parser qualifyingConditions sqlAnd: self collectionParser qualifyingConditions).
@@ -134,7 +135,7 @@ SSWDBCollectionBlockReceiver >> finalField [
 	^self finalFieldFor: self targetTableFromParser
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> finalFieldFor: aTable [
 
 	"Private - Derive a SQL function from the current mode"
@@ -146,19 +147,19 @@ SSWDBCollectionBlockReceiver >> finalFieldFor: aTable [
 	^self error: 'unknown function ', self currentMode
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> first [
 
 	self currentMode: #first
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionBlockReceiver >> hasFinalField [
 
 	^#(#size #first #last) includes: self currentMode
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> includes: anObject [
 
 	"Turn into an equivalent anySatisfy:"
@@ -166,7 +167,7 @@ SSWDBCollectionBlockReceiver >> includes: anObject [
 	^self anySatisfy: [ :each | each _id = anObject]
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> includesAssociation: anAssociation [
 
 	"For dictionaires - turn into an equivalent anySatisfy:"
@@ -174,7 +175,7 @@ SSWDBCollectionBlockReceiver >> includesAssociation: anAssociation [
 	^self anySatisfy: [ :each | ((self collectionSpec keyAccessor value: each) = anAssociation key) & (each _id = anAssociation value)]
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> includesKey: anObject [
 
 	"For dictionaires - turn into an equivalent anySatisfy:"
@@ -182,7 +183,7 @@ SSWDBCollectionBlockReceiver >> includesKey: anObject [
 	^self anySatisfy: [ :each | (self collectionSpec keyAccessor value: each) = anObject]
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> isEmpty [
 
 	"Return an appropriate subquery condition"
@@ -195,7 +196,7 @@ SSWDBCollectionBlockReceiver >> isEmpty [
 		to: self targetFieldCollectQuery asSubQuery
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionBlockReceiver >> isKindOf: aClass [ 
 
 	"Overriden due to 'odd' behaviour of #class in the receiver"
@@ -206,13 +207,13 @@ SSWDBCollectionBlockReceiver >> isKindOf: aClass [
 		with: SSWDBOwnedCollectionBlockReceiver) includes: aClass
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> last [
 
 	self currentMode: #last
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> localSelectQueryFrom: aOneArgBlock [
 
 	"For subqueries on the collection which originate in the receiver only (hence the #local prefix) - this may have implications for subclasses"
@@ -220,19 +221,19 @@ SSWDBCollectionBlockReceiver >> localSelectQueryFrom: aOneArgBlock [
 	^self collectionParser selectQueryFrom: aOneArgBlock
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> qualifyCollectionParserWith: aBlock [
 
 	self collectionParser qualifyWith: aBlock
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> resetCurrentMode [
 
 	self currentMode: nil
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> select: aBlock [
 
 	"Qualify the targerParser for further processing"
@@ -244,7 +245,7 @@ SSWDBCollectionBlockReceiver >> select: aBlock [
 	^self
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> selectQueryFrom: aOneArgBlock [
 
 	"For subqueries on the collection, e.g. [ :person | person orders select: [ :each | ...]] - the latter block is the subquery block"
@@ -252,13 +253,13 @@ SSWDBCollectionBlockReceiver >> selectQueryFrom: aOneArgBlock [
 	^self collectionParser selectQueryFrom: aOneArgBlock
 ]
 
-{ #category : #'parsing-collection messages' }
+{ #category : 'parsing-collection messages' }
 SSWDBCollectionBlockReceiver >> size [
 
 	self currentMode: #size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> targetField [
 
 	"Return the field which represents the target object of (actual member of) the collection"
@@ -266,7 +267,7 @@ SSWDBCollectionBlockReceiver >> targetField [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> targetFieldCollectQuery [
 
 	"Return a collect: query for returning the target field from the collection"
@@ -274,7 +275,7 @@ SSWDBCollectionBlockReceiver >> targetFieldCollectQuery [
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionBlockReceiver >> targetTableFromParser [
 
 	"Ensure the target collection table is included in the parser.
@@ -283,14 +284,14 @@ SSWDBCollectionBlockReceiver >> targetTableFromParser [
 	^self subclassResponsibility
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWDBCollectionBlockReceiver >> validateSizeMode [
 
 	self currentMode = #size ifFalse: [self error: 'comparison message received when not in #size mode'].
 	self resetCurrentMode
 ]
 
-{ #category : #'parsing-comparisons' }
+{ #category : 'parsing-comparisons' }
 SSWDBCollectionBlockReceiver >> ~= aValue [
 
 	self validateSizeMode.

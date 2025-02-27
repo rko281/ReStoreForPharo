@@ -1,6 +1,6 @@
-Extension { #name : #SSWSQLiteDialect }
+Extension { #name : 'SSWSQLiteDialect' }
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLiteDialect >> createNamespaceSQLFor: aString [
 
 	"Since there is no filename given, map this to creating a temporary attached database"
@@ -8,13 +8,13 @@ SSWSQLiteDialect >> createNamespaceSQLFor: aString [
 	^'ATTACH DATABASE '''' AS ', (self asIdentifier: aString)
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLiteDialect >> dropNamespaceSQLFor: aString [
 
 	^'DETACH DATABASE ', (self asIdentifier: aString)
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLiteDialect >> shouldRollbackOnQuery [
 
 	"Seems to be required to avoid locking issues"
@@ -22,7 +22,7 @@ SSWSQLiteDialect >> shouldRollbackOnQuery [
 	^true
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLiteDialect >> shouldUseColumnsStatement [
 
 	"Under the SQLite ODBC driver ODBCColumnsStatement returns the character length for wide string columns, rather than the buffer length.
@@ -31,7 +31,7 @@ SSWSQLiteDialect >> shouldUseColumnsStatement [
 	^false
 ]
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWSQLiteDialect >> tableNamesInNamespace: aString for: anODBCConnection [
 
 	| stream table results |

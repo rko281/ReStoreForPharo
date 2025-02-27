@@ -1,9 +1,9 @@
 Extension { #name : 'MySQLError' }
 
 { #category : '*SSW ReStore MySQL' }
-MySQLError >> asSSWMySQLResultSet [
+MySQLError >> rowsAffected [ 
 
-	self signalError
+	^0
 ]
 
 { #category : '*SSW ReStore MySQL' }

@@ -31,7 +31,7 @@ SSWMySQLConnection >> beginTransaction [
 	self query: 'BEGIN'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 SSWMySQLConnection >> columnNamesForTable: aDBTable [
 
 	| stream |
@@ -40,6 +40,12 @@ SSWMySQLConnection >> columnNamesForTable: aDBTable [
 	stream nextPutAll: 'SHOW COLUMNS FROM '; writeSQLFor: aDBTable.
 
 	^(self execute: stream contents) collect: [ :row | row first ]
+]
+
+{ #category : 'accessing' }
+SSWMySQLConnection >> commandQueryClass [
+
+	^SSWMySQLCommandQuery
 ]
 
 { #category : 'transactions' }
@@ -86,7 +92,11 @@ SSWMySQLConnection >> error: aString [
 { #category : 'running' }
 SSWMySQLConnection >> execute: aString [
 
-	^self query: aString
+	| result |
+
+	result := self query: aString.
+	result isError ifTrue: [result signalError].
+	^result
 ]
 
 { #category : 'testing' }
@@ -109,12 +119,6 @@ SSWMySQLConnection >> prepare: queryString [
 		cursoredFetch: false;
 		typeMapResults: false;
 		yourself
-]
-
-{ #category : 'running' }
-SSWMySQLConnection >> query: aString [
-
-	^(super query: aString) asSSWMySQLResultSet
 ]
 
 { #category : 'transactions' }

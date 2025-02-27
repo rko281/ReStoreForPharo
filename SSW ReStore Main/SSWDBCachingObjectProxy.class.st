@@ -4,21 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCachingObjectProxy,
-	#superclass : #SSWDBObjectProxy,
+	#name : 'SSWDBCachingObjectProxy',
+	#superclass : 'SSWDBObjectProxy',
 	#instVars : [
 		'copyObject'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _acquireCopyObject [
 
 	copyObject := self _dbTable copyForProxy: proxiedObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCachingObjectProxy >> _checkHasChanged [
 
 	"Use the copy object to determine these"
@@ -32,7 +33,7 @@ SSWDBCachingObjectProxy >> _checkHasChanged [
 				current _hasChangedFrom: (accessor valueIn: copyObject)]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCachingObjectProxy >> _copyObject [
 
 	"The receiver automatically detects changes to its proxiedObject by maintaining a shallow copy
@@ -41,7 +42,7 @@ SSWDBCachingObjectProxy >> _copyObject [
 	^copyObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCachingObjectProxy >> _copyObject: anObject [
 
 	"The receiver automatically detects changes to its proxiedObject by maintaining a shallow copy
@@ -50,7 +51,7 @@ SSWDBCachingObjectProxy >> _copyObject: anObject [
 	copyObject := anObject
 ]
 
-{ #category : #'accessing:derived' }
+{ #category : 'accessing:derived' }
 SSWDBCachingObjectProxy >> _fieldUpdates [
 
 	"Use the copy object to determine these"
@@ -64,7 +65,7 @@ SSWDBCachingObjectProxy >> _fieldUpdates [
 		updates]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _forgetProxiedObject [
 
 	"Override to reset the copyObject"
@@ -73,7 +74,7 @@ SSWDBCachingObjectProxy >> _forgetProxiedObject [
 	^super _forgetProxiedObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _matchStateOf: aProxy [
 
 	"Match the internal proxy (non data) state of aProxy"
@@ -81,14 +82,14 @@ SSWDBCachingObjectProxy >> _matchStateOf: aProxy [
 	^self
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _postCommitStore [
 
 	super _postCommitStore.
 	self _acquireCopyObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _postCommitUpdates [
 
 	| updates |
@@ -98,7 +99,7 @@ SSWDBCachingObjectProxy >> _postCommitUpdates [
 	updates isEmpty ifFalse: [updates copyTo: copyObject]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _prepareToCommit [
 
 	"Intercept to check for overwriten dependent objects - unstore these (issue#0006)"
@@ -119,7 +120,7 @@ SSWDBCachingObjectProxy >> _prepareToCommit [
 	^super _prepareToCommit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCachingObjectProxy >> _proxiedObject: anObject [
 
 	"Overriden to set the copyObject"
@@ -128,7 +129,7 @@ SSWDBCachingObjectProxy >> _proxiedObject: anObject [
 	self _acquireCopyObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _recoverProxiedObject [
 
 	"Override to check for deleted status"
@@ -138,7 +139,7 @@ SSWDBCachingObjectProxy >> _recoverProxiedObject [
 	super _recoverProxiedObject
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _refreshAndRollforward [
 
 	"Apply the changes made to the receiver to the current representation in the DB.
@@ -153,7 +154,7 @@ SSWDBCachingObjectProxy >> _refreshAndRollforward [
 		ifFalse: [false]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _refreshAndRollforwardFrom: currentProxyObject [
 
 	"Update the receiver such that it is based on the state of currentProxyObject
@@ -184,7 +185,7 @@ SSWDBCachingObjectProxy >> _refreshAndRollforwardFrom: currentProxyObject [
 		true]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 
 	"Return whether the proxiedObject was refreshed at all.
@@ -198,7 +199,7 @@ SSWDBCachingObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 		[false]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _resolveUpdateConflicts [
 
 	"Changes to the receiver have failed to commit in anSSWReStore due to another client's changes.
@@ -215,7 +216,7 @@ SSWDBCachingObjectProxy >> _resolveUpdateConflicts [
 		ifFalse: [false]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _resolveUpdateConflictsWith: currentProxyObject [
 
 	"Changes to the receiver have failed to commit in anSSWReStore due to another client's changes.
@@ -259,7 +260,7 @@ SSWDBCachingObjectProxy >> _resolveUpdateConflictsWith: currentProxyObject [
 	^true
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _rollbackUpdates [
 
 	"Private - Forget any updates by instantiating from the copyObject.
@@ -277,7 +278,7 @@ SSWDBCachingObjectProxy >> _rollbackUpdates [
 		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBCachingObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
 
 	| collectionProxy |
@@ -288,7 +289,7 @@ SSWDBCachingObjectProxy >> _updateCollectionProxyUsing: aCollectionSpec [
 	^collectionProxy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCachingObjectProxy >> _valuesForAccessor: anInstVarAccessor [
 
 	"Return the value(s) in the receiver's proxy object(s) which could be accessed by anInstVarAccessor.
@@ -304,7 +305,7 @@ SSWDBCachingObjectProxy >> _valuesForAccessor: anInstVarAccessor [
 		ifFalse: [Array with: proxyValue with: copyValue]
 ]
 
-{ #category : #forwarding }
+{ #category : 'forwarding' }
 SSWDBCachingObjectProxy >> inspect [
 
 	"Prevent inspecting of a deleted object"

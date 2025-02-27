@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBCollectionEntry,
-	#superclass : #Object,
+	#name : 'SSWDBCollectionEntry',
+	#superclass : 'Object',
 	#instVars : [
 		'table',
 		'entryID',
 		'sourceID',
 		'target'
 	],
-	#category : #'SSW ReStore Collections'
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #persistence }
+{ #category : 'persistence' }
 SSWDBCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 
 	^(SSWDBTable forClass: self)
@@ -28,7 +29,7 @@ SSWDBCollectionEntry class >> dbTableNamed: aString in: anSSWReStore [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionEntry >> _dbTable [
 
 	"Make the receiver polymorphic with a persistent proxy"
@@ -36,7 +37,7 @@ SSWDBCollectionEntry >> _dbTable [
 	^self table
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionEntry >> _id [
 
 	"Make the receiver polymorphic with a persistent proxy"
@@ -44,7 +45,7 @@ SSWDBCollectionEntry >> _id [
 	^self entryID
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionEntry >> _id: anInteger [
 
 	"Make the receiver polymorphic with a persistent proxy"
@@ -52,7 +53,7 @@ SSWDBCollectionEntry >> _id: anInteger [
 	self entryID: anInteger
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBCollectionEntry >> _proxiedObject [
 
 	"Make the receiver polymorphic with a persistent proxy"
@@ -60,25 +61,25 @@ SSWDBCollectionEntry >> _proxiedObject [
 	^self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionEntry >> addTargetTo: aCollection [
 
 	aCollection _dbAdd: self target
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionEntry >> addTo: aCollectionOfEntries [
 
 	aCollectionOfEntries add: self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionEntry >> copyTargetTo: aCollection [
 
 	aCollection _dbAdd: self target copy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> entryID [
 
 	"entryID stores the unique ID of this particular entry object"
@@ -86,7 +87,7 @@ SSWDBCollectionEntry >> entryID [
 	^entryID
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> entryID: anInteger [
 
 	"entryID stores the unique ID of this particular entry object"
@@ -94,31 +95,31 @@ SSWDBCollectionEntry >> entryID: anInteger [
 	entryID := anInteger
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionEntry >> hasMutableTarget [
 
 	^self target class isMutableDirectlyPersistedNonBaseClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBCollectionEntry >> isPersistent [
 
 	^self entryID ~= nil
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionEntry >> prepareToCommitFor: anSSWDBCachingCollectionProxy [
 
 	^self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBCollectionEntry >> removeFrom: aCollectionOfEntries [
 
 	aCollectionOfEntries removeAtIndex: (aCollectionOfEntries identityIndexOf: self)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> sourceID [
 
 	"sourceID stores the unique ID of the object which owns the collection 
@@ -127,7 +128,7 @@ SSWDBCollectionEntry >> sourceID [
 	^sourceID
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> sourceID: anInteger [
 
 	"sourceID stores the unique ID of the object which owns the collection 
@@ -136,7 +137,7 @@ SSWDBCollectionEntry >> sourceID: anInteger [
 	sourceID := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> table [
 
 	"table stores the SSWDBTable of collection entries which the receiver belongs to"
@@ -144,7 +145,7 @@ SSWDBCollectionEntry >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> table: anSSWDBTable [
 
 	"table stores the SSWDBTable of collection entries which the receiver belongs to"
@@ -152,13 +153,13 @@ SSWDBCollectionEntry >> table: anSSWDBTable [
 	table := anSSWDBTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> target [
 
 	^target
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBCollectionEntry >> target: anObjectOrNil [
 
 	"Set the target object of the receiver"

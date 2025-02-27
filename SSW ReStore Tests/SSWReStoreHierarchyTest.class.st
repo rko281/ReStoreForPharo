@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreHierarchyTest,
-	#superclass : #SSWReStoreTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreHierarchyTest',
+	#superclass : 'SSWReStoreTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> _testClassOfProxyOfIndirectInstanceOf: aClass [
 	"Verify that, even when recovered via a second path, and without specifying the class as part of the retrieval,
 	the class of the proxy of an object from a persistent hierarchy is set correctly (previously not the case for leaf classes)"
@@ -18,13 +19,13 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfIndirectInstanceOf: aClass [
 		recoveredBy: [:proxy | (reStore instancesOf: SuperPerson) asOrderedCollection collect: [:each | each firstName]].
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass [
 
 	self _testClassOfProxyOfInstanceOf: aClass recoveredBy: [ :proxy | proxy firstName]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aBlock [
 	"Verify that, when recovered using aBlock after initially being an unrecovered proxy,
 	the class of the proxy of an object from a persistent hierarchy is set correctly.
@@ -33,7 +34,7 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	| owner proxy |
 	"Just using MidPerson here for its reference to SuperPerson in its midFriend inst var"
 	owner := MidPerson new firstName: 'owner'.
-	owner midFriend: (aClass storedInstancesIn: reStore) first.
+	owner midFriend: (aClass storedInstancesIn: reStore) withoutInheritance first.
 	owner storeIn: reStore.
 	reStore simulateReconnect.
 
@@ -60,17 +61,17 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	reStore simulateReconnect.
 	owner := (MidPerson storedInstancesIn: reStore) detect: [:each | each firstName = 'owner'].
 	aClass mutableAspects
-		keysAndValuesDo: [:i :sym | self assert: ((owner midFriend perform: sym) isBitSet: i)]
+		keysAndValuesDo: [:i :sym | self assert: ((owner midFriend perform: sym) isBitSet: i)].
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreHierarchyTest >> addClassesTo: aReStore [
 
 	aReStore
 		addClassWithSubclasses: SuperPerson
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreHierarchyTest >> createTestData [
 
 	(Array
@@ -81,12 +82,12 @@ SSWReStoreHierarchyTest >> createTestData [
 	reStore simulateReconnect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test01VerifySetUp [
 	self assert: ((SuperPerson storedInstancesIn: reStore ) size = 3)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test02Counts [
 
 	| insts |
@@ -110,7 +111,7 @@ SSWReStoreHierarchyTest >> test02Counts [
 	self assert: (insts size = 1)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test03Querying [
 
 	"Querying for actual aspects"
@@ -137,7 +138,7 @@ SSWReStoreHierarchyTest >> test03Querying [
 	self assert: ((subPersons satisfying: [ :each | each firstName = 'mike']) size = 1).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test04Classes [
 
 	"Test proxies respond correctly to class both with and without cached proxy"
@@ -168,7 +169,7 @@ SSWReStoreHierarchyTest >> test04Classes [
 	self assert: (mike age = 22)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test05MidFirst [
 
 	"Test a previously-erroring case where #first failed for mid and sub class collections (did not filter by class)"
@@ -180,7 +181,7 @@ SSWReStoreHierarchyTest >> test05MidFirst [
 	self should: [(midPersons satisfying: [ :each | each firstName = 'john']) first] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> test06SubFirst [
 
 	"Test a previously-erroring case where #first failed for mid and sub class collections (did not filter by class)"
@@ -193,43 +194,43 @@ SSWReStoreHierarchyTest >> test06SubFirst [
 	self should: [(subPersons satisfying: [ :each | each firstName = 'john']) first] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfIndirectMidInstance [
 
 	self _testClassOfProxyOfIndirectInstanceOf: MidPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfIndirectSubInstance [
 
 	self _testClassOfProxyOfIndirectInstanceOf: SubPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfIndirectSuperInstance [
 
 	self _testClassOfProxyOfIndirectInstanceOf: SuperPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfMidInstance [
 
 	self _testClassOfProxyOfInstanceOf: MidPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfSubInstance [
 
 	self _testClassOfProxyOfInstanceOf: SubPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testClassOfProxyOfSuperInstance [
 
 	self _testClassOfProxyOfInstanceOf: SuperPerson
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithInheritance [
 
 	reStore addClassWithSubclasses: AbstractA.
@@ -240,7 +241,7 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithInheritance [
 	self assert: (reStore tableForClass: ConcreteB) name equals: (reStore sqlDialect transformClassName: #AbstractA)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritanceNonPersistentIntermediate [
 
 	[AbstractA class methodDictionary at: #shouldSubclassesInheritPersistency put: (AbstractA class>>#shouldSubclassesInheritPersistencyFalse).
@@ -255,7 +256,7 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritanceNonPersiste
 		AbstractA class flushMethodCache]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritancePersistentIntermediate [
 
 	[AbstractA class methodDictionary at: #shouldSubclassesInheritPersistency put: (AbstractA class>>#shouldSubclassesInheritPersistencyFalse).
@@ -274,7 +275,7 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritancePersistentI
 		AbstractB class flushMethodCache]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritancePersistentIntermediateOldFormat [
 
 	[AbstractA class methodDictionary at: #shouldSubclassesInheritPersistency put: (AbstractA class>>#shouldSubclassesInheritPersistencyFalse).
@@ -293,7 +294,7 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutInheritancePersistentI
 		AbstractB class flushMethodCache]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritancePersistentIntermediate [
 
 	[AbstractB class methodDictionary 
@@ -312,7 +313,7 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 		AbstractB class flushMethodCache]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritancePersistentIntermediateOldFormat [
 
 	[AbstractB class methodDictionary 
@@ -331,12 +332,12 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 		AbstractB class flushMethodCache]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
 	| detailedID midID |
-	midID := (reStore instancesOf: MidPerson) first _id.
+	midID := (reStore instancesOf: MidPerson) withoutInheritance first _id.
 	DetailedPerson1 new storeIn: reStore.
-	detailedID := (reStore instancesOf: DetailedPerson1) first _id.
+	detailedID := (reStore instancesOf: DetailedPerson1) withoutInheritance first _id.
 	reStore simulateReconnect.
 
 	"Attempt to retrieve what is actually a DetailedPerson as if it were a MidPerson (siblings)"

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBSubTable,
-	#superclass : #SSWDBAbstractSubTable,
-	#category : #'SSW ReStore Tables'
+	#name : 'SSWDBSubTable',
+	#superclass : 'SSWDBAbstractSubTable',
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBSubTable >> withAllFields [
 
 	"Return a table equivalent to the receiver but containing all possible fields.	

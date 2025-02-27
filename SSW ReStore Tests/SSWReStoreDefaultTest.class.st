@@ -4,21 +4,22 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreDefaultTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
+	#name : 'SSWReStoreDefaultTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
 	#instVars : [
 		'reStore2'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDefaultTest class >> isAbstract [
 
 	^self == SSWReStoreDefaultTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDefaultTest >> createReStore [
 
 	"Private - Use the default instance"
@@ -26,7 +27,7 @@ SSWReStoreDefaultTest >> createReStore [
 	reStore := ReStore
 ]
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreDefaultTest >> newAlan [
 
 	^SimplePerson new
@@ -38,7 +39,7 @@ SSWReStoreDefaultTest >> newAlan [
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDefaultTest >> setUp [
 
 	super setUp.
@@ -50,7 +51,7 @@ SSWReStoreDefaultTest >> setUp [
 	self addClassesTo: reStore2
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreDefaultTest >> tearDown [
 
 	reStore2 isNil ifFalse: 

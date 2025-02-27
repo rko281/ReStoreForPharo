@@ -1,13 +1,14 @@
 Class {
-	#name : #SSWDBInstVarDefinition,
-	#superclass : #Object,
+	#name : 'SSWDBInstVarDefinition',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBInstVarDefinition class >> name: aSymbol [
 
 	^self new
@@ -15,13 +16,13 @@ SSWDBInstVarDefinition class >> name: aSymbol [
 		yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SSWDBInstVarDefinition >> asInstVarName [
 
 	^self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarDefinition >> databaseFieldNameIn: anSSWDBTable [
 
 	"Return the corresponding field name of this inst var in anSSWDBTable"
@@ -29,12 +30,12 @@ SSWDBInstVarDefinition >> databaseFieldNameIn: anSSWDBTable [
 	^anSSWDBTable dbNameFor: self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarDefinition >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBInstVarDefinition >> name: anObject [
 	name := anObject
 ]

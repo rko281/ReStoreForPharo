@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBGeneralCollectionProxy,
-	#superclass : #SSWDBCollectionProxy,
+	#name : 'SSWDBGeneralCollectionProxy',
+	#superclass : 'SSWDBCollectionProxy',
 	#instVars : [
 		'collectionEntries',
 		'changes'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _changes [
 
 	"During commit, changes temporatily stores a Collection of 	SSWDBCollectionChanges 
@@ -22,7 +23,7 @@ SSWDBGeneralCollectionProxy >> _changes [
 	^changes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _changes: anOrderedCollection [
 
 	"During commit, changes temporatily stores a Collection of 	SSWDBCollectionChanges 
@@ -31,7 +32,7 @@ SSWDBGeneralCollectionProxy >> _changes: anOrderedCollection [
 	changes := anOrderedCollection
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBGeneralCollectionProxy >> _checkHasChanged [
 
 	| changed |
@@ -47,7 +48,7 @@ SSWDBGeneralCollectionProxy >> _checkHasChanged [
 	^changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _collectionEntries [
 
 	"The receiver automatically detects changes to its proxiedObject collection
@@ -56,7 +57,7 @@ SSWDBGeneralCollectionProxy >> _collectionEntries [
 	^collectionEntries
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _collectionEntries: aCollection [
 
 	"The receiver automatically detects changes to its proxiedObject collection
@@ -66,7 +67,7 @@ SSWDBGeneralCollectionProxy >> _collectionEntries: aCollection [
 	collectionSpec preserveCollectionEntries: aCollection
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _commitChanges [
 
 	changes do: [ :change | change commitFor: self].
@@ -95,14 +96,14 @@ SSWDBGeneralCollectionProxy >> _commitChanges [
 	^true
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _forgetProxiedObject [
 
 	collectionEntries := nil.
 	super _forgetProxiedObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBGeneralCollectionProxy >> _hasChanged [
 
 	"Unlike _checkHasChanged, do not clear out the changes - prepareToCommit will use them"
@@ -112,7 +113,7 @@ SSWDBGeneralCollectionProxy >> _hasChanged [
 	^self _isDeleted or: [self _isPersistent not or: [changes isEmpty not]]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _postCommitChanges [
 
 	self _isPersistent 
@@ -124,7 +125,7 @@ SSWDBGeneralCollectionProxy >> _postCommitChanges [
 		_resetChanges
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _prepareToCommit [
 
 	"The receiver is guaranteed to be sent _hasChanged prior to this method,
@@ -132,13 +133,13 @@ SSWDBGeneralCollectionProxy >> _prepareToCommit [
 	changes do: [ :change | change prepareToCommitFor: self]
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _resetChanges [
 
 	changes := nil
 ]
 
-{ #category : #'actions-internal' }
+{ #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _setChanges [
 
 	self _isPersistent
@@ -161,19 +162,19 @@ SSWDBGeneralCollectionProxy >> _setChanges [
 		[changes := collectionSpec allAdditionsTo: proxiedObject]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBGeneralCollectionProxy >> _shouldUnstoreKey: anObject [
 
 	^self _collectionSpec isKeyDependent and: [(self _proxiedObject includesKey: anObject) not]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBGeneralCollectionProxy >> _shouldUnstoreValue: anObject [
 
 	^self _collectionSpec isValueDependent and: [(self _proxiedObject identityIncludes: anObject) not]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _unchangedCollection [
 
 	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"

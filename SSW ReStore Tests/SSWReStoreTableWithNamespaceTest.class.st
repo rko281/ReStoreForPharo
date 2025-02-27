@@ -1,22 +1,23 @@
 Class {
-	#name : #SSWReStoreTableWithNamespaceTest,
-	#superclass : #SSWReStoreTableTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreTableWithNamespaceTest',
+	#superclass : 'SSWReStoreTableTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTableWithNamespaceTest class >> addDatabaseNameTo: aClassDef [
 
 	aClassDef namespace: SSWReStoreTableWithNamespaceTest namespace
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreTableWithNamespaceTest class >> namespace [
 
 	^'test_namespace'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableWithNamespaceTest >> _test31CrossNamespaceSetup [
 
 	| tables namespaceTables persons |
@@ -36,7 +37,7 @@ SSWReStoreTableWithNamespaceTest >> _test31CrossNamespaceSetup [
 	reStore simulateReconnect
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableWithNamespaceTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
@@ -44,20 +45,20 @@ SSWReStoreTableWithNamespaceTest >> addClassesTo: aReStore [
 	reStore connection createNamespace: self namespace
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreTableWithNamespaceTest >> namespace [
 
 	^self class namespace
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableWithNamespaceTest >> releaseReStore: aReStore [
 
 	reStore connection dropNamespace: self namespace.
 	super releaseReStore: aReStore
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableWithNamespaceTest >> setUp [
 
 	{SimplePerson. SimplePerson2. SuperPerson} do: [ :cls | self addMethod: self class class>>#addDatabaseNameTo: withSelector: #addClassDefinitionTo: toClass: cls class].
@@ -65,7 +66,7 @@ SSWReStoreTableWithNamespaceTest >> setUp [
 	super setUp
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreTableWithNamespaceTest >> tearDown [
 
 	{SimplePerson. SimplePerson2. SuperPerson} do: [ :cls | self removeSelector: #addClassDefinitionTo: fromClass: cls class].
@@ -74,7 +75,7 @@ SSWReStoreTableWithNamespaceTest >> tearDown [
 	[super tearDown] on: reStore connection dbErrorClass do: [ :exc | ('*no such table*' match: exc description) ifTrue: [exc return] ifFalse: [exc pass]]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableWithNamespaceTest >> test00VerifyNamespace [
 
 	| tables namespaceTables |
@@ -90,7 +91,7 @@ SSWReStoreTableWithNamespaceTest >> test00VerifyNamespace [
 	self deny: (namespaceTables includes: 'simple_address')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableWithNamespaceTest >> test02RenameClass [
 
 	"Ensure the renamed class doesn't exist in the standard namespace - various attempts to accomodate different dialects"
@@ -103,7 +104,7 @@ SSWReStoreTableWithNamespaceTest >> test02RenameClass [
 	self assert: ((reStore connection tablesInNamespace: self namespace) includes: 'simple_person2')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableWithNamespaceTest >> test31CrossNamespaceLinking [
 
 	| persons |
@@ -114,7 +115,7 @@ SSWReStoreTableWithNamespaceTest >> test31CrossNamespaceLinking [
 	self assert: (persons allSatisfy: [ :each | each address line1 = ('p', each _id displayString)])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreTableWithNamespaceTest >> test32CrossNamespaceQuerying [
 
 	| persons |

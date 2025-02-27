@@ -1,15 +1,16 @@
 Class {
-	#name : #SSWReStoreDebugTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDebugTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreDebugTest >> _rollbackChanges [
 	"I pretend to be a proxy for some tests"
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreDebugTest >> makeIDEClass [
 
 	Process methodDictionary
@@ -19,7 +20,7 @@ SSWReStoreDebugTest >> makeIDEClass [
 	Process flushMethodCache
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testCommitErrorCleanup [
 
 	"Verify errors during transaction commit clean up the transaction"
@@ -61,7 +62,7 @@ SSWReStoreDebugTest >> testCommitErrorCleanup [
 	reStore rollbackTransaction
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testDebugModeCommitErrorHandling [
 
 	"Verify errors during transaction commit are passed when debug mode is active"
@@ -86,7 +87,7 @@ SSWReStoreDebugTest >> testDebugModeCommitErrorHandling [
 	self should: [john storeIn: reStore] raise: Error matching: [ :exc | exc description = actualErrorText]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testDebugModeMutex [
 
 	"Verify critial section check is bypassed when a send originates in a specific class, when ReStore is in debug mode"
@@ -141,7 +142,7 @@ SSWReStoreDebugTest >> testDebugModeMutex [
 	self assert: done] ensure: [self unmakeIDEClass]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testDebugModePreCommitErrorHandling [
 
 	"Verify errors during transaction pre-commit are passed when debug mode is active"
@@ -170,7 +171,7 @@ SSWReStoreDebugTest >> testDebugModePreCommitErrorHandling [
 	reStore rollbackTransaction
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 
 	"Verify instVarAt: accesses directed to a proxy return the proxy's own instance variables when debug mode is active.
@@ -194,7 +195,7 @@ SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 	self assert: (john _instVarAt: 1 "firstName") equals: 'John'] ensure: [self unmakeIDEClass]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDebugTest >> testPreCommitErrorCleanup [
 
 	"Verify errors during transaction pre-commit clean up the transaction"
@@ -236,7 +237,7 @@ SSWReStoreDebugTest >> testPreCommitErrorCleanup [
 	reStore rollbackTransaction
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreDebugTest >> unmakeIDEClass [
 
 	Process methodDictionary at: #isInIDECallStack put: (Process methodDictionary removeKey: #isInIDECallStackOrig).

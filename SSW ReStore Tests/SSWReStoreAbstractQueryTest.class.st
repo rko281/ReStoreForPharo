@@ -4,18 +4,19 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreAbstractQueryTest,
-	#superclass : #SSWReStorePersonTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreAbstractQueryTest',
+	#superclass : 'SSWReStorePersonTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreAbstractQueryTest class >> isAbstract [
 
 	^self == SSWReStoreAbstractQueryTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreAbstractQueryTest >> createTestData [
 
 	reStore evaluateAsTransaction:
@@ -52,13 +53,13 @@ SSWReStoreAbstractQueryTest >> createTestData [
 		john friend: david]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreAbstractQueryTest >> john [
 
 	^(SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'John']
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreAbstractQueryTest >> sortedPersonFullNames [
 
 	^#('David Smythe' 'Jim Brown' 'John Smith' 'Zoe Brown')

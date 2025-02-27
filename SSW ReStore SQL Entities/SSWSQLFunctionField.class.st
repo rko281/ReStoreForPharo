@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLFunctionField,
-	#superclass : #SSWSQLField,
+	#name : 'SSWSQLFunctionField',
+	#superclass : 'SSWSQLField',
 	#instVars : [
 		'function',
 		'arguments'
 	],
-	#category : #'SSW ReStore SQL Entities'
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunctionField >> arguments [
 
 	"arguments stores the collection of objects which are the arguments to the receiver's function.
@@ -22,7 +23,7 @@ SSWSQLFunctionField >> arguments [
 	^arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunctionField >> arguments: aCollection [
 
 	"arguments stores the collection of objects which are the arguments to the receiver's function.
@@ -31,7 +32,7 @@ SSWSQLFunctionField >> arguments: aCollection [
 	arguments := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunctionField >> function [
 
 	"function stores the SQL string of the function applied to the receiver's field,
@@ -41,7 +42,7 @@ SSWSQLFunctionField >> function [
 	^function
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLFunctionField >> function: aString [
 
 	"function stores the SQL string of the function applied to the receiver's field,
@@ -51,14 +52,14 @@ SSWSQLFunctionField >> function: aString [
 	function := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLFunctionField >> requiresAliasing [
 
 	"Function fields need aliasing for effective lookup, e.g. COUNT(ID) AS Field1"
 	^true
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLFunctionField >> writeAliasedSQLOn: aStream [
 
 	"The receiver does not support the concept of an 'aliased' name; 
@@ -67,7 +68,7 @@ SSWSQLFunctionField >> writeAliasedSQLOn: aStream [
 	^aStream nextPutAliasedField: self
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLFunctionField >> writeSQLOn: aStream [
 
 	| funcStream |

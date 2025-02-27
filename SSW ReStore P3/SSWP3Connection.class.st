@@ -126,6 +126,24 @@ SSWP3Connection >> statementCache: anOrderedCollection [
 	statementCache := anOrderedCollection
 ]
 
+{ #category : 'testing' }
+SSWP3Connection >> supportsScrollableCursors [
+
+	^true
+]
+
+{ #category : 'testing' }
+SSWP3Connection >> supportsScrollableDynamicCursorType [
+
+	^true
+]
+
+{ #category : 'testing' }
+SSWP3Connection >> supportsScrollableStaticCursorType [
+
+	^true
+]
+
 { #category : 'accessing' }
 SSWP3Connection >> tablesInNamespace: aString [
 

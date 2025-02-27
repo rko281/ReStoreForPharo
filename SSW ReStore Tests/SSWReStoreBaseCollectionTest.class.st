@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreBaseCollectionTest,
-	#superclass : #SSWReStoreGenericTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreBaseCollectionTest',
+	#superclass : 'SSWReStoreGenericTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseCollectionTest class >> allTestSelectors [
 
 	^super allTestSelectors reject: [ :each | #(#testReadAllStatementNilled) includes: each]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> _testCommit: aTestObject [
 
 	self assert: aTestObject component class equals: self collectionClass.
@@ -19,7 +20,7 @@ SSWReStoreBaseCollectionTest >> _testCommit: aTestObject [
 	#('Alan' 'Barry' 'Colin' nil 'Daisy' nil) keysAndValuesDo: [ :key :value | self assert: (aTestObject component at: key) equals: value]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> _testVerifySetup: aTestObject [
 
 	self assert: aTestObject component class equals: self collectionClass.
@@ -28,7 +29,7 @@ SSWReStoreBaseCollectionTest >> _testVerifySetup: aTestObject [
 	#('Alan' 'Barry' 'Colin' nil) keysAndValuesDo: [ :key :value | self assert: (aTestObject component at: key) equals: value]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> addToCollection: anObject [
 
 	"Return the key"
@@ -36,7 +37,7 @@ SSWReStoreBaseCollectionTest >> addToCollection: anObject [
 	^self addToCollection: anObject at: testObject component size + 1
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> addToCollection: anObject at: anInteger [
 
 	testObject component add: anObject beforeIndex: anInteger.
@@ -44,19 +45,19 @@ SSWReStoreBaseCollectionTest >> addToCollection: anObject at: anInteger [
 	^anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseCollectionTest >> collectionClass [
 
 	^OrderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseCollectionTest >> componentDefinition [
 
 	^OrderedCollection of: (String maxSize: 64)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> removeFromCollection: anObject [
 
 	"Return the key of the removed object"
@@ -64,7 +65,7 @@ SSWReStoreBaseCollectionTest >> removeFromCollection: anObject [
 	^self removeFromCollection: anObject at: (testObject component indexOf: anObject)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreBaseCollectionTest >> removeFromCollection: anObject at: anInteger [
 
 	"Return the key/index of the removed object"
@@ -74,7 +75,7 @@ SSWReStoreBaseCollectionTest >> removeFromCollection: anObject at: anInteger [
 	^anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreBaseCollectionTest >> templateTestObject [
 
 	| template |
@@ -91,7 +92,7 @@ SSWReStoreBaseCollectionTest >> templateTestObject [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testCommit [
 
 	self 
@@ -105,7 +106,7 @@ SSWReStoreBaseCollectionTest >> testCommit [
 	self _testCommit: testObject
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testDuplicateEntries [
 
 	"Ensure duplicate entries are handled correctly"
@@ -117,7 +118,7 @@ SSWReStoreBaseCollectionTest >> testDuplicateEntries [
 	self assert: (self countQueriesDuring: [testObject store]) equals: 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testHasChanged [
 
 	| key |
@@ -147,7 +148,7 @@ SSWReStoreBaseCollectionTest >> testHasChanged [
 
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testRefresh [
 
 	self _testVerifySetup: testObject2.
@@ -166,7 +167,7 @@ SSWReStoreBaseCollectionTest >> testRefresh [
 	self _testCommit: testObject2
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testRollback [
 
 	self 
@@ -178,7 +179,7 @@ SSWReStoreBaseCollectionTest >> testRollback [
 	self testVerifySetup
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreBaseCollectionTest >> testVerifySetup [
 
 	self _testVerifySetup: testObject

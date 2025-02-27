@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> concatenatedWith: aConcatenatedCollection [
 
 	^aConcatenatedCollection 
@@ -8,13 +8,13 @@ Object >> concatenatedWith: aConcatenatedCollection [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> forConcatenation [
 
 	^self
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> imageDo: imageBlock databaseDo: databaseBlock [
 
 	"Allow different code to be 'evaluated' depending on whether execution is in-image or 'in' the database (in the latter case code is not actually executed but converted to SQL)"
@@ -22,20 +22,20 @@ Object >> imageDo: imageBlock databaseDo: databaseBlock [
 	^imageBlock value
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> isRequiredForSimilarity [
 
 	"Private - Is this object required to be similar when testing similarity of its owner?"
 	^true
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> isSimilarTo: anObject [
 
 	^self perform: anObject similarityComparator with: anObject
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> qualify: instances in: aReStore via: aCollection [
 
 	(aReStore tableForClass: self class) allDataFieldsDo:
@@ -57,7 +57,7 @@ Object >> qualify: instances in: aReStore via: aCollection [
 				[instances qualifyWith: [ :each | (each chainPerform: chain) isSimilarTo: value]]]]
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> similarityComparator [
 
 	"Private - Default is equality"
@@ -65,7 +65,7 @@ Object >> similarityComparator [
 	^#=
 ]
 
-{ #category : #'*SSW ReStore Querying' }
+{ #category : '*SSW ReStore Querying' }
 Object >> || anObject [
 
 	"Concatenate the receiver with anObject, returning the resulting collection"

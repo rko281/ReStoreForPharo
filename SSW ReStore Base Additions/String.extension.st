@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 String class >> fixedSize: anInteger [
 
 	"For DB support: specifies a fixed-sized String of anInteger characters"
@@ -10,13 +10,13 @@ String class >> fixedSize: anInteger [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 String class >> isPersistentBaseClass [
 
 	^true
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 String class >> maxSize: anInteger [
 
 	"For DB support: specifies a variable-sized String with a maximum size of anInteger"
@@ -26,7 +26,7 @@ String class >> maxSize: anInteger [
 		yourself
 ]
 
-{ #category : #'*SSW ReStore Base Additions' }
+{ #category : '*SSW ReStore Base Additions' }
 String >> orNilIfEmpty [
 
 	^self isEmpty

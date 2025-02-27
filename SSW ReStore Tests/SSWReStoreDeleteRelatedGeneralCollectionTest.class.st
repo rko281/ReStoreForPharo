@@ -1,23 +1,24 @@
 Class {
-	#name : #SSWReStoreDeleteRelatedGeneralCollectionTest,
-	#superclass : #SSWReStoreDeleteRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteRelatedGeneralCollectionTest',
+	#superclass : 'SSWReStoreDeleteRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteRelatedGeneralCollectionTest class >> testSelectors [
 
 	^self myTestSelectors
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedGeneralCollectionTest >> deleteQueriesCount [
 
 	"How many queries to delete a collection?"
 	^1
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedGeneralCollectionTest >> ordersCollectionDefinition [
 
 	"General (non-owned) collection"
@@ -25,7 +26,7 @@ SSWReStoreDeleteRelatedGeneralCollectionTest >> ordersCollectionDefinition [
 	^(OrderedCollection of: SimpleProductOrder related)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedGeneralCollectionTest >> testDeleteProxiedCollection [
 
 	| collectionTable allEntriesCount customer2ID customer2EntriesCount |
@@ -42,7 +43,7 @@ SSWReStoreDeleteRelatedGeneralCollectionTest >> testDeleteProxiedCollection [
 	self assert: (reStore executeSQL: 'select count(id) from <1s> where source_id = <2d>' << {collectionTable. customer2ID}) results first contents first equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedGeneralCollectionTest >> testDeleteUnproxiedCollection [
 
 	| collectionTable allEntriesCount customer1ID customer1EntriesCount |

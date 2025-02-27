@@ -1,26 +1,27 @@
 Class {
-	#name : #SSWDBTransactionError,
-	#superclass : #Error,
+	#name : 'SSWDBTransactionError',
+	#superclass : 'Error',
 	#instVars : [
 		'reStore',
 		'isRecovered'
 	],
-	#category : #'SSW ReStore Main'
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTransactionError class >> signalWith: anException in: aReStore [
 
 	^self new signalWith: anException in: aReStore
 ]
 
-{ #category : #handling }
+{ #category : 'handling' }
 SSWDBTransactionError >> _autoRecover [
 
 	self subclassResponsibility
 ]
 
-{ #category : #handling }
+{ #category : 'handling' }
 SSWDBTransactionError >> autoRecover [
 
 	isRecovered ifFalse: 
@@ -28,19 +29,19 @@ SSWDBTransactionError >> autoRecover [
 		isRecovered := true]
 ]
 
-{ #category : #handling }
+{ #category : 'handling' }
 SSWDBTransactionError >> defaultAction [
 
 	^self sessionManager onUnhandledTransactionError: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTransactionError >> isRecovered [
 
 	^isRecovered
 ]
 
-{ #category : #handling }
+{ #category : 'handling' }
 SSWDBTransactionError >> signalWith: anException in: aReStore [
 
 	reStore := aReStore.
@@ -51,13 +52,13 @@ SSWDBTransactionError >> signalWith: anException in: aReStore [
 		ifFalse: [self signal: 'An error occurred during <1s>: <2s>' << {self stage. anException description} with: anException]] ensure: [self autoRecover]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBTransactionError >> stage [
 
 	^self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTransactionError >> transaction [
 
 	^reStore transaction

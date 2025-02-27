@@ -1,13 +1,14 @@
 Class {
-	#name : #ReStoreTestWithIDOnly,
-	#superclass : #Object,
+	#name : 'ReStoreTestWithIDOnly',
+	#superclass : 'Object',
 	#instVars : [
 		'nmbr'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 ReStoreTestWithIDOnly class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -15,12 +16,12 @@ ReStoreTestWithIDOnly class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDOnly >> nmbr [
 	^nmbr
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReStoreTestWithIDOnly >> nmbr: anObject [
 	nmbr := anObject
 ]

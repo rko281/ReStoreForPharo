@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreStringDictionaryTest,
-	#superclass : #SSWReStoreGenericTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreStringDictionaryTest',
+	#superclass : 'SSWReStoreGenericTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreStringDictionaryTest >> componentDefinition [
 
 	^Dictionary of: (String maxSize: 50) -> (String maxSize: 50)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreStringDictionaryTest >> createCheckObjects [
 
 	{GenericTest new name: 'check'; component: 
@@ -31,7 +32,7 @@ SSWReStoreStringDictionaryTest >> createCheckObjects [
 			yourself)} storeAllIn: reStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreStringDictionaryTest >> templateTestObject [
 
 	| template |
@@ -45,7 +46,7 @@ SSWReStoreStringDictionaryTest >> templateTestObject [
 	
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDictionaryTest >> testIncludes [
 
 	| checks unChecks shares |
@@ -66,7 +67,7 @@ SSWReStoreStringDictionaryTest >> testIncludes [
 	self assert: (shares collect: [ :each | each name]) asSortedCollection asArray equals: #('check' 'unCheck')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDictionaryTest >> testIncludesAssociation [
 
 	| checks unChecks shares |
@@ -87,7 +88,7 @@ SSWReStoreStringDictionaryTest >> testIncludesAssociation [
 	self assert: (shares collect: [ :each | each name]) asSortedCollection asArray equals: #('check' 'unCheck')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDictionaryTest >> testIncludesKey [
 
 	| checks unChecks shares |
@@ -108,7 +109,7 @@ SSWReStoreStringDictionaryTest >> testIncludesKey [
 	self assert: (shares collect: [ :each | each name]) asSortedCollection asArray equals: #('check' 'unCheck')
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringDictionaryTest >> testTemplateObject [
 
 	self assert: testObject component size = 5.

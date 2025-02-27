@@ -4,13 +4,14 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLLeftJoinedTableCollection,
-	#superclass : #SSWSQLJoinedTableCollection,
-	#type : #variable,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLLeftJoinedTableCollection',
+	#superclass : 'SSWSQLJoinedTableCollection',
+	#type : 'variable',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLLeftJoinedTableCollection >> writeSQLOn: aStream [
 
 	self size = 1 ifTrue: [^super writeSQLOn: aStream].

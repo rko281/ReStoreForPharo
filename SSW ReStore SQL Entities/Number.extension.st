@@ -1,6 +1,6 @@
-Extension { #name : #Number }
+Extension { #name : 'Number' }
 
-{ #category : #'*SSW ReStore SQL Entities' }
+{ #category : '*SSW ReStore SQL Entities' }
 Number class >> writeSQLTypeOn: aStream  using: anSQLDialect [
 
 	"Default to single float"

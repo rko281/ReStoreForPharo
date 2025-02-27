@@ -4,62 +4,63 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLServerDialect,
-	#superclass : #SSWSQLDialect,
-	#category : #'SSW ReStore SQL Entities'
+	#name : 'SSWSQLServerDialect',
+	#superclass : 'SSWSQLDialect',
+	#category : 'SSW ReStore SQL Entities',
+	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect class >> dbmsName [
 
 	^'MICROSOFT SQL SERVER' 
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> boolean [
 
 	^'BIT'
 ]
 
-{ #category : #constants }
-SSWSQLServerDialect >> dateAndTimeFormat [
-
-	"The format for DateAndTImes when expressed as Strings"
-
-	^'yyyy-MM-dd HH:mm:ssfff'
-]
-
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> datetime [
 
 	^'DATETIME2'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> datetimeWithResolution [
 
 	^'DATETIME2(<1p>)'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
+SSWSQLServerDialect >> defaultCursorType [
+
+	"Default #forwardOnly gives 'Connection is busy with results for another hstmt' error"
+
+	^#keysetDriven
+]
+
+{ #category : 'constants' }
 SSWSQLServerDialect >> defaultMaxColumnNameLength [
 
 	^128
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> defaultMaxTableNameLength [
 
 	^128
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> defaultStandardNamespace [
 
 	^'dbo'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> dialectSpecificFunctions [
 
 	^Dictionary new
@@ -90,13 +91,13 @@ SSWSQLServerDialect >> dialectSpecificFunctions [
 		yourself
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> double [
 
 	^'DOUBLE PRECISION'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> identifierQuoteClose [
 
 	"Square brackers are the standard for SQLServer"
@@ -104,7 +105,7 @@ SSWSQLServerDialect >> identifierQuoteClose [
 	^$]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> identifierQuoteOpen [
 
 	"Square brackers are the standard for SQLServer"
@@ -112,43 +113,43 @@ SSWSQLServerDialect >> identifierQuoteOpen [
 	^$[
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> integer [
 
 	^'INT'
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWSQLServerDialect >> maxCharacter [
 
 	^8000
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLServerDialect >> renameField: oldField to: newField in: aReStore [
 
 	aReStore executeSQL: ('EXEC sp_rename ''<1s>.<2s>'', <3p>, ''COLUMN''' expandMacrosWith: newField table qualifiedName with: oldField name with: newField name)
 ]
 
-{ #category : #maintenance }
+{ #category : 'maintenance' }
 SSWSQLServerDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 
 	anSSWReStore executeSQL: ('EXEC sp_rename <1p>,<2p>' expandMacrosWith: oldTable qualifiedName with: newTable name)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLServerDialect >> supportsImplicitTrueConditions [
 
 	^false
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> unsizedBlob [
 
 	^'varbinary(max)'
 ]
 
-{ #category : #datatypes }
+{ #category : 'datatypes' }
 SSWSQLServerDialect >> uuid [
 
 	^'UNIQUEIDENTIFIER'

@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStaticMultiValueCacheDictionarySpec,
-	#superclass : #SSWDBStaticCacheDictionarySpec,
-	#category : #'SSW ReStore Collections'
+	#name : 'SSWDBStaticMultiValueCacheDictionarySpec',
+	#superclass : 'SSWDBStaticCacheDictionarySpec',
+	#category : 'SSW ReStore Collections',
+	#package : 'SSW ReStore Collections'
 }
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticMultiValueCacheDictionarySpec >> allAdditionsTo: aCollection [
 
 	"Return an collection of SSWDBCollectionAdditions representing the addition of all aCollection's elements to itself, starting when empty"
@@ -23,7 +24,7 @@ SSWDBStaticMultiValueCacheDictionarySpec >> allAdditionsTo: aCollection [
 	^additions
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticMultiValueCacheDictionarySpec >> changesTo: aCollection from: aCollectionOfEntries comparisonSetClass: aSetClass [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries."
@@ -44,7 +45,7 @@ SSWDBStaticMultiValueCacheDictionarySpec >> changesTo: aCollection from: aCollec
 	^changes
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWDBStaticMultiValueCacheDictionarySpec >> entryClass [
 
 	"Return the class of collection entry appropriate for the receiver"
@@ -52,7 +53,7 @@ SSWDBStaticMultiValueCacheDictionarySpec >> entryClass [
 	^SSWDBMultiValueCacheDictionaryEntry
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticMultiValueCacheDictionarySpec >> equalityChangesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via equality (=)"
@@ -60,7 +61,7 @@ SSWDBStaticMultiValueCacheDictionarySpec >> equalityChangesTo: aCollection from:
 	^self changesTo: aCollection from: aCollectionOfEntries comparisonSetClass: Set
 ]
 
-{ #category : #'change detection' }
+{ #category : 'change detection' }
 SSWDBStaticMultiValueCacheDictionarySpec >> identityChangesTo: aCollection from: aCollectionOfEntries [
 
 	"Return the changes made to aCollection compared to aCollectionOf(Collection)Entries, comparing via identity (==)"
@@ -68,7 +69,7 @@ SSWDBStaticMultiValueCacheDictionarySpec >> identityChangesTo: aCollection from:
 	^self changesTo: aCollection from: aCollectionOfEntries comparisonSetClass: IdentitySet
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticMultiValueCacheDictionarySpec >> readAllFor: aCollection [
 
 	"Using a single query (ideally, multiple batched queries if aCollection is too large), read all unrecovered collections specified by the receiver for members of aCollection"

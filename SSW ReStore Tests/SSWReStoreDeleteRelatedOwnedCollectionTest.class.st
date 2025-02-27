@@ -1,37 +1,38 @@
 Class {
-	#name : #SSWReStoreDeleteRelatedOwnedCollectionTest,
-	#superclass : #SSWReStoreDeleteRelatedCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteRelatedOwnedCollectionTest',
+	#superclass : 'SSWReStoreDeleteRelatedCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteRelatedOwnedCollectionTest class >> testSelectors [
 
 	^self myTestSelectors
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> deleteCustomer1QueriesCount [
 
 	"To respect the change detection mechanism, the removal of elements from an owned collection (which involves setting the owner link to nil) must be done to each element individually"
 	^1  + 11 "customer + 11 collection entries"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> deleteCustomer2QueriesCount [
 
 	"To respect the change detection mechanism, the removal of elements from an owned collection (which involves setting the owner link to nil) must be done to each element individually"
 	^1 + 10 "customer + 10 collection elements"
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> deleteQueriesCount [
 
 	"Not used here; just to satisfy subclassResponsibility"
 	^self shouldNotImplement
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> ordersCollectionDefinition [
 
 	"Owned collection"
@@ -39,7 +40,7 @@ SSWReStoreDeleteRelatedOwnedCollectionTest >> ordersCollectionDefinition [
 	^(OrderedCollection of: SimpleProductOrder related owner: #customer)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> testDeleteProxiedCollection [
 
 	| customer2Orders |
@@ -53,7 +54,7 @@ SSWReStoreDeleteRelatedOwnedCollectionTest >> testDeleteProxiedCollection [
 	self assert: (customer2Orders allSatisfy: [ :each | each customer isNil])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> testDeleteUnproxiedCollection [
 
 	| customer1Orders |
@@ -67,7 +68,7 @@ SSWReStoreDeleteRelatedOwnedCollectionTest >> testDeleteUnproxiedCollection [
 	self assert: (customer1Orders allSatisfy: [ :each | each customer isNil])
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteRelatedOwnedCollectionTest >> testUnstoreCollectionElements [
 
 	"Verify unstoring collection elements does not delete the owning customer (previous error case)"

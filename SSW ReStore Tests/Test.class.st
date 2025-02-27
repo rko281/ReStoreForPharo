@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #Test,
-	#superclass : #Object,
+	#name : 'Test',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 Test class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -20,19 +21,19 @@ Test class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 Test >> <= a [
 
 	^self name <= a name
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 Test >> = a [
 
 	^self name = a name
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 Test >> handleUpdateClash: aSymbol from: old to: new [
 
 	aSymbol = #name ifFalse: [^false].
@@ -42,27 +43,27 @@ Test >> handleUpdateClash: aSymbol from: old to: new [
 	^true
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 Test >> hash [
 
 	^self name hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Test >> name [
 	"Private - Answer the value of the receiver's ''name'' instance variable."
 
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Test >> name: anObject [
 	"Private - Set the value of the receiver's ''name'' instance variable to the argument, anObject."
 
 	name := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 Test >> printOn: aStream [
 
 	aStream nextPutAll: self name

@@ -4,13 +4,12 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBTable,
-	#superclass : #SSWSQLTable,
+	#name : 'SSWDBTable',
+	#superclass : 'SSWSQLTable',
 	#instVars : [
 		'instanceClass',
 		'fullName',
 		'idField',
-		'idDataField',
 		'dataFields',
 		'controlFields',
 		'collectionSpecs',
@@ -23,10 +22,11 @@ Class {
 		'readAllBatchSize',
 		'namespace'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable class >> forClass: aClass [
 
 	^self new
@@ -34,7 +34,7 @@ SSWDBTable class >> forClass: aClass [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable class >> forClass: aClass in: anSSWReStore [
 
 	^(self forClass: aClass)
@@ -42,7 +42,7 @@ SSWDBTable class >> forClass: aClass in: anSSWReStore [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable class >> new [
 
 	^super new
@@ -53,13 +53,13 @@ SSWDBTable class >> new [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SSWDBTable >> = anSSWDBTable [
 
 	^self == anSSWDBTable or: [self species == anSSWDBTable species and: [self name = anSSWDBTable name]]
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> abbreviate: aSymbol to: abbrevSymbol [
 
 	"Define abbrevSymbol as an abbreviated name for the inst var named aSymbol"
@@ -67,7 +67,7 @@ SSWDBTable >> abbreviate: aSymbol to: abbrevSymbol [
 	self abbreviations at: aSymbol put: abbrevSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> abbreviations [
 
 	"abbreviations stores a Dictionary mapping instance variables (Symbols)
@@ -78,7 +78,7 @@ SSWDBTable >> abbreviations [
 	^abbreviations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> abbreviations: aDictionary [
 
 	"abbreviations stores a Dictionary mapping instance variables (Symbols)
@@ -89,7 +89,7 @@ SSWDBTable >> abbreviations: aDictionary [
 	abbreviations := aDictionary
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> aboutToBeUnstored: anSSWDBProxy [
 
 	"anSSWDBProxy (which originated in the receiver table) is about to be removed from the DB.
@@ -98,14 +98,14 @@ SSWDBTable >> aboutToBeUnstored: anSSWDBProxy [
 	self componentsDo: [ :field | field aboutToBeUnstored: anSSWDBProxy]
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> addDataField: anSSWDBField [
 
 	anSSWDBField table: self.
 	^self dataFields add: anSSWDBField
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBTable >> allDataFieldsDo: aBlock [
 
 	"Include the ID field if it is a data field"
@@ -116,7 +116,7 @@ SSWDBTable >> allDataFieldsDo: aBlock [
 
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> allFields [
 
 	"Return an SSWSQLFieldCollection of all the receiver's fields"
@@ -126,7 +126,7 @@ SSWDBTable >> allFields [
 		yourself
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBTable >> allFieldsDetect: aBlock ifNone: noneBlock [
 
 	(aBlock value: self idField) ifTrue: [^self idField].
@@ -134,7 +134,7 @@ SSWDBTable >> allFieldsDetect: aBlock ifNone: noneBlock [
 	^self dataFields detect: aBlock ifNone: [self controlFields detect: aBlock ifNone: noneBlock]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBTable >> allFieldsDo: aBlock [
 
 	"Faster than allFields do:"
@@ -145,16 +145,16 @@ SSWDBTable >> allFieldsDo: aBlock [
 
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> collectionAccessing: aSymbol [
 
 	"Determine and return the collectionSpec of the receiver which accesses the inst var named aSymbol
 	of the receiver's instanceClass"
 	
-	^self collectionSpecs detect: [ :spec | spec accessor accesses: aSymbol] ifNone: [nil]
+	^self collectionSpecs detect: [ :spec | spec accesses: aSymbol] ifNone: [nil]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> collectionSpecs [
 
 	"collectionSpecs stores a Collection of SSWDBCollectionSpecs which define the persistent
@@ -163,7 +163,7 @@ SSWDBTable >> collectionSpecs [
 	^collectionSpecs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> collectionSpecs: anOrderedCollection [
 
 	"collectionSpecs stores a Collection of SSWDBCollectionSpecs which define the persistent
@@ -172,13 +172,13 @@ SSWDBTable >> collectionSpecs: anOrderedCollection [
 	collectionSpecs := anOrderedCollection
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> componentAccessing: aSymbol [
 
 	^(self fieldAccessing: aSymbol) ifNil: [self collectionAccessing: aSymbol]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBTable >> componentsDo: aBlock [
 
 	"Evaluate aBlock with each component (field or collection spec) of the receiver"
@@ -187,7 +187,7 @@ SSWDBTable >> componentsDo: aBlock [
 	self collectionSpecs do: aBlock
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 SSWDBTable >> componentsSelect: aBlock [
 
 	| selected |
@@ -198,7 +198,7 @@ SSWDBTable >> componentsSelect: aBlock [
 	^selected
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> containedTableNameRoot [
 
 	"Return the String to use as the root of all containedTables owned by the receiver"
@@ -208,7 +208,7 @@ SSWDBTable >> containedTableNameRoot [
 	^self fullName, '__'
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> containedTables [
 
 	"At present, only collection specs can contain other tables"
@@ -222,7 +222,7 @@ SSWDBTable >> containedTables [
 	^containedTables
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> controlFields [
 
 	"controlFields stores a Collection of SSWDBFields that do not hold data,
@@ -234,7 +234,7 @@ SSWDBTable >> controlFields [
 	^controlFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> controlFields: aCollection [
 
 	"controlFields stores a Collection of SSWDBFields that do not hold data,
@@ -246,7 +246,7 @@ SSWDBTable >> controlFields: aCollection [
 	controlFields := aCollection
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> copyForProxy: anObject [
 
 	| copy |
@@ -258,7 +258,7 @@ SSWDBTable >> copyForProxy: anObject [
 	^copy
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWDBTable >> createDefinition [
 
 	"Create a table based on the receiver in the database accessed by the receiver's reStore.
@@ -270,61 +270,37 @@ SSWDBTable >> createDefinition [
 	
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBTable >> createIDField [
 
 	"Define the receiver table's unique ID field - it is not named at this point"
 	
-	| field |
-	
-	field := SSWDBStaticField new.
-	
-	field
-		table: self;
-		accessor: SSWDBIDAccessor new;
-		targetClass: self instanceClass reStoreIDClass.
-	
-	self idField: field
+	self idField: 
+		(SSWDBIDField new
+			table: self;
+			targetClass: self instanceClass reStoreIDClass;
+			yourself)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable >> createInstanceFromRow: aDBRow [
 
-	| object id |
-	
+	| object |
+
 	object := self instanceClass basicNew.
 
-	self allDataFieldsDo:
-		[ :field |
-		field applyValueFromRow: aDBRow to: object].
+	aDBRow populateObject: object from: self.
 
 	self collectionSpecs isEmpty ifTrue: [^object].
 
-	id := aDBRow lookupField: self idField.
 	self collectionSpecs do:
 		[ :collection |
-		collection applyTo: object withID: id in: self reStore].
-		
+		collection applyTo: object in: self reStore].
+
 	^object
 ]
 
-{ #category : #'instance creation' }
-SSWDBTable >> createNonProxiedInstanceFromRow: aDBRow [
-	
-	"For internal/special non-proxied persistent objects"
-
-	| instance |
-	
-	instance := self createInstanceFromRow: aDBRow.
-
-	self controlFields do:
-		[ :field |
-		field applyValueFromRow: aDBRow to: instance].
-
-	^instance
-]
-
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> dataAndControlFields [
 
 	^(SSWSQLFieldCollection new: 24)
@@ -334,7 +310,7 @@ SSWDBTable >> dataAndControlFields [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> dataFields [
 
 	"dataFields stores an SSWSQLFieldCollection of SSWDBFields that define the data held by this table. 
@@ -343,7 +319,7 @@ SSWDBTable >> dataFields [
 	^dataFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> dataFields: anSSWSQLFieldCollection [
 
 	"dataFields stores an SSWSQLFieldCollection of SSWDBFields that define the data held by this table. 
@@ -352,7 +328,7 @@ SSWDBTable >> dataFields: anSSWSQLFieldCollection [
 	dataFields := anSSWSQLFieldCollection
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> dbNameFor: aSymbol [
 
 	"Return the name (String) to use within the database for the inst var named aSymbol"
@@ -360,7 +336,7 @@ SSWDBTable >> dbNameFor: aSymbol [
 	^self sqlDialect transformInstVarName: (self symbolicNameFor: aSymbol)
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> defaultName [
 
 	"The default (table)name is the name of the receiver's instanceClass,
@@ -370,7 +346,7 @@ SSWDBTable >> defaultName [
 
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol abbreviation: abbrevSymbol as: anObject [
 
 	"Definition method for abbreviations. 
@@ -381,7 +357,7 @@ SSWDBTable >> define: aSymbol abbreviation: abbrevSymbol as: anObject [
 		define: aSymbol as: anObject
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol as: anObject [
 
 	"General user method for table specification.	 
@@ -395,7 +371,7 @@ SSWDBTable >> define: aSymbol as: anObject [
 	^anObject defineAs: aSymbol in: self
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol asCollectionSpec: aCollectionSpec [
 
 	^self collectionSpecs add:
@@ -405,7 +381,7 @@ SSWDBTable >> define: aSymbol asCollectionSpec: aCollectionSpec [
 			yourself)
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol asFieldNamed: aString holding: aClass [
 
 	"Return the field created"
@@ -415,14 +391,14 @@ SSWDBTable >> define: aSymbol asFieldNamed: aString holding: aClass [
 					expandMacrosWith: aString with: aSymbol with: self sqlDialect maxColumnNameLength)].
 	
 	^self addDataField:
-		(SSWDBStaticField new
+		(SSWDBDataField new
 			name: aString;
 			targetClass: aClass;
 			accessor: ((aClass reStoreInstVarAccessorIn: self sqlDialect) access: aSymbol in: self instanceClass);
 			yourself)
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol asInstVarHolding: aClass [
 
 	"Return the field created"
@@ -432,7 +408,7 @@ SSWDBTable >> define: aSymbol asInstVarHolding: aClass [
 		ifFalse: [self define: aSymbol asFieldNamed: (aSymbol databaseFieldNameIn: self) holding: aClass]
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> define: aSymbol asInstVarHoldingInlined: aClass [
 
 	| inliner |
@@ -453,7 +429,7 @@ SSWDBTable >> define: aSymbol asInstVarHoldingInlined: aClass [
 	^inliner fields first
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> defineAsID: aSymbol [
 
 	"Define the receiver's idField to access inst var aSymbol.
@@ -464,7 +440,7 @@ SSWDBTable >> defineAsID: aSymbol [
 	^self defineAsID: aSymbol fieldName: (aSymbol databaseFieldNameIn: self)
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> defineAsID: aSymbol fieldName: aString [
 
 	"Define the receiver's idField to be named aString and to access inst var aSymbol.
@@ -472,22 +448,12 @@ SSWDBTable >> defineAsID: aSymbol fieldName: aString [
 	This can be useful in some cases, although the unique ID is really internal information.
 	Return the idField"
 
-	| field instanceAccessor |
-
-	field := self defineIDFieldName: aString.
-	instanceAccessor := SSWInstVarAccessor toAccess: aSymbol in: self instanceClass.
-
-	field accessor instanceAccessor: instanceAccessor.
-
-	self idDataField:
-		(field copy
-			accessor: instanceAccessor;
-			yourself).
-
-	^field
+	^(self defineIDFieldName: aString)
+		accessInstVarNamed: aSymbol;
+		yourself
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> defineDefaultIDField [
 
 	"Define the default-named ID field.
@@ -500,7 +466,7 @@ SSWDBTable >> defineDefaultIDField [
 		yourself
 ]
 
-{ #category : #defining }
+{ #category : 'defining' }
 SSWDBTable >> defineIDFieldName: aString [
 
 	"Define the receiver table's unique ID field to be named aString.
@@ -515,31 +481,31 @@ SSWDBTable >> defineIDFieldName: aString [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> definesName: aString [
 
 	^self name = aString or: [self containedTables anySatisfy: [ :each | each definesName: aString]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> deleteStatementGeneratedFrom: aDeleteQuery [
 
 	^deleteStatement ifNil: [deleteStatement := self reStore prepareStatementForQuery: aDeleteQuery]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> dependentComponents [
 
 	^self componentsSelect: [ :each | each isDependent]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> dependentDataFields [
 	
 	^self dataFields select: [ :field | field isDependent]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> dependentDataFieldsSelect: aBlock [
 
 	"Evaluate aBlock with each dependent component which is a data field, collecting those which answer true.
@@ -548,33 +514,33 @@ SSWDBTable >> dependentDataFieldsSelect: aBlock [
 	^self dataFields select: [ :field | field isDependent and: [aBlock value: field]]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> fieldAccessing: aSymbol [
 
 	"Determine and return the field of the receiver which accesses the inst var named aSymbol of the receiver's instanceClass"
 	
-	^self allFieldsDetect: [ :field | field accessor accesses: aSymbol] ifNone: [nil]
+	^self allFieldsDetect: [ :field | field accesses: aSymbol] ifNone: [nil]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> fieldNamed: aString [
 
 	^self allFieldsDetect: [ :field | field name = aString] ifNone: [nil]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> fieldsAccessing: aSymbol [
 
 	| matching |
 
 	matching := OrderedCollection new.
 
-	self allFieldsDo: [ :field | (field accessor accesses: aSymbol) ifTrue: [matching add: field]].
+	self allFieldsDo: [ :field | (field accesses: aSymbol) ifTrue: [matching add: field]].
 
 	^matching
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> forCreation [
 
 	"Return an appropriate SSWDBxxxTable with which to 
@@ -585,7 +551,7 @@ SSWDBTable >> forCreation [
 	^self
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBTable >> freePreparedStatements [
 
 	insertStatement notNil ifTrue: [insertStatement free].
@@ -601,7 +567,7 @@ SSWDBTable >> freePreparedStatements [
 	self componentsDo: [ :each | each freePreparedStatements].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> fullName [
 
 	"fullName stores the 'full' name of the receiver. 
@@ -613,7 +579,7 @@ SSWDBTable >> fullName [
 	^fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> fullName: aString [
 
 	"fullName stores the 'full' name of the receiver. 
@@ -623,7 +589,7 @@ SSWDBTable >> fullName: aString [
 	fullName := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> hasCollectionAccessing: aSymbol [
 
 	"Return a Boolean indicating whether the receiver has a collectionSpec
@@ -632,7 +598,7 @@ SSWDBTable >> hasCollectionAccessing: aSymbol [
 	^(self collectionAccessing: aSymbol) ~= nil 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> hasFieldAccessing: aSymbol [
 
 	"Return a Boolean indicating whether the receiver has a Field
@@ -641,44 +607,32 @@ SSWDBTable >> hasFieldAccessing: aSymbol [
 	^(self fieldAccessing: aSymbol) notNil 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> hasNamespace [
 
 	^self namespace notNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> idDataField [
 
 	"idDataField stores a field which accesses the ID of instances when held as data in an actual object.
 	This differs from the idField which accesses the ID solely in the proxy.
 	Can be (and usually is) nil"
 
-	^idDataField
+	^idField dataField
 ]
 
-{ #category : #accessing }
-SSWDBTable >> idDataField: anObject [
-
-	"idDataField stores a field which accesses the ID of instances when held as data in an actual object.
-	This differs from the idField which accesses the ID solely in the proxy.
-	Can be (and usually is) nil"
-
-	idDataField := anObject
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> idField [
 
 	"idField stores the SSWDBField which holds the unique ID of records in this table.	
 	Lazy-defaulted if not set explicity"
-	
-	idField isNil ifTrue: [self defineDefaultIDField].
-	
+
 	^idField
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> idField: anSSWDBField [
 
 	"idField stores the SSWDBField which holds the unique ID of records in this table"
@@ -686,11 +640,12 @@ SSWDBTable >> idField: anSSWDBField [
 	idField := anSSWDBField
 ]
 
-{ #category : #'initialize/release' }
+{ #category : 'initialize/release' }
 SSWDBTable >> initializeIn: anSSWReStore [
 
 	self reStore: anSSWReStore.
 
+	self idField isNil ifTrue: [self defineDefaultIDField].
 	self controlFields: (anSSWReStore objectProxyClassFor: self instanceClass) controlFields.
 	self controlFields do: 
 		[ :field | 
@@ -698,13 +653,13 @@ SSWDBTable >> initializeIn: anSSWReStore [
 		field name: (self sqlDialect transformInstVarName: field accessor nameInDB)]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> insertStatementGeneratedFrom: anInsertQuery [
 
 	^insertStatement ifNil: [insertStatement := self reStore prepareStatementForQuery: anInsertQuery]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> instanceClass [
 
 	"instanceClass stores the Class which is equivalent to this table"
@@ -712,7 +667,7 @@ SSWDBTable >> instanceClass [
 	^instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> instanceClass: aClass [
 
 	"instanceClass stores the Class which is equivalent to this table"
@@ -724,7 +679,7 @@ SSWDBTable >> instanceClass: aClass [
 	instanceClass := aClass
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable >> instanceClassFromRow: aDBRow [
 
 	"Private - for the receiver this is always its static instance class"
@@ -732,7 +687,7 @@ SSWDBTable >> instanceClassFromRow: aDBRow [
 	^self instanceClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> isDefined [
 
 	"Return a Boolean indicating if the receiver table is 'defined'
@@ -741,13 +696,13 @@ SSWDBTable >> isDefined [
 	^self dataFields size > 0 or: [self collectionSpecs size > 0 or: [self idDataField notNil]]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> isRootTable [
 
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBTable >> isValidForPersistence [
 
 	"Tables are not persisted directly (e.g. via storeIn:), therefore consider them already persistent"
@@ -755,7 +710,7 @@ SSWDBTable >> isValidForPersistence [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> name [
 
 	"Overriden to lazy initialize to default name"
@@ -765,7 +720,7 @@ SSWDBTable >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> namespace [
 
 	"namespace optionally stores the namespace (String, meaning schema or database depending on dialect) with which to qualify the table, i.e. the table is expressed as <namespace>.<table name>
@@ -775,7 +730,7 @@ SSWDBTable >> namespace [
 	^namespace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> namespace: aString [
 
 	"namespace optionally stores the namespace (String, meaning schema or database depending on dialect) with which to qualify the table, i.e. the table is expressed as <namespace>.<table name>
@@ -785,7 +740,7 @@ SSWDBTable >> namespace: aString [
 	namespace := aString
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable >> nonPersistentCopyOf: anObject [
 
 	"Return a non-persistent copy of the given object (which is of the receiver's instanceClass).
@@ -802,7 +757,7 @@ SSWDBTable >> nonPersistentCopyOf: anObject [
 	^copyObject
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> parameterisedRecoveryQuery [
 
 	"Return a parameterised SQLSelectQuery which can fetch a single row of this table by its ID"
@@ -813,7 +768,7 @@ SSWDBTable >> parameterisedRecoveryQuery [
 		yourself
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> parameterisedRefreshQuery [
 
 	"Return a parameterised SQLSelectQuery which can be used to detect a change to a single row of this table based on its ID and version"
@@ -823,7 +778,7 @@ SSWDBTable >> parameterisedRefreshQuery [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> qualifiedName [
 
 	^self hasNamespace
@@ -831,7 +786,7 @@ SSWDBTable >> qualifiedName [
 		ifFalse: [self name]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> reStore [
 
 	"the SSWReStore to which this table belongs"
@@ -839,7 +794,7 @@ SSWDBTable >> reStore [
 	^reStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> reStore: anSSWReStore [
 
 	"the SSWReStore to which this table belongs"
@@ -847,7 +802,7 @@ SSWDBTable >> reStore: anSSWReStore [
 	reStore := anSSWReStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> readAllBatchSize [
 
 	"When using the readAll function to mass-read components of the receiver, a parameteised statement is used with a fixed number of query parameters.
@@ -858,7 +813,7 @@ SSWDBTable >> readAllBatchSize [
 	^readAllBatchSize ifNil: [self reStore readAllBatchSize]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> readAllBatchSize: anInteger [
 
 	"When using the readAll function to mass-read components of the receiver, a parameteised statement is used with a fixed number of query parameters.
@@ -869,17 +824,21 @@ SSWDBTable >> readAllBatchSize: anInteger [
 	readAllBatchSize := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> readStatement [
 
 	^readStatement ifNil: [readStatement := self reStore prepareStatementForQuery: self parameterisedRecoveryQuery]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	
+	| instance |
+
+	instance := self createInstanceFromRow: aDBRow.
+
 	anSSWDBObjectProxy 
-		_proxiedObject: (self createInstanceFromRow: aDBRow);
+		_proxiedObject: instance;
 		_acquireCollectionProxiesUsing: self collectionSpecs.
 
 	self controlFields do:
@@ -889,7 +848,7 @@ SSWDBTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 	anSSWDBObjectProxy _postRecovered
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWDBTable >> refreshProxy: aProxy whereChangedFromRow: aDBRow [
 
 	"Return whether the proxy was refreshed at all"
@@ -909,13 +868,13 @@ SSWDBTable >> refreshProxy: aProxy whereChangedFromRow: aDBRow [
 	^changes isEmpty not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> refreshStatement [
 
 	^refreshStatement ifNil: [refreshStatement := self reStore prepareStatementForQuery: self parameterisedRefreshQuery]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> registerClass [
 
 	"Return the class under which objects created from this table 
@@ -925,13 +884,13 @@ SSWDBTable >> registerClass [
 	^self instanceClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> relatedComponents [
 
 	^self componentsSelect: [ :each | each isRelated]
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWDBTable >> removeDefinition [
 
 	"Remove the receiver's definition from the database accessed by the receiver's reStore.
@@ -953,7 +912,7 @@ SSWDBTable >> removeDefinition [
 		yourself
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWDBTable >> removeRedundantContainedTables [
 
 	"Remove from the database accessed by the receiver's reStore any contained tables that are no longer contained in the receiver"
@@ -971,7 +930,7 @@ SSWDBTable >> removeRedundantContainedTables [
 		self reStore executeSQL: ('DROP TABLE ', tableName)]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> rootClass [
 
 	"Return the class which is the root of the receiver's persistent hierarchy.
@@ -980,7 +939,7 @@ SSWDBTable >> rootClass [
 	^self instanceClass
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> rootTable [
 
 	"Return the table which is the root of the receiver's persistent hierarchy.
@@ -989,13 +948,13 @@ SSWDBTable >> rootTable [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBTable >> species [
 
 	^SSWDBTable
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBTable >> sqlDefinition [
 
 	| stream |
@@ -1007,14 +966,14 @@ SSWDBTable >> sqlDefinition [
 	^stream contents
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> sqlDialect [
 
 	^self reStore sqlDialect
 
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> staticConditions [
 
 	"Return an SSWSQLConditionCollection which is always applied
@@ -1027,7 +986,7 @@ SSWDBTable >> staticConditions [
 	^SSWSQLConditionCollection new
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> symbolicNameFor: aSymbol [
 
 	"Return the correct symbolic name to use for the inst var named aSymbol.
@@ -1036,7 +995,7 @@ SSWDBTable >> symbolicNameFor: aSymbol [
 	^self abbreviations at: aSymbol ifAbsent: [aSymbol]
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWDBTable >> synchronizeDefinition [
 
 	"Update the receiver's definition in the database accessed by its reStore"
@@ -1059,7 +1018,7 @@ SSWDBTable >> synchronizeDefinition [
 	self reStore connection columnDescriptions removeKey: self ifAbsent: []
 ]
 
-{ #category : #'db maintenance' }
+{ #category : 'db maintenance' }
 SSWDBTable >> synchronizeFields [
 
 	"Update the definition of the receiver's fields in the database accessed by reStore.
@@ -1083,7 +1042,7 @@ SSWDBTable >> synchronizeFields [
 			in: self reStore]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> withAllFields [
 
 	"Return a table equivalent to the receiver but containing all possible fields.	
@@ -1092,7 +1051,7 @@ SSWDBTable >> withAllFields [
 	^self
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWDBTable >> withControlFields [
 
 	"Return a table equivalent to the receiver but containing only control fields"
@@ -1110,7 +1069,7 @@ SSWDBTable >> withControlFields [
 		yourself
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBTable >> writeSQLDefinitionOn: aStream [
 	
 	self isDefined ifFalse: [self error: 'Cannot create a table with no fields'].
@@ -1131,7 +1090,7 @@ SSWDBTable >> writeSQLDefinitionOn: aStream [
 	aStream nextPut: $)
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBTable >> writeSQLNameOn: aStream [
 
 	self hasNamespace ifTrue: [aStream nextPutIdentifier: self namespace; nextPut: $.].

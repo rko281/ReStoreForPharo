@@ -1,13 +1,14 @@
 Class {
-	#name : #SSWReStoreProcessSafetyTest,
-	#superclass : #SSWReStoreAbstractQueryTest,
+	#name : 'SSWReStoreProcessSafetyTest',
+	#superclass : 'SSWReStoreAbstractQueryTest',
 	#instVars : [
 		'semaphore'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProcessSafetyTest >> critical: aBlock [
 
 	"For when the receiver is pretending to be a locked Mutex with a nil owner"
@@ -15,7 +16,7 @@ SSWReStoreProcessSafetyTest >> critical: aBlock [
 	^aBlock value
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProcessSafetyTest >> critical: aBlock ifLocked: lockedBlock [
 
 	"For when the receiver is pretending to be a locked Mutex with a nil owner"
@@ -23,13 +24,13 @@ SSWReStoreProcessSafetyTest >> critical: aBlock ifLocked: lockedBlock [
 	^lockedBlock value
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreProcessSafetyTest >> firstActiveReStore [
 
 	^SSWReStore activeReStores do: [ :each | ^each]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProcessSafetyTest >> owner [
 
 	"For when the receiver is pretending to be a locked Mutex with a nil owner"
@@ -37,7 +38,7 @@ SSWReStoreProcessSafetyTest >> owner [
 	^nil
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProcessSafetyTest >> setUp [
 
 	semaphore := Semaphore new.
@@ -46,7 +47,7 @@ SSWReStoreProcessSafetyTest >> setUp [
 	super setUp
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreProcessSafetyTest >> tearDown [
 
 	self wrappedMethod ifNotNil: 
@@ -59,7 +60,7 @@ SSWReStoreProcessSafetyTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testBeginDuringBegin [
 
 	"During a beginTransaction, at the end of rolling back an active dumb transaction, a higher priority process can initiate a new dumb transaction, which then leads to us getting a nesting error when we try to start our transaction."
@@ -81,7 +82,7 @@ SSWReStoreProcessSafetyTest >> testBeginDuringBegin [
 	self shouldnt: [reStore beginTransaction] raise: Error description: 'Nesting of transaction not supported'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testGlobablProxyLookupWhenSuspended [
 
 	"Verify global proxy lookup (i.e. when not referencing a particular ReStore instance) works when one or more active ReStore instances have their transactionMutex stuck in a suspended process.
@@ -118,7 +119,7 @@ SSWReStoreProcessSafetyTest >> testGlobablProxyLookupWhenSuspended [
 	otherReStores do: [ :each | each disconnect]
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testGlobablProxyProxyLookup [
 
 	"Verify global proxy lookup (i.e. when not referencing a particular ReStore instance) works when passed a proxy rather than an object (the normal case).
@@ -132,7 +133,7 @@ SSWReStoreProcessSafetyTest >> testGlobablProxyProxyLookup [
 	self assert: (SSWReStore proxyForObject: john ifNone: [nil]) identicalTo: john
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testInconsistentProxySwap [
 
 	"Verify detection of an invalid proxy swap attempt"
@@ -161,7 +162,7 @@ SSWReStoreProcessSafetyTest >> testInconsistentProxySwap [
 	self shouldnt: [john firstName] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testInconsistentProxyUnswap [
 
 	"Verify detection of an invalid proxy unswap attempt"
@@ -183,7 +184,7 @@ SSWReStoreProcessSafetyTest >> testInconsistentProxyUnswap [
 	self shouldnt: [proxy _unswap] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testObjectLookupDuringTransaction [
 
 	"Verify object lookup in one process is blocked whilst a transaction occurs in another"
@@ -209,7 +210,7 @@ SSWReStoreProcessSafetyTest >> testObjectLookupDuringTransaction [
 	self deny: wasTransactionInProgress
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testProxyDoesNotUnderstandWhenPreempted [
 
 	"Verify no error occurs and the message is still executed if a proxy is swapped by a higher priority process right at the start of processing a doesNotUnderstand:"
@@ -230,7 +231,7 @@ SSWReStoreProcessSafetyTest >> testProxyDoesNotUnderstandWhenPreempted [
 	self assert: result equals: 'Smith'
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testProxyLookupDuringTransaction [
 
 	"Verify proxy lookup in one process is blocked whilst a transaction occurs in another"
@@ -260,7 +261,7 @@ SSWReStoreProcessSafetyTest >> testProxyLookupDuringTransaction [
 	self assert: proxy _version equals: (version + 1).
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testProxyLookupWhenLockedWithoutOwner [
 
 	"Verify proxy lookup works (in particular, does not enter an infinite loop) when the transaction mutex owner is nil"
@@ -284,7 +285,7 @@ SSWReStoreProcessSafetyTest >> testProxyLookupWhenLockedWithoutOwner [
 	self assert: proxy _proxiedObject identicalTo: john
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testProxyProxyLookup [
 
 	"Verify  proxy lookup works when passed a proxy rather than an object (the normal case).
@@ -298,7 +299,7 @@ SSWReStoreProcessSafetyTest >> testProxyProxyLookup [
 	self assert: (reStore activeProxyForObject: john ifNone: [nil]) identicalTo: john
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testQueryingDuringTransaction [
 
 	"Verify querying in one process is blocked whilst a transaction occurs in another"
@@ -324,7 +325,7 @@ SSWReStoreProcessSafetyTest >> testQueryingDuringTransaction [
 	self deny: wasTransactionInProgress
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testUnstoreWhenPreemptedSwap [
 
 	"Verify no error occurs and the unstore still happens if a proxy is swapped by a higher priority process right at the start of processing an unstore"
@@ -346,7 +347,7 @@ SSWReStoreProcessSafetyTest >> testUnstoreWhenPreemptedSwap [
 	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) isNil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreProcessSafetyTest >> testUnstoreWhenPreemptedUnswap [
 
 	"Verify no error occurs and the unstore still happens if a real object is unswapped by a higher priority process right at the start of processing an unstore"
@@ -370,13 +371,13 @@ SSWReStoreProcessSafetyTest >> testUnstoreWhenPreemptedUnswap [
 	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) isNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreProcessSafetyTest >> wrappedMethod [
 
 	^(SSWReStoreProcessSafetyTest>>#yieldAfterWrappedMethod) literalAt: 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWReStoreProcessSafetyTest >> wrappedMethod: aCompiledMethod [
 
 	| wrapper |
@@ -395,7 +396,7 @@ SSWReStoreProcessSafetyTest >> wrappedMethod: aCompiledMethod [
 		aCompiledMethod methodClass flushMethodCache]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreProcessSafetyTest >> yieldAfterWrappedMethod [
 
 	| result |

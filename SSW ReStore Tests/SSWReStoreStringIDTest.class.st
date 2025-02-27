@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreStringIDTest,
-	#superclass : #SSWReStoreAlternativeIDTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreStringIDTest',
+	#superclass : 'SSWReStoreAlternativeIDTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreStringIDTest >> testClass [
 
 	^StringIDOwnedTest
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringIDTest >> testQueryStringID [
 
 	| obj id |
@@ -22,7 +23,7 @@ SSWReStoreStringIDTest >> testQueryStringID [
 	self assert: (self testInstances detect: [:each | each _id = 'blahblah'] ifNone: [nil]) equals: nil
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreStringIDTest >> testVerifyIDIsString [
 
 	| obj id |

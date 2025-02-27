@@ -1,6 +1,6 @@
-Extension { #name : #Class }
+Extension { #name : 'Class' }
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Class >> defineAs: aSymbol in: anSSWDBTable [
 
 	"The receiver has been specified as the kind of object held in inst var named aSymbol
@@ -11,7 +11,7 @@ Class >> defineAs: aSymbol in: anSSWDBTable [
 	^anSSWDBTable define: aSymbol asInstVarHolding: self
 ]
 
-{ #category : #'*SSW ReStore Tables' }
+{ #category : '*SSW ReStore Tables' }
 Class >> inlined [
 
 	^SSWDBInlinedClass new

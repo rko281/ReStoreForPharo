@@ -4,27 +4,28 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreReadWithComponentsTest,
-	#superclass : #SSWReStoreProductOrdersTest,
+	#name : 'SSWReStoreReadWithComponentsTest',
+	#superclass : 'SSWReStoreProductOrdersTest',
 	#instVars : [
 		'customers'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreReadWithComponentsTest class >> isAbstract [
 
 	^self == SSWReStoreReadWithComponentsTest
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreReadWithComponentsTest class >> myTestSelectors [
 
 	^SSWReStoreReadWithComponentsTest testSelectors
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> _testCollection [
 
 	| time1 time2 |
@@ -45,7 +46,7 @@ SSWReStoreReadWithComponentsTest >> _testCollection [
 	(time1 -> time2) inspect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> _testProxyCollectionTiming [
 
 	| time1 time2 |
@@ -61,7 +62,7 @@ SSWReStoreReadWithComponentsTest >> _testProxyCollectionTiming [
 	(time1 -> time2) inspect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> _testProxySingleObjectTiming [
 
 	| time1 time2 |
@@ -77,7 +78,7 @@ SSWReStoreReadWithComponentsTest >> _testProxySingleObjectTiming [
 	(time1 -> time2) inspect
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> _testTiming [
 
 	| t1 t2 |
@@ -88,14 +89,14 @@ SSWReStoreReadWithComponentsTest >> _testTiming [
 	(t1 -> t2) inspect
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadWithComponentsTest >> addClassesTo: aReStore [
 
 	super addClassesTo: aReStore.
 	aReStore addClass: Test
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadWithComponentsTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	^aCustomer orders add: 
@@ -106,7 +107,7 @@ SSWReStoreReadWithComponentsTest >> addOrderFor: aProduct to: aCustomer quantity
 			yourself)
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadWithComponentsTest >> createTestData [
 
 	| orders otherCustomers |
@@ -151,20 +152,20 @@ SSWReStoreReadWithComponentsTest >> createTestData [
 	self deny: customer4 isDBProxy
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreReadWithComponentsTest >> otherCustomersSize [
 
 	^105
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SSWReStoreReadWithComponentsTest >> setUp [
 
 	super setUp.
 	self countQueries
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testCollection [
 
 	| allCustomers |
@@ -206,7 +207,7 @@ SSWReStoreReadWithComponentsTest >> testCollection [
 	self assert: (self queryCount = 0)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testEmptyCollection [
 
 	"Previously caused an error"
@@ -218,7 +219,7 @@ SSWReStoreReadWithComponentsTest >> testEmptyCollection [
 	self shouldnt: [noCustomers fetch: #orders] raise: Error
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testProxyCollection [
 
 	| allCustomers |
@@ -258,7 +259,7 @@ SSWReStoreReadWithComponentsTest >> testProxyCollection [
 	self assert: (self queryCount = 0)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testProxyCollectionMultipleRead [
 
 	"Test for a previously-erroring case where a second readAll query overwrote the results from the first"
@@ -304,7 +305,7 @@ SSWReStoreReadWithComponentsTest >> testProxyCollectionMultipleRead [
 	self assert: (self queryCount = 0)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testProxySingleObject [
 
 	| allCustomers |
@@ -326,7 +327,7 @@ SSWReStoreReadWithComponentsTest >> testProxySingleObject [
 	self assert: self queryCount = 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testProxySingleObjectMultipleRead [
 
 	"Test for a previously-erroring case where a second readAll query overwrote the results from the first"
@@ -354,7 +355,7 @@ SSWReStoreReadWithComponentsTest >> testProxySingleObjectMultipleRead [
 	self assert: (self queryCount = 0)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshCollection [
 
 	| allCustomers testOrder originalQuantity |
@@ -377,7 +378,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshCollection [
 	self assert: testOrder quantity equals: (originalQuantity * 10)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshProxyCollection [
 
 	| allCustomers testCustomer originalName newName testOrder originalQuantity |
@@ -411,7 +412,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshProxyCollection [
 	self assert: testOrder quantity = (originalQuantity * 10)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshSingleObject [
 
 	| allCustomers test originalName newName |

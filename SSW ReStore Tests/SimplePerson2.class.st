@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SimplePerson2,
-	#superclass : #Object,
+	#name : 'SimplePerson2',
+	#superclass : 'Object',
 	#instVars : [
 		'firstName',
 		'forename',
@@ -22,10 +22,11 @@ Class {
 		'useLongNotes',
 		'useNotes'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> new [
 
 	^super new
@@ -33,7 +34,7 @@ SimplePerson2 class >> new [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 class >> notesSize [
 
 	^self useLongNotes 
@@ -41,7 +42,7 @@ SimplePerson2 class >> notesSize [
 		ifFalse: [10]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> reStoreDefinition [
 
 	| definition |
@@ -68,127 +69,127 @@ SimplePerson2 class >> reStoreDefinition [
 	^definition
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useBestFriend [
 
 	^useBestFriend ifNil: [false]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useBestFriend: aBoolean [
 
 	useBestFriend := aBoolean
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useForename [
 
 	^useForename ifNil: [false]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useForename: aBoolean [
 
 	useForename := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 class >> useLongNotes [
 	^useLongNotes ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 class >> useLongNotes: anObject [
 	useLongNotes := anObject
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useNotes [
 
 	^useNotes ifNil: [false]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SimplePerson2 class >> useNotes: aBoolean [
 
 	useNotes := aBoolean
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson2 >> = aDetailedPerson [
 
 	^self fullName = aDetailedPerson fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> bestFriend [
 	^bestFriend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> bestFriend: anObject [
 	bestFriend := anObject
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 SimplePerson2 >> displayOn: aStream [
 
 	aStream display: self firstName; space; display: self surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> emailAddress [
 	"Private - Answer the value of the receiver's ''emailAddress'' instance variable."
 
 	^emailAddress
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> emailAddress: anObject [
 	"Private - Set the value of the receiver's ''emailAddress'' instance variable to the argument, anObject."
 
 	emailAddress := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> firstName [
 	"Private - Answer the value of the receiver's ''firstName'' instance variable."
 
 	^firstName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> firstName: anObject [
 	"Private - Set the value of the receiver's ''firstName'' instance variable to the argument, anObject."
 
 	firstName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> forename [
 	"Private - Answer the value of the receiver's ''forename'' instance variable."
 
 	^forename
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> forename: anObject [
 	"Private - Set the value of the receiver's ''forename'' instance variable to the argument, anObject."
 
 	forename := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> friend [
 	^friend
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> friend: anObject [
 	friend := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> fullName [
 
 	^SimplePerson2 useForename 
@@ -196,23 +197,23 @@ SimplePerson2 >> fullName [
 		ifFalse: [self firstName, ' ', self surname]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 SimplePerson2 >> hash [
 
 	^self fullName hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> notes [
 	^notes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> notes: anObject [
 	notes := anObject
 ]
 
-{ #category : #displaying }
+{ #category : 'displaying' }
 SimplePerson2 >> printOn: aStream [
 	"Answer the name of the receiver as a developer would wish to see it ."
 
@@ -222,28 +223,28 @@ SimplePerson2 >> printOn: aStream [
 	aStream nextPut: $).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> surname [
 	"Private - Answer the value of the receiver's ''surname'' instance variable."
 
 	^surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> surname: anObject [
 	"Private - Set the value of the receiver's ''surname'' instance variable to the argument, anObject."
 
 	surname := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> time [
 	"Private - Answer the value of the receiver's ''time'' instance variable."
 
 	^time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SimplePerson2 >> time: anObject [
 	"Private - Set the value of the receiver's ''time'' instance variable to the argument, anObject."
 

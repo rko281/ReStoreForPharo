@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreOwnedMultiValueBlockCacheDictionaryTest,
-	#superclass : #SSWReStoreOwnedMultiValueCacheDictionaryTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreOwnedMultiValueBlockCacheDictionaryTest',
+	#superclass : 'SSWReStoreOwnedMultiValueCacheDictionaryTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreOwnedMultiValueBlockCacheDictionaryTest >> componentDefinition [
 
 	^Dictionary of: [ :each | each name first asLowercase asString] -> (OrderedCollection of: GenericOwnedTest dependent) owner: #owner

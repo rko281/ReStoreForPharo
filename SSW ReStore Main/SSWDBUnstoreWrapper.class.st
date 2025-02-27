@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBUnstoreWrapper,
-	#superclass : #SSWDBWrapper,
-	#category : #'SSW ReStore Main'
+	#name : 'SSWDBUnstoreWrapper',
+	#superclass : 'SSWDBWrapper',
+	#category : 'SSW ReStore Main',
+	#package : 'SSW ReStore Main'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWDBUnstoreWrapper >> _checkHasChangedIn: aReStore [
 
 	"Unstored, therefore changed"
@@ -17,7 +18,7 @@ SSWDBUnstoreWrapper >> _checkHasChangedIn: aReStore [
 	^true
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWDBUnstoreWrapper >> _commitIn: anSSWReStore [
 
 	"Commit the wrapped object by unstoring it"
@@ -25,13 +26,13 @@ SSWDBUnstoreWrapper >> _commitIn: anSSWReStore [
 	self object unstore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBUnstoreWrapper >> _dbProxyIfNone: aBlock [
 
 	^self object _dbProxyIfNone: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBUnstoreWrapper >> _reStoreIfNone: aBlock [
 
 	^self object _reStoreIfNone: aBlock

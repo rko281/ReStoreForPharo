@@ -4,8 +4,8 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #InlinedTestPerson,
-	#superclass : #Object,
+	#name : 'InlinedTestPerson',
+	#superclass : 'Object',
 	#instVars : [
 		'firstName',
 		'surname',
@@ -16,10 +16,11 @@ Class {
 		'code1',
 		'bankBalance'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 InlinedTestPerson class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -33,87 +34,87 @@ InlinedTestPerson class >> reStoreDefinition [
 		define: #bankBalance as: NumberWithCurrency "<- always inlined"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address1 [
 	^address1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address1: anObject [
 	address1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address2 [
 	^address2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address2: anObject [
 	address2 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address3 [
 	^address3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> address3: anObject [
 	address3 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> bankBalance [
 	^bankBalance
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> bankBalance: anObject [
 	bankBalance := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> bankBalanceString [
 	^bankBalance displayString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> code1 [
 	^code1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> code1: anObject [
 	code1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> firstName [
 	^firstName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> firstName: anObject [
 	firstName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> line1 [
 	^line1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> line1: anObject [
 	line1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> surname [
 	^surname
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 InlinedTestPerson >> surname: anObject [
 	surname := anObject
 ]

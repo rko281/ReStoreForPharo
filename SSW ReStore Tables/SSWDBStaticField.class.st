@@ -4,29 +4,30 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWDBStaticField,
-	#superclass : #SSWDBField,
+	#name : 'SSWDBStaticField',
+	#superclass : 'SSWDBField',
 	#instVars : [
 		'targetClass'
 	],
-	#category : #'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables',
+	#package : 'SSW ReStore Tables'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticField >> applyValueFromRow: aDBRow to: anObject [
 
-	self accessor value: (self convertValue: (aDBRow lookupField: self)) in: anObject
+	self accessor value: (self convertValue: (self lookupIn: aDBRow)) in: anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticField >> applyValueIfChangedFromRow: aDBRow to: anObject [
 
 	"Return whether a change was applied"
 
-	^self accessor valueIfChanged: (self convertValue: (aDBRow lookupField: self)) in: anObject
+	^self accessor valueIfChanged: (self convertValue: (self lookupIn: aDBRow)) in: anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 SSWDBStaticField >> convertValue: aValue [
 
 	"Convert the given DB value object to the receiver's targetClass.
@@ -35,13 +36,21 @@ SSWDBStaticField >> convertValue: aValue [
 	^self targetClass instanceFromDBValue: aValue in: self reStore
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWDBStaticField >> isValidForPersistence [
 
 	^true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
+SSWDBStaticField >> populateObject: anObject with: aValue [
+
+	"Populate the aspect of anObject related to this field with aValue"
+
+	self subclassResponsibility
+]
+
+{ #category : 'actions' }
 SSWDBStaticField >> readAllFor: aCollection [
 
 	| ids stream allResults |
@@ -58,7 +67,7 @@ SSWDBStaticField >> readAllFor: aCollection [
 		self reStore fetchObjectsOfClass: self targetClass withStatement: self readAllStatement into: allResults]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticField >> readAllQuery [
 
 	| params |
@@ -72,7 +81,7 @@ SSWDBStaticField >> readAllQuery [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticField >> targetClass [
 
 	"targetClass stores the Class of object stored in this field.
@@ -81,7 +90,7 @@ SSWDBStaticField >> targetClass [
 	^targetClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticField >> targetClass: aClass [
 
 	"targetClass stores the Class of object stored in this field.
@@ -90,7 +99,7 @@ SSWDBStaticField >> targetClass: aClass [
 	targetClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWDBStaticField >> targetTable [
 
 	"ASSERT: targetClass is not a base class"
@@ -98,7 +107,7 @@ SSWDBStaticField >> targetTable [
 	^self reStore tableForClass: self targetClass
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWDBStaticField >> writeSQLDefinitionOn: aStream [
 	
 	super writeSQLDefinitionOn: aStream.

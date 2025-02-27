@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreGeneralDictionaryReadWithComponentsTest,
-	#superclass : #SSWReStoreReadWithComponentsTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreGeneralDictionaryReadWithComponentsTest',
+	#superclass : 'SSWReStoreReadWithComponentsTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest class >> testSelectors [
 
 	^self myTestSelectors, #(#testRefreshCollectionKey)
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	"Need to convert orders to Dictionary if not already done - ensure unproxied before transformation"
@@ -25,13 +26,13 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> addOrderFor: aProduct to: a
 			yourself)
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> ordersCollectionDefinition [
 
 	^Dictionary of: (SimpleAddress related -> SimpleProductOrder related)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testCollection [
 
 	super testCollection.
@@ -39,7 +40,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testCollection [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testEmptyCollection [
 
 	super testEmptyCollection.
@@ -47,7 +48,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testEmptyCollection [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxyCollection [
 
 	super testProxyCollection.
@@ -55,7 +56,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxyCollection [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxyCollectionMultipleRead [
 
 	super testProxyCollectionMultipleRead.
@@ -63,7 +64,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxyCollectionMultiple
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxySingleObject [
 
 	super testProxySingleObject.
@@ -71,7 +72,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxySingleObject [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxySingleObjectMultipleRead [
 
 	super testProxySingleObjectMultipleRead.
@@ -79,7 +80,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testProxySingleObjectMultip
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollection [
 
 	super testRefreshCollection.
@@ -87,7 +88,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollection [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollectionKey [
 
 	| allCustomers testAddress originalPostcode |
@@ -111,7 +112,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollectionKey [
 	self assert: ((SimpleAddress storedInstancesIn: reStore) select: [ :each | each postcode = 'x']) size equals: 1
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshProxyCollection [
 
 	super testRefreshProxyCollection.
@@ -119,7 +120,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshProxyCollection 
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshSingleObject [
 
 	super testRefreshSingleObject.
@@ -127,7 +128,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshSingleObject [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> validateKeysAlreadyFetched [
 
 	"Validate the keys are correct, and ensure they are already fetched (no further queries necessary)"

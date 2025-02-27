@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWReStoreRefreshNoVersTest,
-	#superclass : #SSWReStoreRefreshTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreRefreshNoVersTest',
+	#superclass : 'SSWReStoreRefreshTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #Running }
+{ #category : 'Running' }
 SSWReStoreRefreshNoVersTest >> initReStore: aReStore [
 
 	super initReStore: aReStore.
@@ -17,7 +18,7 @@ SSWReStoreRefreshNoVersTest >> initReStore: aReStore [
 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreRefreshNoVersTest >> usesVersioning [
 
 	^false

@@ -1,6 +1,6 @@
 Class {
-	#name : #FieldNameTest,
-	#superclass : #Object,
+	#name : 'FieldNameTest',
+	#superclass : 'Object',
 	#instVars : [
 		'id',
 		'name',
@@ -9,10 +9,11 @@ Class {
 	#classInstVars : [
 		'shouldUseAlternativeNames'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 FieldNameTest class >> reStoreDefinition [
 
 	^self shouldUseAlternativeNames
@@ -20,7 +21,7 @@ FieldNameTest class >> reStoreDefinition [
 		ifFalse: [self reStoreDefinitionStandard]
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 FieldNameTest class >> reStoreDefinitionStandard [
 
 	^super reStoreDefinition
@@ -30,7 +31,7 @@ FieldNameTest class >> reStoreDefinitionStandard [
 		yourself
 ]
 
-{ #category : #persistency }
+{ #category : 'persistency' }
 FieldNameTest class >> reStoreDefinitionWithAlternativeNames [
 
 	^super reStoreDefinition
@@ -40,44 +41,44 @@ FieldNameTest class >> reStoreDefinitionWithAlternativeNames [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest class >> shouldUseAlternativeNames [
 
 	^shouldUseAlternativeNames ifNil: [false]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest class >> shouldUseAlternativeNames: aBoolean [
 
 	shouldUseAlternativeNames := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> description [
 	^description
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> description: anObject [
 	description := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> id [
 	^id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> id: anObject [
 	id := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> name [
 	^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FieldNameTest >> name: anObject [
 	name := anObject
 ]

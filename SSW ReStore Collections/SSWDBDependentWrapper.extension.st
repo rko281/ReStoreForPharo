@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBDependentWrapper }
+Extension { #name : 'SSWDBDependentWrapper' }
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SSWDBDependentWrapper >> beKeyClassOf: aTableComponent [
 
 	"Polymorphic with the Class implementation"
@@ -9,7 +9,7 @@ SSWDBDependentWrapper >> beKeyClassOf: aTableComponent [
 	aTableComponent beKeyDependent
 ]
 
-{ #category : #'*SSW ReStore Collections' }
+{ #category : '*SSW ReStore Collections' }
 SSWDBDependentWrapper >> beTargetClassOf: aTableComponent [
 
 	"Polymorphic with the Class implementation"

@@ -1,13 +1,14 @@
 Class {
-	#name : #UUIDOwnedSubTest,
-	#superclass : #UUIDOwnedTest,
+	#name : 'UUIDOwnedSubTest',
+	#superclass : 'UUIDOwnedTest',
 	#instVars : [
 		'number'
 	],
-	#category : #'SSW ReStore Tests'
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 UUIDOwnedSubTest class >> reStoreDefinition [
 
 	^super reStoreDefinition
@@ -15,18 +16,18 @@ UUIDOwnedSubTest class >> reStoreDefinition [
 		yourself
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 UUIDOwnedSubTest class >> shouldInheritPersistency [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 UUIDOwnedSubTest >> number [
 	^number
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 UUIDOwnedSubTest >> number: anObject [
 	number := anObject
 ]

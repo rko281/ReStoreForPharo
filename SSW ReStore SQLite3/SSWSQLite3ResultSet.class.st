@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'firstRow',
 		'query',
-		'connection'
+		'connection',
+		'columns'
 	],
 	#pools : [
 		'SQLite3Constants'
@@ -19,6 +20,18 @@ SSWSQLite3ResultSet >> close [
 	statement ifNotNil: [ statement reset ].
 	"Compared to the superclass we want to keep the statement"
 	mutators := nil.
+]
+
+{ #category : 'accessing' }
+SSWSQLite3ResultSet >> columns [
+
+	^columns
+]
+
+{ #category : 'accessing' }
+SSWSQLite3ResultSet >> cursorType [
+
+	^#forwardOnly
 ]
 
 { #category : 'private' }
@@ -76,13 +89,7 @@ SSWSQLite3ResultSet >> next [
 { #category : 'API' }
 SSWSQLite3ResultSet >> nextOfClass: aRowClass [
 
-	| next |
-	
-	next := super nextOfClass: aRowClass.
-	
-	(next notNil and: [ self query notNil ]) ifTrue: [next createFieldMapFrom: self query].
-	
-	^next
+	^(super nextOfClass: aRowClass) ifNotNil: [ :row | row columns: self columns; yourself]
 ]
 
 { #category : 'accessing' }
@@ -129,6 +136,25 @@ SSWSQLite3ResultSet >> statement: anSSWSQLite3Statement [
 
 	statement := anSSWSQLite3Statement.
 	connection := anSSWSQLite3Statement parent
+]
+
+{ #category : 'initialization' }
+SSWSQLite3ResultSet >> statement: aStatement moreRows: aBoolean rows: rCollection [
+
+	self statement: aStatement.
+	aStatement query ifNotNil: 
+		[ :stmtQuery |
+		query := stmtQuery.
+	
+		columns := self statement columnNames collect: 
+			[ :each | 
+			SSWDBCColAttr new 
+				name: each; 
+				field:  (query fieldNamed: each);
+				yourself]].
+
+	moreRows := aBoolean.
+	rows := rCollection
 ]
 
 { #category : 'initialization' }

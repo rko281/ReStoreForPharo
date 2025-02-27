@@ -1,16 +1,17 @@
 Class {
-	#name : #SSWReStoreDeleteDependentGeneralCollectionTest,
-	#superclass : #SSWReStoreDeleteDependentCollectionTest,
-	#category : #'SSW ReStore Tests'
+	#name : 'SSWReStoreDeleteDependentGeneralCollectionTest',
+	#superclass : 'SSWReStoreDeleteDependentCollectionTest',
+	#category : 'SSW ReStore Tests',
+	#package : 'SSW ReStore Tests'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 SSWReStoreDeleteDependentGeneralCollectionTest class >> testSelectors [
 
 	^self myTestSelectors
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentGeneralCollectionTest >> deleteQueriesCount [
 
 	"How many queries to delete a collection?"
@@ -19,7 +20,7 @@ SSWReStoreDeleteDependentGeneralCollectionTest >> deleteQueriesCount [
 		ifFalse: [2 "one query for entries, one for elements"]
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 SSWReStoreDeleteDependentGeneralCollectionTest >> ordersCollectionDefinition [
 
 	"General (non-owned) collection"
@@ -27,7 +28,7 @@ SSWReStoreDeleteDependentGeneralCollectionTest >> ordersCollectionDefinition [
 	^(OrderedCollection of: SimpleProductOrder dependent)
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentGeneralCollectionTest >> testDeleteProxiedCollection [
 
 	| collectionTable allEntriesCount customer2ID customer2EntriesCount |
@@ -44,7 +45,7 @@ SSWReStoreDeleteDependentGeneralCollectionTest >> testDeleteProxiedCollection [
 	self assert: (reStore executeSQL: 'select count(id) from <1s> where source_id = <2d>' << {collectionTable. customer2ID}) results first contents first equals: 0
 ]
 
-{ #category : #'unit tests' }
+{ #category : 'unit tests' }
 SSWReStoreDeleteDependentGeneralCollectionTest >> testDeleteUnproxiedCollection [
 
 	| collectionTable allEntriesCount customer1ID customer1EntriesCount |
