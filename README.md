@@ -8,7 +8,7 @@ To load ReStore into your Pharo 12 image, evaluate:
 
 ```smalltalk
 Metacello new
-    repository: 'github://rko281/ReStoreForPharo';
+    repository: 'github://rko281/ReStoreForPharo:main';
     baseline: 'ReStore';
     load: 'all'
 ```
