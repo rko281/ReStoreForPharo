@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLTableQuery,
-	#superclass : #SSWSQLQuery,
+	#name : 'SSWSQLTableQuery',
+	#superclass : 'SSWSQLQuery',
 	#instVars : [
 		'tables'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLTableQuery class >> new [
 
 	^super new
@@ -20,7 +21,7 @@ SSWSQLTableQuery class >> new [
 		yourself
 ]
 
-{ #category : #'adding/removing' }
+{ #category : 'adding/removing' }
 SSWSQLTableQuery >> addTable: anSSWDBTable joinedWithField: anSSWDBField [
 
 	"Return the table added"
@@ -28,7 +29,7 @@ SSWSQLTableQuery >> addTable: anSSWDBTable joinedWithField: anSSWDBField [
 	^self tables addAliasingDuplicates: anSSWDBTable joinedWithField: anSSWDBField
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLTableQuery >> table [
 
 	"Return the single table used by this query"
@@ -36,7 +37,7 @@ SSWSQLTableQuery >> table [
 	^self tables soleTable
 ]
 
-{ #category : #'accessing - derived' }
+{ #category : 'accessing - derived' }
 SSWSQLTableQuery >> table: anSSWDBTable [
 
 	"Set the single table used by this query. Also used to set the initial table in a series of tables 
@@ -45,7 +46,7 @@ SSWSQLTableQuery >> table: anSSWDBTable [
 	self tables soleTable: anSSWDBTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableQuery >> tables [
 
 	"tables stores an SSWSQLJoinedTableCollection of SSWDBTable involved in the receiver query.
@@ -54,7 +55,7 @@ SSWSQLTableQuery >> tables [
 	^tables
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLTableQuery >> tables: anSSWSQLJoinedTableCollection [
 
 	"tables stores an SSWSQLJoinedTableCollection of SSWDBTable involved in the receiver query.

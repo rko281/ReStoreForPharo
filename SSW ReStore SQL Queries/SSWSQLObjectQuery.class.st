@@ -4,16 +4,17 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLObjectQuery,
-	#superclass : #SSWSQLQuery,
+	#name : 'SSWSQLObjectQuery',
+	#superclass : 'SSWSQLQuery',
 	#instVars : [
 		'object',
 		'table'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLObjectQuery class >> forObject: aProxydObject [
 
 	^self new
@@ -21,13 +22,13 @@ SSWSQLObjectQuery class >> forObject: aProxydObject [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLObjectQuery >> isWriteQuery [
 
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLObjectQuery >> object [
 
 	"object stores the proxy'd persistent object on which the receiver represents its query"
@@ -36,7 +37,7 @@ SSWSQLObjectQuery >> object [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLObjectQuery >> object: aProxydObject [
 
 	"object stores the proxy'd persistent object on which the receiver represents its query"
@@ -45,7 +46,7 @@ SSWSQLObjectQuery >> object: aProxydObject [
 	
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLObjectQuery >> objectControlConditions [
 
 	"Create and return an SSWSQLConditionCollection which constrains the receiver query
@@ -65,7 +66,7 @@ SSWSQLObjectQuery >> objectControlConditions [
 	^conditions
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLObjectQuery >> objectIDCondition [
 
 	"Create and return an SSWSQLCondition which identifies the receiver's object
@@ -76,7 +77,7 @@ SSWSQLObjectQuery >> objectIDCondition [
 		equalTo: self object _id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLObjectQuery >> table [
 
 	"table is a lazy-initialized cache for the table to which the receiver's object belongs"
@@ -86,7 +87,7 @@ SSWSQLObjectQuery >> table [
 	^table
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLObjectQuery >> table: anSSWDBTable [
 
 	"table is a lazy-initialized cache for the table to which the receiver's object belongs"

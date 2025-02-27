@@ -138,6 +138,12 @@ SSWDBQueryField >> sqlCanBeParameterized [
 ]
 
 { #category : 'accessing' }
+SSWDBQueryField >> sqlDialect [
+
+	^self field sqlDialect
+]
+
+{ #category : 'accessing' }
 SSWDBQueryField >> table [
 
 	^self field table

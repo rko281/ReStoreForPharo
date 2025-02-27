@@ -28,6 +28,12 @@ SSWSQLite3ResultSet >> columns [
 	^columns
 ]
 
+{ #category : 'accessing' }
+SSWSQLite3ResultSet >> cursorType [
+
+	^#forwardOnly
+]
+
 { #category : 'private' }
 SSWSQLite3ResultSet >> do: aBlock [
 

@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLUpdateObjectQuery,
-	#superclass : #SSWSQLObjectQuery,
+	#name : 'SSWSQLUpdateObjectQuery',
+	#superclass : 'SSWSQLObjectQuery',
 	#instVars : [
 		'fieldUpdates'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLUpdateObjectQuery class >> forObject: aProxydObject withUpdates: anSSWSQLCollection [
 
 	^(super forObject: aProxydObject)
@@ -20,7 +21,7 @@ SSWSQLUpdateObjectQuery class >> forObject: aProxydObject withUpdates: anSSWSQLC
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> fieldUpdates [
 
 	"fieldUpdates stores an SSWSQLFieldCollection of SSWSQLConditions that
@@ -29,7 +30,7 @@ SSWSQLUpdateObjectQuery >> fieldUpdates [
 	^fieldUpdates
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> fieldUpdates: anSSWSQLFieldCollection [ 
 
 	"fieldUpdates stores an SSWSQLFieldCollection of SSWSQLConditions that
@@ -38,7 +39,7 @@ SSWSQLUpdateObjectQuery >> fieldUpdates: anSSWSQLFieldCollection [
 	fieldUpdates := anSSWSQLFieldCollection 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> parameterisedFields [
 
 	"UPDATE table SET updatedFields TO updatedValues WHERE objectIDCondition AND objectControlConditions"
@@ -49,7 +50,7 @@ SSWSQLUpdateObjectQuery >> parameterisedFields [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> updatedFields [
 
 	| updatedFields |
@@ -61,7 +62,7 @@ SSWSQLUpdateObjectQuery >> updatedFields [
 	^updatedFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> updatedValues [
 
 	| updatedValues |
@@ -73,7 +74,7 @@ SSWSQLUpdateObjectQuery >> updatedValues [
 	^updatedValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateObjectQuery >> values [
 
 	"UPDATE table SET updatedFields TO updatedValues WHERE objectIDCondition AND objectControlConditions"
@@ -88,7 +89,7 @@ SSWSQLUpdateObjectQuery >> values [
 	^parameterisedValues
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLUpdateObjectQuery >> writeSQLOn: aStream [
 
 	aStream nextPutAll: 'UPDATE '.

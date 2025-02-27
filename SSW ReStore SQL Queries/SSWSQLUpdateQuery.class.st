@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLUpdateQuery,
-	#superclass : #SSWSQLConditionalQuery,
+	#name : 'SSWSQLUpdateQuery',
+	#superclass : 'SSWSQLConditionalQuery',
 	#instVars : [
 		'fieldUpdates'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateQuery >> fieldUpdates [
 
 	"fieldUpdates stores an SSWSQLFieldCollection of SSWSQLConditions that
@@ -21,7 +22,7 @@ SSWSQLUpdateQuery >> fieldUpdates [
 	^fieldUpdates
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLUpdateQuery >> fieldUpdates: anSSWSQLFieldCollection [ 
 
 	"fieldUpdates stores an SSWSQLFieldCollection of SSWSQLConditions that
@@ -30,13 +31,13 @@ SSWSQLUpdateQuery >> fieldUpdates: anSSWSQLFieldCollection [
 	fieldUpdates := anSSWSQLFieldCollection 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLUpdateQuery >> isWriteQuery [
 
 	^true
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLUpdateQuery >> parameterisedFields [
 
 	| parameterisedFields |
@@ -50,7 +51,7 @@ SSWSQLUpdateQuery >> parameterisedFields [
 	^parameterisedFields, super parameterisedFields
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLUpdateQuery >> writeSQLOn: aStream [
 
 	aStream nextPutAll: 'UPDATE '.

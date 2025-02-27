@@ -6,7 +6,7 @@ SSWSQLCondition >> convertValue: aValue [
 	"For situations where a condition is being used as a result field in a query.
 	Since the receiver is a condition, its result must be a Boolean"
 
-	^Boolean instanceFromDBValue: aValue in: self field table reStore
+	^Boolean instanceFromDBValue: aValue in: self reStore
 ]
 
 { #category : '*SSW ReStore Querying' }
@@ -31,6 +31,12 @@ SSWSQLCondition >> hasFinalField [
 	"Polymorphic with SSWDBBlockEvaluator; used when collect: queries have a condition as a result field, e.g. object cancelDate notNil"
 
 	^true
+]
+
+{ #category : '*SSW ReStore Querying' }
+SSWSQLCondition >> reStore [
+
+	^self field reStore
 ]
 
 { #category : '*SSW ReStore Querying' }

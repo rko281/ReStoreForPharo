@@ -1,13 +1,14 @@
 Class {
-	#name : #SSWODBCRow,
-	#superclass : #ODBCRow,
+	#name : 'SSWODBCRow',
+	#superclass : 'ODBCRow',
 	#instVars : [
 		'fieldMap'
 	],
-	#category : #'SSW ReStore ODBC'
+	#category : 'SSW ReStore ODBC',
+	#package : 'SSW ReStore ODBC'
 }
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCRow >> deAliasQueryFieldsFor: aDBQueryTable [
 
 	"The receiver is derived from a query containing the given SSWDBQueryTable as an alias for an actual SSWDBTable.
@@ -17,7 +18,7 @@ SSWODBCRow >> deAliasQueryFieldsFor: aDBQueryTable [
 	1 to: columns size do: [ :index | (columns at: index) field ifNotNil: [ :field | field table == aDBQueryTable ifTrue: [fieldMap at: field field put: (contents at: index)]]]
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCRow >> initializeFromBuffer: anSSWODBCBuffer [
 
 	columns := anSSWODBCBuffer columns.
@@ -30,7 +31,7 @@ SSWODBCRow >> initializeFromBuffer: anSSWODBCBuffer [
 		1 to: columns size do: [ :index | (columns at: index) field ifNotNil: [ :field | fieldMap at: field put: (contents at: index)]]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWODBCRow >> lookupField: aField [
 
 	^fieldMap isNil 

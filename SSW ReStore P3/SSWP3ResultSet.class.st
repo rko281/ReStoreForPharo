@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'query',
 		'dataStream',
-		'columns'
+		'columns',
+		'statement'
 	],
 	#category : 'SSW ReStore P3',
 	#package : 'SSW ReStore P3'
@@ -21,6 +22,12 @@ SSWP3ResultSet >> close [
 SSWP3ResultSet >> columns [
 
 	^columns
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> cursorType [
+
+	^#forwardOnly
 ]
 
 { #category : 'accessing' }
@@ -45,6 +52,8 @@ SSWP3ResultSet >> first [
 
 { #category : 'initialize-release' }
 SSWP3ResultSet >> free [
+
+	statement free
 ]
 
 { #category : 'enumerating' }
@@ -147,4 +156,16 @@ SSWP3ResultSet >> size [
 SSWP3ResultSet >> species [
 
 	^OrderedCollection
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> statement [
+
+	^ statement
+]
+
+{ #category : 'accessing' }
+SSWP3ResultSet >> statement: anObject [
+
+	statement := anObject
 ]

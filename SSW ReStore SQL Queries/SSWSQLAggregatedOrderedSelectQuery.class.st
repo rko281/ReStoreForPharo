@@ -4,25 +4,26 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLAggregatedOrderedSelectQuery,
-	#superclass : #SSWSQLOrderedSelectQuery,
+	#name : 'SSWSQLAggregatedOrderedSelectQuery',
+	#superclass : 'SSWSQLOrderedSelectQuery',
 	#instVars : [
 		'groupByFields'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLAggregatedOrderedSelectQuery >> groupByFields [
 	^groupByFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLAggregatedOrderedSelectQuery >> groupByFields: anObject [
 	groupByFields := anObject
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLAggregatedOrderedSelectQuery >> writeSQLOn: aStream [
 
 	| aggConditions |
@@ -30,7 +31,7 @@ SSWSQLAggregatedOrderedSelectQuery >> writeSQLOn: aStream [
 	self writeUnorderedSQLOn: aStream.
 	
 	aStream nextPutAll: ' GROUP BY '.
-	self groupByFields do: [ :field | field writeSQLOn: aStream] separatedBy: [aStream nextPutAll: ', '].
+	self groupByFields do: [ :field | aStream nextPutPossiblyAliasedField: field] separatedBy: [aStream nextPutAll: ', '].
 
 	aggConditions := self conditions aggregatedConditions.
 	aggConditions isEmpty ifFalse:
@@ -40,7 +41,7 @@ SSWSQLAggregatedOrderedSelectQuery >> writeSQLOn: aStream [
 	self writeOrderingSQLOn: aStream
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLAggregatedOrderedSelectQuery >> writeWhereClauseOn: aStream [
 
 	"Overriden to factor aggregated conditions out to HAVING clause"

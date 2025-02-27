@@ -34,7 +34,7 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	| owner proxy |
 	"Just using MidPerson here for its reference to SuperPerson in its midFriend inst var"
 	owner := MidPerson new firstName: 'owner'.
-	owner midFriend: (aClass storedInstancesIn: reStore) first.
+	owner midFriend: (aClass storedInstancesIn: reStore) withoutInheritance first.
 	owner storeIn: reStore.
 	reStore simulateReconnect.
 
@@ -61,7 +61,7 @@ SSWReStoreHierarchyTest >> _testClassOfProxyOfInstanceOf: aClass recoveredBy: aB
 	reStore simulateReconnect.
 	owner := (MidPerson storedInstancesIn: reStore) detect: [:each | each firstName = 'owner'].
 	aClass mutableAspects
-		keysAndValuesDo: [:i :sym | self assert: ((owner midFriend perform: sym) isBitSet: i)]
+		keysAndValuesDo: [:i :sym | self assert: ((owner midFriend perform: sym) isBitSet: i)].
 ]
 
 { #category : 'running' }
@@ -335,9 +335,9 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 { #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
 	| detailedID midID |
-	midID := (reStore instancesOf: MidPerson) first _id.
+	midID := (reStore instancesOf: MidPerson) withoutInheritance first _id.
 	DetailedPerson1 new storeIn: reStore.
-	detailedID := (reStore instancesOf: DetailedPerson1) first _id.
+	detailedID := (reStore instancesOf: DetailedPerson1) withoutInheritance first _id.
 	reStore simulateReconnect.
 
 	"Attempt to retrieve what is actually a DetailedPerson as if it were a MidPerson (siblings)"

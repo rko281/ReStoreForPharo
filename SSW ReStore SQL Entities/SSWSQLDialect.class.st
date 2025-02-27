@@ -261,63 +261,6 @@ SSWSQLDialect >> date [
 	^'DATE'
 ]
 
-{ #category : 'constants' }
-SSWSQLDialect >> dateAndTimeFormat [
-
-	"The format for DateAndTImes when expressed as Strings"
-
-	^'yyyy-MM-dd HH:mm:ssffffff'
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> dateAndTimeFrom: anObject [
-
-	| stream date time |
-
-	(anObject isKindOf: String) ifTrue: 
-		[stream := anObject readStream.
-		date := Date readFrom: stream format: self dateFormat.
-		stream next.
-		time := Time readFrom: stream.
-		^DateAndTime fromDate: date time: time].
-
-	self error: ('cannot convert <1p> to a DateAndTime' expandMacrosWith: anObject)
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> dateAndTimeStringFor: aDateAndTime [
-
-	"Return the String representation of aDateAndTime in this dialect"
-
-	^aDateAndTime printStringFormat: self dateAndTimeFormat
-]
-
-{ #category : 'constants' }
-SSWSQLDialect >> dateFormat [
-
-	"The format for Dates when expressed as Strings"
-
-	^'yyyy-MM-dd'
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> dateFrom: anObject [
-
-	anObject class = DateAndTime ifTrue: [^anObject asDate].
-
-	(anObject isKindOf: String) ifTrue: [^Date readFrom: anObject readStream format: self dateFormat].
-
-	self error: ('cannot convert <1p> to a Date' expandMacrosWith: anObject)
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> dateStringFor: aDate [
-
-	"Return the String representation of aDate in this dialect"
-
-	^aDate printStringFormat: self dateFormat
-]
-
 { #category : 'datatypes' }
 SSWSQLDialect >> datetime [
 
@@ -342,6 +285,23 @@ SSWSQLDialect >> decimal [
 SSWSQLDialect >> defaultClassNameTransformation [
 
 	^[ :name | name sswInUnderscoreFormat]
+]
+
+{ #category : 'constants' }
+SSWSQLDialect >> defaultCursorType [
+
+	"Return the Symbol-ic name of the cursor type that will be used when creating statements for cursored results in this dialect. 
+	The names are adopted from the Dolphin ODBC package:
+		CursorTypes
+			at: #static put: SQL_CURSOR_STATIC;
+			at: #forwardOnly put: SQL_CURSOR_FORWARD_ONLY;
+			at: #keysetDriven put: SQL_CURSOR_KEYSET_DRIVEN;
+			at: #dynamic put: SQL_CURSOR_DYNAMIC;
+
+	This is mostly relevant for ODBC connections since native connections don't generally support different cursor types.
+	It is included in the main class since specifying a nil cursorType when executing a query is used to indicate no cursor is required - this is relevant to the native MySQL implementation"
+
+	^#forwardOnly
 ]
 
 { #category : 'constants' }
@@ -457,14 +417,6 @@ SSWSQLDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSWReS
 			writeSQLFor: anSSWDBTable;
 			nextPutAll: ' DROP COLUMN ';
 			nextPutIdentifier: colString]
-]
-
-{ #category : 'constants' }
-SSWSQLDialect >> falseObject [
-
-	"The object which represents the false Boolean in this dialect"
-
-	^0
 ]
 
 { #category : 'datatypes' }
@@ -693,6 +645,16 @@ SSWSQLDialect >> nullBoolean: anObject [
 	nullBoolean := anObject
 ]
 
+{ #category : 'event handling' }
+SSWSQLDialect >> onConnected: aConnection [
+
+	"Sent to the dialect immediately after login"
+
+	self postLoginScript ifNotNil: 
+		[ :script | 
+		aConnection evaluateAsTxn: [aConnection exec: script. true]]
+]
+
 { #category : 'constants' }
 SSWSQLDialect >> postLoginScript [
 
@@ -846,32 +808,6 @@ SSWSQLDialect >> time [
 	^'TIME'
 ]
 
-{ #category : 'constants' }
-SSWSQLDialect >> timeFormat [
-
-	"The format for Times when expressed as Strings"
-
-	^'HH:mm:ss'
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> timeFrom: anObject [
-
-	anObject class = DateAndTime ifTrue: [^anObject asTime].
-
-	(anObject isKindOf: String) ifTrue: [^Time readFrom: anObject readStream].
-
-	self error: ('cannot convert <1p> to a Time' expandMacrosWith: anObject)
-]
-
-{ #category : 'conversions' }
-SSWSQLDialect >> timeStringFor: aTime [
-
-	"Return the String representation of aTime in this dialect"
-
-	^aTime printStringFormat: self timeFormat
-]
-
 { #category : 'public' }
 SSWSQLDialect >> timeWithResolution [
 
@@ -900,14 +836,6 @@ SSWSQLDialect >> transformInstVarName: aSymbol [
 SSWSQLDialect >> translateMessage: aSymbol toFunction: aSQLFunction [
 
 	self sqlFunctions at: aSymbol put: aSQLFunction
-]
-
-{ #category : 'constants' }
-SSWSQLDialect >> trueObject [
-
-	"The object which represents the true Boolean in this dialect"
-
-	^1
 ]
 
 { #category : 'datatypes' }

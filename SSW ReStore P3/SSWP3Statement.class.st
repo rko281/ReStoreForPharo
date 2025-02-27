@@ -26,9 +26,7 @@ SSWP3Statement >> client: aClient name: aString paramDescriptions: pCollection f
 ]
 
 { #category : 'initialize-release' }
-SSWP3Statement >> cursoredFetch: aBoolean [
-
-	"Not implemented?"
+SSWP3Statement >> cursorType: aSymbol [
 ]
 
 { #category : 'executing' }
@@ -49,6 +47,12 @@ SSWP3Statement >> isFreed [
 SSWP3Statement >> parent [
 
 	^client
+]
+
+{ #category : 'accessing' }
+SSWP3Statement >> results: anSSWP3ResultSet [
+	results := anSSWP3ResultSet.
+	anSSWP3ResultSet statement: self
 ]
 
 { #category : 'accessing' }

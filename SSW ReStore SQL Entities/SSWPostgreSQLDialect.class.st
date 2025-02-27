@@ -113,6 +113,18 @@ SSWPostgreSQLDialect >> maxCharacter [
 	^65535
 ]
 
+{ #category : 'event handling' }
+SSWPostgreSQLDialect >> onConnected: aConnection [
+
+	"ReStore has removed support for non-numeric Booleans.
+	Ensure the 'bools as chars' option isn't set"
+
+	(aConnection query: 'select true') first contents first = '1' ifTrue: 
+		[self error: 'Bools as Char connection option is set; this is no longer supported in ReStore. Please unset this option in the connection configuration'].
+
+	super onConnected: aConnection
+]
+
 { #category : 'maintenance' }
 SSWPostgreSQLDialect >> renameField: oldField to: newField in: aReStore [
 

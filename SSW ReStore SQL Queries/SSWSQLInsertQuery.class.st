@@ -4,12 +4,13 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLInsertQuery,
-	#superclass : #SSWSQLObjectQuery,
-	#category : #'SSW ReStore SQL Queries'
+	#name : 'SSWSQLInsertQuery',
+	#superclass : 'SSWSQLObjectQuery',
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLInsertQuery >> fields [
 
 	"Return the fields involved in this insert, as an SSWSQLFieldCollection"
@@ -17,7 +18,7 @@ SSWSQLInsertQuery >> fields [
 	^self table allFields
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLInsertQuery >> parameterisedFields [
 
 	"In the receiver, all fields are parameterised"
@@ -25,7 +26,7 @@ SSWSQLInsertQuery >> parameterisedFields [
 	^self fields
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLInsertQuery >> values [
 
 	"Return the values to be inserted by the receiver, as an SSWSQLFieldCollection"	
@@ -33,7 +34,7 @@ SSWSQLInsertQuery >> values [
 	^self fields collect: [ :field | field accessor valueIn: self object]
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLInsertQuery >> writeSQLOn: aStream [
 
 	aStream nextPutAll: 'INSERT INTO '.

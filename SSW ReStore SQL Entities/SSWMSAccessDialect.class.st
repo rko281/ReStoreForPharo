@@ -151,12 +151,6 @@ SSWMSAccessDialect >> time [
 	^self datetime
 ]
 
-{ #category : 'constants' }
-SSWMSAccessDialect >> trueObject [
-
-	^-1
-]
-
 { #category : 'datatypes' }
 SSWMSAccessDialect >> unsizedBlob [
 

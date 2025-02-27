@@ -23,9 +23,7 @@ SSWSQLite3Statement >> bindParameters: newBindings [
 ]
 
 { #category : 'initialize-release' }
-SSWSQLite3Statement >> cursoredFetch: aBoolean [
-
-	"Always enabled"
+SSWSQLite3Statement >> cursorType: aSymbol [
 ]
 
 { #category : 'execution' }

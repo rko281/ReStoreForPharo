@@ -51,6 +51,12 @@ SSWDBReadStream >> collectionNext [
 		exc return: self collectionNext]
 ]
 
+{ #category : 'accessing' }
+SSWDBReadStream >> cursorType [
+
+	^collection cursorType
+]
+
 { #category : 'evaluating' }
 SSWDBReadStream >> evaluatePostReadActionsFor: aCollection [
 
@@ -135,7 +141,7 @@ SSWDBReadStream >> reStore [
 SSWDBReadStream >> reinitialize [
 
 	self resetPeeked.
-	self on: self instancesCollection resultSet.
+	self on: (self instancesCollection resultSet: self cursorType).
 	self setInstancesCollection: self instancesCollection
 ]
 

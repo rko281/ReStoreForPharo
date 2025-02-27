@@ -33,6 +33,14 @@ SSWSQLParameterField >> columnIndex: anInteger [
 	"Polymorphic with SSWDBField"
 ]
 
+{ #category : 'accessing' }
+SSWSQLParameterField >> reStore [
+
+	"Unknown"
+
+	^nil
+]
+
 { #category : 'testing' }
 SSWSQLParameterField >> requiresAliasing [
 

@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLConditionalQuery,
-	#superclass : #SSWSQLTableQuery,
+	#name : 'SSWSQLConditionalQuery',
+	#superclass : 'SSWSQLTableQuery',
 	#instVars : [
 		'conditions'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionalQuery >> conditions [
 
 	"conditions stores an SQLConditionCollection which filters this query"
@@ -20,7 +21,7 @@ SSWSQLConditionalQuery >> conditions [
 	^conditions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLConditionalQuery >> conditions: anSQLConditionCollection [
 
 	"conditions stores an SQLConditionCollection which filters this query"
@@ -28,13 +29,13 @@ SSWSQLConditionalQuery >> conditions: anSQLConditionCollection [
 	conditions := anSQLConditionCollection
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLConditionalQuery >> hasConditions [
 
 	^self conditions isEmpty not
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 SSWSQLConditionalQuery >> parameterisedFields [
 
 	| parameterisedFields |
@@ -50,7 +51,7 @@ SSWSQLConditionalQuery >> parameterisedFields [
 	^parameterisedFields
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLConditionalQuery >> writeWhereClauseOn: aStream [
 
 	"Write the SQL for the WHERE clause for the receiver's conditions on aStream.

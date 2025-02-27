@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLSubQuery,
-	#superclass : #SSWSQLQuery,
+	#name : 'SSWSQLSubQuery',
+	#superclass : 'SSWSQLQuery',
 	#instVars : [
 		'query'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLSubQuery >> isEmpty [
 
 	"Collection behavior"
@@ -20,19 +21,19 @@ SSWSQLSubQuery >> isEmpty [
 	^false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLSubQuery >> isReadQuery [
 	
 	^self query isReadQuery
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLSubQuery >> isWriteQuery [
 	
 	^self query isWriteQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSubQuery >> occurrencesOf: anObject [
 
 	^anObject = SSWSQLQueryParameter
@@ -40,23 +41,23 @@ SSWSQLSubQuery >> occurrencesOf: anObject [
 		ifFalse: [super occurrencesOf: anObject "force MNU"]
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 SSWSQLSubQuery >> preExecIn: anSSWReStore [
 
 	self query preExecIn: anSSWReStore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSubQuery >> query [
 	^query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLSubQuery >> query: anObject [
 	query := anObject
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLSubQuery >> writeSQLOn: aStream [
 
 	"SubQueries should we wrapped in parentheses"

@@ -313,7 +313,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQuery [
 	self storeNewOwnersWithBitmaskValues: (1 to: 8).
 
 	instances := TestWithBitmask storedInstancesIn: reStore.
-	self assert: (instances collect: [ :each | each bitmask]) asArray equals: ((0 to: 8) collect: [ :each | TestBitmask new value: each])
+	self assert: (instances collect: [ :each | each bitmask]) asSortedCollection asArray equals: ((0 to: 8) collect: [ :each | TestBitmask new value: each])
 ]
 
 { #category : 'unit tests' }
@@ -324,7 +324,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQueryOnValue [
 	self storeNewOwnersWithBitmaskValues: (1 to: 8).
 
 	instances := TestWithBitmask storedInstancesIn: reStore.
-	self assert: (instances collect: [ :each | each bitmask value]) asArray equals: (0 to: 8) asArray
+	self assert: (instances collect: [ :each | each bitmask value]) asSortedCollection asArray equals: (0 to: 8) asArray
 ]
 
 { #category : 'unit tests' }
@@ -335,6 +335,7 @@ SSWReStoreDirectlyPersistedTest >> testCollectQueryWithMethod [
 	self storeNewOwnersWithBitmaskValues: (1 to: 8).
 
 	instances := TestWithBitmask storedInstancesIn: reStore.
+	instances sortBlock: [ :a :b | a bitmask value <= b bitmask value].
 	self assert: (instances collect: [ :each | each bitmask isBitSet: 1]) asArray equals: ((0 to: 8) collect: [ :each | each isBitSet: 1]).
 	self assert: (instances collect: [ :each | each bitmask isBitSet: 2]) asArray equals: ((0 to: 8) collect: [ :each | each isBitSet: 2])
 ]

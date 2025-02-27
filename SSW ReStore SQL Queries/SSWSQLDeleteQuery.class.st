@@ -4,15 +4,16 @@ ReStore
 https://github.com/rko281/ReStore
 "
 Class {
-	#name : #SSWSQLDeleteQuery,
-	#superclass : #SSWSQLConditionalQuery,
+	#name : 'SSWSQLDeleteQuery',
+	#superclass : 'SSWSQLConditionalQuery',
 	#instVars : [
 		'isMultiTableDelete'
 	],
-	#category : #'SSW ReStore SQL Queries'
+	#category : 'SSW ReStore SQL Queries',
+	#package : 'SSW ReStore SQL Queries'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWSQLDeleteQuery class >> new [
 
 	^super new
@@ -20,7 +21,7 @@ SSWSQLDeleteQuery class >> new [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDeleteQuery >> isMultiTableDelete [
 
 	"Answer true if the receiver should delete from all its tables or false if just from the primary (first) table.
@@ -29,19 +30,19 @@ SSWSQLDeleteQuery >> isMultiTableDelete [
 	^isMultiTableDelete
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SSWSQLDeleteQuery >> isMultiTableDelete: anObject [
 
 	isMultiTableDelete := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SSWSQLDeleteQuery >> isWriteQuery [
 
 	^true
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLDeleteQuery >> writeDeletionTablesOn: aStream [
 
 	self isMultiTableDelete
@@ -49,7 +50,7 @@ SSWSQLDeleteQuery >> writeDeletionTablesOn: aStream [
 		ifFalse: [self tables first writeSQLNameOn: aStream]
 ]
 
-{ #category : #output }
+{ #category : 'output' }
 SSWSQLDeleteQuery >> writeSQLOn: aStream [
 
 	self tables size = 1 

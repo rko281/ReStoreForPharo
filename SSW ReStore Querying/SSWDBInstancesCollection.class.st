@@ -463,12 +463,21 @@ SSWDBInstancesCollection >> reStore: anSSWReStore [
 	reStore := anSSWReStore
 ]
 
-{ #category : 'evaluating' }
+{ #category : 'accessing' }
 SSWDBInstancesCollection >> readStream [
 
 	"Create and return an appropraite ReadStream-like object on the receiver"
 
-	^self resultSet readStream
+	^self readStream: self reStore sqlDialect defaultCursorType
+]
+
+{ #category : 'accessing' }
+SSWDBInstancesCollection >> readStream: aSymbol [
+
+	"Create and return an appropraite ReadStream-like object on the receiver.
+	aSymbol describes the cursor type for the result set"
+
+	^(self resultSet: aSymbol) readStream
 		setInstancesCollection: self;
 		yourself
 ]
@@ -497,15 +506,16 @@ SSWDBInstancesCollection >> reject: rejectBlock [
 ]
 
 { #category : 'evaluating' }
-SSWDBInstancesCollection >> resultSet [
+SSWDBInstancesCollection >> resultSet: aSymbol [
 
-	"Private - Return a DBResultSet (open query results) onto the collection of rows represented by the receiver"
+	"Private - Return a DBResultSet (open query results) onto the collection of rows represented by the receiver.
+	aSymbol describes the cursor type for the result set"
 	
 	| query |
 
 	query := self parser collectQueryFrom: [ :elem | elem].
 
-	^self reStore executeQuery: query cursoredFetch: true
+	^self reStore executeQuery: query cursorType: aSymbol
 ]
 
 { #category : 'evaluating' }

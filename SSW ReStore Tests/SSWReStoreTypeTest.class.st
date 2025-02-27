@@ -35,12 +35,12 @@ SSWReStoreTypeTest >> createTestData [
 		varchar: 'VARCHAR';
 		medText: ((String new: 2000) atAllPut: $M; yourself);
 		largeText: ((String new: 5000) atAllPut: $L; yourself);
-		unsizedText: ((String new: 6000) atAllPut: $U; yourself);
+		unsizedText: ((String new: self unsizedSize) atAllPut: $U; yourself);
 
 		tinyBlob: (ByteArray withAll: (0 to: 240));
 		medBlob: ((ByteArray new: 2000) atAllPut: 200; yourself);
 		largeBlob: ((ByteArray new: 5000) atAllPut: 220; yourself);
-		unsizedBlob: ((ByteArray new: 6000) atAllPut: 240; yourself);
+		unsizedBlob: ((ByteArray new: self unsizedSize) atAllPut: 240; yourself);
 
 		integer: 123;
 		largeInteger: 1234567890;
@@ -181,16 +181,20 @@ SSWReStoreTypeTest >> testExtendedANSI [
 { #category : 'unit tests' }
 SSWReStoreTypeTest >> testGeneral [
 
-	self assert: typeTest char trimBlanks equals: 'CHAR'.
+	self assert: typeTest char trimNulls "<- most dialects pad with nulls" trimBlanks "<- Postgres pads with whitespace" equals: 'CHAR'.
 	self assert: typeTest varchar equals: 'VARCHAR'.
 	self assert: typeTest medText equals: ((String new: 2000) atAllPut: $M; yourself).
 	self assert: typeTest largeText equals: ((String new: 5000) atAllPut: $L; yourself).
-	self assert: typeTest unsizedText equals: ((String new: 6000) atAllPut: $U; yourself).
+	self assert: typeTest unsizedText equals: ((String new: self unsizedSize) atAllPut: $U; yourself).
 	self assert: typeTest integer equals: 123.
 	self assert: typeTest largeInteger equals: 1234567890.
 	self assert: typeTest float equals: 123.456.
 	self assert: typeTest trueBoolean equals: true.
-	self assert: typeTest falseBoolean equals: false
+	self assert: typeTest falseBoolean equals: false.
+	self assert: typeTest tinyBlob equals: (ByteArray withAll: (0 to: 240)).
+	self assert: typeTest medBlob equals: ((ByteArray new: 2000) atAllPut: 200; yourself).
+	self assert: typeTest largeBlob equals: ((ByteArray new: 5000) atAllPut: 220; yourself).
+	self assert: typeTest unsizedBlob equals: ((ByteArray new: self unsizedSize) atAllPut: 240; yourself)
 ]
 
 { #category : 'unit tests' }
@@ -347,6 +351,56 @@ SSWReStoreTypeTest >> testUUIDQuery [
 
 	t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each uuid = GUID newUnique] ifNone: [nil].
 	self assert: t2 isNil
+]
+
+{ #category : 'public' }
+SSWReStoreTypeTest >> testVeryLargeBlob [
+
+	| size instance |
+
+	"10MB"
+	size := 10 * 1024 * 1024.
+
+	TypeTest new
+		varchar: 'Very Large Blob';
+		unsizedBlob: ((ByteArray new: size) atAllPut: 128; at: 1 put: 0; at: size put: 255; yourself);
+		storeIn: reStore.
+
+	reStore simulateReconnect.
+
+	instance := (TypeTest storedInstancesIn: reStore) detect: [ :each | each varchar = 'Very Large Blob'].
+	self assert: instance unsizedBlob size equals: size.
+	self assert: instance unsizedBlob first equals: 0.
+	self assert: instance unsizedBlob second equals: 128.
+	self assert: instance unsizedBlob last equals: 255.
+]
+
+{ #category : 'public' }
+SSWReStoreTypeTest >> testVeryLargeString [
+
+	| size instance |
+
+	"10MB"
+	size := 10 * 1024 * 1024.
+
+	TypeTest new
+		varchar: 'Very Large String';
+		unsizedText: ((String new: size) atAllPut: $V; at: 1 put: $A; at: size put: $Z; yourself);
+		storeIn: reStore.
+
+	reStore simulateReconnect.
+
+	instance := (TypeTest storedInstancesIn: reStore) detect: [ :each | each varchar = 'Very Large String'].
+	self assert: instance unsizedText size equals: size.
+	self assert: instance unsizedText first equals: $A.
+	self assert: instance unsizedText second equals: $V.
+	self assert: instance unsizedText last equals: $Z.
+]
+
+{ #category : 'constants' }
+SSWReStoreTypeTest >> unsizedSize [
+
+	^2 ** 17
 ]
 
 { #category : 'constants' }

@@ -1052,19 +1052,19 @@ SSWReStore >> executeQuery: anSSWSQLQuery [
 	If it is a read query, return the DBResultSet (client code should close this when done)
 	If it is a write query, return the number of rows affected"
 
-	^self executeQuery: anSSWSQLQuery cursoredFetch: false
+	^self executeQuery: anSSWSQLQuery cursorType: nil
 ]
 
 { #category : 'connection' }
-SSWReStore >> executeQuery: anSSWSQLQuery cursoredFetch: aBoolean [
+SSWReStore >> executeQuery: anSSWSQLQuery cursorType: aSymbol [
 
 	"Execute the given query.
-	If it is a read query, return the DBResultSet (client code should close this when done); aBoolean controls whether the result set is cursored (incremental read)
+	If it is a read query, return the DBResultSet (client code should close this when done); aSymbol indicates the type of cursor for streaming/incremental read (may be nil)
 	If it is a write query, return the number of rows affected"
 
 	^self transactionCritical:
 		[| statement |
-		statement := self connection executeQuery: anSSWSQLQuery cursoredFetch: aBoolean.
+		statement := self connection executeQuery: anSSWSQLQuery cursorType: aSymbol.
 		anSSWSQLQuery isReadQuery
 			ifTrue: [statement results]
 			ifFalse: [[statement rowsAffected] ensure: [statement free]]]

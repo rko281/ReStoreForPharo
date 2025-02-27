@@ -60,6 +60,12 @@ SSWMySQLDialect >> defaultMaxTableNameLength [
 ]
 
 { #category : 'constants' }
+SSWMySQLDialect >> defaultTimeResolution [
+
+	^3
+]
+
+{ #category : 'constants' }
 SSWMySQLDialect >> dialectSpecificFunctions [
 
 	^Dictionary new

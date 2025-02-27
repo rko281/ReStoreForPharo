@@ -1,1 +1,1 @@
-Package { #name : #'SSW ReStore SQL Queries' }
+Package { #name : 'SSW ReStore SQL Queries' }

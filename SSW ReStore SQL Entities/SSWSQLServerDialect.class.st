@@ -22,14 +22,6 @@ SSWSQLServerDialect >> boolean [
 	^'BIT'
 ]
 
-{ #category : 'constants' }
-SSWSQLServerDialect >> dateAndTimeFormat [
-
-	"The format for DateAndTImes when expressed as Strings"
-
-	^'yyyy-MM-dd HH:mm:ssfff'
-]
-
 { #category : 'datatypes' }
 SSWSQLServerDialect >> datetime [
 
@@ -40,6 +32,14 @@ SSWSQLServerDialect >> datetime [
 SSWSQLServerDialect >> datetimeWithResolution [
 
 	^'DATETIME2(<1p>)'
+]
+
+{ #category : 'constants' }
+SSWSQLServerDialect >> defaultCursorType [
+
+	"Default #forwardOnly gives 'Connection is busy with results for another hstmt' error"
+
+	^#keysetDriven
 ]
 
 { #category : 'constants' }

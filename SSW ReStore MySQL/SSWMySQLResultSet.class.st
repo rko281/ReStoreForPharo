@@ -27,6 +27,12 @@ SSWMySQLResultSet >> columns [
 	^columns
 ]
 
+{ #category : 'accessing' }
+SSWMySQLResultSet >> cursorType [
+
+	^#forwardOnly
+]
+
 { #category : 'enumerating' }
 SSWMySQLResultSet >> do: aBlock [
 

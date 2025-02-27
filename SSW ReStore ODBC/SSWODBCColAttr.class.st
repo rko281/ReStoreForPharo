@@ -1,15 +1,16 @@
 Class {
-	#name : #SSWODBCColAttr,
-	#superclass : #ODBCColAttr,
+	#name : 'SSWODBCColAttr',
+	#superclass : 'ODBCColAttr',
 	#instVars : [
 		'field',
 		'maxBoundBufferSize',
 		'isFunctionParameter'
 	],
-	#category : #'SSW ReStore ODBC'
+	#category : 'SSW ReStore ODBC',
+	#package : 'SSW ReStore ODBC'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 SSWODBCColAttr class >> forString: aString [
 
 	"Create an instance of the receiver which describes a column capable of holding aString"
@@ -22,7 +23,7 @@ SSWODBCColAttr class >> forString: aString [
 		yourself
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> configureToHold: anObject [
 
 	(anObject isKindOf: String) ifTrue: [^self configureToHoldString: anObject].
@@ -41,14 +42,14 @@ SSWODBCColAttr >> configureToHold: anObject [
 	self error: 'unsupported class'
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> configureToHoldByteArray: aByteArray [
 
 	sqlType := SQL_LONGVARBINARY.
 	length := aByteArray size
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> configureToHoldNumber: aNumber [
 
 	aNumber isInteger ifTrue:
@@ -66,14 +67,22 @@ SSWODBCColAttr >> configureToHoldNumber: aNumber [
 	self error: 'unsupported numeric class'
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> configureToHoldString: aString [
 
 	sqlType := SQL_WLONGVARCHAR.
 	length := aString size * 2
 ]
 
-{ #category : #acccessing }
+{ #category : 'copying' }
+SSWODBCColAttr >> copyForFunction [
+
+	^self copy
+		isFunctionParameter: true;
+		yourself
+]
+
+{ #category : 'acccessing' }
 SSWODBCColAttr >> field [
 
 	"field stores the SSWSQLField from a SELECT query 
@@ -82,7 +91,7 @@ SSWODBCColAttr >> field [
 	^field
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> field: anSSWSQLField [
 
 	"field stores the SSWSQLField from a SELECT query 
@@ -91,24 +100,24 @@ SSWODBCColAttr >> field: anSSWSQLField [
 	field := anSSWSQLField
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> initialize [
 
 	super initialize.
 	self isFunctionParameter: false
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> isFunctionParameter [
 	^isFunctionParameter
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> isFunctionParameter: anObject [
 	isFunctionParameter := anObject
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> lengthC [
 
 	"Override to utilise metadata from the field if available"
@@ -137,17 +146,17 @@ SSWODBCColAttr >> lengthC [
 	^lengthC
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> maxBoundBufferSize [
 	^maxBoundBufferSize
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> maxBoundBufferSize: anObject [
 	maxBoundBufferSize := anObject
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> postCreate [
 
 	"Workaround primarily for SQLite which reports BLOB columns as SQL_BINARY - this is defined as
@@ -162,18 +171,26 @@ SSWODBCColAttr >> postCreate [
 		length: self maxBoundBufferSize
 ]
 
-{ #category : #initializing }
+{ #category : 'initializing' }
 SSWODBCColAttr >> precision [
 
 	^precision max: 0
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 SSWODBCColAttr >> scale [ 
 	^scale ifNil: [ 0 ]
 ]
 
-{ #category : #printing }
+{ #category : 'acccessing' }
+SSWODBCColAttr >> type: anInteger [
+	"Private - Set the sqlType instance variable to anInteger."
+
+	(sqlType notNil and: [self isFunctionParameter not]) ifTrue: [self error: 'attempt to reconfigure column type'].
+	super type: anInteger
+]
+
+{ #category : 'printing' }
 SSWODBCColAttr >> writeSQLOn: aStream [
 
 	aStream nextPutAll: self name

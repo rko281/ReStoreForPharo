@@ -14,6 +14,12 @@ SSWMySQLStatement >> adoptResultSet: anSSWMySQLResultSet [
 ]
 
 { #category : 'initialize-release' }
+SSWMySQLStatement >> cursorType: aSymbol [
+
+	self cursoredFetch: aSymbol notNil
+]
+
+{ #category : 'initialize-release' }
 SSWMySQLStatement >> cursoredFetch: aBoolean [ 
 
 	"Set a default fetchSize"

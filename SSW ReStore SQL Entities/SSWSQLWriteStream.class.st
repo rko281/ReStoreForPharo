@@ -132,6 +132,16 @@ SSWSQLWriteStream >> nextPutParameterizedValue: anObject forField: aField [
 	self parameterizedValues add: anObject
 ]
 
+{ #category : 'printing' }
+SSWSQLWriteStream >> nextPutPossiblyAliasedField: anSSWSQLField [
+
+	"Append to the receiver anSSWSQLField, using any already-defined alias"
+
+	(self fieldAliases at: anSSWSQLField  ifAbsent: [nil])
+		ifNil: [anSSWSQLField writeSQLOn: self]
+		ifNotNil: [ :alias | self nextPutAll: alias]
+]
+
 { #category : 'accessing' }
 SSWSQLWriteStream >> nextTableAlias [
 
