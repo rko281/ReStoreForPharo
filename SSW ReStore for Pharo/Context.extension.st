@@ -10,6 +10,21 @@ Context >> sswFollowingPc [
 ]
 
 { #category : '*SSW ReStore for Pharo' }
+Context >> sswIsBlockReturn: aPC [
+	^method encoderClass isBlockReturnAt: aPC in: method
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+Context >> sswIsPushLiteralNil: aPC [
+	^ (self compiledCode at: aPC) = method encoderClass pushNilByte
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+Context >> sswIsPushTemp: aPC [
+	^ self compiledCode encoderClass isPushTempAt: aPC in: method
+]
+
+{ #category : '*SSW ReStore for Pharo' }
 Context >> sswNeighborPCWithCorrectMapping [
 
 	"Copy of neighborPCWithCorrectMapping in Pharo 7.
@@ -26,9 +41,9 @@ Context >> sswNeighborPCWithCorrectMapping [
 	There is a 'pushTemp:' bytecode for each copied value of a block.
 	These bytecodes are not mapped to any IR.
 	We skip both"
-	[ self isPushLiteralNil: neighborPC ] whileTrue: [ neighborPC := neighborPC + 1 ].
-	[ self isPushTemp: neighborPC ] whileTrue: [ neighborPC := neighborPC + 1 ].
+	[ self sswIsPushLiteralNil: neighborPC ] whileTrue: [ neighborPC := neighborPC + 1 ].
+	[ self sswIsPushTemp: neighborPC ] whileTrue: [ neighborPC := neighborPC + 1 ].
 	"The block return ir instruction is mapped to the block instead of the sequence AST node. So we go just before it"
-	(self isBlockReturn: neighborPC) ifTrue: [ neighborPC := neighborPC - 1 ].
+	(self sswIsBlockReturn: neighborPC) ifTrue: [ neighborPC := neighborPC - 1 ].
 	^ neighborPC
 ]
