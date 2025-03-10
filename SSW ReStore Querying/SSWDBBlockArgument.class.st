@@ -472,7 +472,11 @@ SSWDBBlockArgument >> simulateMessageSend: aMessage [
 
 	^(self currentClass lookupMethod: aMessage selector)
 		ifNil: [self parseError: '<1d> does not implement <2p>' << {self currentClass. aMessage selector}]
-		ifNotNil: [ :method | self simulateMethod: method withArguments: aMessage arguments]
+		ifNotNil: 
+			[ :method | 
+			method == (Object>>#=)
+				ifTrue: [self sqlConditionFor: aMessage]
+				ifFalse: [self simulateMethod: method withArguments: aMessage arguments]]
 ]
 
 { #category : 'helpers' }

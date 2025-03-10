@@ -246,6 +246,68 @@ SSWReStoreSortTest >> testSortImplementationWithBlocks [
 ]
 
 { #category : 'unit tests' }
+SSWReStoreSortTest >> testSortImplementationWithPersistentObjectEqualityIdentityCondition [
+
+	"Test a previously-erroring case where a sort block containing an equality test on a persistent class which does not implement a custom equality test 
+	(i.e. drops through to the identity test in Object>>#=) gave an error or went unprocessed"
+
+	| instances test1 test2 test3 testEquality |
+
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
+	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ).
+	test1 := Test new name: '1'.
+	test2 := Test new name: '2'.
+	test3 := Test new name: '3'.
+	instances first test: test1.
+	instances second test: test2.
+	instances third test: test3.
+	instances fourth test: test3.
+	instances storeAllIn: reStore.
+
+	"Remove the implementation of equality from Test"
+	testEquality := Test>>#=.
+	self removeSelector: #= fromClass: Test.
+
+	[self 
+		shouldnt:
+			[instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | (a test < b test) | ((a test = b test) & (a firstName <= b firstName))]]
+		raise: Error.
+
+	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'David Smythe' 'John Smith')] ensure: [self addMethod: testEquality withSelector: #= toClass: Test]
+]
+
+{ #category : 'unit tests' }
+SSWReStoreSortTest >> testSortImplementationWithPersistentObjectEqualityIdentityConditionWithBlocks [
+
+	"Test a previously-erroring case where a sort block containing an equality test on a persistent class which does not implement a custom equality test 
+	(i.e. drops through to the identity test in Object>>#=) gave an error or went unprocessed"
+
+	| instances test1 test2 test3 testEquality |
+
+	instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection.
+	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'John Smith' 'David Smythe' ).
+	test1 := Test new name: '1'.
+	test2 := Test new name: '2'.
+	test3 := Test new name: '3'.
+	instances first test: test1.
+	instances second test: test2.
+	instances third test: test3.
+	instances fourth test: test3.
+	instances storeAllIn: reStore.
+
+	"Remove the implementation of equality from Test"
+	testEquality := Test>>#=.
+	self removeSelector: #= fromClass: Test.
+
+	[self 
+		shouldnt:
+			[instances := (SimplePerson storedInstancesIn: reStore) asSortedCollection: [ :a :b | a test < b test or: [a test = b test and: [a firstName <= b firstName]]]]
+		raise: Error.
+
+	self assert: (instances collect: [ :each | each fullName]) asArray equals: #('Jim Brown' 'Zoe Brown' 'David Smythe' 'John Smith')] ensure: [self addMethod: testEquality withSelector: #= toClass: Test]
+]
+
+{ #category : 'unit tests' }
 SSWReStoreSortTest >> testStandardSort [
 
 	| instances |

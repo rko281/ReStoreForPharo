@@ -22,6 +22,12 @@ Test class >> reStoreDefinition [
 ]
 
 { #category : 'comparing' }
+Test >> < a [
+
+	^self name < a name
+]
+
+{ #category : 'comparing' }
 Test >> <= a [
 
 	^self name <= a name
