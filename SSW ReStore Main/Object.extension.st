@@ -483,7 +483,7 @@ Object >> store [
 Object >> storeIn: aReStore [
 
 	"Store the receiver and its related objects in aReStore; return success.
-	In the event of a failure the default action is to abandon the failed transaction leaving the receiver in its current state. 
+	In the event of a failure the default action is to abandon the failed transaction leaving the receiver in its current state (though see SSWReStore>>storeFailureHandler). 
 	To handle transaction failure manually (e.g. to rollback and refresh) trap StoreFailure.
 
 	NB: This is also a legacy selector whose meaning was 'store in the active transaction'.

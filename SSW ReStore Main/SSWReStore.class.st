@@ -20,7 +20,8 @@ Class {
 		'supportsFullTableRecords',
 		'readAllBatchSize',
 		'affiliations',
-		'isDebugging'
+		'isDebugging',
+		'storeFailureHandler'
 	],
 	#classInstVars : [
 		'globalDefault',
@@ -2021,6 +2022,28 @@ SSWReStore >> softRollback [
 SSWReStore >> sqlDialect [
 
 	^self connection sqlDialect
+]
+
+{ #category : 'accessing' }
+SSWReStore >> storeFailureHandler [
+
+	"storeFailureHandler optionally stores a one-arg block which is evaluated with an otherwise-unhandled StoreFailure.
+	This can override the defaultAction of the StoreFailure, e.g. to notify the user of a failure.
+
+	If nil the StoreFailure will take its usual defaultAction (abandon)"
+
+	^storeFailureHandler
+]
+
+{ #category : 'accessing' }
+SSWReStore >> storeFailureHandler: aBlock [
+
+	"storeFailureHandler optionally stores a one-arg block which is evaluated with an otherwise-unhandled StoreFailure.
+	This can override the defaultAction of the StoreFailure, e.g. to notify the user of a failure.
+
+	If nil the StoreFailure will take its usual defaultAction (abandon)"
+
+	storeFailureHandler := aBlock
 ]
 
 { #category : 'accessing' }

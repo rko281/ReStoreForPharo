@@ -29,7 +29,9 @@ StoreFailure >> defaultAction [
 
 	"Default is to abandon the active (failed) transaction"
 
-	self abandon
+	self reStore storeFailureHandler
+		ifNil: [self abandon]
+		ifNotNil: [ :handler | handler value: self]
 ]
 
 { #category : 'accessing' }

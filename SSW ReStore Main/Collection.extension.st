@@ -50,7 +50,7 @@ Collection >> storeAll [
 Collection >> storeAllIn: aReStore [
 
 	"Private - Store the elements of the receiver and their related objects in aReStore; return success.
-	In the event of a failure the default action is to abandon the failed transaction leaving the elements of the receiver in their current state. 
+	In the event of a failure the default action is to abandon the failed transaction leaving the elements of the receiver in their current state (though see SSWReStore>>storeFailureHandler). 
 	To handle transaction failure manually (e.g. to rollback and refresh) trap StoreFailure"
 
 	^(aReStore commitAll: (self collect: [:each | each withRelatedComponents]))
