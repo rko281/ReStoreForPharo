@@ -127,7 +127,7 @@ SSWODBCColAttr >> lengthC [
 	"Workaround primarily for PostgreSQL which returns negative value for length of SQL_LONGVARBINARY columns"
 	length negative
 		ifTrue: [lengthC := self maxBoundBufferSize]
-		ifFalse: [lengthC := super lengthC min: self maxBoundBufferSize].
+		ifFalse: [lengthC := (super lengthC * (sqlType = SQL_WLONGVARCHAR ifTrue: [2] ifFalse: [1])) min: self maxBoundBufferSize].
 
 	(self field isNil or: [self isFunctionParameter]) ifTrue: [^lengthC].
 
@@ -166,6 +166,7 @@ SSWODBCColAttr >> postCreate [
 	Since ReStore doesn't support a SQL_BINARY type we convert this to SQL_LONGVARBINARY and increase the length accordingly"
 	sqlType = SQL_BINARY ifFalse: [^self].
 
+	sqlType := nil.
 	self 
 		type: SQL_LONGVARBINARY;
 		length: self maxBoundBufferSize

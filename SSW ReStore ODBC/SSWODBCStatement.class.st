@@ -144,6 +144,12 @@ SSWODBCStatement >> execQuery: anSQLQuery [
 	self exec
 ]
 
+{ #category : 'testing' }
+SSWODBCStatement >> isFreed [
+
+	^handle isNil or: [ handle isNull ]
+]
+
 { #category : 'accessing' }
 SSWODBCStatement >> numColumns [
 

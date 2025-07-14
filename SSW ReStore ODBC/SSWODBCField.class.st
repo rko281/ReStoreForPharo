@@ -49,12 +49,8 @@ SSWODBCField >> numberToNumeric: aNumberOrBoolean [
 	| aNumber |
 
 	(aNumberOrBoolean == true or: [ aNumberOrBoolean == false ] ) 
-	ifTrue: 
-		[aNumberOrBoolean 
-			ifTrue: [aNumber := self sqlDialect trueObject]
-			ifFalse: [aNumber := self sqlDialect falseObject]]
-	ifFalse:
-		[aNumber := aNumberOrBoolean].
+		ifTrue: [aNumber := aNumberOrBoolean asInteger]
+		ifFalse: [aNumber := aNumberOrBoolean].
 	
 	(self shouldTranslate: aNumber class: Number) 	ifTrue: 
 			[self setAnsiString: ((aNumber asScaledDecimal: column scale) printShowingDecimalPlaces: column scale )]
@@ -85,13 +81,8 @@ SSWODBCField >> setByte: aNumberOrBoolean [
 	"Overridden to allow Integer-based Booleans"
 
 	(aNumberOrBoolean isKindOf: Boolean) 
-	ifTrue: 
-		["self assert: [self sqlDialect trueObject isKindOf: Integer]"
-		aNumberOrBoolean 
-			ifTrue: [super setByte: self sqlDialect trueObject]
-			ifFalse: [super setByte: self sqlDialect falseObject]]
-	ifFalse:
-		[super setByte: aNumberOrBoolean]
+		ifTrue: [super setByte: aNumberOrBoolean asInteger]
+		ifFalse: [super setByte: aNumberOrBoolean]
 ]
 
 { #category : 'converting' }
@@ -117,14 +108,9 @@ SSWODBCField >> setLong: aNumberOrBoolean [
 
 	"Overridden to allow Integer-based Booleans"
 
-	(aNumberOrBoolean isKindOf: Boolean) 
-	ifTrue: 
-		["self assert: [self sqlDialect trueObject isKindOf: Integer]"
-		aNumberOrBoolean 
-			ifTrue: [super setLong: self sqlDialect trueObject]
-			ifFalse: [super setLong: self sqlDialect falseObject]]
-	ifFalse:
-		[super setLong: aNumberOrBoolean]
+	(aNumberOrBoolean == true or: [ aNumberOrBoolean == false]) 
+		ifTrue: [super setLong: aNumberOrBoolean asInteger]
+		ifFalse: [super setLong: aNumberOrBoolean]
 ]
 
 { #category : 'converting' }
@@ -132,14 +118,9 @@ SSWODBCField >> setShort: aNumberOrBoolean [
 
 	"Overridden to allow Integer-based Booleans"
 
-	(aNumberOrBoolean isKindOf: Boolean) 
-	ifTrue: 
-		["self assert: [self sqlDialect trueObject isKindOf: Integer]"
-		aNumberOrBoolean 
-			ifTrue: [super setShort: self sqlDialect trueObject]
-			ifFalse: [super setShort: self sqlDialect falseObject]]
-	ifFalse:
-		[super setShort: aNumberOrBoolean]
+	(aNumberOrBoolean == true or: [ aNumberOrBoolean == false]) 
+		ifTrue: [super setShort: aNumberOrBoolean asInteger]
+		ifFalse: [super setShort: aNumberOrBoolean]
 ]
 
 { #category : 'converting' }
@@ -158,7 +139,7 @@ SSWODBCField >> setUtf16String: aStringOrObject [
 		ifFalse: 
 			[super setUtf16String: aStringOrObject]]
 	ifFalse: 
-		[super setUtf16String: (aStringOrObject asSQLStringIn: self sqlDialect) asUtf16String]
+		[super setUtf16String: (aStringOrObject sqlStringIn: self sqlDialect) asUtf16String]
 ]
 
 { #category : 'accessing' }
@@ -169,7 +150,7 @@ SSWODBCField >> shouldTranslate: anObject class: aClass [
 
 	(anObject class = SSWDBAllocatedID and: [aClass = Number]) ifTrue: [^true].
 
-	^((anObject isKindOf: Boolean) and: [self sqlDialect trueObject class isKindOf: aClass])
+	^((anObject == true or: [ anObject == false])  and: [aClass = Number])
 		or: [super shouldTranslate: anObject class: aClass]
 ]
 

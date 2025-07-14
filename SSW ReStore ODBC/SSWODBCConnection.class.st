@@ -208,7 +208,7 @@ SSWODBCConnection >> defaultMaxColumnBytes [
 
 	"defaultMaxColumnBytes defines the default maximum size of a column in bytes - this is used to initialize/cap the size of a column's replication buffer.
 	
-	The default is 128KB (2 raisedTo: 17) which is increased compared to the limit defined in Dolphin's Database Connection (64KB, 2 raisedTo: 16 - see DBField>>initializeForColumn:).
+	The default is 128KB (2 raisedTo: 18) which is increased compared to the limit defined in Dolphin's Database Connection (64KB, 2 raisedTo: 16 - see DBField>>initializeForColumn:).
 	If a larger size is needed you can set an appropriate value for your application following login by sending maxColumnBytes: to your ReStore's sqlDialect object.
 	Bear in mind that wide character strings (if supported) can use > 1 byte per character.
 	
@@ -222,7 +222,7 @@ SSWODBCConnection >> defaultMaxColumnBytes [
 
 	Very large values really need the use of unbound columns and incremental (paged) put/getData, however this is not yet implemented (and is potentially less performant than bound columns)"
 
-	^"2**17" 131072
+	^"2**18" 262144
 ]
 
 { #category : 'operations' }
