@@ -67,6 +67,12 @@ SSWDBProxy >> __referenced [
 	reStore proxy: self forwarded: (Message selector: #_referenced)
 ]
 
+{ #category : 'actions-internal' }
+SSWDBProxy >> _abandonChanges [
+
+	self _isPersistent ifTrue: [self _unswap]
+]
+
 { #category : 'accessing' }
 SSWDBProxy >> _changedObjectsIn: aReStore [
 

@@ -879,6 +879,112 @@ SSWReStoreObjectAPITests >> test35StoreFailureHandlerOverriddenDirectedToProxy [
 ]
 
 { #category : 'unit tests' }
+SSWReStoreObjectAPITests >> test36StoreFailureWithNewObject [
+
+	"Test a store failure where the objects being stored includes a new object.
+	Previously this was left as a proxy after the failure rollback resulting in an error on a subsequent attempt to store it"
+
+	| obj1 obj1A obj2 oldName oldSingleName newName newSingleName |
+
+	obj1 := self _testCreateObject.
+
+	"Update in the other session"
+	self refreshDelay.
+	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
+	obj1A single2 name: 'BLOCK UPDATE'.
+	self assert: obj1A store.
+
+	self refreshDelay.
+
+	"Blocked clashing update should fail"
+	oldName := obj1 name.
+	oldSingleName := obj1 single2 name.
+	newName := oldName, 'AAA'.
+	newSingleName := oldSingleName, 'AAA'.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+
+	obj2 := OwnerTest template name: 'new object'.
+	self deny: {obj1. obj2} storeAll.
+	
+	"Due to standard behaviour we should still have our changes in obj1 which should have reverted to a proxy but obj2 should not be a proxy"
+	self deny: reStore isTransactionInProgress.
+	self assert: obj1 isDBProxy.
+	self deny: obj2 isDBProxy.
+	self assert: obj1 name equals: newName.
+	self assert: obj1 single2 name equals: newSingleName.
+
+	"Unblock the changes and we should be able to storeAll"
+	obj1 refresh.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+
+	self assert: {obj1. obj2} storeAll.
+	
+	self deny: reStore isTransactionInProgress.
+	self assert: obj1 isDBProxy.
+	self assert: obj2 isDBProxy.
+	self assert: obj1 name equals: newName.
+	self assert: obj1 single2 name equals: newSingleName.
+
+	self assert: ((OwnerTest storedInstancesIn: reStore) detect: [ :each | each name = 'new object']) identicalTo: obj2
+]
+
+{ #category : 'unit tests' }
+SSWReStoreObjectAPITests >> test37StoreFailureWithNewObjectWithTransaction [
+
+	"Test a store failure involving transactions where the objects being stored includes a new object.
+	Previously this was left as a proxy after the failure rollback resulting in an error on a subsequent attempt to store it"
+
+	| obj1 obj1A obj2 oldName oldSingleName newName newSingleName |
+
+	obj1 := self _testCreateObject.
+
+	"Update in the other session"
+	self refreshDelay.
+	obj1A := (OwnerTest storedInstancesIn: reStore2) first.
+	obj1A single2 name: 'BLOCK UPDATE'.
+	self assert: obj1A store.
+
+	self refreshDelay.
+
+	reStore beginTransaction.
+
+	"Blocked clashing update should fail"
+	oldName := obj1 name.
+	oldSingleName := obj1 single2 name.
+	newName := oldName, 'AAA'.
+	newSingleName := oldSingleName, 'AAA'.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+
+	obj2 := OwnerTest template name: 'new object'.
+	obj2 storeIn: reStore.
+
+	self deny: reStore commitTransaction.
+
+	reStore rollbackAndRefreshTransaction.
+	
+	self deny: reStore isTransactionInProgress.
+	self assert: obj1 isDBProxy.
+	self deny: obj2 isDBProxy.
+
+	"Following the refresh we should be able to commit"
+	reStore beginTransaction.
+	obj1 name: newName.
+	obj1 single2 name: newSingleName.
+	obj2 storeIn: reStore.
+
+	self assert: reStore commitTransaction.
+
+	self deny: reStore isTransactionInProgress.
+	self assert: obj1 isDBProxy.
+	self assert: obj2 isDBProxy.
+
+	self assert: ((OwnerTest storedInstancesIn: reStore) detect: [ :each | each name = 'new object']) identicalTo: obj2
+]
+
+{ #category : 'unit tests' }
 SSWReStoreObjectAPITests >> test99UnstoreAll [
 
 	| objs obj1 obj2 prevName1 prevSingleName1 prevName2 prevSingleName2 prevCount1 prevSingleCount1 prevCount2 prevSingleCount2 |

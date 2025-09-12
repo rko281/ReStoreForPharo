@@ -448,8 +448,7 @@ SSWDBObjectProxy >> _rollbackStore [
 
 	"Private - The receiver was a newly-persisted object - deregister from the reStore"
 
-	reStore deregisterProxy: self.
-	self _unswap
+	reStore deregisterProxy: self
 ]
 
 { #category : 'actions-internal' }

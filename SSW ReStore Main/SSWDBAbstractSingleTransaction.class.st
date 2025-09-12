@@ -23,7 +23,7 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
-	self currentReferencedObjects do: [ :each | each _unswap].
+	self currentReferencedObjects do: [ :each | each _abandonChanges].
 	self endObjectCollection
 ]
 
