@@ -49,25 +49,30 @@ SSWDBBlockArgument >> or: aBlock [
 { #category : '*SSW ReStore for Pharo' }
 SSWDBBlockArgument >> postProcessDNU: anObject [
 
-	"Check if the next message needs special handling; usually this also results in it being skiped"
+	^self preProcessNextMessageFor: anObject in: thisContext sender sender
+]
 
-	| sender node |
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBBlockArgument >> preProcessNextMessageFor: anObject in: aStackFrame [
 
-	sender := thisContext sender sender.
-	node := [sender method sourceNodeForPC: sender sswNeighborPCWithCorrectMapping] on: Error do: [ :exc | exc return: nil].
-	(node notNil and: [node isMessage]) ifFalse: [^anObject ].
+	"Check if the next message needs special handling due to anObject (block evaluator) being an argument rather than the receiver.
+	Where this is the case reverse the receiver and argument on the stack so this object receives the message.
+	A local implementation of the message then handles the reversed receiver and arguments"
 
-	"Collection>>includes: -> self>>includedIn:"
-	( node selector = #includes: and: [(anObject isKindOf: SSWDBCollectionBlockReceiver) not ]) ifTrue: 
-		[ sender pc: sender sswFollowingPc.
-		  ^sender at: sender stackPtr put: (anObject includedIn: (sender at: sender stackPtr)) ].
+	| stackFrame sender node nextMessage rcvr |
 
-	"String>>match: -> self>>matches:"
-	node selector = #match: ifTrue: 
-		[ sender pc: sender sswFollowingPc.
-		  ^sender at: sender stackPtr put: (anObject matches: (sender at: sender stackPtr)) ].
+	stackFrame := aStackFrame.
+	[node := [stackFrame method sourceNodeForPC: stackFrame sswNeighborPCWithCorrectMapping] on: Error do: [ :exc | exc return: nil].
+	(node notNil and: [node isMessage ]) or: [(sender := stackFrame sender) isNil or: [ sender receiver == self parser ] ]] whileFalse: [stackFrame := sender ].
+	
+	(node notNil and: [ node isMessage ]) ifFalse: [^anObject ].
 
-	^anObject
+	nextMessage := node selector.
+	(nextMessage = #match: or: [nextMessage = #includes: and: [(anObject isKindOf: SSWDBCollectionBlockReceiver) not]]) ifFalse: [^anObject].
+	
+	rcvr := stackFrame pop.
+	stackFrame push: anObject.
+	^rcvr
 ]
 
 { #category : '*SSW ReStore for Pharo' }

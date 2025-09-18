@@ -11,7 +11,7 @@ String >> asSQLFunction [
 { #category : '*SSW ReStore SQL Entities' }
 String >> asSQLFunctionBooleanResult [
 
-	^self asSQLFunctionWithResultClass: Integer
+	^self asSQLFunctionWithResultClass: Boolean
 ]
 
 { #category : '*SSW ReStore SQL Entities' }

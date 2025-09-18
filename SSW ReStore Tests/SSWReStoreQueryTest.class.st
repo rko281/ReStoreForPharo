@@ -49,6 +49,12 @@ SSWReStoreQueryTest >> createProducts [
 			storeIn: reStore]
 ]
 
+{ #category : 'helpers' }
+SSWReStoreQueryTest >> firstNameOf: aPerson [
+
+	^aPerson firstName
+]
+
 { #category : 'unit tests' }
 SSWReStoreQueryTest >> test1Simple [
 
@@ -348,6 +354,23 @@ SSWReStoreQueryTest >> testCollectQueryWithActualObject [
 
 	"Ensure we actually did some testing"
 	self assert: (testCount = 5)
+]
+
+{ #category : 'unit tests' }
+SSWReStoreQueryTest >> testCollectQueryWithBetweenAndResult [
+
+	"Test use of between:and: as a result function.
+	Previously failed due to incorrect implementation of asSQLFunctionBooleanResult"
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances collect: [ :each | each firstName || (each age between: 20 and: 30)].
+
+	"Previously answered an Integer"
+	self assert: (results allSatisfy: [ :each | each second isKindOf: Boolean]).
+	self assert: (results allSatisfy: [ :each | each second ifTrue: [#('Jim' 'John' 'Zoe') includes: each first] ifFalse: [each first = 'David']])
 ]
 
 { #category : 'unit tests' }
@@ -719,6 +742,38 @@ SSWReStoreQueryTest >> testConcatenateQueryWithJoins [
 ]
 
 { #category : 'unit tests' }
+SSWReStoreQueryTest >> testIncludes [
+
+	"Test use of includes: "
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances select: [ :each | (#('Jim' 'John') includes: each firstName) & (each age = 20)].
+	self assert: results size equals: 1.
+	self assert: results first firstName equals: 'John'.
+
+	"Reversing conditions previously failed"
+	results := instances select: [ :each | (each age = 20) & (#('Jim' 'John') includes: each firstName)].
+	self assert: results size equals: 1.
+	self assert: results first firstName equals: 'John'.
+
+	"Different failure when argument to match: is from a different method"
+	results := instances select: [ :each | (each age = 20) & (#('Jim' 'John') includes: (self firstNameOf: each))].
+	self assert: results size equals: 1.
+	self assert: results first firstName = 'John'.
+
+	results := instances select: [ :each | (#('Zoe' 'John') includes: each firstName) & (each age = 20)].
+	self assert: results size equals: 2.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray = #('John' 'Zoe').
+
+	results := instances select: [ :each | (each age = 20) & (#('Zoe' 'John') includes: each firstName)].
+	self assert: results size equals: 2.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray = #('John' 'Zoe')
+]
+
+{ #category : 'unit tests' }
 SSWReStoreQueryTest >> testIncludesInQueryBlockEmptyCriteria [
 
 	| instances |
@@ -793,6 +848,38 @@ SSWReStoreQueryTest >> testInstancesCollectionIncludes [
 	self assert: ((instances satisfying: [ :each | each surname = 'Brown']) includes: zoe).
 	self deny: ((instances satisfying: [ :each | each surname = 'Smith']) includes: zoe).
 	self deny: (instances includes: SimplePerson new)
+]
+
+{ #category : 'unit tests' }
+SSWReStoreQueryTest >> testMatch [
+
+	"Test use of match: "
+
+	| instances results |
+
+	instances := SimplePerson storedInstancesIn: reStore.
+
+	results := instances select: [ :each | ('J*' match: each firstName) & (each age = 20)].
+	self assert: results size equals: 1.
+	self assert: results first firstName equals: 'John'.
+
+	"Reversing conditions previously failed"
+	results := instances select: [ :each | (each age = 20) & ('J*' match: each firstName)].
+	self assert: results size equals: 1.
+	self assert: results first firstName equals: 'John'.
+
+	"Different failure when argument to match: is from a different method"
+	results := instances select: [ :each | (each age = 20) & ('J*' match: (self firstNameOf: each))].
+	self assert: results size equals: 1.
+	self assert: results first firstName equals: 'John'.
+
+	results := instances select: [ :each | ('J*' match: each firstName) & (each age <= 30)].
+	self assert: results size equals: 2.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('Jim' 'John').
+
+	results := instances select: [ :each | (each age <= 30) & ('J*' match: each firstName)].
+	self assert: results size equals: 2.
+	self assert: (results collect: [ :each | each firstName]) asSortedCollection asArray equals: #('Jim' 'John').
 ]
 
 { #category : 'unit tests' }

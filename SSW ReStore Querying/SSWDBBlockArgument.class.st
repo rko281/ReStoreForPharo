@@ -302,6 +302,23 @@ SSWDBBlockArgument >> implyTrue: aCondition [
 	^aCondition
 ]
 
+{ #category : 'parsing - comparisons' }
+SSWDBBlockArgument >> includedIn: aCollection [
+
+	"Convert to the appropriate SQL condition"
+
+	^self sqlConditionFor: (Message selector: #includedIn: argument: aCollection)
+]
+
+{ #category : 'parsing - internal' }
+SSWDBBlockArgument >> includes: aCollection [
+
+	"Sent following a switch of receiver and arguments in preProcessNextMessageFor:in:
+	Send to the equivalent reversed message"
+
+	^self includedIn: aCollection
+]
+
 { #category : 'parsing - functions' }
 SSWDBBlockArgument >> indexOf: aCharacter [
 
@@ -353,19 +370,29 @@ SSWDBBlockArgument >> leftString: lenInteger [
 	^self midString: lenInteger from: 1
 ]
 
+{ #category : 'parsing - internal' }
+SSWDBBlockArgument >> match: aString [
+
+	"Sent following a switch of receiver and arguments in preProcessNextMessageFor:in:
+	Send to the equivalent reversed message"
+
+	^self matches: aString
+]
+
 { #category : 'parsing - comparisons' }
 SSWDBBlockArgument >> matches: aString [
 
 	"Essentially the inverse of match: (ie pattern is the argument, not the receiver)	
-	Equivalent to like: (which is handled via DNU) but translate Dolphin-specific wildcards"
+	Equivalent to LIKE but with translated wildcards"
 	
-	^self like: 
-		(aString collect: 
-			[ :char || fixedChar |
-			fixedChar := char.
-			char = $* ifTrue: [fixedChar := $%].
-			char = $# ifTrue: [fixedChar = $_].
-			fixedChar])
+	^self sqlConditionFor: 
+		(Message selector: #like: argument: 
+			(aString collect: 
+				[ :char || fixedChar |
+				fixedChar := char.
+				char = $* ifTrue: [fixedChar := $%].
+				char = $# ifTrue: [fixedChar = $_].
+				fixedChar]))
 ]
 
 { #category : 'parsing - implicit true' }
