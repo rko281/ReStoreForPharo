@@ -1,15 +1,14 @@
 Class {
-	#name : 'SSWODBCField',
-	#superclass : 'ODBCField',
+	#name : #SSWODBCField,
+	#superclass : #ODBCField,
 	#instVars : [
 		'statement',
 		'needsRebinding'
 	],
-	#category : 'SSW ReStore ODBC',
-	#package : 'SSW ReStore ODBC'
+	#category : #'SSW ReStore ODBC'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 SSWODBCField class >> newForCol: aColAttr statement: anSSWODBCStatement [
 
 	^(self newForCol: aColAttr)
@@ -17,7 +16,7 @@ SSWODBCField class >> newForCol: aColAttr statement: anSSWODBCStatement [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 SSWODBCField >> initializeForColumn: aDBColAttr [
 	"Private - Initialize the receiver to represent a value from
 	the database column described by the <DBColAttr> argument.
@@ -31,17 +30,17 @@ SSWODBCField >> initializeForColumn: aDBColAttr [
 	^self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> needsRebinding [
 	^needsRebinding
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> needsRebinding: anObject [
 	needsRebinding := anObject
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> numberToNumeric: aNumberOrBoolean [
 
 	"Overridden to allow Numeric-based Booleans"
@@ -56,7 +55,7 @@ SSWODBCField >> numberToNumeric: aNumberOrBoolean [
 			[self setAnsiString: ((aNumber asScaledDecimal: column scale) printShowingDecimalPlaces: column scale )]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setAnsiString: aStringOrObject [
 
 	"Overridden to:
@@ -75,7 +74,7 @@ SSWODBCField >> setAnsiString: aStringOrObject [
 		[super setAnsiString: (aStringOrObject sqlStringIn: self sqlDialect)]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setByte: aNumberOrBoolean [
 
 	"Overridden to allow Integer-based Booleans"
@@ -85,7 +84,7 @@ SSWODBCField >> setByte: aNumberOrBoolean [
 		ifFalse: [super setByte: aNumberOrBoolean]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setByteArray: aByteArrayOrOtherObject [
 
 	"Coerce other classes (principally GUID/UUID)"
@@ -93,7 +92,7 @@ SSWODBCField >> setByteArray: aByteArrayOrOtherObject [
 	super setByteArray: aByteArrayOrOtherObject asByteArray
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setDateAndTime: aDateAndTime [
 
 	"Overridden to allow Date or Time (or another object implementing asDateAndTime) to be used"
@@ -103,7 +102,7 @@ SSWODBCField >> setDateAndTime: aDateAndTime [
 		ifFalse: [super setDateAndTime: aDateAndTime asDateAndTime]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setLong: aNumberOrBoolean [
 
 	"Overridden to allow Integer-based Booleans"
@@ -113,7 +112,7 @@ SSWODBCField >> setLong: aNumberOrBoolean [
 		ifFalse: [super setLong: aNumberOrBoolean]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setShort: aNumberOrBoolean [
 
 	"Overridden to allow Integer-based Booleans"
@@ -123,7 +122,7 @@ SSWODBCField >> setShort: aNumberOrBoolean [
 		ifFalse: [super setShort: aNumberOrBoolean]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SSWODBCField >> setUtf16String: aStringOrObject [
 
 	"Overridden to:
@@ -142,7 +141,7 @@ SSWODBCField >> setUtf16String: aStringOrObject [
 		[super setUtf16String: (aStringOrObject sqlStringIn: self sqlDialect) asUtf16String]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> shouldTranslate: anObject class: aClass [
 
 	"Override the superclass implementation to allow Booleans to masquerade as other classes
@@ -154,7 +153,7 @@ SSWODBCField >> shouldTranslate: anObject class: aClass [
 		or: [super shouldTranslate: anObject class: aClass]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> sqlDialect [
 
 	"Derive from the statement"
@@ -162,7 +161,7 @@ SSWODBCField >> sqlDialect [
 	^self statement sqlDialect
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> statement [
 
 	"statement stores the SSWODBC...Statement to which this field relates"
@@ -170,7 +169,7 @@ SSWODBCField >> statement [
 	^statement
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> statement: anSSWODBCStatement [
 
 	"statement stores the SSWODBC...Statement to which this field relates"
@@ -178,7 +177,7 @@ SSWODBCField >> statement: anSSWODBCStatement [
 	statement := anSSWODBCStatement
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCField >> value: anObject [
 
 	"Special handling for function parameters: 
@@ -192,7 +191,7 @@ SSWODBCField >> value: anObject [
 		"Transcript cr; show: ('reconfigured <1s> size <2p>' expandMacrosWith: (ODBCTypes keyAtValue: column type) with: column length)."
 		column configureToHold: anObject.
 		self needsRebinding: true.
-		column lengthC > buffer size ifTrue: [buffer := ExternalAddress gcallocate: ("2 raisedTo: 16" 65536 min: column lengthC)].
+		column lengthC > buffer size ifTrue: [buffer := ByteArray newPinned: ("2 raisedTo: 16" 65536 min: column lengthC)].
 		"Transcript show: (' to <1s> size <2p>' expandMacrosWith: (ODBCTypes keyAtValue: column type) with: column length)."
 		exc return: (super value: anObject)]
 ]
