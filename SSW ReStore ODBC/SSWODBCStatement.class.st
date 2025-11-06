@@ -1,36 +1,35 @@
 Class {
-	#name : 'SSWODBCStatement',
-	#superclass : 'ODBCParameterizedStatement',
+	#name : #SSWODBCStatement,
+	#superclass : #ODBCParameterizedStatement,
 	#instVars : [
 		'query',
 		'numColumns',
 		'cachedColumns',
 		'cachedColumnsIndices'
 	],
-	#category : 'SSW ReStore ODBC',
-	#package : 'SSW ReStore ODBC'
+	#category : 'SSW ReStore ODBC'
 }
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> close [
 
 	super close.
 	self parent shouldFreeStatementsOnClose ifTrue: [self free]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> closeAfter: aBlock [
 
 	^[aBlock value: self] ensure: [self close]
 ]
 
-{ #category : 'initializing' }
+{ #category : #initializing }
 SSWODBCStatement >> cursoredFetch: aBoolean [
 
 	"Always enabled"
 ]
 
-{ #category : 'exceptions' }
+{ #category : #exceptions }
 SSWODBCStatement >> dbCheckException: anIntegerRetCode [
 
 	"Overriden to revector to parent connection, which may mask certain 'errors' "
@@ -38,7 +37,7 @@ SSWODBCStatement >> dbCheckException: anIntegerRetCode [
 	^self parent dbCheckException: anIntegerRetCode from: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> describeCols: columnNumbers [ 
 
 	"Intercept to set the fields used in the query.
@@ -63,7 +62,7 @@ SSWODBCStatement >> describeCols: columnNumbers [
 				yourself]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> describeParam: anInteger [
 
 	"Return an ODBCColAttr describing the parameter number anInteger in this query. 
@@ -98,7 +97,7 @@ SSWODBCStatement >> describeParam: anInteger [
 		yourself
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> exec [
 
 	parent logStatementExec: self.
@@ -114,7 +113,7 @@ SSWODBCStatement >> exec [
 	executed := true
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> exec: aString [
 
 	"Immediate execution of raw SQL"
@@ -126,7 +125,7 @@ SSWODBCStatement >> exec: aString [
 	self exec
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> execQuery: anSQLQuery [
 
 	| stream |
@@ -144,13 +143,13 @@ SSWODBCStatement >> execQuery: anSQLQuery [
 	self exec
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCStatement >> isFreed [
 
 	^handle isNil or: [ handle isNull ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> numColumns [
 
 	"Cache for reuse"
@@ -158,7 +157,7 @@ SSWODBCStatement >> numColumns [
 	^numColumns ifNil: [numColumns := super numColumns]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> parameters [
 
 	"Overriden to use SSWDBODBCFields; see superclass implementation for comment"
@@ -169,7 +168,7 @@ SSWODBCStatement >> parameters [
 		parameters]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> prepare [
 
 	"Clear caches"
@@ -178,7 +177,7 @@ SSWODBCStatement >> prepare [
 	^super prepare
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> query [
 
 	"query stores the SSWSQLQuery which the statement is prepared to execute"
@@ -186,7 +185,7 @@ SSWODBCStatement >> query [
 	^query
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> query: anSSWSQLQuery [
 
 	"query stores the SSWSQLQuery which the statement is prepared to execute"
@@ -194,7 +193,7 @@ SSWODBCStatement >> query: anSSWSQLQuery [
 	query := anSSWSQLQuery
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> readValuesFrom: aStream [
 
 	| size index |
@@ -208,7 +207,7 @@ SSWODBCStatement >> readValuesFrom: aStream [
 		index := index + 1]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> rebindParameterAt: anInteger [
 
 	| field buf column |
@@ -232,7 +231,7 @@ SSWODBCStatement >> rebindParameterAt: anInteger [
 	field needsRebinding: false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> results [
 	"Answer a <DBResultSet> that manages the results for the receiver.
 	The result set will cause the receiver to be lazily executed when
@@ -243,7 +242,7 @@ SSWODBCStatement >> results [
 		ifFalse: [SSWODBCResultSet]) statement: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> rowsAffected [
 
 	"Return the number of rows affected by this statement.
@@ -252,7 +251,7 @@ SSWODBCStatement >> rowsAffected [
 	^self closeAfter: [ :stmt | stmt numRows]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> setValues [
 	"Private - Copy object values to the bound fields for the parameters of the prepared SQL
 	statement. On first receipt this will cause the parameter fields to be created and bound 	(via #parameters)."
@@ -262,7 +261,7 @@ SSWODBCStatement >> setValues [
 		param needsRebinding ifTrue: [self rebindParameterAt: i]]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> sqlDialect [
 
 	"Derive from the parent connection"
@@ -270,13 +269,13 @@ SSWODBCStatement >> sqlDialect [
 	^self parent sqlDialect
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCStatement >> values: aCollection [
 
 	super values: (aCollection collect: [ :each | each reStoreValue])
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCStatement >> writeDebugInfoOn: aStream [
 
 	| readStream valuesStream sqlStream |

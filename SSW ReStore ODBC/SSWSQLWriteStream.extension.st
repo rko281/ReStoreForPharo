@@ -1,6 +1,6 @@
-Extension { #name : 'SSWSQLWriteStream' }
+Extension { #name : #SSWSQLWriteStream }
 
-{ #category : '*SSW ReStore ODBC' }
+{ #category : #'*SSW ReStore ODBC' }
 SSWSQLWriteStream >> parameterizedColumnsFor: aStatement [
 
 	| parameterizedColumns |

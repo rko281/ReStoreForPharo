@@ -1,6 +1,6 @@
 Class {
-	#name : 'SSWODBCConnection',
-	#superclass : 'ODBCConnection',
+	#name : #SSWODBCConnection,
+	#superclass : #ODBCConnection,
 	#instVars : [
 		'sqlDialect',
 		'debugStream',
@@ -8,11 +8,10 @@ Class {
 		'columnDescriptions',
 		'queryCount'
 	],
-	#category : 'SSW ReStore ODBC',
-	#package : 'SSW ReStore ODBC'
+	#category : #'SSW ReStore ODBC'
 }
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> _columnsInTable: aDBTable [ 
 
 	"Private - Answer the list of columns in the table matching the specified search criteria"
@@ -48,7 +47,7 @@ SSWODBCConnection >> _columnsInTable: aDBTable [
 	^colAttrs
 ]
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> _columnsInTableViaQuery: aDBTable [
 
 	"Use a SELECT query to interrogate the column definitions for aDBTable.
@@ -67,7 +66,7 @@ SSWODBCConnection >> _columnsInTableViaQuery: aDBTable [
 	^statement describeCols: (1 to: statement numColumns)
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> allocStmtHandle: aDBStatement [
 
 	"Keep track of the number of allocated statements"
@@ -81,17 +80,17 @@ SSWODBCConnection >> allocStmtHandle: aDBStatement [
 	^hStmt
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> allocatedStatementCount [
 	^allocatedStatementCount
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> allocatedStatementCount: anObject [
 	allocatedStatementCount := anObject
 ]
 
-{ #category : 'transactions' }
+{ #category : #transactions }
 SSWODBCConnection >> autoCommitDuring: aBlock [
 
 	| oldValue |
@@ -101,7 +100,7 @@ SSWODBCConnection >> autoCommitDuring: aBlock [
 	[aBlock value] ensure: [self willAutoCommit: oldValue]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> basicConnect [
 
 	self dsn isNil 
@@ -114,29 +113,29 @@ SSWODBCConnection >> basicConnect [
 		self reset]
 ]
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> canDescribeParameters [
 
 	^(self getStringInfo: SQL_DESCRIBE_PARAMETER) = 'Y'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> columnDescriptions [
 	^columnDescriptions
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> columnDescriptions: anObject [
 	columnDescriptions := anObject
 ]
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> columnsForFields: aCollectionOfDBFields [
 
 	^aCollectionOfDBFields collect: [ :field | field columnIn: self]
 ]
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> columnsInTable: aDBTable [
 
 	^self columnDescriptions at: aDBTable ifAbsentPut: 
@@ -147,7 +146,7 @@ SSWODBCConnection >> columnsInTable: aDBTable [
 		fieldMap]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> createNamespace: aString [
 
 	"Private - Create the given namespace (schema/database) - implementation depends on dialect"
@@ -155,7 +154,7 @@ SSWODBCConnection >> createNamespace: aString [
 	self autoCommitDuring: [self exec: (self sqlDialect createNamespaceSQLFor: aString)]
 ]
 
-{ #category : 'exceptions' }
+{ #category : #exceptions }
 SSWODBCConnection >> dbCheckException: anIntegerRetCode [
 
 	"Overriden to revector to new dbCheckException:from: method, which may mask certain 'errors' "
@@ -163,7 +162,7 @@ SSWODBCConnection >> dbCheckException: anIntegerRetCode [
 	^self dbCheckException: anIntegerRetCode from: self
 ]
 
-{ #category : 'exceptions' }
+{ #category : #exceptions }
 SSWODBCConnection >> dbCheckException: anIntegerRetCode from: anODBCObject [
 
 	"Check anIntegerRetCode as returned to anODBCObject.
@@ -179,23 +178,23 @@ SSWODBCConnection >> dbCheckException: anIntegerRetCode from: anODBCObject [
 			[ODBCError signalWith: (anODBCObject exceptionDetails: anIntegerRetCode)]]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> dbErrorClass [
 
 	^ODBCError
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> debugStream [
 	^debugStream
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> debugStream: anObject [
 	debugStream := anObject
 ]
 
-{ #category : 'constants' }
+{ #category : #constants }
 SSWODBCConnection >> defaultCursorType [
 
 	"Overriden to defer to the dialect"
@@ -203,7 +202,7 @@ SSWODBCConnection >> defaultCursorType [
 	^self sqlDialect defaultCursorType
 ]
 
-{ #category : 'constants' }
+{ #category : #constants }
 SSWODBCConnection >> defaultMaxColumnBytes [
 
 	"defaultMaxColumnBytes defines the default maximum size of a column in bytes - this is used to initialize/cap the size of a column's replication buffer.
@@ -225,7 +224,7 @@ SSWODBCConnection >> defaultMaxColumnBytes [
 	^"2**18" 262144
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> disconnect [
 
 	"Going through a Txn cycle seems to help when disconnecting"
@@ -241,7 +240,7 @@ SSWODBCConnection >> disconnect [
 	self reset
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> dropNamespace: aString [
 
 	"Private - Drop the given namespace (schema/database) - implementation depends on dialect"
@@ -249,7 +248,7 @@ SSWODBCConnection >> dropNamespace: aString [
 	self autoCommitDuring: [self exec: (self sqlDialect dropNamespaceSQLFor: aString)]
 ]
 
-{ #category : 'transactions' }
+{ #category : #transactions }
 SSWODBCConnection >> evaluateAsTxn: aBlock [
 
 	"Evaluate aBlock within a database transaction (Txn in Dolphin DBConnect parlance).
@@ -263,7 +262,7 @@ SSWODBCConnection >> evaluateAsTxn: aBlock [
 			ifFalse: [self rollbackTxn. false]] on: Error do: [ :exc | self rollbackTxn. exc pass]
 ]
 
-{ #category : 'exceptions' }
+{ #category : #exceptions }
 SSWODBCConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
 
 	"Entry point for ad-hoc querying"
@@ -275,13 +274,13 @@ SSWODBCConnection >> executeQuery: anSQLQuery cursorType: aSymbol [
 		yourself
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> forgetTable: aDBTable [
 
 	^self columnDescriptions removeKey: aDBTable ifAbsent: []
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> freeStmtHandle: aDBStatement [
 
 	"Keep track of the number of allocated statements"
@@ -291,17 +290,16 @@ SSWODBCConnection >> freeStmtHandle: aDBStatement [
 	self allocatedStatementCount: (self allocatedStatementCount - 1)
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> getLongInfoString: infoCode [
 
 	"Ignore the SQL_MAX_MESSAGE_LENGTH constant 
 	 - SQLKeywords seems to violate this for some ODBC drivers/databases.
 	Answer a String containing the value of the receiver's info attribute described by infoCode."
 
-	| bufferLen buffer len |
+	| buffer len |
 
-	bufferLen := self stringEncoder byteSizeForCharacters: 2048	"not SQL_MAX_MESSAGE_LENGTH".
-	buffer := ExternalAddress allocate: bufferLen.
+	buffer := self stringEncoder stringBufferFor: 2048	"not SQL_MAX_MESSAGE_LENGTH".
 	len := SQLSMALLINT new.
 
 	self dbCheckException: 
@@ -315,38 +313,38 @@ SSWODBCConnection >> getLongInfoString: infoCode [
 	^buffer copyFrom: 1 to: (len value / 2)
 ]
 
-{ #category : 'transactions' }
+{ #category : #transactions }
 SSWODBCConnection >> hasTxn [
 
 	^transaction notNil
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> incrementQueryCount [
 
 	queryCount ifNotNil: [ queryCount := queryCount + 1 ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> isConnected [
 
 	^handle notNil and: [ handle isNull not ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> isDebug [
 
 	^self debugStream notNil
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> logStatementExec: aStatement [
 
 	debugStream ifNotNil: [aStatement  writeDebugInfoOn: debugStream].
 	queryCount ifNotNil: [ queryCount := queryCount + 1 ]
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> newParameterizedStatement: aSymbol [
 
 	"We don't make a distinction between parameterized and immediate statements.
@@ -355,7 +353,7 @@ SSWODBCConnection >> newParameterizedStatement: aSymbol [
 	^self newStatement: aSymbol
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> newStatement [
 
 	"Defer to newStatement"
@@ -363,7 +361,7 @@ SSWODBCConnection >> newStatement [
 	^self newStatement: self defaultCursorType
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> newStatement: aSymbol [
 
 	"Overriden to use an the appropriate statement class"
@@ -371,19 +369,19 @@ SSWODBCConnection >> newStatement: aSymbol [
 	^SSWODBCStatement parent: self cursorType: aSymbol
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> onStartup [
 
 	"Private - Nothing to do here"
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> postConnect [
 
 	self sqlDialect onConnected: self
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 SSWODBCConnection >> postExec [
 
 	"Private - Sent immediately following the execution of a statement - carry out the rollback-on-query behavior required by some dialects"
@@ -391,7 +389,7 @@ SSWODBCConnection >> postExec [
 	(transaction isNil and: [self sqlDialect shouldRollbackOnQuery]) ifTrue: [ODBCConnection transact: self action: SQL_ROLLBACK]
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 SSWODBCConnection >> prepareQuery: anSQLQuery [
 
 	"Entry point for system-generated querying (read, refresh, insert).
@@ -403,23 +401,23 @@ SSWODBCConnection >> prepareQuery: anSQLQuery [
 		yourself
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> printParameterPlaceholder: anInteger on: aStream [
 
 	aStream nextPut: $?
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> queryCount [
 	^queryCount
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> queryCount: anObject [
 	queryCount := anObject
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> reset [
 
 	self 
@@ -427,13 +425,13 @@ SSWODBCConnection >> reset [
 		allocatedStatementCount: 0
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> resetQueryCount [
 
 	self queryCount: 0
 ]
 
-{ #category : 'transactions' }
+{ #category : #transactions }
 SSWODBCConnection >> rollbackTxn [
 
 	"Overriden to begin a transaction if one is not active
@@ -443,7 +441,7 @@ SSWODBCConnection >> rollbackTxn [
 	super rollbackTxn
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> shouldFreeStatementsOnClose [
 
 	"Some dialects slowdown or have a hard limit on the number of allocated statements.
@@ -452,7 +450,7 @@ SSWODBCConnection >> shouldFreeStatementsOnClose [
 	^self allocatedStatementCount > self sqlDialect maxAllocatedStatements
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> sqlDialect [
 
 	"sqlDialect stores the SSWSQLDialect of the database to which the receiver connects"
@@ -460,7 +458,7 @@ SSWODBCConnection >> sqlDialect [
 	^sqlDialect
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> sqlDialect: anSSWSQLDialect [
 
 	"sqlDialect stores the SSWSQLDialect of the database to which the receiver connects"
@@ -468,37 +466,37 @@ SSWODBCConnection >> sqlDialect: anSSWSQLDialect [
 	sqlDialect := anSSWSQLDialect
 ]
 
-{ #category : 'operations' }
+{ #category : #operations }
 SSWODBCConnection >> stopQueryCounting [
 
 	self queryCount: nil
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> supportsScrollableCursors [
 
 	^self supportsScrollableDynamicCursorType or: [self supportsScrollableStaticCursorType]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> supportsScrollableDynamicCursorType [
 
 	^(self getSQLUIntegerInfo: SQL_DYNAMIC_CURSOR_ATTRIBUTES1) allMask: SQL_CA1_ABSOLUTE
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 SSWODBCConnection >> supportsScrollableStaticCursorType [
 
 	^(self getSQLUIntegerInfo: SQL_STATIC_CURSOR_ATTRIBUTES1) allMask: SQL_CA1_ABSOLUTE
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> tables [
 
 	^self tablesInNamespace: nil
 ]
 
-{ #category : 'enquiries' }
+{ #category : #enquiries }
 SSWODBCConnection >> tablesInNamespace: aStringOrNil [
 
 	"Answer a collection of all user tables in the namespace named aStringOrNil (nil = default namespace).
@@ -507,7 +505,7 @@ SSWODBCConnection >> tablesInNamespace: aStringOrNil [
 	^self sqlDialect tableNamesInNamespace: aStringOrNil for: self
 ]
 
-{ #category : 'transactions' }
+{ #category : #transactions }
 SSWODBCConnection >> transaction: aDBTxn [ 
 	"Overridden to avoid resetting the willAutoCommit status - ReStore never auto-commits (other than during autoCommitDuring: )"
 
@@ -516,13 +514,13 @@ SSWODBCConnection >> transaction: aDBTxn [
 	transaction := aDBTxn
 ]
 
-{ #category : 'helpers' }
+{ #category : #helpers }
 SSWODBCConnection >> upToParameterPlaceholderOn: aStream [
 
 	^aStream upTo: $?
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCConnection >> willAutoCommit: aBoolean [
 
 	"Overriden to check status prior to changing (dependent on dialect setting)"

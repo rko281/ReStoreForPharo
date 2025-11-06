@@ -1,28 +1,27 @@
 Class {
-	#name : 'SSWODBCRow',
-	#superclass : 'ODBCRow',
+	#name : #SSWODBCRow,
+	#superclass : #ODBCRow,
 	#traits : 'SSWReStoreDBRow',
 	#classTraits : 'SSWReStoreDBRow classTrait',
 	#instVars : [
 		'fieldMap'
 	],
-	#category : 'SSW ReStore ODBC',
-	#package : 'SSW ReStore ODBC'
+	#category : 'SSW ReStore ODBC'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCRow >> data [
 
 	^contents
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SSWODBCRow >> data: anObject [
 
 	contents := anObject
 ]
 
-{ #category : 'initializing' }
+{ #category : #initializing }
 SSWODBCRow >> initializeFromBuffer: anSSWODBCBuffer [
 
 	columns := anSSWODBCBuffer columns.
