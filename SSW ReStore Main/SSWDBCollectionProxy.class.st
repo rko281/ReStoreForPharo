@@ -161,6 +161,12 @@ SSWDBCollectionProxy >> _unstore [
 		ifFalse: [reStore removeFromTransaction: self]
 ]
 
+{ #category : 'testing' }
+SSWDBCollectionProxy >> isDBCollectionProxy [
+
+	^true
+]
+
 { #category : 'forwarding' }
 SSWDBCollectionProxy >> orRemote [
 

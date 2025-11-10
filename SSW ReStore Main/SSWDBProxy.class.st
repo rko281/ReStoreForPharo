@@ -365,6 +365,16 @@ SSWDBProxy >> _postSwapReferences [
 ]
 
 { #category : 'actions-internal' }
+SSWDBProxy >> _preUnswap [
+
+	| newFlags |
+
+	newFlags := flags bitAnd: -2 "IsSwappedMask bitInvert".
+	newFlags == flags ifTrue: [self error: 'attempt to unswap proxy which has not been swapped'].
+	flags := newFlags
+]
+
+{ #category : 'actions-internal' }
 SSWDBProxy >> _prepareToCommit [
 
 	"Prepare to commit changes to the receiver's proxiedObject"
@@ -664,13 +674,9 @@ SSWDBProxy >> _unstore [
 { #category : 'actions-internal' }
 SSWDBProxy >> _unswap [
 
-	| newFlags |
-
-	newFlags := flags bitAnd: -2 "IsSwappedMask bitInvert".
-	newFlags == flags ifTrue: [self error: 'attempt to unswap proxy which has not been swapped'].
-	flags := newFlags.
-
-	^self _swapReferences
+	^self 
+		_preUnswap;
+		_swapReferences
 ]
 
 { #category : 'forwarding' }
@@ -773,6 +779,18 @@ SSWDBProxy >> instVarAt: anInteger [
 					ifFalse: [self _recoveredProxiedObject instVarAt: anInteger]]
 			ifFalse: 
 				[self instVarAt: anInteger]]]
+]
+
+{ #category : 'testing' }
+SSWDBProxy >> isDBCollectionProxy [
+
+	^false
+]
+
+{ #category : 'testing' }
+SSWDBProxy >> isDBObjectProxy [
+
+	^false
 ]
 
 { #category : 'testing' }

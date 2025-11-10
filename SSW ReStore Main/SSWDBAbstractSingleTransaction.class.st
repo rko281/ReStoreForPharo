@@ -23,7 +23,58 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
-	self currentReferencedObjects do: [ :each | each _abandonChanges].
+	self abandonBulkUnswap.
+	"self currentReferencedObjects do: [ :each | each _abandonChanges].
+	self endObjectCollection"
+]
+
+{ #category : 'actions' }
+SSWDBAbstractSingleTransaction >> abandonBulkUnswap [
+
+	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
+
+	| proxies objects collectionProxies collections swap |
+
+	proxies := OrderedCollection new: self currentReferencedObjects size // 2.
+	objects := proxies copy.
+	collectionProxies := proxies copy.
+	collections := proxies copy.
+
+	self currentReferencedObjects do: 
+		[ :each | 
+		each _isPersistent ifTrue: 
+			[each _proxiedObject ifNotNil: 
+				[ :object |
+				each _preUnswap.
+				each isDBObjectProxy
+					ifTrue: [proxies add: each. objects add: object]
+					ifFalse: [collectionProxies add: each. collections add: object]]]].
+
+	proxies := proxies asArray.
+	objects := objects asArray.
+	collectionProxies := collectionProxies asArray.
+	collections := collections asArray.
+
+	proxies elementsExchangeIdentityWith: objects.
+	swap := objects.
+	objects := proxies.
+	proxies := swap.
+	proxies with: objects do: 
+		[ :proxy :object | 
+		proxy 
+			_setProxiedObject: object;
+			_postSwapReferences].
+
+	collectionProxies elementsExchangeIdentityWith: collections.
+	swap := collections.
+	collections := collectionProxies.
+	collectionProxies := swap.
+	collectionProxies with: collections do: 
+		[ :collectionProxy :collection | 
+		collectionProxy 
+			_setProxiedObject: collection;
+			_postSwapReferences].
+
 	self endObjectCollection
 ]
 

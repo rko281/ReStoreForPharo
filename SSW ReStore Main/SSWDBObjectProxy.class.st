@@ -582,6 +582,12 @@ SSWDBObjectProxy >> hash [
 				[self hash]]]
 ]
 
+{ #category : 'testing' }
+SSWDBObjectProxy >> isDBObjectProxy [ 
+
+	^true
+]
+
 { #category : 'non forwarding' }
 SSWDBObjectProxy >> isSQLNull [
 
