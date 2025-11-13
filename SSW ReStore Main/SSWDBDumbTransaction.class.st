@@ -6,6 +6,9 @@ https://github.com/rko281/ReStore
 Class {
 	#name : 'SSWDBDumbTransaction',
 	#superclass : 'SSWDBAbstractSingleTransaction',
+	#instVars : [
+		'proxySwapper'
+	],
 	#category : 'SSW ReStore Main',
 	#package : 'SSW ReStore Main'
 }
@@ -49,6 +52,14 @@ SSWDBDumbTransaction >> isDumb [
 	As such, it is a dumb transaction"
 	
 	^true
+]
+
+{ #category : 'accessing' }
+SSWDBDumbTransaction >> proxySwapper [
+
+	"Cache for potential reswap"
+
+	^proxySwapper ifNil: [proxySwapper := super proxySwapper]
 ]
 
 { #category : 'actions' }

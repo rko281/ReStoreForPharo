@@ -30,6 +30,12 @@ SSWDBOwnedCacheDictionarySpec >> keyAccessor: anSSWInstVarAccessor [
 ]
 
 { #category : 'accessing' }
+SSWDBOwnedCacheDictionarySpec >> keyClass [
+
+	^self keyAccessor targetClass
+]
+
+{ #category : 'accessing' }
 SSWDBOwnedCacheDictionarySpec >> keyedOn: aSymbolOrBlock [
 
 	"If aSymbolOrBlock is aSymbol it should be an inst var name"

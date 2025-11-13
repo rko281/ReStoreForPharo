@@ -14,6 +14,14 @@ Class {
 	#package : 'SSW ReStore Main'
 }
 
+{ #category : 'actions-internal' }
+SSWDBGeneralCollectionProxy >> _addPersistentComponentsTo: aCollection [
+
+	proxiedObject isNil ifFalse: 
+		[collectionSpec keyClass isDirectlyPersisted ifFalse: [proxiedObject keysDo: [ :each | aCollection add: each]].
+		collectionSpec targetClass isDirectlyPersisted ifFalse: [aCollection addAll: proxiedObject]]
+]
+
 { #category : 'accessing' }
 SSWDBGeneralCollectionProxy >> _changes [
 

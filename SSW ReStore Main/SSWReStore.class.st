@@ -21,7 +21,8 @@ Class {
 		'readAllBatchSize',
 		'affiliations',
 		'isDebugging',
-		'storeFailureHandler'
+		'storeFailureHandler',
+		'currentRecoveries'
 	],
 	#classInstVars : [
 		'globalDefault',
@@ -1572,6 +1573,22 @@ SSWReStore >> prepareStatementForQuery: anSSWSQLQuery [
 	^self connection prepareQuery: anSSWSQLQuery
 ]
 
+{ #category : 'proxy swapping' }
+SSWReStore >> preserveSwappedProxiesFollowingTransaction: aBlock [
+
+	"Evaluate aBlock (which should invoke some transaction operation) ensuring that the current set of swapped proxies is restored after the transaction completes"
+
+	self transactionCritical: 
+		[self transaction 
+		ifNil: 
+			[aBlock value]
+		ifNotNil: 
+			[ :previousTransaction |
+			previousTransaction isDumb ifFalse: [self error: 'not appropriate'].
+			aBlock value.
+			previousTransaction proxySwapper reswap]]
+]
+
 { #category : 'proxy manipulation' }
 SSWReStore >> proxy: anSSWDBProxy forwarded: aMessage [
 
@@ -1603,6 +1620,15 @@ SSWReStore >> proxyCache: aDictionary [
 	The sub-dictionary is weak-valued by default"
 	
 	proxyCache := aDictionary
+]
+
+{ #category : 'proxy manipulation' }
+SSWReStore >> proxyRecovered: aDBProxy [
+
+	currentRecoveries isNil ifFalse: 
+		[currentRecoveries 
+			add: aDBProxy;
+			addAll: aDBProxy _collectionProxies]
 ]
 
 { #category : 'accessing' }
@@ -2080,6 +2106,61 @@ SSWReStore >> supportsVersioning [
 	^self objectProxyClass = SSWDBVersionedCachingObjectProxy
 ]
 
+{ #category : 'proxy swapping' }
+SSWReStore >> swapAll [
+
+	"Swap all persistent objects.
+	Answer the Swapper"
+
+	| swapper |
+
+	swapper := SSWDBProxyAndCollectionsSwapper newFor: self.
+	swapper initialize: (self proxyCache inject: 0 into: [ :total :each | total + each size]) * 2.
+
+	^self transactionCritical: 
+		[self proxyCache do: [ :proxies | swapper addAll: proxies].
+		swapper 
+			swap;
+			yourself]
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> swapAll: aCollection [
+
+	"Answer the Swapper"
+
+	^self swapAll: aCollection using: SSWDBProxyAndCollectionsSwapper
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> swapAll: aCollection using: aProxySwapperClass [
+
+	^(aProxySwapperClass newFor: self) 
+		swapAll: aCollection;
+		yourself
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> swapAllRecursively: aCollection [
+
+	"Swap aCollection of objects, recursing into contained persistent objects and collections.
+	Answer the Swapper"
+
+	^self swapAll: aCollection using: SSWDBRecursiveProxySwapper
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> swapObjectsRecoveredDuring: aBlock [
+
+	"Evaluate aBlock. Any objects newly-recovered during its evaluation will then be swapped."
+
+	currentRecoveries isNil ifFalse: [^aBlock value].
+
+	currentRecoveries := IdentitySet new.
+	aBlock value.
+	self swapAll: currentRecoveries
+]
+
 { #category : 'class maintenance' }
 SSWReStore >> synchronizeAllClasses [
 
@@ -2269,6 +2350,31 @@ SSWReStore >> unstoreNextIDsForTables: aCollection [
 	droppedNames := (aCollection collect: [ :e | e name]) asArray.
 
 	((self instancesOf: SSWDBTableRecord) satisfying: [ :nextID | droppedNames includes: nextID tableName]) unstoreAll
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> unswapAll: aCollection [
+
+	"Answer the Swapper"
+
+	^self unswapAll: aCollection using: SSWDBProxyAndCollectionsSwapper
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> unswapAll: aCollection using: aProxySwapperClass [
+
+	^(aProxySwapperClass newFor: self) 
+		unswapAll: aCollection;
+		yourself
+]
+
+{ #category : 'proxy swapping' }
+SSWReStore >> unswapAllRecursively: aCollection [
+
+	"Unswap aCollection of objects, recursing into contained persistent objects and collections.
+	Answer the Swapper"
+
+	^self unswapAll: aCollection using: SSWDBRecursiveProxySwapper
 ]
 
 { #category : 'initialize/release' }

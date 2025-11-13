@@ -182,6 +182,12 @@ SSWDBCollectionSpec >> isValueRelated [
 	^isValueRelated
 ]
 
+{ #category : 'accessing' }
+SSWDBCollectionSpec >> keyClass [
+
+	^Integer
+]
+
 { #category : 'evaluating' }
 SSWDBCollectionSpec >> newCollection [
 

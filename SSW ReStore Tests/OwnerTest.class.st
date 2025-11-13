@@ -33,6 +33,7 @@ Class {
 		'aspectDictionary',
 		'keyedBaseDictionary',
 		'keyedGeneralDictionary',
+		'keyedIdentityDictionary',
 		'refreshCount',
 		'dependentOwnedOrdered',
 		'dependentOrdered'
@@ -78,6 +79,7 @@ OwnerTest class >> reStoreDefinition [
 		define: #aspectDictionary as: (Dictionary of: #name -> Test dependent);
 		define: #keyedBaseDictionary as: (Dictionary of: String -> Test dependent);
 		define: #keyedGeneralDictionary as: (Dictionary of: Test dependent -> Test dependent);
+		define: #keyedIdentityDictionary as: (IdentityDictionary of: Test dependent -> Test dependent);
 		yourself
 ]
 
@@ -233,6 +235,18 @@ OwnerTest >> keyedGeneralDictionary: anObject [
 	"Private - Set the value of the receiver's ''keyedGeneralDictionary'' instance variable to the argument, anObject."
 
 	keyedGeneralDictionary := anObject
+]
+
+{ #category : 'accessing' }
+OwnerTest >> keyedIdentityDictionary [
+
+	^ keyedIdentityDictionary
+]
+
+{ #category : 'accessing' }
+OwnerTest >> keyedIdentityDictionary: anObject [
+
+	keyedIdentityDictionary := anObject
 ]
 
 { #category : 'accessing' }

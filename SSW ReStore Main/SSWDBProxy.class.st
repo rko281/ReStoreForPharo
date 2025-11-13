@@ -365,6 +365,16 @@ SSWDBProxy >> _postSwapReferences [
 ]
 
 { #category : 'actions-internal' }
+SSWDBProxy >> _preSwap [
+
+	| newFlags |
+
+	newFlags := flags bitOr: IsSwappedMask.
+	newFlags == flags ifTrue: [self error: 'attempt to swap already-swapped proxy'].
+	flags := newFlags
+]
+
+{ #category : 'actions-internal' }
 SSWDBProxy >> _preUnswap [
 
 	| newFlags |
@@ -624,13 +634,9 @@ SSWDBProxy >> _setUnswapped [
 { #category : 'actions-internal' }
 SSWDBProxy >> _swap [
 
-	| newFlags |
-
-	newFlags := flags bitOr: IsSwappedMask.
-	newFlags == flags ifTrue: [self error: 'attempt to swap already-swapped proxy'].
-	flags := newFlags.
-
-	^self _swapReferences
+	^self
+		_preSwap;
+		_swapReferences
 ]
 
 { #category : 'actions-internal' }

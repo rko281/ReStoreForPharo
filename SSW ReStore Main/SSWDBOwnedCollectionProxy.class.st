@@ -19,6 +19,12 @@ SSWDBOwnedCollectionProxy >> _acquireCopyCollection [
 	copyCollection := collectionSpec copyCollection: proxiedObject
 ]
 
+{ #category : 'actions-internal' }
+SSWDBOwnedCollectionProxy >> _addPersistentComponentsTo: aCollection [
+
+	proxiedObject isNil ifFalse: [aCollection addAll: proxiedObject]
+]
+
 { #category : 'testing' }
 SSWDBOwnedCollectionProxy >> _checkHasChanged [
 

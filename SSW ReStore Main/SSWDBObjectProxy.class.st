@@ -101,6 +101,17 @@ SSWDBObjectProxy >> _acquireCollectionProxiesUsing: collectionSpecs [
 		[collectionSpecs do: [ :spec | self _updateCollectionProxyUsing: spec]]
 ]
 
+{ #category : 'actions-internal' }
+SSWDBObjectProxy >> _addPersistentComponentsTo: aCollection [
+
+	self _dbTable dataFields do:
+		[ :field | 
+		field targetClass isDirectlyPersisted ifFalse: 
+			[(field accessor valueIn: proxiedObject) ifNotNil: [ :obj | aCollection add: obj]]].
+
+	aCollection addAll: collectionProxies
+]
+
 { #category : 'accessing' }
 SSWDBObjectProxy >> _class [
 
@@ -364,9 +375,10 @@ SSWDBObjectProxy >> _postCommitUpdates [
 { #category : 'actions-internal' }
 SSWDBObjectProxy >> _postRecovered [
 
-	"Inform the proxiedObject recovery is done"
+	"Inform interested parties that recovery is done"
 
-	proxiedObject onRecovered
+	proxiedObject onRecovered.
+	reStore proxyRecovered: self
 ]
 
 { #category : 'actions-internal' }
