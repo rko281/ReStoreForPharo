@@ -640,6 +640,18 @@ SSWDBProxy >> _swap [
 ]
 
 { #category : 'actions-internal' }
+SSWDBProxy >> _swapProxy: aDBProxy [
+
+	"Private - SSWDBProxySwapper behavior implemented here for efficiency.
+	ASSERT: aDBProxy == self"
+
+	| proxyReStore |
+
+	proxyReStore := reStore.
+	proxyReStore proxy: self _swap forwarded: nil
+]
+
+{ #category : 'actions-internal' }
 SSWDBProxy >> _swapReferences [
 
 	"Private - this method should only be sent from _swap or _unswap.
@@ -661,6 +673,14 @@ SSWDBProxy >> _swapReferences [
 	me _postSwapReferences.
 
 	^me
+]
+
+{ #category : 'accessing' }
+SSWDBProxy >> _swapper [
+
+	"Private - By default I take care of swapping myself"
+
+	^self
 ]
 
 { #category : 'accessing' }
@@ -744,7 +764,7 @@ SSWDBProxy >> doesNotUnderstand: aMessage [
 			self isDBProxy ifTrue: 
 				[proxiedObject isNil ifTrue: [self _recoverProxiedObject].
 				"Swap references to the receiver and proxiedObject. From hereon, must not reference inst vars directly."
-				proxyReStore proxy: self _swap forwarded: aMessage]]].
+				self _swapper _swapProxy: self]]].
 
 	^aMessage value: self
 ]

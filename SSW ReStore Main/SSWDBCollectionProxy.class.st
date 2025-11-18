@@ -144,6 +144,12 @@ SSWDBCollectionProxy >> _rollbackChanges [
 ]
 
 { #category : 'accessing' }
+SSWDBCollectionProxy >> _swapper [
+
+	^SSWDBCollectionProxySwapper newFor: reStore
+]
+
+{ #category : 'accessing' }
 SSWDBCollectionProxy >> _unchangedCollection [
 
 	"Answer the receiver's collection prior to any changes. This is used to roll the receiver back to its previous state"

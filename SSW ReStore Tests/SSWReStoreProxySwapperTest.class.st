@@ -63,6 +63,7 @@ SSWReStoreProxySwapperTest >> createTestData [
 			keyedBaseDictionary: (Dictionary withAll: (#('a' 'b' 'c') collect: [ :each | each -> (Test new name: each)]));
 			keyedIdentityDictionary: (Dictionary withAll: ({'a' -> 'x'. 'b' -> 'y'. 'c' -> 'z'} collect: [ :each | (Test new name: each key) -> (Test new name: each value)]));
 			yourself.
+	ownerTest selfReferencingOrdered: (OrderedCollection with: OwnerTest new with: OwnerTest new with: ownerTest).
 	ownerTest storeIn: reStore.
 	ownerTest refresh
 ]
@@ -97,6 +98,101 @@ SSWReStoreProxySwapperTest >> testDumbTransactionAbandon [
 		{ownerTest. ownerTest _proxiedObject arrayOfNames. ownerTest _proxiedObject ordered. ownerTest _proxiedObject ordered _proxiedObject first. 
 		ownerTest _proxiedObject keyedBaseDictionary. ownerTest _proxiedObject keyedBaseDictionary _proxiedObject values anyOne. 
 		ownerTest _proxiedObject keyedIdentityDictionary. ownerTest _proxiedObject keyedIdentityDictionary _proxiedObject keys anyOne. ownerTest _proxiedObject keyedIdentityDictionary _proxiedObject values anyOne}
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testPersistentComponentCollectionSwapping [
+
+	"Verify swapping a collection proxy also swaps its persistent elements"
+
+	| orders |
+
+	orders := customer1 orders.
+
+	self 
+		assertIsUnswapped: orders;
+		assertAllUnswapped: orders _proxiedObject;
+		assertAllUnswapped: {ownerTest arrayOfNames. ownerTest ordered. ownerTest keyedBaseDictionary. ownerTest keyedIdentityDictionary};
+		assertAllUnswapped: ownerTest ordered _proxiedObject;
+		assertAllUnswapped: ownerTest keyedBaseDictionary _proxiedObject values;
+		assertAllUnswapped: ownerTest keyedIdentityDictionary _proxiedObject keys;
+		assertAllUnswapped: ownerTest keyedIdentityDictionary _proxiedObject values.
+	
+	"Swap collections via a trivial message"
+	orders _deproxify.
+	ownerTest arrayOfNames _deproxify.
+	ownerTest ordered _deproxify.
+	ownerTest keyedBaseDictionary _deproxify.
+	ownerTest keyedIdentityDictionary _deproxify.
+
+	"Ensure collections and their contents are all swapped"
+	self 	
+		assertIsSwapped: orders;
+		assertAllSwapped: orders;
+		assertAllSwapped: {ownerTest arrayOfNames. ownerTest ordered. ownerTest keyedBaseDictionary. ownerTest keyedIdentityDictionary};
+		assertAllSwapped: ownerTest ordered;
+		assertAllSwapped: ownerTest keyedBaseDictionary values;
+		assertAllSwapped: ownerTest keyedIdentityDictionary keys;
+		assertAllSwapped: ownerTest keyedIdentityDictionary values
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testPersistentComponentSelfReferencingCollectionSwapping [
+
+	"Verify swapping a collection proxy also swaps its persistent elements.
+	Specific sub-case - the collection contains a reference to its owner"
+
+	| collectionSpec collectionProxy |
+
+	self 
+		assertIsUnswapped: ownerTest selfReferencingOrdered;
+		assertAllUnswapped: (ownerTest selfReferencingOrdered _proxiedObject first: 2); "owner is last"
+		assertIsSwapped: (ownerTest selfReferencingOrdered _proxiedObject last);
+		assert: (ownerTest selfReferencingOrdered _proxiedObject last) identicalTo: ownerTest.
+	
+	ownerTest selfReferencingOrdered _deproxify.
+
+	self 
+		assertIsSwapped: ownerTest selfReferencingOrdered;
+		assertAllSwapped: ownerTest selfReferencingOrdered;
+		assert: (ownerTest selfReferencingOrdered last) identicalTo: ownerTest.
+
+	"Verify internal structure is correct"
+	collectionSpec := (reStore tableForClass: OwnerTest) collectionSpecs detect: [ :each | each accessor name = #selfReferencingOrdered].
+	collectionProxy := (ownerTest _dbProxyIn: reStore) _collectionProxies at: collectionSpec.
+
+	self assert: collectionProxy isDBProxy.
+	self assert: collectionProxy _owner isDBProxy
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testPersistentComponentSelfReferencingCollectionSwappingOwnerUnswapped [
+
+	"Verify swapping a collection proxy also swaps its persistent elements.
+	Specific sub-case - the collection contains a reference to its owner AND the owner is unswapped"
+
+	| collection collectionSpec collectionProxy |
+
+	collection := ownerTest selfReferencingOrdered.
+	reStore unswapAll: {ownerTest}.
+
+	self 
+		assertIsUnswapped: collection;
+		assertAllUnswapped: collection _proxiedObject.
+	
+	collection _deproxify.
+
+	self 
+		assertIsSwapped: ownerTest selfReferencingOrdered;
+		assertAllSwapped: ownerTest selfReferencingOrdered;
+		assert: (ownerTest selfReferencingOrdered last) identicalTo: ownerTest.
+
+	"Verify internal structure is correct"
+	collectionSpec := (reStore tableForClass: OwnerTest) collectionSpecs detect: [ :each | each accessor name = #selfReferencingOrdered].
+	collectionProxy := (ownerTest _dbProxyIn: reStore) _collectionProxies at: collectionSpec.
+
+	self assert: collectionProxy isDBProxy.
+	self assert: collectionProxy _owner isDBProxy
 ]
 
 { #category : 'unit tests' }
@@ -407,6 +503,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsRecursivelyWithIntermerdiateSwapped
 	orders := customer1 _proxiedObject orders.
 	sampleOrder := orders anyOne.
 	self assertIsSwapped: orders.
+	reStore unswapAll: orders.
 	self assertIsUnswapped: sampleOrder.
 	self assertAllUnswapped: orders.
 	product := sampleOrder _proxiedObject product.
@@ -548,6 +645,7 @@ SSWReStoreProxySwapperTest >> testUnswapObjectsRecursivelyWithIntermediateSwappe
 
 	orders := customer1 orders.
 	sampleOrder := orders first.
+	reStore unswapAll: {sampleOrder}.
 	self assertIsUnswapped: sampleOrder.
 	product := sampleOrder _proxiedObject product.
 	product description.

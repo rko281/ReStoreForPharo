@@ -26,6 +26,17 @@ SSWDBProxySwapper >> _swap [
 ]
 
 { #category : 'actions' }
+SSWDBProxySwapper >> _swapProxy: aDBProxy [
+
+	"Private - Should only be called inside transactionCritical:"
+
+	self 
+		initialize: 3;
+		addProxy: aDBProxy forObject: aDBProxy _proxiedObject;
+		_swap
+]
+
+{ #category : 'actions' }
 SSWDBProxySwapper >> _unswap [
 
 	self 
@@ -164,9 +175,10 @@ SSWDBProxySwapper >> swapAll: aProxiesCollection with: anObjectsCollection [
 { #category : 'helpers' }
 SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 
-	| objectProxies objects collectionProxies collections |
+	| objectProxies objectProxiesSet objects collectionProxies collections |
 
 	objectProxies := OrderedCollection new: proxiesMap size // 2.
+	objectProxiesSet := IdentitySet new: proxiesMap size // 2.
 	objects := objectProxies copy.
 	collectionProxies := objectProxies copy.
 	collections := objectProxies copy.
@@ -176,11 +188,14 @@ SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 		(preBlock value: proxy) ifTrue: 
 			[proxy isDBCollectionProxy
 				ifTrue: [collectionProxies add: proxy. collections add: object]
-				ifFalse: [objectProxies add: proxy. objects add: object]]].
+				ifFalse: [objectProxies add: proxy. objectProxiesSet add: proxy. objects add: object]]].
 
-	self 
-		swapAll: objectProxies with: objects;
-		swapAll: collectionProxies with: collections.
+	"Where a collection and its owner are both being swapped, the owner's reference to the collection proxy needs to be flipped to the collection so it will be correct after the swap"
+	collectionProxies do: 
+		[ :collectionProxy | 
+		(objectProxiesSet includes: collectionProxy _owner) ifTrue: [collectionProxy _owner _collectionProxies at: collectionProxy _collectionSpec put: collectionProxy _proxiedObject]].
+
+	self swapAll: objectProxies, collectionProxies with: objects, collections.
 
 	objects do: postBlock.
 	collections do: postBlock

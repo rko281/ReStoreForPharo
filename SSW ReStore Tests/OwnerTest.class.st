@@ -36,7 +36,8 @@ Class {
 		'keyedIdentityDictionary',
 		'refreshCount',
 		'dependentOwnedOrdered',
-		'dependentOrdered'
+		'dependentOrdered',
+		'selfReferencingOrdered'
 	],
 	#category : 'SSW ReStore Tests',
 	#package : 'SSW ReStore Tests'
@@ -80,6 +81,7 @@ OwnerTest class >> reStoreDefinition [
 		define: #keyedBaseDictionary as: (Dictionary of: String -> Test dependent);
 		define: #keyedGeneralDictionary as: (Dictionary of: Test dependent -> Test dependent);
 		define: #keyedIdentityDictionary as: (IdentityDictionary of: Test dependent -> Test dependent);
+		define: #selfReferencingOrdered as: (OrderedCollection of: self);
 		yourself
 ]
 
@@ -427,6 +429,18 @@ OwnerTest >> refreshCount [
 { #category : 'accessing' }
 OwnerTest >> refreshCount: anObject [
 	refreshCount := anObject
+]
+
+{ #category : 'accessing' }
+OwnerTest >> selfReferencingOrdered [
+
+	^ selfReferencingOrdered
+]
+
+{ #category : 'accessing' }
+OwnerTest >> selfReferencingOrdered: anObject [
+
+	selfReferencingOrdered := anObject
 ]
 
 { #category : 'accessing' }
