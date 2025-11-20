@@ -150,6 +150,15 @@ SSWDBObjectProxy >> _collectionProxies: anIdentityDictionary [
 	collectionProxies := anIdentityDictionary
 ]
 
+{ #category : 'actions-internal' }
+SSWDBObjectProxy >> _collectionProxyAboutToSwap: aCollectionProxy [
+
+	"The given collection proxy is about to swap its references.
+	Flip the receiver's reference to point instead to aCollectionProxy's proxiedObject so it will still point to aCollectionProxy after the swap"
+
+	^collectionProxies at: aCollectionProxy _collectionSpec put: aCollectionProxy _proxiedObject
+]
+
 { #category : 'accessing:derived' }
 SSWDBObjectProxy >> _collectionProxyFor: aCollectionSpec [
 
@@ -158,15 +167,6 @@ SSWDBObjectProxy >> _collectionProxyFor: aCollectionSpec [
 
 	^collectionProxies at: aCollectionSpec ifAbsentPut:
 		[aCollectionSpec newProxydCollectionFor: self]
-]
-
-{ #category : 'actions-internal' }
-SSWDBObjectProxy >> _collectionProxySwapped: aCollectionProxy [
-
-	"The given collection proxy has swapped its references.
-	Update the cache"
-
-	^collectionProxies at: aCollectionProxy _collectionSpec put: aCollectionProxy
 ]
 
 { #category : 'actions-internal' }

@@ -22,7 +22,7 @@ SSWDBProxySwapper >> _swap [
 
 	self 
 		swapAllWhere: [ :proxy | proxy _isSwapped ifTrue: [false] ifFalse: [proxy _preSwap. true]]
-		postAction: [ :proxy | proxy _reStore proxy: proxy forwarded: nil]
+		postAction: [ :proxy | proxy _reStore addToTransaction: proxy]
 ]
 
 { #category : 'actions' }
@@ -41,7 +41,7 @@ SSWDBProxySwapper >> _unswap [
 
 	self 
 		swapAllWhere: [ :proxy | proxy _isSwapped ifTrue: [proxy _preUnswap. true] ifFalse: [false]]
-		postAction: [ :proxy | proxy _reStore transaction removeProxy: proxy]
+		postAction: [ :proxy | proxy _reStore transaction removeUnswappedProxy: proxy]
 ]
 
 { #category : 'actions' }
@@ -141,19 +141,19 @@ SSWDBProxySwapper >> reswap [
 			[proxy _proxiedObject ifNotNil: [ :object | reversedMap at: proxy put: object]]].
 	proxiesMap := reversedMap.
 
-	^self _swap
+	^reStore ensureHasTransactionCritical: [self _swap]
 ]
 
 { #category : 'operations' }
 SSWDBProxySwapper >> swap [
 
-	reStore transactionCritical: [self _swap]
+	reStore ensureHasTransactionCritical: [self _swap]
 ]
 
 { #category : 'operations' }
 SSWDBProxySwapper >> swapAll: aCollection [
 
-	reStore transactionCritical: 
+	reStore ensureHasTransactionCritical: 
 		[self 
 			initialize: aCollection size;
 			addAll: aCollection;
@@ -162,6 +162,8 @@ SSWDBProxySwapper >> swapAll: aCollection [
 
 { #category : 'helpers' }
 SSWDBProxySwapper >> swapAll: aProxiesCollection with: anObjectsCollection [
+
+	aProxiesCollection do: [ :each | each _preSwapReferences].
 
 	aProxiesCollection asArray elementsExchangeIdentityWith: anObjectsCollection asArray.
 
@@ -175,30 +177,20 @@ SSWDBProxySwapper >> swapAll: aProxiesCollection with: anObjectsCollection [
 { #category : 'helpers' }
 SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 
-	| objectProxies objectProxiesSet objects collectionProxies collections |
+	| proxies objects |
 
-	objectProxies := OrderedCollection new: proxiesMap size // 2.
-	objectProxiesSet := IdentitySet new: proxiesMap size // 2.
-	objects := objectProxies copy.
-	collectionProxies := objectProxies copy.
-	collections := objectProxies copy.
-
+	proxies := OrderedCollection new: proxiesMap size.
+	objects := OrderedCollection new: proxiesMap size.
+	
 	proxiesMap keysAndValuesDo: 
 		[ :proxy :object |
 		(preBlock value: proxy) ifTrue: 
-			[proxy isDBCollectionProxy
-				ifTrue: [collectionProxies add: proxy. collections add: object]
-				ifFalse: [objectProxies add: proxy. objectProxiesSet add: proxy. objects add: object]]].
+			[proxies add: proxy.
+			objects add: object]].
 
-	"Where a collection and its owner are both being swapped, the owner's reference to the collection proxy needs to be flipped to the collection so it will be correct after the swap"
-	collectionProxies do: 
-		[ :collectionProxy | 
-		(objectProxiesSet includes: collectionProxy _owner) ifTrue: [collectionProxy _owner _collectionProxies at: collectionProxy _collectionSpec put: collectionProxy _proxiedObject]].
+	self swapAll: proxies with: objects.
 
-	self swapAll: objectProxies, collectionProxies with: objects, collections.
-
-	objects do: postBlock.
-	collections do: postBlock
+	objects do: postBlock
 ]
 
 { #category : 'operations' }

@@ -22,7 +22,8 @@ Class {
 		'affiliations',
 		'isDebugging',
 		'storeFailureHandler',
-		'currentRecoveries'
+		'currentRecoveries',
+		'dumbTransactionClass'
 	],
 	#classInstVars : [
 		'globalDefault',
@@ -299,6 +300,12 @@ SSWReStore >> addClasses: aCollection [
 	aCollection do: [ :each | self addClass: each]
 ]
 
+{ #category : 'proxy manipulation' }
+SSWReStore >> addToTransaction: anSSWDBProxy [
+
+	self transaction addProxy: anSSWDBProxy
+]
+
 { #category : 'initialize/release' }
 SSWReStore >> affiliateWith: anObject using: aBlock [
 
@@ -378,8 +385,8 @@ SSWReStore >> attachTo: aConnection [
 SSWReStore >> beginDumbTransaction [
 
 	"Begin a dumb transaction to absorb object traversals"
-	
-	self transaction: (SSWDBDumbTransaction new begin; yourself)
+
+	self transaction: (self dumbTransactionClass new begin; yourself)
 ]
 
 { #category : 'transaction api' }
@@ -939,6 +946,18 @@ SSWReStore >> disconnect [
 	self hardDisconnect
 ]
 
+{ #category : 'accessing' }
+SSWReStore >> dumbTransactionClass [
+
+	^dumbTransactionClass ifNil: [SSWDBDumbTransaction]
+]
+
+{ #category : 'accessing' }
+SSWReStore >> dumbTransactionClass: aClass [
+
+	dumbTransactionClass := aClass
+]
+
 { #category : 'class maintenance' }
 SSWReStore >> enableFullTableRecords [
 
@@ -964,6 +983,16 @@ SSWReStore >> ensureCanChangeTransactionMode [
 	"Cannot change mode if connected to DB"
 
 	self isConnected ifTrue: [self error: 'Cannot change transaction mode whilst connected']
+]
+
+{ #category : 'transaction management' }
+SSWReStore >> ensureHasTransactionCritical: aBlock [
+
+	"Evaluate aBlock in the transaction mutex, first ensuring there is a current transaction"
+
+	^self transactionCritical: 
+		[transaction == nil ifTrue: [self beginDumbTransaction].
+		aBlock value]
 ]
 
 { #category : 'proxy manipulation' }
@@ -1589,17 +1618,6 @@ SSWReStore >> preserveSwappedProxiesFollowingTransaction: aBlock [
 			previousTransaction proxySwapper reswap]]
 ]
 
-{ #category : 'proxy manipulation' }
-SSWReStore >> proxy: anSSWDBProxy forwarded: aMessage [
-
-	"anSSWDBProxy has just forwarded aMessage to its proxiedObject.
-	Take any necessary actions here and forward to other interested parties"
-
-	transaction == nil ifTrue: [self beginDumbTransaction].
-
-	self transaction proxy: anSSWDBProxy forwarded: aMessage
-]
-
 { #category : 'accessing' }
 SSWReStore >> proxyCache [
 
@@ -1935,19 +1953,22 @@ SSWReStore >> rollbackAndRefreshTransaction [
 { #category : 'transaction api' }
 SSWReStore >> rollbackTransaction [
 
-	| rolledBack |
+	| rolledBack previousTransaction |
 
 	self hasTransaction ifFalse: [self error: 'No transaction to rollback'].
 
+	previousTransaction := self transaction.
 	self transactionCritical:
 		[rolledBack := self transaction rollback.
-		self transaction: self transaction ownerTransaction.
+		self transaction: (SSWDBDumbTransaction new begin; yourself).
 		self connection rollbackTxn].
 
 	rolledBack do: [ :each | each onRollback].
 
 	"Implementation of onRollback may cause further objects to be referenced - where this has happened invoke a softRollback to ensure all persistent objects are proxies"
-	self hasTransaction ifTrue: [self softRollback]
+	self transaction isEmpty ifFalse: [self softRollback].
+
+	self transaction: previousTransaction ownerTransaction
 ]
 
 { #category : 'querying' }
@@ -2246,7 +2267,8 @@ SSWReStore >> transaction: anSSWDBTransaction [
 	"transaction stores an SSWDBTransaction which manages 
 	the writing/rollback of object changes within this ReStore"
 	
-	transaction := anSSWDBTransaction
+	transaction := anSSWDBTransaction.
+	anSSWDBTransaction isNil ifFalse: [anSSWDBTransaction postInstallIn: self]
 ]
 
 { #category : 'accessing' }

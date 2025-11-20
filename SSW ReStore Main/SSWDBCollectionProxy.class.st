@@ -79,11 +79,11 @@ SSWDBCollectionProxy >> _ownerID [
 ]
 
 { #category : 'actions-internal' }
-SSWDBCollectionProxy >> _postSwapReferences [
+SSWDBCollectionProxy >> _preSwapReferences [
 
 	"Inform the owner"
 
-	owner _collectionProxySwapped: self
+	owner _collectionProxyAboutToSwap: self
 ]
 
 { #category : 'actions-internal' }

@@ -80,17 +80,15 @@ SSWDBTransaction >> ownerTransaction [
 ]
 
 { #category : 'actions' }
-SSWDBTransaction >> prepareToCommit [
+SSWDBTransaction >> postInstallIn: anSSWReStore [
 
-	self subclassResponsibility
+	"The receiver has become the active transaction in anSSWReStore.
+	Carry out any necesssary actions"
 ]
 
-{ #category : 'proxy tracking' }
-SSWDBTransaction >> proxy: aProxydObject forwarded: aMessage [
+{ #category : 'actions' }
+SSWDBTransaction >> prepareToCommit [
 
-	"aProxydObject has forwarded the given message to its proxiedObject. 
-	Act accordingly"
-	
 	self subclassResponsibility
 ]
 

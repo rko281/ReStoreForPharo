@@ -50,6 +50,15 @@ SSWDBAbstractSingleTransaction >> addDeletedObject: aDBProxy [
 	^self deletedObjects add: aDBProxy
 ]
 
+{ #category : 'proxy tracking' }
+SSWDBAbstractSingleTransaction >> addProxy: aDBProxy [
+
+	"Add aDBProxy to the collection of potentially-changed objects"
+
+	aDBProxy _proxiedObject ifNotNil: [ :object | self activeProxiesMap at: object put: aDBProxy].
+	self currentReferencedObjects add: aDBProxy
+]
+
 { #category : 'accessing' }
 SSWDBAbstractSingleTransaction >> allReferencedObjects [
 
@@ -270,6 +279,12 @@ SSWDBAbstractSingleTransaction >> isAlreadyDeleted: aDBProxy [
 	^self deletedObjects includes: aDBProxy
 ]
 
+{ #category : 'testing' }
+SSWDBAbstractSingleTransaction >> isEmpty [
+
+	^self currentReferencedObjects isEmpty
+]
+
 { #category : 'evaluating' }
 SSWDBAbstractSingleTransaction >> newEmptyObjectsSet [
 
@@ -349,15 +364,6 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 ]
 
 { #category : 'proxy tracking' }
-SSWDBAbstractSingleTransaction >> proxy: aDBProxy forwarded: aMessage [
-
-	"Add aDBProxy to the collection of potentially-changed objects (the receiver performs no checking on the message sent)"
-
-	aDBProxy _proxiedObject ifNotNil: [ :object | self activeProxiesMap at: object put: aDBProxy].
-	self currentReferencedObjects add: aDBProxy
-]
-
-{ #category : 'proxy tracking' }
 SSWDBAbstractSingleTransaction >> proxyForObject: anObject ifNone: aBlock [
 
 	^self activeProxiesMap at: anObject ifAbsent: aBlock
@@ -370,12 +376,24 @@ SSWDBAbstractSingleTransaction >> proxySwapper [
 ]
 
 { #category : 'proxy tracking' }
-SSWDBAbstractSingleTransaction >> removeProxy: aProxydObject [
+SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 
-	"Remove aProxydObject from the collections of potentially-changed objects"
+	"Remove aDBProxy from the collections of potentially-changed objects"
 
-	self currentReferencedObjects remove: aProxydObject ifAbsent: [].
-	self allReferencedObjects remove: aProxydObject ifAbsent: []
+	self currentReferencedObjects remove: aDBProxy ifAbsent: [].
+	self allReferencedObjects remove: aDBProxy ifAbsent: [].
+	self activeProxiesMap removeKey: aDBProxy _proxiedObject ifAbsent: []
+]
+
+{ #category : 'proxy tracking' }
+SSWDBAbstractSingleTransaction >> removeUnswappedProxy: aDBProxy [
+
+	"Remove aDBProxy from the receiver.
+	aDBProxy has just been unswapped after earlier being swapped within this transaction, hence the receiver contains the proxied object in place of the proxy and vice versa"
+
+	self currentReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: [].
+	self allReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: [].
+	self activeProxiesMap removeKey: aDBProxy ifAbsent: []
 ]
 
 { #category : 'initializing' }

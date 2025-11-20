@@ -64,7 +64,7 @@ SSWDBProxy >> __proxiedObject: anObject [
 { #category : 'actions-internal' }
 SSWDBProxy >> __referenced [
 
-	reStore proxy: self forwarded: (Message selector: #_referenced)
+	reStore addToTransaction: self
 ]
 
 { #category : 'actions-internal' }
@@ -375,6 +375,14 @@ SSWDBProxy >> _preSwap [
 ]
 
 { #category : 'actions-internal' }
+SSWDBProxy >> _preSwapReferences [
+
+	"Carry out any tidying up actions required immediately before a _swapReferences"
+
+	^self
+]
+
+{ #category : 'actions-internal' }
 SSWDBProxy >> _preUnswap [
 
 	| newFlags |
@@ -648,7 +656,7 @@ SSWDBProxy >> _swapProxy: aDBProxy [
 	| proxyReStore |
 
 	proxyReStore := reStore.
-	proxyReStore proxy: self _swap forwarded: nil
+	proxyReStore addToTransaction: self _swap
 ]
 
 { #category : 'actions-internal' }
@@ -662,6 +670,8 @@ SSWDBProxy >> _swapReferences [
 
 	"Cannot swap references if no proxy"
 	proxiedObject == nil ifTrue: [^self].
+
+	self _preSwapReferences.
 
 	"Set up 'me' and 'him' so that they will be correct after the swap"
 	me := proxiedObject.
@@ -759,7 +769,7 @@ SSWDBProxy >> doesNotUnderstand: aMessage [
 	
 	self _dbProxyReStore ifNotNil: 
 		[ :proxyReStore |
-		proxyReStore transactionCritical: 
+		proxyReStore ensureHasTransactionCritical:  
 			["Make sure that some other process has not swapped my references while I was waiting for the mutex."
 			self isDBProxy ifTrue: 
 				[proxiedObject isNil ifTrue: [self _recoverProxiedObject].

@@ -37,7 +37,10 @@ SSWReStoreProxySwapperTest >> assertIsUnswapped: anObject [
 	self assert: anObject isDBProxy.
 	self deny: anObject _isSwapped.
 
-	reStore hasTransaction ifTrue: [self deny: (reStore transaction includesProxy: anObject)]
+	reStore hasTransaction ifTrue: 
+		[self deny: (reStore transaction includesProxy: anObject).
+		self deny: (reStore transaction activeProxiesMap includesKey: anObject)] "tests for previous error with removeProxy: after unswap"
+
 ]
 
 { #category : 'running' }
@@ -193,6 +196,33 @@ SSWReStoreProxySwapperTest >> testPersistentComponentSelfReferencingCollectionSw
 
 	self assert: collectionProxy isDBProxy.
 	self assert: collectionProxy _owner isDBProxy
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testPreSwappingDumbTransaction [
+
+	| allObjects |
+
+	reStore dumbTransactionClass: SSWDBPreSwappingDumbTransaction.
+	reStore ensureNoActiveTransaction.
+
+	allObjects := OrderedCollection new.
+	reStore tableCache keysDo: 
+		[ :cls |
+		allObjects addAll: (cls storedInstancesIn: reStore) asOrderedCollection].
+
+	self deny: reStore hasTransaction.
+
+	"Referencing one object should swap everything"
+	allObjects first _deproxify.
+
+	self assert: reStore hasTransaction.
+	self assert: reStore transaction class equals: SSWDBPreSwappingDumbTransaction.
+	self deny: reStore transaction isEmpty.
+	self assert: (reStore proxyCache allSatisfy: [ :proxies | proxies allSatisfy: [ :each | each isDBProxy not]]).
+
+	"Also check collection proxies have been swapped"
+	self assert: ({customer1. customer2. customer3. customer4} allSatisfy: [ :each | each orders isDBProxy not])
 ]
 
 { #category : 'unit tests' }
