@@ -1383,10 +1383,9 @@ SSWReStore >> lazyRefreshAll: aCollection [
 
 	"Lazy-refresh the elements of aCollection - just forget the actual objects; they will be lazily re-read (and hence refreshed) when next referenced"
 
-	self transactionCritical:
-		[self ensureNoActiveTransaction.
+	self transactionCritical: 
+		[self unswapAll: aCollection.
 		self connection rollbackTxn.
-
 		aCollection do: [ :each | each _lazyRefreshIn: self]]
 ]
 

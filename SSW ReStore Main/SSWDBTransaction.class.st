@@ -10,6 +10,15 @@ Class {
 	#package : 'SSW ReStore Main'
 }
 
+{ #category : 'proxy tracking' }
+SSWDBTransaction >> addProxy: aProxydObject [
+
+	"aProxydObject has forwarded the given message to its proxiedObject. 
+	Act accordingly"
+
+	self subclassResponsibility
+]
+
 { #category : 'actions' }
 SSWDBTransaction >> beginWithin: anotherTransaction [
 

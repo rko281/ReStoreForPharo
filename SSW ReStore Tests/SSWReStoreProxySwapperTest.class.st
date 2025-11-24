@@ -253,7 +253,7 @@ SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingCommit [
 { #category : 'unit tests' }
 SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingLazyRefreshAll [
 
-	"Verify that swapped objects can be preserved after a lazyRefreshAll: operation"
+	"Verify that swapped objects are automatically preserved after a lazyRefreshAll: operation"
 
 	| orders sampleOrder product deletedProduct reStore2 products2 |
 
@@ -276,13 +276,12 @@ SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingLazyRefreshAll 
 		(products2 detect: [ :each | each _id = deletedProduct _id]) unstore].
 	reStore2 disconnect.
 	
-	reStore preserveSwappedProxiesFollowingTransaction: [reStore lazyRefreshAll: {product. deletedProduct}].
+	reStore lazyRefreshAll: {product. deletedProduct}.
 	
 	self assertAllSwapped: {customer1. orders. sampleOrder}.
 	self assertIsUnswapped: product. "due to lazy refresh"
 	self assert: product description equals: 'updated2'.
 	self assert: deletedProduct isDBDeleted
-	
 ]
 
 { #category : 'unit tests' }

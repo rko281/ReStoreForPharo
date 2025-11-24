@@ -509,6 +509,12 @@ SSWDBObjectProxy >> _storeNonPersistentComponents [
 						_referenced]]]]
 ]
 
+{ #category : 'accessing:derived' }
+SSWDBObjectProxy >> _tableRecord [
+
+	^reStore tableRecordFor: self _dbTable
+]
+
 { #category : 'accessing' }
 SSWDBObjectProxy >> _unrecoveredProxyString [
 

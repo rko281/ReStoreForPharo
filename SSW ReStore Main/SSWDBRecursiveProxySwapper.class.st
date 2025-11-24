@@ -6,29 +6,10 @@ Class {
 }
 
 { #category : 'adding' }
-SSWDBRecursiveProxySwapper >> addAll: aCollection [
+SSWDBRecursiveProxySwapper >> addProxy: aProxy forObject: anObject [ 
 
-	| swapper toAdd |
-
-	swapper := SSWDBProxySwapper newFor: reStore.
-	toAdd := aCollection.
-
-	[| preSize |
-	preSize := proxiesMap size.
-	swapper addAll: toAdd.
-	self addSwapper: swapper.
-	proxiesMap size > preSize] whileTrue:
-		[toAdd := OrderedCollection new: swapper proxiesMap size * 2.
-		swapper proxiesDo: [ :each | each _addPersistentComponentsTo: toAdd].
-		swapper initialize: toAdd size]
-]
-
-{ #category : 'adding' }
-SSWDBRecursiveProxySwapper >> addSwapper: aProxySwapper [
-
-	aProxySwapper proxiesMap keysAndValuesDo: 
-		[ :proxy :object |
-		proxiesMap  at: proxy put: object].
-
-	^aProxySwapper
+	(proxiesMap includesKey: aProxy) ifTrue: [ ^ self ].
+	super addProxy: aProxy forObject: anObject.
+	aProxy _addPersistentComponentsTo: self.
+	^ aProxy
 ]

@@ -59,7 +59,7 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	ifTrue: 
 		[aDBConnection rollbackTxn.
 		self freeStatements.
-		self currentReferencedObjects: (self changedObjects collect: [ :obj | obj _swap])]
+		self currentReferencedObjects: (SSWDBTransactionProxySwapper swapAll: self changedObjects)]
 	ifFalse: 
 		[aDBConnection commitTxn.
 		self postCommit].

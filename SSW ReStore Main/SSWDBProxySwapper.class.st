@@ -41,7 +41,7 @@ SSWDBProxySwapper >> _unswap [
 
 	self 
 		swapAllWhere: [ :proxy | proxy _isSwapped ifTrue: [proxy _preUnswap. true] ifFalse: [false]]
-		postAction: [ :proxy | proxy _reStore transaction removeUnswappedProxy: proxy]
+		postAction: [ :proxy | proxy _reStore transaction removeProxy: proxy]
 ]
 
 { #category : 'actions' }

@@ -107,3 +107,22 @@ SSWReStoreCommitTests >> test04MultiStoreSameObjectViaRelationships [
 	self assert: (tests first == obj2 single2).
 	self assert: (obj2 single2 == obj2 single3)
 ]
+
+{ #category : 'public' }
+SSWReStoreCommitTests >> test06UnstoreNonPersistentObject [
+
+	"Ensure that storing and unstoring an object within a single transaction is supported.
+	Previously caused an error attempting to assign an id to a non-persistent object after its (non)commit"
+
+	| obj1 obj2 |
+
+	obj1 := SimplePerson new firstName: 'The man who was'.
+	obj2 := SimplePerson new firstName: 'The man who never was'.
+
+	reStore evaluateAsTransaction: 
+		[{obj1. obj2} storeAllIn: reStore.
+		obj2 unstore].
+
+	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who was'] ifNone: [nil]) == obj1.
+	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who never was'] ifNone: [nil]) isNil
+]
