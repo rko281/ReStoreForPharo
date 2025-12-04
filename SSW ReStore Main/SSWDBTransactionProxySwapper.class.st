@@ -30,47 +30,29 @@ SSWDBTransactionProxySwapper class >> unswapAll: aCollection [
 ]
 
 { #category : 'operations' }
-SSWDBTransactionProxySwapper >> swapAll: aCollectionOfProxies [
+SSWDBTransactionProxySwapper >> _swap [
+	"Override to not skip proxies already in the desired state--this should never happen in the transaction mechanism."
 
-	| proxies objects unrecovered |
-
-	proxies := OrderedCollection new: aCollectionOfProxies size.
-	objects := OrderedCollection new: aCollectionOfProxies size.
-	unrecovered := OrderedCollection new.
-	aCollectionOfProxies do: 
-		[ :each | 
-		each _preSwap.
-		each _proxiedObject 
-			ifNil: [unrecovered add: each]
-			ifNotNil: [ :object | proxies add: each. objects add: object]].
-
-	self swapAll: proxies with: objects.
-
-	^(aCollectionOfProxies species new: aCollectionOfProxies size) 
-		addAll: objects; "now proxies"
-		addAll: unrecovered;
-		yourself
+	self
+		swapAllWhere: [ :proxy | proxy _preSwap. true ]
+		postAction: [ :proxy | proxy _reStore addToTransaction: proxy ].
 ]
 
 { #category : 'operations' }
-SSWDBTransactionProxySwapper >> unswapAll: aCollectionOfProxies [
+SSWDBTransactionProxySwapper >> _unswap [
+	"Override to not skip proxies already in the desired state--this should never happen in the transaction mechanism."
 
-	| proxies objects unrecovered |
+	self
+		swapAllWhere: [ :proxy | proxy _preUnswap. true ]
+		postAction: [ :proxy | "ASSERT: We are removing everything from #currentReferencedObjects, so we don't need to remove one by one"
+			 ].
+]
 
-	proxies := OrderedCollection new: aCollectionOfProxies size.
-	objects := OrderedCollection new: aCollectionOfProxies size.
-	unrecovered := OrderedCollection new.
-	aCollectionOfProxies do: 
-		[ :each | 
-		each _preUnswap.
-		each _proxiedObject 
-			ifNil: [unrecovered add: each]
-			ifNotNil: [ :object | proxies add: each. objects add: object]].
+{ #category : 'operations' }
+SSWDBTransactionProxySwapper >> addProxy: aProxy [
 
-	self swapAll: proxies with: objects.
-
-	^(aCollectionOfProxies species new: aCollectionOfProxies size) 
-		addAll: objects; "now proxies"
-		addAll: unrecovered;
-		yourself
+	self assert: aProxy _isRecovered.
+	"We are used internal to the transaction mechanism,
+	so must be willing to swap proxies that are not yet persistent, i.e. about to be stored."
+	^ self addProxy: aProxy forObject: aProxy _proxiedObject
 ]

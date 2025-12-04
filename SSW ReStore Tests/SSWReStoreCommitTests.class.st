@@ -124,5 +124,7 @@ SSWReStoreCommitTests >> test06UnstoreNonPersistentObject [
 		obj2 unstore].
 
 	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who was'] ifNone: [nil]) == obj1.
-	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who never was'] ifNone: [nil]) isNil
+	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who never was'] ifNone: [nil]) isNil.
+
+	self deny: ((reStore classCacheFor: SimplePerson) anySatisfy: [:each | each _proxiedObject == obj2])
 ]

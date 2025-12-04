@@ -118,10 +118,11 @@ SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 
 	"Any objects referenced during the errored commit will erroneously be in currentReferencedObjects.
 	Swap back and forget"
-	self currentReferencedObjects do: [ :obj | obj _unswap].
+	SSWDBTransactionProxySwapper unswapAll: self currentReferencedObjects.
 
 	"The receiver's changedObjects should now be the currentReferencedObjects"
-	self currentReferencedObjects: (SSWDBTransactionProxySwapper swapAll: self changedObjects).
+	self currentReferencedObjects: (self newEmptyObjectsSet: self changedObjects size).
+	(SSWDBTransactionProxySwapper swapAll: self changedObjects).
 	self allReferencedObjects: self newEmptyObjectsSet
 ]
 
@@ -249,7 +250,8 @@ SSWDBAbstractSingleTransaction >> endObjectCollection [
 
 	self 
 		allReferencedObjects: nil;
-		currentReferencedObjects: self newEmptyObjectsSet
+		currentReferencedObjects: self newEmptyObjectsSet.
+	self activeProxiesMap removeAll
 ]
 
 { #category : 'actions' }
@@ -335,31 +337,25 @@ SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 { #category : 'actions' }
 SSWDBAbstractSingleTransaction >> prepareToCommit [
 
-	| changed unchanged currentObjects |
-
-	changed := self newEmptyObjectsSet: (self currentReferencedObjects size // 2).
-	unchanged := self newEmptyObjectsSet: (self currentReferencedObjects size // 2).
+	| changed currentObjects |
+	changed := self newEmptyObjectsSet: self currentReferencedObjects size // 2.
 
 	"Pre-write validate the changed objects. This may cause other objects to be added to the transaction,
 	so repeat until no more changed objects are found"
-	[self currentReferencedObjects isEmpty] whileFalse:
-		[| needingPhase2 |
+	[ self currentReferencedObjects isEmpty ] whileFalse: [
+		| needingPhase2 |
 		currentObjects := self currentReferencedObjects.
 		needingPhase2 := self newEmptyObjectsSet.
 		self nextCollectionPhase.
-		currentObjects do: 
-			[ :proxy | 
-			(changed includes: proxy) ifFalse:
-				[proxy _hasChanged 
-				ifTrue: 
-					[changed add: proxy.
-					proxy _prepareToCommitPhase1 ifTrue: [needingPhase2 add: proxy]]
-				ifFalse:
-					[unchanged add: proxy]]].
-		needingPhase2 do: [ :each | each _prepareToCommitPhase2]].
-	
-	self changedObjects: (SSWDBTransactionProxySwapper unswapAll: changed).
-	SSWDBTransactionProxySwapper unswapAll: (unchanged select: [ :each | each isDBProxy]).
+		currentObjects do: [ :proxy |
+			(changed includes: proxy) ifFalse: [
+				proxy _hasChanged ifTrue: [
+					changed add: proxy.
+					proxy _prepareToCommitPhase1 ifTrue: [ needingPhase2 add: proxy ] ] ] ].
+		needingPhase2 do: [ :each | each _prepareToCommitPhase2 ] ].
+
+	self changedObjects: (changed collect: [ :each | each _proxiedObject ]).
+	SSWDBTransactionProxySwapper unswapAll: self allReferencedObjects.
 
 	self endObjectCollection
 ]
@@ -384,7 +380,7 @@ SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 	aDBProxy _isSwapped
 	ifTrue: 
 		["The standard though unusual case of an object being stored and unstored in one transaction. In this case we also need to remove any allocated ID"
-		self allocatedIDs at: aDBProxy _tableRecord ifPresent: [ :allocIDs | self allocatedIDs at: aDBProxy _tableRecord put: (allocIDs reject: [ :each | each object == aDBProxy _proxiedObject])].
+		self allocatedIDs at: aDBProxy _tableRecord ifPresent: [ :allocIDs | allocIDs removeAllSuchThat: [ :each | each object == aDBProxy _proxiedObject]].
 		self currentReferencedObjects remove: aDBProxy.
 		self allReferencedObjects remove: aDBProxy ifAbsent: []. "May be empty"
 		self activeProxiesMap removeKey: aDBProxy _proxiedObject]
@@ -393,17 +389,6 @@ SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 		self currentReferencedObjects remove: aDBProxy _proxiedObject.
 		self allReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: []. "May be empty"
 		self activeProxiesMap removeKey: aDBProxy]
-]
-
-{ #category : 'proxy tracking' }
-SSWDBAbstractSingleTransaction >> removeUnswappedProxy: aDBProxy [
-
-	"Remove aDBProxy from the receiver.
-	aDBProxy has just been unswapped after earlier being swapped within this transaction, hence the receiver contains the proxied object in place of the proxy and vice versa"
-
-	self currentReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: [].
-	self allReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: [].
-	self activeProxiesMap removeKey: aDBProxy ifAbsent: []
 ]
 
 { #category : 'initializing' }

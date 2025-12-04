@@ -41,7 +41,7 @@ SSWDBProxySwapper >> _unswap [
 
 	self 
 		swapAllWhere: [ :proxy | proxy _isSwapped ifTrue: [proxy _preUnswap. true] ifFalse: [false]]
-		postAction: [ :proxy | proxy _reStore transaction removeProxy: proxy]
+		postAction: [ :proxy | proxy _reStore removeFromTransaction: proxy]
 ]
 
 { #category : 'actions' }
@@ -161,36 +161,28 @@ SSWDBProxySwapper >> swapAll: aCollection [
 ]
 
 { #category : 'helpers' }
-SSWDBProxySwapper >> swapAll: aProxiesCollection with: anObjectsCollection [
-
-	aProxiesCollection do: [ :each | each _preSwapReferences].
-
-	aProxiesCollection asArray elementsExchangeIdentityWith: anObjectsCollection asArray.
-
-	aProxiesCollection with: anObjectsCollection do: 
-		[ :object :proxy | "<- arguments reversed following the swap" 
-		proxy 
-			_setProxiedObject: object;
-			_postSwapReferences]
-]
-
-{ #category : 'helpers' }
 SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 
 	| proxies objects |
 
 	proxies := OrderedCollection new: proxiesMap size.
-	objects := OrderedCollection new: proxiesMap size.
-	
-	proxiesMap keysAndValuesDo: 
-		[ :proxy :object |
-		(preBlock value: proxy) ifTrue: 
-			[proxies add: proxy.
-			objects add: object]].
+	objects := proxies copy.
 
-	self swapAll: proxies with: objects.
+	proxiesMap keysAndValuesDo: [ :proxy :object |
+		(preBlock value: proxy) ifTrue: [
+			proxy _preSwapReferences.
+			proxies add: proxy.
+			objects add: object ] ].
 
-	objects do: postBlock
+	proxies asArray elementsExchangeIdentityWith: objects asArray.
+
+	proxies
+		with: objects
+		do: [ :object :proxy | "<- arguments reversed following the swap"
+			proxy
+				_setProxiedObject: object;
+				_postSwapReferences.
+			postBlock value: proxy ]
 ]
 
 { #category : 'operations' }

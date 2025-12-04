@@ -266,16 +266,9 @@ SSWDBCachingObjectProxy >> _rollbackUpdates [
 	"Private - Forget any updates by instantiating from the copyObject.
 	Also transfer over any events registered against the current proxiedObject"
 
-	| me him |
-
-	me := proxiedObject.
-	him := self.
-
-	self _unswap.
-
-	me _checkHasChanged ifTrue: 
-		[me _setProxiedObject: (me _dbTable copyForProxy: me _copyObject).
-		him getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]]
+	self _checkHasChanged ifTrue: 
+		[self _setProxiedObject: (self _dbTable copyForProxy: copyObject).
+		copyObject getEvents ifNotNil: [ :events | proxiedObject setEvents: events]]
 ]
 
 { #category : 'actions-internal' }

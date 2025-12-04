@@ -51,7 +51,7 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	failures isEmpty and: [resolved isEmpty not]] whileTrue.
 
 	"currentReferencedObjects usually empty, but could contain objects ref'd during conflict resolution"
-	self currentReferencedObjects do: [ :obj | obj _unswap].
+	SSWDBTransactionProxySwapper unswapAll: self currentReferencedObjects.
 	self beginObjectCollection.
 
 	self proxyCommitFailures: failures.
@@ -59,7 +59,7 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	ifTrue: 
 		[aDBConnection rollbackTxn.
 		self freeStatements.
-		self currentReferencedObjects: (SSWDBTransactionProxySwapper swapAll: self changedObjects)]
+		(SSWDBTransactionProxySwapper swapAll: self changedObjects)]
 	ifFalse: 
 		[aDBConnection commitTxn.
 		self postCommit].

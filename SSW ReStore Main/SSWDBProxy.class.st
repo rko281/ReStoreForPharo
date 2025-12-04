@@ -377,7 +377,7 @@ SSWDBProxy >> _preSwap [
 { #category : 'actions-internal' }
 SSWDBProxy >> _preSwapReferences [
 
-	"Carry out any tidying up actions required immediately before a _swapReferences"
+	"Prepare the receiver for a _swapReferences by adjusting references so they will be correct afterward"
 
 	^self
 ]
@@ -667,9 +667,6 @@ SSWDBProxy >> _swapReferences [
 	Subclasses should not override this method, but instead use _postSwapReferences"
 
 	| me him |
-
-	"Cannot swap references if no proxy"
-	proxiedObject == nil ifTrue: [^self].
 
 	self _preSwapReferences.
 

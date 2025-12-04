@@ -6,6 +6,24 @@ Class {
 }
 
 { #category : 'helpers' }
+SSWReStoreDebugTest >> _isPersistent [
+	"I pretend to be a proxy for some tests"
+	^true
+]
+
+{ #category : 'helpers' }
+SSWReStoreDebugTest >> _proxiedObject [
+	"I pretend to be a proxy for some tests"
+	^self
+]
+
+{ #category : 'helpers' }
+SSWReStoreDebugTest >> _reStore [
+	"I pretend to be a proxy for some tests"
+	^reStore
+]
+
+{ #category : 'helpers' }
 SSWReStoreDebugTest >> _rollbackChanges [
 	"I pretend to be a proxy for some tests"
 ]

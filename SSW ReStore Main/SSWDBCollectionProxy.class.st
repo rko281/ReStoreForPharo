@@ -128,19 +128,14 @@ SSWDBCollectionProxy >> _rollbackChanges [
 	"Forget any changes by reinstantiating the unchanged collection.
 	Also transfer over any events registered against the current proxiedObject"
 
-	| unchangedCollection me changedCollection |
+	| unchangedCollection |
 
 	self _clearDeleted.
 
 	unchangedCollection := self _unchangedCollection.
-	unchangedCollection == proxiedObject ifTrue: [^self _unswap].
-
-	me := proxiedObject.
-	changedCollection := self.
-	self _unswap.
-
-	me _setProxiedObject: unchangedCollection.
-	changedCollection getEvents ifNotNil: [ :events | me _proxiedObject setEvents: events]
+	unchangedCollection == proxiedObject ifFalse: 
+		[proxiedObject getEvents ifNotNil: [ :events | unchangedCollection setEvents: events].
+		self _setProxiedObject: unchangedCollection]
 ]
 
 { #category : 'accessing' }
