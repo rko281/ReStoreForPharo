@@ -24,7 +24,13 @@ SSWReStoreDataIDTest >> createTestData [
 	obj2 other: obj7.
 
 	(Array with: obj2 with: obj7 with: obj9) storeAllIn: reStore.
-	
+
+	"Verify the proxies are cached correctly"
+	{obj2. obj7. obj9} do: 
+		[ :obj | 
+		self assert: obj isDBProxy.
+		self assert: ((reStore classCacheFor: self testClass) at: obj _id) identicalTo: obj].
+
 	reStore simulateReconnect
 ]
 

@@ -341,9 +341,7 @@ SSWDBObjectProxy >> _postCommitStore [
 	Complete follow-on work"
 
 	self _dbTable idDataField ifNotNil: [ :idDataField | idDataField accessor value: id in: proxiedObject].
-	self 
-		_setPersistent;
-		_intern	"Re-register"
+	self _setPersistent
 ]
 
 { #category : 'actions-internal' }

@@ -355,3 +355,11 @@ SimplePerson >> time: anObject [
 
 	time := anObject
 ]
+
+{ #category : 'as yet unclassified' }
+SimplePerson >> trigger: aSymbol [
+
+	"For Dolphin compatibility"
+	
+	^self triggerEvent: aSymbol
+]

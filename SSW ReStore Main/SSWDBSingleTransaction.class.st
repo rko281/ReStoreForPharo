@@ -89,21 +89,15 @@ SSWDBSingleTransaction >> rollback [
 			toSwap := OrderedCollection new: self currentReferencedObjects size. 
 			toRollback := toSwap copy.
 			self currentReferencedObjects do: 
-				[ :each | 
-				each _proxiedObject 
-				ifNil: 
-					[toRollback add: each.
+				[ :each |
+				each _isPersistent
+				ifTrue: 
+					[toRollback add: each _proxiedObject.
+					toSwap add: each.
 					rolledBack add: each]
-				ifNotNil: 
-					[ :proxiedObject | 
-					each _isPersistent
-					ifTrue: 
-						[toRollback add: proxiedObject.
-						toSwap add: each.
-						rolledBack add: each]
-					ifFalse: 
-						[toRollback add: each.
-						rolledBack add: proxiedObject]]].
+				ifFalse: 
+					[toRollback add: each.
+					rolledBack add: each _proxiedObject]].
 			self currentReferencedObjects: (self newEmptyObjectsSet: (toSwap size // 2)). 
 			SSWDBTransactionProxySwapper unswapAll: toSwap.
 			toRollback do: [ :proxy | proxy isDBProxy ifTrue: [proxy _rollbackChanges]]]].

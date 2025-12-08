@@ -407,7 +407,7 @@ SSWReStore >> cacheObject: aPersistentObjectProxy [
 	"Add the given persistent object proxy to the receiver's cache"
 	
 	"Use _class to avoid fetching inherited objects (issue#0015)"
-	(self classCacheFor: aPersistentObjectProxy _class) at: aPersistentObjectProxy _id put: aPersistentObjectProxy
+	(self classCacheFor: aPersistentObjectProxy _class) at: aPersistentObjectProxy _id put: aPersistentObjectProxy _frontFace
 ]
 
 { #category : 'querying' }
