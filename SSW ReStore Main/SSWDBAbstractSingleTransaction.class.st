@@ -369,7 +369,7 @@ SSWDBAbstractSingleTransaction >> proxyForObject: anObject ifNone: aBlock [
 { #category : 'evaluating' }
 SSWDBAbstractSingleTransaction >> proxySwapper [
 
-	^SSWDBProxySwapper new
+	^ SSWDBTransactionProxySwapper new
 ]
 
 { #category : 'proxy tracking' }
