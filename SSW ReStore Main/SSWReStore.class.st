@@ -2153,7 +2153,7 @@ SSWReStore >> swapAll: aCollection [
 
 	"Answer the Swapper"
 
-	^self swapAll: aCollection using: SSWDBProxyAndCollectionsSwapper
+	^self swapAll: aCollection using: SSWDBProxySwapper
 ]
 
 { #category : 'proxy swapping' }
