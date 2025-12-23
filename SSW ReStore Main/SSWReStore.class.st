@@ -2132,13 +2132,17 @@ SSWReStore >> swapAll [
 	"Swap all persistent objects.
 	Answer the Swapper"
 
-	| swapper |
+	| swapper toSwap |
 
 	swapper := SSWDBProxyAndCollectionsSwapper newFor: self.
-	swapper initialize: (self proxyCache inject: 0 into: [ :total :each | total + each size]) * 2.
+	"The identical dict of proxies may appear under several keys due to persistent hierarchies."
+	toSwap := self proxyCache asIdentitySet.
+	"WeakValueDictionary overrides #size to iterate and count, skipping corpses,
+	but we just want an upper bound."
+	swapper initialize: (toSwap inject: 0 into: [ :total :each | total + each approxSize]) * 2.
 
 	^self transactionCritical: 
-		[self proxyCache do: [ :proxies | swapper addAll: proxies].
+		[toSwap do: [ :proxies | swapper addAll: proxies].
 		swapper 
 			swap;
 			yourself]
