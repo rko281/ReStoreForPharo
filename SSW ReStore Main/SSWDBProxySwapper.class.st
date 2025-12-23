@@ -132,16 +132,17 @@ SSWDBProxySwapper >> reswap [
 	"ASSERT: the transaction in which the receiver was created has been rolled back.
 	Reverse the map to reflect that a swap has previously occurred then reswap objects back into place"
 
-	| reversedMap |
+	^reStore ensureHasTransactionCritical: [
+		| reversedMap |
 
-	reversedMap := IdentityDictionary new: proxiesMap size.
-	proxiesMap do: 
-		[ :proxy |
-		proxy isDBProxy ifTrue:  "<- filter out locally deleted objects"
-			[proxy _proxiedObject ifNotNil: [ :object | reversedMap at: proxy put: object]]].
-	proxiesMap := reversedMap.
+		reversedMap := IdentityDictionary new: proxiesMap size.
+		proxiesMap do: 
+			[ :proxy |
+			proxy isDBProxy ifTrue:  "<- filter out locally deleted objects"
+				[proxy _proxiedObject ifNotNil: [ :object | reversedMap at: proxy put: object]]].
+		proxiesMap := reversedMap.
 
-	^reStore ensureHasTransactionCritical: [self _swap]
+		self _swap]
 ]
 
 { #category : 'operations' }
