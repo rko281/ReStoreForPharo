@@ -69,6 +69,19 @@ SSWDBProxy >> gtInspectorPresentationsIn: composite inContext: aGTInspector [
 ]
 
 { #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> isLiteral [
+
+	^ false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> isSelfEvaluating: visited [
+	"For Array printString"
+
+	^ false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> notNil [
 
 	^true
@@ -84,4 +97,22 @@ SSWDBProxy >> printStringLimitedTo: anInteger [
 	^string size > anInteger
 		ifTrue: [ string first: anInteger ]
 		ifFalse: [ string ]
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> shouldBePrintedAsLiteral [
+
+	^ false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> shouldBePrintedAsLiteral: visited [
+
+	^ false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> sizeInMemory [
+
+	^ self basicClass byteSizeOfInstance
 ]
