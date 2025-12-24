@@ -5,10 +5,13 @@ Class {
 	#package : 'SSW ReStore Main'
 }
 
-{ #category : 'adding' }
-SSWDBCollectionProxySwapper >> addProxy: aProxy forObject: anObject [ 
+{ #category : 'actions' }
+SSWDBCollectionProxySwapper >> _swapProxy: aDBProxy [
+	"Private - Should only be called inside transactionCritical:"
 
-	super addProxy: aProxy forObject: anObject.
-	aProxy isDBCollectionProxy ifTrue: [
-		aProxy _addPersistentComponentsTo: self ]
+	self
+		initialize: aDBProxy _proxiedObject size + 1;
+		addProxy: aDBProxy forObject: aDBProxy _proxiedObject.
+	aDBProxy _addPersistentComponentsTo: self.
+	self _swap
 ]
