@@ -9,8 +9,7 @@ Class {
 	#instVars : [
 		'classField'
 	],
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'accessing' }
@@ -37,22 +36,13 @@ SSWDBInheritedTable >> classField: anSSWDBField [
 { #category : 'accessing' }
 SSWDBInheritedTable >> equivalentDataFieldTo: aDBField [
 
-	"Look for the equivalent (same-named) field as aDBField in this table"
+	"If aDBField came from a different inherited table,
+	look for the equivalent (same-named) field in this table"
 
-	^aDBField name = self classField name 
+	^aDBField table == self
 		ifTrue: [aDBField]
 		ifFalse: [self dataFields detect: [ :each | each name = aDBField name] ifNone: [nil]]
-]
 
-{ #category : 'defining' }
-SSWDBInheritedTable >> initializeClassField: aDBField [
-	
-	^aDBField
-		table: self;
-		accessor: SSWDBClassAccessor new;
-		name: (self sqlDialect transformInstVarName: aDBField accessor nameInDB);
-		targetClass: Metaclass;
-		yourself
 ]
 
 { #category : 'instance creation' }
@@ -92,8 +82,14 @@ SSWDBInheritedTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 { #category : 'defining' }
 SSWDBInheritedTable >> setDefaultClassField [
 
-	self classField: (self initializeClassField: SSWDBNonParameterizedControlField new).
-	self controlFields add: (self initializeClassField: SSWDBDataField new)
+	self classField: (SSWDBNonParameterizedControlField new
+			 table: self;
+			 accessor: SSWDBClassAccessor new;
+			 targetClass: Metaclass;
+			 yourself).
+	self classField name: (self sqlDialect transformInstVarName:
+			 self classField accessor nameInDB).
+	self controlFields add: self classField
 ]
 
 { #category : 'evaluating' }

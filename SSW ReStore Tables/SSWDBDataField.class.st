@@ -1,8 +1,7 @@
 Class {
 	#name : 'SSWDBDataField',
 	#superclass : 'SSWDBStaticField',
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'accessing' }

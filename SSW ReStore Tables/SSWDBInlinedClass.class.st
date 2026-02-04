@@ -10,8 +10,7 @@ Class {
 	#instVars : [
 		'inlinedClass'
 	],
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'defining' }

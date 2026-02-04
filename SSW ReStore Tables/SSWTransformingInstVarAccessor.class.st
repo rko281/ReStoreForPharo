@@ -9,8 +9,7 @@ Class {
 	#instVars : [
 		'transformation'
 	],
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'instance creation' }

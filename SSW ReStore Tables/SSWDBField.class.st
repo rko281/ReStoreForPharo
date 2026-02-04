@@ -12,8 +12,7 @@ Class {
 		'isRelated',
 		'columnIndex'
 	],
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'comparing' }
@@ -85,13 +84,12 @@ SSWDBField >> columnIndex: anInteger [
 
 { #category : 'accessing' }
 SSWDBField >> equivalentIn: anSSWDBTable [
-
 	"Answer the equivalent field to the receiver in anSSWDBTable.
 	By default assume no equivalents, so if the receiver's table matches anSSWDBTable then it is the 'equivalent' "
 
-	^(self table == anSSWDBTable or: [self table = anSSWDBTable])
-		ifTrue: [self]
-		ifFalse: [nil]
+	^ self table = anSSWDBTable
+		  ifTrue: [ self ]
+		  ifFalse: [ nil ]
 ]
 
 { #category : 'accessing' }

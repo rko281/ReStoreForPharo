@@ -1,8 +1,7 @@
 Class {
 	#name : 'SSWMutableInstVarAccessor',
 	#superclass : 'SSWInstVarAccessor',
-	#category : 'SSW ReStore Tables',
-	#package : 'SSW ReStore Tables'
+	#category : 'SSW ReStore Tables'
 }
 
 { #category : 'evaluating' }
