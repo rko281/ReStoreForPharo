@@ -5,6 +5,14 @@ Class {
 	#package : 'SSW ReStore Tables'
 }
 
+{ #category : 'accessing' }
+SSWDBDataField >> equivalentIn: anSSWDBTable [
+
+	"For data fields ask the table to look for an equivalent"
+
+	^(super equivalentIn: anSSWDBTable) ifNotNil: [ :field | anSSWDBTable equivalentDataFieldTo: field]
+]
+
 { #category : 'actions' }
 SSWDBDataField >> populateObject: anObject with: aValue [
 

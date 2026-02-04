@@ -345,3 +345,36 @@ SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
 	"As above, but parent of the declared class"
 	self should: [(reStore deferredObjectOfClass: SubPerson withID: midID) firstName] raise: Error description: 'Proxy for SubPerson retrieved a MidPerson from the database.'
 ]
+
+{ #category : 'unit tests' }
+SSWReStoreHierarchyTest >> testSharedTableHierarchyReference [
+
+	"Test for Dolphin issue #7 - Issue with retrieval of polymorphic collections"
+
+	| ownerA ownerB owners |
+
+	reStore
+		addClassWithSubclasses: AbstractA;
+		addClass: ConcreteReferenceA;
+		addClass: ConcreteReferenceB;
+		destroyAllClasses;
+		synchronizeAllClasses.
+
+	ownerA := ConcreteA new reference: (ConcreteReferenceA new name: 'a').
+	ownerB := ConcreteB new reference: (ConcreteReferenceB new number: 123).
+	{ownerA. ownerB} storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	owners := (AbstractA storedInstancesIn: reStore) asOrderedCollection.
+	ownerA := owners detect: [ :each | each class = ConcreteA].
+	ownerB := owners detect: [ :each | each class = ConcreteB].
+
+	self assert: ownerA reference isDBProxy.
+	self assert: ownerA reference class equals: ConcreteReferenceA.
+	self assert: ownerA reference name equals: 'a'.
+	
+	self assert: ownerB reference isDBProxy.
+	self assert: ownerB reference class equals: ConcreteReferenceB.
+	self assert: ownerB reference number equals: 123
+]

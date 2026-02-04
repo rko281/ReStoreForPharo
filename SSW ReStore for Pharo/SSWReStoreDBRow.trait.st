@@ -76,6 +76,7 @@ SSWReStoreDBRow >> populateObject: anObject from: anSSWDBTable [
 		[ :index | 
 		(columns at: index) field ifNotNil: 
 			[ :field |  
-			(field table == anSSWDBTable or: [field table = anSSWDBTable]) ifTrue: 
-				[field populateObject: anObject with: (self data at: index)]]]
+			(field equivalentIn: anSSWDBTable) ifNotNil: 
+				[ :actualField | 
+				actualField populateObject: anObject with: (self data at: index)]]]
 ]

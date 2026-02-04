@@ -514,6 +514,14 @@ SSWDBTable >> dependentDataFieldsSelect: aBlock [
 	^self dataFields select: [ :field | field isDependent and: [aBlock value: field]]
 ]
 
+{ #category : 'accessing' }
+SSWDBTable >> equivalentDataFieldTo: aDBField [
+
+	"No inheritance so no need to check for equivalents"
+
+	^aDBField
+]
+
 { #category : 'evaluating' }
 SSWDBTable >> fieldAccessing: aSymbol [
 

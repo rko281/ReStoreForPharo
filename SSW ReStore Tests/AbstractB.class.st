@@ -1,6 +1,9 @@
 Class {
 	#name : 'AbstractB',
 	#superclass : 'AbstractA',
+	#instVars : [
+		'reference'
+	],
 	#category : 'SSW ReStore Tests',
 	#package : 'SSW ReStore Tests'
 }
@@ -21,4 +24,16 @@ AbstractB class >> reStoreDefinitionEmpty [
 AbstractB class >> shouldSubclassesInheritPersistencyFalse [
 
 	^self ~~ AbstractB
+]
+
+{ #category : 'accessing' }
+AbstractB >> reference [
+
+	^ reference
+]
+
+{ #category : 'accessing' }
+AbstractB >> reference: anObject [
+
+	reference := anObject
 ]
