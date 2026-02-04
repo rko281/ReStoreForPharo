@@ -32,8 +32,11 @@ SSWDBSuperTable >> forCreation [
 		tableForCreation instanceClass: cls.
 		table dataFields do: 
 			[ :field | 
-			(tableForCreation hasFieldAccessing: field accessor name) ifFalse: 
-				[tableForCreation dataFields add: field]].
+			(tableForCreation fieldAccessing: field accessor name)
+				ifNil: [tableForCreation dataFields add: field]
+				ifNotNil: [:existing |
+					field isPolymorphic: true.
+					existing isPolymorphic: true]].
 		table collectionSpecs do:
 			[ :spec |
 			(tableForCreation hasCollectionAccessing: spec accessor name) ifFalse: 

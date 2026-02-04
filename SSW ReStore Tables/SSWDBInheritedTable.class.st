@@ -36,13 +36,13 @@ SSWDBInheritedTable >> classField: anSSWDBField [
 { #category : 'accessing' }
 SSWDBInheritedTable >> equivalentDataFieldTo: aDBField [
 
-	"If aDBField came from a different inherited table,
+	"If aDBField has multiple definitions in the hierarchy,
+	and came from a different inherited table,
 	look for the equivalent (same-named) field in this table"
 
-	^aDBField table == self
-		ifTrue: [aDBField]
-		ifFalse: [self dataFields detect: [ :each | each name = aDBField name] ifNone: [nil]]
-
+	^(aDBField isPolymorphic and: [aDBField table ~~ self])
+		ifTrue: [self dataFields detect: [ :each | each name = aDBField name] ifNone: [nil]]
+		ifFalse: [aDBField]
 ]
 
 { #category : 'instance creation' }
