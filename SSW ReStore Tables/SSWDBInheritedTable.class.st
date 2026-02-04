@@ -34,6 +34,16 @@ SSWDBInheritedTable >> classField: anSSWDBField [
 	classField := anSSWDBField
 ]
 
+{ #category : 'accessing' }
+SSWDBInheritedTable >> equivalentDataFieldTo: aDBField [
+
+	"Look for the equivalent (same-named) field as aDBField in this table"
+
+	^aDBField name = self classField name 
+		ifTrue: [aDBField]
+		ifFalse: [self dataFields detect: [ :each | each name = aDBField name] ifNone: [nil]]
+]
+
 { #category : 'defining' }
 SSWDBInheritedTable >> initializeClassField: aDBField [
 	

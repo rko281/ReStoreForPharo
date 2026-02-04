@@ -58,6 +58,14 @@ SSWDBQueryTableField >> accessorPath: anObject [
 	accessorPath := anObject
 ]
 
+{ #category : 'accessing' }
+SSWDBQueryTableField >> equivalentIn: anSSWDBTable [
+
+	^(self table == anSSWDBTable or: [self table = anSSWDBTable])
+		ifTrue: [anSSWDBTable equivalentDataFieldTo: self field]
+		ifFalse: [nil]
+]
+
 { #category : 'comparing' }
 SSWDBQueryTableField >> hash [
 

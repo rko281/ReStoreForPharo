@@ -13,5 +13,6 @@ ConcreteA class >> reStoreDefinition [
 
 	^super reStoreDefinition
 		define: #a as: String;
+		define: #reference as: ConcreteReferenceA;
 		yourself
 ]
