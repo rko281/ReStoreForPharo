@@ -5,12 +5,24 @@ Class {
 	#package : 'SSW ReStore Tables'
 }
 
-{ #category : 'accessing' }
-SSWDBDataField >> equivalentIn: anSSWDBTable [
+{ #category : 'converting' }
+SSWDBDataField >> asPolymorphicDataField [
 
-	"For data fields ask the table to look for an equivalent"
+	| polymorphic |
 
-	^(super equivalentIn: anSSWDBTable) ifNotNil: [ :field | anSSWDBTable equivalentDataFieldTo: field]
+	polymorphic := SSWDBPolymorphicDataField new.
+
+	polymorphic
+		name: self name;
+		table: self table;
+		accessor: self accessor;
+		columnIndex: self columnIndex;
+		targetClass: self targetClass.
+
+	self isDependent ifTrue: [polymorphic beDependent].
+	self isRelated ifTrue: [polymorphic beRelated].
+
+	^polymorphic
 ]
 
 { #category : 'actions' }

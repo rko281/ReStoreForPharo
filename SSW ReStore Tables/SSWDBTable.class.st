@@ -515,11 +515,11 @@ SSWDBTable >> dependentDataFieldsSelect: aBlock [
 ]
 
 { #category : 'accessing' }
-SSWDBTable >> equivalentDataFieldTo: aDBField [
+SSWDBTable >> equivalentDataFieldTo: aPolymorphicDataField [
 
-	"No inheritance so no need to check for equivalents"
+	"No polymorphic equivalents here"
 
-	^aDBField
+	^nil
 ]
 
 { #category : 'evaluating' }

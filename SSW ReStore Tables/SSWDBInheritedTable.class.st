@@ -35,13 +35,11 @@ SSWDBInheritedTable >> classField: anSSWDBField [
 ]
 
 { #category : 'accessing' }
-SSWDBInheritedTable >> equivalentDataFieldTo: aDBField [
+SSWDBInheritedTable >> equivalentDataFieldTo: aPolymorphicDataField [
 
-	"Look for the equivalent (same-named) field as aDBField in this table"
+	"Look for the equivalent (same-named) field as aPolymorphicDataField in this table"
 
-	^aDBField name = self classField name 
-		ifTrue: [aDBField]
-		ifFalse: [self dataFields detect: [ :each | each name = aDBField name] ifNone: [nil]]
+	^self dataFields detect: [ :each | each name = aPolymorphicDataField name] ifNone: [nil]
 ]
 
 { #category : 'defining' }
@@ -96,7 +94,7 @@ SSWDBInheritedTable >> setDefaultClassField [
 	self controlFields add: (self initializeClassField: SSWDBDataField new)
 ]
 
-{ #category : 'evaluating' }
+{ #category : 'accessing' }
 SSWDBInheritedTable >> withAllFields [
 
 	"Return a table equivalent to the receiver but containing all possible fields.	
@@ -112,8 +110,9 @@ SSWDBInheritedTable >> withAllFields [
 		table := self reStore tableForClass: cls.
 		table dataFields do: 
 			[ :field | 
-			(withAllFields hasFieldAccessing: field accessor name) ifFalse: 
-				[withAllFields dataFields add: field]]].
+			(withAllFields fieldAccessing: field accessor name) 
+				ifNil: [withAllFields dataFields add: field]
+				ifNotNil: [ :existingField | withAllFields dataFields remove: existingField; add: field asPolymorphicDataField]]].
 	
 	^withAllFields
 ]
