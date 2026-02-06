@@ -58,14 +58,6 @@ SSWDBQueryTableField >> accessorPath: anObject [
 	accessorPath := anObject
 ]
 
-{ #category : 'accessing' }
-SSWDBQueryTableField >> equivalentIn: anSSWDBTable [
-
-	^(self table == anSSWDBTable or: [self table = anSSWDBTable])
-		ifTrue: [anSSWDBTable equivalentDataFieldTo: self field]
-		ifFalse: [nil]
-]
-
 { #category : 'comparing' }
 SSWDBQueryTableField >> hash [
 
@@ -76,6 +68,12 @@ SSWDBQueryTableField >> hash [
 SSWDBQueryTableField >> isInlined [
 
 	^self field isInlined
+]
+
+{ #category : 'actions' }
+SSWDBQueryTableField >> populateObject: anObject with: aValue from: anSSWDBTable [
+
+	"A no-op for query fields"
 ]
 
 { #category : 'output' }

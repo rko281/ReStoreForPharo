@@ -5,7 +5,7 @@ https://github.com/rko281/ReStore
 "
 Class {
 	#name : 'SSWDBNonParameterizedControlField',
-	#superclass : 'SSWDBStaticField',
+	#superclass : 'SSWDBControlField',
 	#category : 'SSW ReStore Tables',
 	#package : 'SSW ReStore Tables'
 }

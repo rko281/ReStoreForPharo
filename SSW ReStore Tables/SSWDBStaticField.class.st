@@ -51,6 +51,14 @@ SSWDBStaticField >> populateObject: anObject with: aValue [
 ]
 
 { #category : 'actions' }
+SSWDBStaticField >> populateObject: anObject with: aValue from: anSSWDBTable [
+
+	"Populate the aspect of anObject related to this field with aValue sourced from anSSWDBTable"
+
+	(self table == anSSWDBTable or: [self table = anSSWDBTable]) ifTrue: [self populateObject: anObject with: aValue]
+]
+
+{ #category : 'actions' }
 SSWDBStaticField >> readAllFor: aCollection [
 
 	| ids stream allResults |
