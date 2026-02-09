@@ -60,14 +60,23 @@ SSWDBOwnedCollectionSpec >> deleteQuery [
 
 { #category : 'accessing' }
 SSWDBOwnedCollectionSpec >> elementsIn: aCollection notIn: anotherCollection [
-
-	^aCollection reject: [ :each | anotherCollection identityIncludes: each]
+	| testAgainst |
+	"For small collections, the IdentitySet is actually slower, so just stick with the original collection in that common case."
+	testAgainst := anotherCollection size < 20
+				ifTrue: [anotherCollection]
+				ifFalse: [anotherCollection asIdentitySet].
+	^aCollection reject: [:each | testAgainst identityIncludes: each].
 ]
 
 { #category : 'testing' }
 SSWDBOwnedCollectionSpec >> hasCollection: updatedCollection anyAdditionsOrRemovalsFrom: originalCollection [
-
-	^updatedCollection size ~= originalCollection size or: [updatedCollection anySatisfy: [ :each | (originalCollection identityIncludes: each) not]]
+	| testAgainst |
+	updatedCollection size = originalCollection size ifFalse: [^true].
+	"For small collections, the IdentitySet is actually slower, so just stick with the original collection in that common case."
+	testAgainst := originalCollection size < 20
+				ifTrue: [originalCollection]
+				ifFalse: [originalCollection asIdentitySet].
+	^updatedCollection anySatisfy: [:each | (testAgainst identityIncludes: each) not].
 ]
 
 { #category : 'accessing' }
