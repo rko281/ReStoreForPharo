@@ -30,6 +30,15 @@ SSWDBTransactionProxySwapper class >> unswapAll: aCollection [
 ]
 
 { #category : 'operations' }
+SSWDBTransactionProxySwapper >> _abandon [
+
+	self 
+		swapAllWhere: [ :proxy | proxy _isPersistent ifTrue: [proxy _preUnswap. true] ifFalse: [false]]
+		postAction: [ :proxy | "ASSERT: We are removing everything from #currentReferencedObjects, so we don't need to remove one by one"
+			 ].
+]
+
+{ #category : 'operations' }
 SSWDBTransactionProxySwapper >> _swap [
 	"Override to not skip proxies already in the desired state--this should never happen in the transaction mechanism."
 
@@ -46,6 +55,17 @@ SSWDBTransactionProxySwapper >> _unswap [
 		swapAllWhere: [ :proxy | proxy _preUnswap. true ]
 		postAction: [ :proxy | "ASSERT: We are removing everything from #currentReferencedObjects, so we don't need to remove one by one"
 			 ].
+]
+
+{ #category : 'operations' }
+SSWDBTransactionProxySwapper >> abandon: aCollection [
+
+	aCollection isEmpty ifFalse: 
+		[self reStore: aCollection anyOne _reStore.
+		self 
+			initialize: aCollection size;
+			addAll: aCollection;
+			_abandon]
 ]
 
 { #category : 'operations' }

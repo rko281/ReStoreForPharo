@@ -406,7 +406,7 @@ SSWReStoreRefreshTest >> test33 [
 
 	"Rollback then touch one"
 	reStore2 rollbackTransaction.
-	inst2 ownedOrdered last name.
+	inst2 ownedOrdered _proxiedObject "<-collection proxies now swap their elements when touched, need to avoid this for this test" last name.
 
 	"Read them"
 	self assert: ((OwnedTest storedInstancesIn: reStore2) satisfying: [ :each | each owner = inst2]) asOrderedCollection size equals: 2.
@@ -452,7 +452,7 @@ SSWReStoreRefreshTest >> test34 [
 
 	"Rollback then touch one"
 	reStore2 rollbackTransaction.
-	inst2 ordered last name.
+	inst2 ordered _proxiedObject "<-collection proxies now swap their elements when touched, need to avoid this for this test" last name.
 
 	"Read them"
 	(Test storedInstancesIn: reStore2) asOrderedCollection.

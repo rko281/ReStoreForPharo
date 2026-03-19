@@ -44,14 +44,6 @@ SSWDBProxySwapper >> _unswap [
 		postAction: [ :proxy | proxy _reStore removeFromTransaction: proxy]
 ]
 
-{ #category : 'actions' }
-SSWDBProxySwapper >> abandon: aCollection [
-
-	aCollection isEmpty ifFalse: 
-		[self reStore: aCollection anyOne _reStore.
-		self unswapAll: aCollection]
-]
-
 { #category : 'adding' }
 SSWDBProxySwapper >> add: aProxyOrObject [
 

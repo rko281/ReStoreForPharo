@@ -403,7 +403,7 @@ SSWReStoreProxySwapperTest >> testSwapCollectionsOnly [
 { #category : 'unit tests' }
 SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 
-	"Test objects' collections are swapped even when not explicitly requested"
+	"Test objects' collections are swapped automatically when using SSWDBProxyAndCollectionsSwapper"
 
 	| orders sampleOrder product array ordered baseDictionary identityDictionary |
 
@@ -422,7 +422,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 	identityDictionary := ownerTest _proxiedObject keyedIdentityDictionary.
 	self assertAllUnswapped: {array. ordered. baseDictionary. identityDictionary}.
 
-	reStore swapAll: {customer1. product. ownerTest}.
+	reStore swapAll: {customer1. product. ownerTest} using: SSWDBProxyAndCollectionsSwapper.
 
 	self assertAllSwapped: {customer1. orders. product}.
 	self assertAllSwapped: {array. ordered. baseDictionary. identityDictionary}.
@@ -433,7 +433,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 { #category : 'unit tests' }
 SSWReStoreProxySwapperTest >> testSwapObjectsAndCollectionsWithSwappedObject [
 
-	"Test the customer's collections are swapped even when not explicitly requested and the customer is already swapped"
+	"Test the customer's collections are swapped on request even when the customer is already swapped"
 
 	| orders sampleOrder product |
 
@@ -445,8 +445,38 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollectionsWithSwappedObject [
 	product := sampleOrder _proxiedObject product.
 	self assertIsUnswapped: product.
 	
-	reStore swapAll: {customer1. product}.
+	reStore swapAll: {customer1. product} using: SSWDBProxyAndCollectionsSwapper.
 	self assertAllSwapped: {customer1. orders. product}.
+
+	self assertIsUnswapped: sampleOrder
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testSwapObjectsOnly [
+
+	"Test objects' collections are swapped only passed directly to swapper."
+
+	| orders sampleOrder product array ordered baseDictionary identityDictionary |
+
+	self assertIsUnswapped: customer1.
+	orders := customer1 _proxiedObject orders.
+	self assertIsUnswapped: orders.
+	sampleOrder := orders _proxiedObject anyOne.
+	self assertIsUnswapped: sampleOrder.
+	product := sampleOrder _proxiedObject product.
+	self assertIsUnswapped: product.
+
+	self assertIsUnswapped: ownerTest.
+	array := ownerTest _proxiedObject arrayOfNames.
+	ordered := ownerTest _proxiedObject ordered.
+	baseDictionary := ownerTest _proxiedObject keyedBaseDictionary.
+	identityDictionary := ownerTest _proxiedObject keyedIdentityDictionary.
+	self assertAllUnswapped: {array. ordered. baseDictionary. identityDictionary}.
+
+	reStore swapAll: {customer1. orders. product. ownerTest}.
+
+	self assertAllSwapped: {customer1. orders. product. ownerTest}.
+	self assertAllUnswapped: {array. ordered. baseDictionary. identityDictionary}.
 
 	self assertIsUnswapped: sampleOrder
 ]
@@ -592,7 +622,7 @@ SSWReStoreProxySwapperTest >> testUnswapCollectionsOnly [
 { #category : 'unit tests' }
 SSWReStoreProxySwapperTest >> testUnswapObjectsAndCollections [
 
-	"Test the customer's collections are unswapped even when not explicitly requested"
+	"Test the customer's collections are unswapped when requested"
 
 	| orders sampleOrder product array ordered baseDictionary identityDictionary |
 
@@ -612,12 +642,41 @@ SSWReStoreProxySwapperTest >> testUnswapObjectsAndCollections [
 	identityDictionary anyOne.
 	self assertAllSwapped: {array. ordered. baseDictionary. identityDictionary}.
 	
-	reStore unswapAll: {customer1. product. ownerTest}.
+	reStore unswapAll: {customer1. product. ownerTest} using: SSWDBProxyAndCollectionsSwapper.
 
 	self assertAllUnswapped: {customer1. orders. product}.
 	self assertAllUnswapped: {array. ordered. baseDictionary. identityDictionary}.
 
 	self assertIsSwapped: sampleOrder
+]
+
+{ #category : 'unit tests' }
+SSWReStoreProxySwapperTest >> testUnswapObjectsOnly [
+
+	"Test the customer's collections are left swapped when the object is unswapped,
+	but can be explicitly requested."
+
+	| orders sampleOrder product array ordered baseDictionary identityDictionary |
+
+	orders := customer1 orders.
+	sampleOrder := orders first.
+	product := sampleOrder product.
+	product description.
+	self assertAllSwapped: {customer1. orders. sampleOrder. product}.
+
+	array := ownerTest arrayOfNames.
+	ordered := ownerTest ordered.
+	baseDictionary := ownerTest keyedBaseDictionary.
+	identityDictionary := ownerTest keyedIdentityDictionary.
+	array anyOne.
+	ordered anyOne.
+	baseDictionary anyOne.
+	identityDictionary anyOne.
+	self assertAllSwapped: {array. ordered. baseDictionary. identityDictionary}.
+	reStore unswapAll: {customer1. product. ownerTest. array} .
+
+	self assertAllUnswapped: {customer1. product. ownerTest. array}.
+	self assertAllSwapped: {sampleOrder. orders. ordered. baseDictionary. identityDictionary}.
 ]
 
 { #category : 'unit tests' }

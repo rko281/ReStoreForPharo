@@ -42,17 +42,6 @@ SSWDBInheritedTable >> equivalentDataFieldTo: aPolymorphicDataField [
 	^self dataFields detect: [ :each | each name = aPolymorphicDataField name] ifNone: [nil]
 ]
 
-{ #category : 'defining' }
-SSWDBInheritedTable >> initializeClassField: aDBField [
-	
-	^aDBField
-		table: self;
-		accessor: SSWDBClassAccessor new;
-		name: (self sqlDialect transformInstVarName: aDBField accessor nameInDB);
-		targetClass: Metaclass;
-		yourself
-]
-
 { #category : 'instance creation' }
 SSWDBInheritedTable >> instanceClassFromRow: aDBRow [
 
@@ -90,8 +79,14 @@ SSWDBInheritedTable >> recoverInstanceFromRow: aDBRow into: anSSWDBObjectProxy [
 { #category : 'defining' }
 SSWDBInheritedTable >> setDefaultClassField [
 
-	self classField: (self initializeClassField: SSWDBNonParameterizedControlField new).
-	self controlFields add: (self initializeClassField: SSWDBDataField new)
+	self classField: (SSWDBNonParameterizedControlField new
+			 table: self;
+			 accessor: SSWDBClassAccessor new;
+			 targetClass: Metaclass;
+			 yourself).
+	self classField name: (self sqlDialect transformInstVarName:
+			 self classField accessor nameInDB).
+	self controlFields add: self classField
 ]
 
 { #category : 'accessing' }
