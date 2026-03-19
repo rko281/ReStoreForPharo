@@ -2139,7 +2139,7 @@ SSWReStore >> swapAll [
 	toSwap := self proxyCache asIdentitySet.
 	"WeakValueDictionary overrides #size to iterate and count, skipping corpses,
 	but we just want an upper bound."
-	swapper initialize: (toSwap inject: 0 into: [ :total :each | total + each dbApproxSize]) * 2.
+	swapper initialize: (toSwap inject: 0 into: [ :total :each | total + each approxSize]) * 2.
 
 	^self transactionCritical: 
 		[toSwap do: [ :proxies | swapper addAll: proxies].
