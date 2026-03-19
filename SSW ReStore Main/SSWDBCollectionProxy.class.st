@@ -94,6 +94,14 @@ SSWDBCollectionProxy >> _prepareToCommit [
 	^self
 ]
 
+{ #category : 'non forwarding' }
+SSWDBCollectionProxy >> _printTypeAndIDStringOn: s [
+	self _owner _printTypeAndIDStringOn: s.
+	s
+		nextPut: $.;
+		nextPutAll: self _collectionSpec accessor name.
+]
+
 { #category : 'accessing' }
 SSWDBCollectionProxy >> _proxiedObjectClass [
 	

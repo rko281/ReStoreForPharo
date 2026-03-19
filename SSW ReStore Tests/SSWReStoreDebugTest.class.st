@@ -1,6 +1,6 @@
 Class {
 	#name : 'SSWReStoreDebugTest',
-	#superclass : 'SSWReStoreAbstractQueryTest',
+	#superclass : 'SSWReStoreProductOrdersTest',
 	#category : 'SSW ReStore Tests',
 	#package : 'SSW ReStore Tests'
 }
@@ -193,6 +193,24 @@ SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 	[self assert: john isDBProxy.
 	self assert: (john instVarAt: 1 "proxiedObject") identicalTo: john _proxiedObject.
 	self assert: (john _instVarAt: 1 "firstName") equals: 'John'] ensure: [self unmakeIDEClass]
+]
+
+{ #category : 'unit tests' }
+SSWReStoreDebugTest >> testDebugPrintStrings [
+
+	| customerString |
+
+	customerString := customer1 class name, '<', customer1 _id printString, '>'.
+
+	customer1 _forgetProxiedObject.
+	self assert: customer1 debugPrintString equals: '<an unrecovered ', customerString, '>'.
+	self assert: customer1 isDBProxy.
+	self deny: customer1 _isRecovered.
+
+	customer1 orders _forgetProxiedObject.
+	self assert: customer1 orders debugPrintString equals: '<an unrecovered ', customerString, '.orders>'.
+	self assert: customer1 orders isDBProxy.
+	self deny: customer1 orders _isRecovered
 ]
 
 { #category : 'unit tests' }

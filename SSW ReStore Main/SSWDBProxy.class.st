@@ -180,12 +180,11 @@ SSWDBProxy >> _dbProxyReStore [
 
 { #category : 'non forwarding' }
 SSWDBProxy >> _debugPrintString [
-
 	"Do not fault the receiver just for a debugger"
 
 	^proxiedObject == nil
-		ifTrue: [self _unrecoveredProxyString]
-		ifFalse: ['<', proxiedObject debugPrintString, '>']
+		ifTrue: ['<an unrecovered ' , self _typeAndIDString , '>']
+		ifFalse: ['<' , proxiedObject debugPrintString , '>'].
 ]
 
 { #category : 'actions-internal' }
@@ -390,6 +389,11 @@ SSWDBProxy >> _prepareToCommitPhase2 [
 
 	"Subclasses only requiring a single phase should override _prepareToCommit"
 	^self
+]
+
+{ #category : 'non forwarding' }
+SSWDBProxy >> _printTypeAndIDStringOn: s [
+	self subclassResponsibility.
 ]
 
 { #category : 'testing' }
@@ -617,7 +621,7 @@ SSWDBProxy >> _swap [
 	| newFlags |
 
 	newFlags := flags bitOr: IsSwappedMask.
-	newFlags == flags ifTrue: [self error: 'attempt to swap already-swapped proxy'].
+	newFlags == flags ifTrue: [self error: 'Attempt to swap already-swapped ' , self _typeAndIDString].
 	flags := newFlags.
 
 	^self _swapReferences
@@ -647,10 +651,9 @@ SSWDBProxy >> _swapReferences [
 	^me
 ]
 
-{ #category : 'accessing' }
-SSWDBProxy >> _unrecoveredProxyString [
-
-	^'%<an unrecovered <1p>%>' expandMacrosWith: self _proxiedObjectClass
+{ #category : 'non forwarding' }
+SSWDBProxy >> _typeAndIDString [
+	^String streamContents: [:s | self _printTypeAndIDStringOn: s].
 ]
 
 { #category : 'actions-internal' }
@@ -667,7 +670,7 @@ SSWDBProxy >> _unswap [
 	| newFlags |
 
 	newFlags := flags bitAnd: -2 "IsSwappedMask bitInvert".
-	newFlags == flags ifTrue: [self error: 'attempt to unswap proxy which has not been swapped'].
+	newFlags == flags ifTrue: [self error: 'Attempt to unswap ' , self _typeAndIDString , ' which has not been swapped'].
 	flags := newFlags.
 
 	^self _swapReferences

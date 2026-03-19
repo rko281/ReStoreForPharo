@@ -383,6 +383,15 @@ SSWDBObjectProxy >> _prepareToCommit [
 	self _isDeleted ifFalse: [self _storeNonPersistentComponents]
 ]
 
+{ #category : 'non forwarding' }
+SSWDBObjectProxy >> _printTypeAndIDStringOn: s [
+	^s
+		nextPutAll: self _class name;
+		nextPut: $<;
+		print: self _id;
+		nextPut: $>.
+]
+
 { #category : 'testing' }
 SSWDBObjectProxy >> _proxiedClassIsDefinitive [
 
@@ -497,12 +506,6 @@ SSWDBObjectProxy >> _storeNonPersistentComponents [
 						_referenced]]]]
 ]
 
-{ #category : 'accessing' }
-SSWDBObjectProxy >> _unrecoveredProxyString [
-
-	^'%<an unrecovered <1p> id=<2p>%>' expandMacrosWith: class with: id
-]
-
 { #category : 'actions-internal' }
 SSWDBObjectProxy >> _unstore [
 
@@ -556,10 +559,9 @@ SSWDBObjectProxy >> currentVersion [
 
 { #category : 'non forwarding' }
 SSWDBObjectProxy >> deletedDebugPrintString [
-
 	"Private - The receiver is a deleted proxy; answer an appropriate debugPrintString"
 
-	^'%<a marked-for-deletion <1p>%>' << class
+	^'<a marked-for-deletion ' , self _typeAndIDString , '>'.
 ]
 
 { #category : 'forwarding' }
