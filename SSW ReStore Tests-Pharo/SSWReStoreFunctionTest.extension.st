@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStoreFunctionTest }
+Extension { #name : 'SSWReStoreFunctionTest' }
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreFunctionTest >> testPlatformSpecificFunction [
 
 	"Date>>month is a Pharo-specific method (it exists but has a different meaning and definition in Dolphin) which answers the Month object of the receiver.

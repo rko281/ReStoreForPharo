@@ -16,7 +16,8 @@ Class {
 		'test',
 		'orders',
 		'address',
-		'isDeceased'
+		'isDeceased',
+		'rollbackBlock'
 	],
 	#category : 'SSW ReStore Tests',
 	#package : 'SSW ReStore Tests'
@@ -267,6 +268,12 @@ SimplePerson >> isJohnAndTestIsNil [
 	^self firstName = 'John' and: [self test isNil]
 ]
 
+{ #category : 'actions-internal' }
+SimplePerson >> onRollback [
+
+	rollbackBlock ifNotNil: [rollbackBlock value]
+]
+
 { #category : 'accessing' }
 SimplePerson >> orderCount [
 
@@ -281,6 +288,18 @@ SimplePerson >> orders [
 { #category : 'accessing' }
 SimplePerson >> orders: anObject [
 	orders := anObject
+]
+
+{ #category : 'accessing' }
+SimplePerson >> rollbackBlock [
+
+	^ rollbackBlock
+]
+
+{ #category : 'accessing' }
+SimplePerson >> rollbackBlock: anObject [
+
+	rollbackBlock := anObject
 ]
 
 { #category : 'comparing' }
