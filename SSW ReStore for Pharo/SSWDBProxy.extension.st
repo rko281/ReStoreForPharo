@@ -75,10 +75,28 @@ SSWDBProxy >> isLiteral [
 ]
 
 { #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> isNumber [
+
+	^false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> isSelfEvaluating [
+
+	^false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
 SSWDBProxy >> isSelfEvaluating: visited [
 	"For Array printString"
 
 	^ false
+]
+
+{ #category : '*SSW ReStore for Pharo' }
+SSWDBProxy >> isString [
+
+	^false
 ]
 
 { #category : '*SSW ReStore for Pharo' }
