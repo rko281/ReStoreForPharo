@@ -378,3 +378,143 @@ SSWReStoreHierarchyTest >> testSharedTableHierarchyReference [
 	self assert: ownerB reference class equals: ConcreteReferenceB.
 	self assert: ownerB reference number equals: 123
 ]
+
+{ #category : 'unit tests' }
+SSWReStoreHierarchyTest >> testSharedTableHierarchySlotClashWithDatabaseDefaultValueA [
+
+	"Ensure that a non-null default value in a column whose associated inst var slot is shared by other classes in a persistent hierarchy does not populate instances of those other classes"
+
+	| tableA tableB objectA objectB objects |
+
+	reStore
+		addClassWithSubclasses: SomeObject;
+		destroyAllClasses;
+		synchronizeAllClasses.
+
+	reStore connection evaluateAsTxn: 
+		[reStore connection 
+			exec: 'alter table some_object drop column var_a';
+			exec: 'alter table some_object add var_a integer default 0'.
+		true].
+
+	tableA := reStore tableForClass: SomeObjectA.
+	tableB := reStore tableForClass: SomeObjectB.
+	self assert: tableA name equals: tableB name.
+	self assert: (tableA fieldAccessing: #varA) accessor slot equals: (tableB fieldAccessing: #varB) accessor slot.
+
+	"Test with default value and nil in other object"
+	objectA := SomeObjectA new varA: (TestBitmask value: 2r10101010).
+	objectB := SomeObjectB new varB: nil.
+	{objectA. objectB} storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	objectA := objects detect: [ :each | each class = SomeObjectA].
+	objectB := objects detect: [ :each | each class = SomeObjectB].
+
+	self assert: objectA varA value equals: 2r10101010.
+	self assert: objectB varB isNil.
+
+	"Test with values in both objects"
+	{objectA. objectB} unstoreAll.
+	objectA := SomeObjectA new varA: (TestBitmask value: 2r0001111).
+	objectB := SomeObjectB new varB: 'bbb'.
+	{objectA. objectB} storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	objectA := objects detect: [ :each | each class = SomeObjectA].
+	objectB := objects detect: [ :each | each class = SomeObjectB].
+
+	self assert: objectA varA value equals: 2r00001111.
+	self assert: objectB varB equals: 'bbb'.
+
+	"Bulk test"
+	{objectA. objectB} unstoreAll.
+	((1 to: 100) collect: [ :each | SomeObjectA new varA: (TestBitmask value: each)]) storeAllIn: reStore.
+	(($! to: $z) collect: [ :each | SomeObjectB new varB: (String with: each)]) storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	self assert: objects size equals: (100 + ($! to: $z) size).
+
+	objectA := objects select: [ :each | each class = SomeObjectA].
+	objectB := objects select: [ :each | each class = SomeObjectB].
+	self assert: objectA size equals: 100.
+	self assert: objectB size equals: ($! to: $z) size.
+	objectA do: [ :each | self assert: (each varA value between: 1 and: 100)].
+	objectB do: [ :each | self assert: (each varB first between: $! and: $z)]
+]
+
+{ #category : 'unit tests' }
+SSWReStoreHierarchyTest >> testSharedTableHierarchySlotClashWithDatabaseDefaultValueB [
+
+	"Ensure that a non-null default value in a column whose associated inst var slot is shared by other classes in a persistent hierarchy does not populate instances of those other classes"
+
+	| tableA tableB objectA objectB objects |
+
+	reStore
+		addClassWithSubclasses: SomeObject;
+		destroyAllClasses;
+		synchronizeAllClasses.
+
+	reStore connection evaluateAsTxn: 
+		[reStore connection 
+			exec: 'alter table some_object drop column var_b';
+			exec: 'alter table some_object add var_b varchar(50) default ''x'''.
+		true].
+
+	tableA := reStore tableForClass: SomeObjectA.
+	tableB := reStore tableForClass: SomeObjectB.
+	self assert: tableA name equals: tableB name.
+	self assert: (tableA fieldAccessing: #varA) accessor slot equals: (tableB fieldAccessing: #varB) accessor slot.
+
+	"Test with default value and nil in other object"
+	objectA := SomeObjectA new varA: nil.
+	objectB := SomeObjectB new varB: 'b'.
+	{objectA. objectB} storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	objectA := objects detect: [ :each | each class = SomeObjectA].
+	objectB := objects detect: [ :each | each class = SomeObjectB].
+
+	self assert: objectA varA isNil.
+	self assert: objectB varB equals: 'b'.
+
+	"Test with values in both objects"
+	{objectA. objectB} unstoreAll.
+	objectA := SomeObjectA new varA: (TestBitmask value: 2r0001111).
+	objectB := SomeObjectB new varB: 'bbb'.
+	{objectA. objectB} storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	objectA := objects detect: [ :each | each class = SomeObjectA].
+	objectB := objects detect: [ :each | each class = SomeObjectB].
+
+	self assert: objectA varA value equals: 2r00001111.
+	self assert: objectB varB equals: 'bbb'.
+
+	"Bulk test"
+	{objectA. objectB} unstoreAll.
+	((1 to: 100) collect: [ :each | SomeObjectA new varA: (TestBitmask value: each)]) storeAllIn: reStore.
+	(($! to: $z) collect: [ :each | SomeObjectB new varB: (String with: each)]) storeAllIn: reStore.
+
+	reStore simulateReconnect.
+
+	objects := (SomeObject storedInstancesIn: reStore) asOrderedCollection.
+	self assert: objects size equals: (100 + ($! to: $z) size).
+
+	objectA := objects select: [ :each | each class = SomeObjectA].
+	objectB := objects select: [ :each | each class = SomeObjectB].
+	self assert: objectA size equals: 100.
+	self assert: objectB size equals: ($! to: $z) size.
+	objectA do: [ :each | self assert: (each varA value between: 1 and: 100)].
+	objectB do: [ :each | self assert: (each varB first between: $! and: $z)]
+]

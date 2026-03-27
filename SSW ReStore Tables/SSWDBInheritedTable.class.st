@@ -94,6 +94,12 @@ SSWDBInheritedTable >> setDefaultClassField [
 	self controlFields add: (self initializeClassField: SSWDBDataField new)
 ]
 
+{ #category : 'testing' }
+SSWDBInheritedTable >> shouldPopulate: anObject [
+
+	^anObject class includesBehavior: self instanceClass
+]
+
 { #category : 'accessing' }
 SSWDBInheritedTable >> withAllFields [
 
