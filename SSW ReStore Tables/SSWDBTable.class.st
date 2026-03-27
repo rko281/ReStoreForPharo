@@ -956,6 +956,12 @@ SSWDBTable >> rootTable [
 	^self
 ]
 
+{ #category : 'testing' }
+SSWDBTable >> shouldPopulate: anObject [
+
+	^anObject class = self instanceClass
+]
+
 { #category : 'accessing' }
 SSWDBTable >> species [
 
