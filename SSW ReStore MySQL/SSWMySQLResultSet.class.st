@@ -113,7 +113,7 @@ SSWMySQLResultSet >> statement: anSSWMySQLStatement [
 	query := statement query.
 	columns :=  fields collect: 
 		[ :each | 
-		SSWDBCColAttr new 
+		SSWDBColAttr new 
 			name: each name; 
 			field:  (query fieldNamed: each name);
 			yourself].

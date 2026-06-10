@@ -1,5 +1,5 @@
 Class {
-	#name : 'SSWDBCColAttr',
+	#name : 'SSWDBColAttr',
 	#superclass : 'Object',
 	#instVars : [
 		'name',
@@ -12,19 +12,19 @@ Class {
 }
 
 { #category : 'instance creation' }
-SSWDBCColAttr class >> forString: aString [
+SSWDBColAttr class >> forString: aString [
 
 	^self new
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> connection [
+SSWDBColAttr >> connection [
 
 	^self table reStore connection
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> field [
+SSWDBColAttr >> field [
 
 	"field stores the SSWSQLField from a SELECT query 
 	that gave rise to this column in the resut set"
@@ -33,7 +33,7 @@ SSWDBCColAttr >> field [
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> field: anSSWSQLField [
+SSWDBColAttr >> field: anSSWSQLField [
 
 	"field stores the SSWSQLField from a SELECT query 
 	that gave rise to this column in the resut set"
@@ -42,39 +42,39 @@ SSWDBCColAttr >> field: anSSWSQLField [
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> fieldName [
+SSWDBColAttr >> fieldName [
 
 	^self name
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> index [
+SSWDBColAttr >> index [
 	^ index
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> index: anObject [
+SSWDBColAttr >> index: anObject [
 	index := anObject
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> name [
+SSWDBColAttr >> name [
 	^ name
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> name: anObject [
+SSWDBColAttr >> name: anObject [
 	name := anObject
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> precision [ 
+SSWDBColAttr >> precision [ 
 
 	^self size
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> size [ 
+SSWDBColAttr >> size [ 
 
 	"Simple support, primarily for SUnits"
 
@@ -89,16 +89,16 @@ SSWDBCColAttr >> size [
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> table [
+SSWDBColAttr >> table [
 	^ table
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> table: anObject [
+SSWDBColAttr >> table: anObject [
 	table := anObject
 ]
 
 { #category : 'accessing' }
-SSWDBCColAttr >> tableName [
+SSWDBColAttr >> tableName [
 	^ self table name
 ]

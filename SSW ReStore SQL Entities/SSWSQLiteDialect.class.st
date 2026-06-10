@@ -54,12 +54,6 @@ SSWSQLiteDialect >> decimal [
 ]
 
 { #category : 'constants' }
-SSWSQLiteDialect >> defaultDateTimeResolution [
-
-	^0
-]
-
-{ #category : 'constants' }
 SSWSQLiteDialect >> defaultMaxColumnNameLength [
 
 	^255
@@ -69,12 +63,6 @@ SSWSQLiteDialect >> defaultMaxColumnNameLength [
 SSWSQLiteDialect >> defaultMaxTableNameLength [
 
 	^255
-]
-
-{ #category : 'constants' }
-SSWSQLiteDialect >> defaultTimeResolution [
-
-	^3
 ]
 
 { #category : 'constants' }

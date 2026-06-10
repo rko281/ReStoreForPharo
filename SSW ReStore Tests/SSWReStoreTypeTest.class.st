@@ -10,6 +10,7 @@ Class {
 		'date',
 		'time',
 		'datetime',
+		'datetimeWithMilliseconds',
 		'typeTest'
 	],
 	#category : 'SSW ReStore Tests',
@@ -25,9 +26,10 @@ SSWReStoreTypeTest >> addClassesTo: aReStore [
 { #category : 'running' }
 SSWReStoreTypeTest >> createTestData [
 
-	datetime := DateAndTime now withResolution: reStore sqlDialect maxDateTimeResolution.
+	datetimeWithMilliseconds := DateAndTime now withResolution: 3.
+	datetime := datetimeWithMilliseconds withResolution: reStore sqlDialect defaultTimeResolution.
 	date := datetime asDate.
-	time := datetime asTime.
+	time := datetime asTime withResolution: reStore sqlDialect defaultTimeResolution.
 
 	reStore beginTransaction.
 	TypeTest new
@@ -50,7 +52,7 @@ SSWReStoreTypeTest >> createTestData [
 		date: date;
 		time: time;
 		datetime: datetime;
-		datetimeWithMilliseconds: datetime;
+		datetimeWithMilliseconds: datetimeWithMilliseconds;
 
 		trueBoolean: true;
 		falseBoolean: false;
@@ -135,9 +137,7 @@ SSWReStoreTypeTest >> testDateQuery [
 { #category : 'public' }
 SSWReStoreTypeTest >> testDateTime [
 
-	reStore sqlDialect defaultDateTimeResolution = 0
-		ifTrue: [self assert: (typeTest datetime - datetime) abs <= 1 seconds "Allow for rounding"]
-		ifFalse: [self assert: (typeTest datetime = (datetime withResolution: reStore sqlDialect defaultDateTimeResolution))]
+	self assert: (typeTest datetime = datetime)
 ]
 
 { #category : 'public' }
@@ -145,9 +145,7 @@ SSWReStoreTypeTest >> testDateTimeQuery [
 
 	| t |
 
-	reStore sqlDialect defaultDateTimeResolution = 0
-		ifTrue: [t := (TypeTest storedInstancesIn: reStore) detect: [ :each | (each datetime > (datetime - 1 seconds)) & (each datetime < (datetime + 1 seconds))] ifNone: [nil] "Allow for rounding"]
-		ifFalse: [t := (TypeTest storedInstancesIn: reStore) detect: [ :each | each datetime = (datetime withResolution: reStore sqlDialect defaultDateTimeResolution)] ifNone: [nil]].
+	t := (TypeTest storedInstancesIn: reStore) detect: [ :each | each datetime = datetime] ifNone: [nil].
 	
 	self assert: t notNil
 ]
@@ -157,8 +155,7 @@ SSWReStoreTypeTest >> testDateTimeWithMilliseconds [
 
 	reStore sqlDialect maxDateTimeResolution < 3 ifTrue: [^self].
 
-	"Take account of rounding differences between image and sql dialect"
-	self assert: ((typeTest datetimeWithMilliseconds - (datetime withResolution: 3)) <= 1 milliseconds)
+	self assert: typeTest datetimeWithMilliseconds equals: datetimeWithMilliseconds
 ]
 
 { #category : 'unit tests' }
@@ -294,11 +291,9 @@ SSWReStoreTypeTest >> testTimeQuery [
 
 	reStore simulateReconnect.
 
-	reStore sqlDialect defaultTimeResolution = 0 
-		ifTrue: [t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each time = time] ifNone: [nil]]
-		ifFalse: [t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each time = (time withResolution: reStore sqlDialect defaultTimeResolution)] ifNone: [nil]].
+	t2 := (TypeTest storedInstancesIn: reStore) detect: [ :each | each time = time] ifNone: [nil].
 	self assert: t2 notNil.
-	self assert: t2 date = typeTest date
+	self assert: t2 time equals: typeTest time
 ]
 
 { #category : 'unit tests' }

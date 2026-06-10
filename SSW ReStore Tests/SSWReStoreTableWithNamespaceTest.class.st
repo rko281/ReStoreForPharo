@@ -45,6 +45,14 @@ SSWReStoreTableWithNamespaceTest >> addClassesTo: aReStore [
 	reStore connection createNamespace: self namespace
 ]
 
+{ #category : 'running' }
+SSWReStoreTableWithNamespaceTest >> createTestData [ 
+
+	reStore executeSQLAsTxn: (#('simple_person' 'super_person' 'simple_person2') collect: [ :each | 'drop table if exists ', each ]).
+	
+	super createTestData 
+]
+
 { #category : 'constants' }
 SSWReStoreTableWithNamespaceTest >> namespace [
 
@@ -71,8 +79,10 @@ SSWReStoreTableWithNamespaceTest >> tearDown [
 
 	{SimplePerson. SimplePerson2. SuperPerson} do: [ :cls | self removeSelector: #addClassDefinitionTo: fromClass: cls class].
 
+	reStore destroyAllTables.
+
 	"Error trap superclass implementation primarily for SQLite which drops attached database on reconnect, leading to 'table not found' errors in destroyAllClasses"
-	[super tearDown] on: reStore connection dbErrorClass do: [ :exc | ('*no such table*' match: exc description) ifTrue: [exc return] ifFalse: [exc pass]]
+	[super tearDown] on: reStore connection dbErrorClass do: [ :exc | ('*no such*' match: exc description) ifTrue: [exc return] ifFalse: [exc pass]]
 ]
 
 { #category : 'unit tests' }

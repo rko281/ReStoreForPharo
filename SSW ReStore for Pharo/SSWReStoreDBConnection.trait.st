@@ -23,7 +23,7 @@ SSWReStoreDBConnection >> _columnsInTable: aDBTable [
 	names doWithIndex: 
 		[ :name :index | 
 		columns add:
-			( SSWDBCColAttr new 
+			( SSWDBColAttr new 
 					name: name;
 					index: index;
 					table: aDBTable;
@@ -68,7 +68,7 @@ SSWReStoreDBConnection >> columnDescriptions: anObject [
 { #category : 'enquiries' }
 SSWReStoreDBConnection >> columns: aTableName [
 
-	^(self columnNamesFor: aTableName) collect: [ :each | SSWDBCColAttr new name: each]
+	^(self columnNamesForTable: aTableName) collect: [ :each | SSWDBColAttr new name: each]
 ]
 
 { #category : 'enquiries' }
@@ -237,6 +237,13 @@ SSWReStoreDBConnection >> logQueryExecution: aString [
 	self incrementQueryCount
 ]
 
+{ #category : 'querying' }
+SSWReStoreDBConnection >> logStatementExecution: aStatement [
+
+	self debugStream ifNotNil: [ :stream | stream cr. aStatement writeDebugInfoOn: stream].
+	self incrementQueryCount
+]
+
 { #category : 'accessing' }
 SSWReStoreDBConnection >> maxColumnNameLength [
 	^63
@@ -267,8 +274,6 @@ SSWReStoreDBConnection >> prepareQuery: anSQLQuery [
 	Prepare and return a parameterized statement for the execution of anSQLQuery"
 
 	| stream |
-		
-	anSQLQuery preExecIn: self.
 
 	stream := SSWSQLWriteStream newIn: self sqlDialect.
 	anSQLQuery writeSQLOn: stream.

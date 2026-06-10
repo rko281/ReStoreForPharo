@@ -105,7 +105,7 @@ SSWP3ResultSet >> query: anObject [
 	query := anObject.
 	columns :=  descriptions collect: 
 		[ :each | 
-		SSWDBCColAttr new 
+		SSWDBColAttr new 
 			name: each fieldName; 
 			field:  (query fieldNamed: each fieldName);
 			yourself].

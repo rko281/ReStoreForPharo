@@ -10,10 +10,18 @@ Class {
 	#package : 'SSW ReStore MySQL'
 }
 
+{ #category : 'instance creation' }
+SSWMySQLConnection class >> on: aMySQLDriverSpec [
+
+	^self new 
+		connectionSpec: aMySQLDriverSpec;
+		yourself
+]
+
 { #category : 'connection open/close' }
 SSWMySQLConnection >> basicClose [
 
-	self disconnect
+	self connected ifTrue: [self disconnect]
 ]
 
 { #category : 'connection open/close' }
@@ -68,6 +76,18 @@ SSWMySQLConnection >> connectionSpec: anObject [
 SSWMySQLConnection >> dbErrorClass [
 
 	^MySQLDriverError
+]
+
+{ #category : 'public API - introspection' }
+SSWMySQLConnection >> dbmsName [
+
+	^SSWMySQLDialect dbmsName
+]
+
+{ #category : 'public API - introspection' }
+SSWMySQLConnection >> dbmsVersion [
+
+	^[(self query: 'select version()') rows first atIndex: 1] on: Error do: [ :exc | exc return: '']
 ]
 
 { #category : 'enquiries' }
@@ -130,7 +150,7 @@ SSWMySQLConnection >> rollbackTransaction [
 { #category : 'constants' }
 SSWMySQLConnection >> sqlDialectClass [
 
-	^SSWMySQLDialect
+	^SSWMySQLNativeDialect
 ]
 
 { #category : 'accessing' }

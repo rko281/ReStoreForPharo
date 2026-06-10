@@ -24,7 +24,7 @@ SSWSQLite3Connection >> basicConnect [
 	^self open
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 SSWSQLite3Connection >> columnNamesForTable: aDBTable [
 	
 	self isOpen

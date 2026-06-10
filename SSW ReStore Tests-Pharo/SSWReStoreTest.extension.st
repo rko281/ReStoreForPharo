@@ -30,7 +30,7 @@ SSWReStoreTest >> initConnectionFor: aReStore [
 	aReStore connection: (SSWODBCConnection new dsn: 'YourDSN')
 	aReStore connection: (SSWODBCConnection new connectString: 'DRIVER={};etc.')
 	aReStore connection: (SSWP3Connection new url: 'psql://user:pwd@192.168.1.234:5432/database')
-	aReStore connection: (SSWMySQLConnection new connectionSpec: (MySQLDriverSpec new db: 'database'; host: '192.168.1.234'; port: 3306; user: 'user'; password: 'pwd'; yourself); yourself)"
+	aReStore connection: (SSWMySQLConnection on: (MySQLDriverSpec new db: 'database'; host: '192.168.1.234'; user: 'user'; password: 'pwd'; yourself))"
 ]
 
 { #category : '*SSW ReStore Tests-Pharo' }

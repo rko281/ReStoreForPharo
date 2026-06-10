@@ -72,5 +72,5 @@ SSWMySQLStatement >> values [
 SSWMySQLStatement >> values: aCollection [
 
 	params := OrderedCollection new: aCollection size.
-	aCollection do: [ :each | self addBinding: each reStoreValue forSSWMySQL]
+	aCollection do: [ :each | self addBinding: each reStoreValue ]
 ]

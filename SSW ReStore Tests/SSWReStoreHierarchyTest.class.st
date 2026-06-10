@@ -333,6 +333,22 @@ SSWReStoreHierarchyTest >> testInheritanceStructureWithoutIntermediateInheritanc
 ]
 
 { #category : 'unit tests' }
+SSWReStoreHierarchyTest >> testInsertQueryParameterCount [
+
+	"Verify the number of parameters in a sub-table's insert query matches the number of placeholder characters.
+	Previously there was a mismatch due to the class field's value being hardcoded"
+
+	| proxy insertQuery sqlStream |
+
+	proxy := SSWDBVersionedCachingObjectProxy new _reStore: reStore; _class: SubPerson; _proxiedObject: SubPerson new.
+	insertQuery := SSWSQLInsertQuery forObject: proxy.
+	sqlStream := reStore sqlDialect sqlWriteStream.
+	insertQuery writeSQLOn: sqlStream.
+
+	self assert: insertQuery values size equals: sqlStream placeholderCount
+]
+
+{ #category : 'unit tests' }
 SSWReStoreHierarchyTest >> testRetrievingIncompatibleClassRaisesError [
 	| detailedID midID |
 	midID := (reStore instancesOf: MidPerson) withoutInheritance first _id.

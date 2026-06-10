@@ -366,7 +366,7 @@ SSWSQLDialect >> defaultStandardNamespace [
 	^nil
 ]
 
-{ #category : 'public' }
+{ #category : 'constants' }
 SSWSQLDialect >> defaultTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
@@ -595,7 +595,8 @@ SSWSQLDialect >> maxDateTimeResolution [
 
 	"0 = seconds, 3 = milliseconds etc."
 
-	^6
+	"Zero since ODBC doens't reliably seem to be able to ascertain the scale of DateTime columns. Native dialects should override as appropriate"
+	^0
 ]
 
 { #category : 'accessing' }

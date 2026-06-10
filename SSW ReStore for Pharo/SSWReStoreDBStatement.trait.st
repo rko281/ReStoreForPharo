@@ -48,7 +48,7 @@ SSWReStoreDBStatement >> free [
 { #category : 'public' }
 SSWReStoreDBStatement >> logQueryExecution [
 
-	self parent logQueryExecution: self sqlString
+	self parent logStatementExecution: self
 ]
 
 { #category : 'accessing' }
@@ -122,4 +122,25 @@ SSWReStoreDBStatement >> sqlString [
 { #category : 'accessing' }
 SSWReStoreDBStatement >> sqlString: anObject [
 	sqlString := anObject
+]
+
+{ #category : 'writing' }
+SSWReStoreDBStatement >> writeDebugInfoOn: aStream [
+
+	| readStream valuesStream sqlStream |
+
+	self parametersCount = 0 ifTrue: [^aStream nextPutAll: self sqlString; nextPut: $;; cr].
+
+	readStream := ReadStream on: self sqlString.
+	valuesStream := ReadStream on: self values.
+	sqlStream := self sqlDialect sqlWriteStream.
+
+	[| nextChunk |
+	nextChunk := readStream upTo: $?.
+	nextChunk isEmpty ifFalse: 
+		[sqlStream nextPutAll: nextChunk.
+		valuesStream atEnd ifFalse: [valuesStream nextAvailable printOn: sqlStream]].
+	readStream atEnd] whileFalse.
+
+	aStream nextPutAll: sqlStream contents; nextPut: $;; cr
 ]

@@ -3,7 +3,7 @@ Extension { #name : 'MySQLOkay' }
 { #category : '*SSW ReStore MySQL' }
 MySQLOkay >> close [
 
-	"In Dolphin this closes the result set, leaving the statement open.
+	"In ODBC this closes the result set, leaving the statement open.
 	Nothing to do here"
 ]
 

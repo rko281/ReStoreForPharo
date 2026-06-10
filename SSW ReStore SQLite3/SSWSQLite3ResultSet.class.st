@@ -148,7 +148,7 @@ SSWSQLite3ResultSet >> statement: aStatement moreRows: aBoolean rows: rCollectio
 	
 		columns := self statement columnNames collect: 
 			[ :each | 
-			SSWDBCColAttr new 
+			SSWDBColAttr new 
 				name: each; 
 				field:  (query fieldNamed: each);
 				yourself]].

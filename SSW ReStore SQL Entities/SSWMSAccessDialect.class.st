@@ -120,12 +120,6 @@ SSWMSAccessDialect >> maxAllocatedStatements [
 	^100
 ]
 
-{ #category : 'constants' }
-SSWMSAccessDialect >> maxDateTimeResolution [
-
-	^0
-]
-
 { #category : 'maintenance' }
 SSWMSAccessDialect >> renameTable: oldTable to: newTable in: anSSWReStore [
 

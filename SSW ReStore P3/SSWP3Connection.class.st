@@ -113,7 +113,7 @@ SSWP3Connection >> runQueryResult [
 { #category : 'constants' }
 SSWP3Connection >> sqlDialectClass [ 
 
-	^SSWPostgreSQLDialect
+	^SSWPostgreSQLNativeDialect
 ]
 
 { #category : 'accessing' }
