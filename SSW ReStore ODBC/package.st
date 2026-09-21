@@ -1,1 +1,1 @@
-Package { #name : #'SSW ReStore ODBC' }
+Package { #name : 'SSW ReStore ODBC' }

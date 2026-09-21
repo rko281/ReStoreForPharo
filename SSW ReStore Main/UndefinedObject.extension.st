@@ -7,6 +7,18 @@ UndefinedObject >> _ensurePersistentIn: aReStore [
 ]
 
 { #category : '*SSW ReStore Main' }
+UndefinedObject >> isValidForPersistence [ 
+
+	^true
+]
+
+{ #category : '*SSW ReStore Main' }
+UndefinedObject >> reStoreValue [
+
+	^self
+]
+
+{ #category : '*SSW ReStore Main' }
 UndefinedObject >> storeIn: anSSWReStore [
 
 	"Do nothing - cannot store an UndefinedObject"

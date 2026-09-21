@@ -100,18 +100,7 @@ Object class >> reStoreInstVarAccessor [
 
 	"Return a new inst var accessor to be used to access instances of this class in another object"
 
-	^self isMutableDirectlyPersistedNonBaseClass
-		ifTrue: [SSWMutableInstVarAccessor new]
-		ifFalse: [SSWInstVarAccessor new]
-]
-
-{ #category : '*SSW ReStore Tables' }
-Object class >> reStoreInstVarAccessorIn: aSQLDialect [
-
-	"Return a new inst var accessor to be used to access instances of this class in another object, in aSQLDialect"
-
-	"Default - dialect is irrelevant"
-	^self reStoreInstVarAccessor
+	^SSWInstVarAccessor new
 ]
 
 { #category : '*SSW ReStore Tables' }

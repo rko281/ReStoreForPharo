@@ -1,6 +1,18 @@
 Extension { #name : 'String' }
 
 { #category : '*SSW ReStore Main' }
+String >> isValidForPersistence [
+
+	^true
+]
+
+{ #category : '*SSW ReStore Main' }
+String >> reStoreValue [
+
+	^self
+]
+
+{ #category : '*SSW ReStore Main' }
 String >> withComponents [
 
 	"Treat as an object, not a collection"

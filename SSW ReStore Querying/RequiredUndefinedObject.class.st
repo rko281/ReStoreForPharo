@@ -71,6 +71,12 @@ RequiredUndefinedObject >> reStoreValue [
 ]
 
 { #category : 'printing' }
+RequiredUndefinedObject >> writeHardCodedSQLOn: aStream [
+
+	nil writeSQLOn: aStream
+]
+
+{ #category : 'printing' }
 RequiredUndefinedObject >> writeSQLOn: aStream forCondition: aSQLCondition [
 
 	nil writeSQLOn: aStream forCondition: aSQLCondition

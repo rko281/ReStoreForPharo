@@ -10,12 +10,6 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWSQLServerDialect class >> dbmsName [
-
-	^'MICROSOFT SQL SERVER' 
-]
-
 { #category : 'datatypes' }
 SSWSQLServerDialect >> boolean [
 

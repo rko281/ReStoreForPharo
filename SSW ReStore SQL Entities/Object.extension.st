@@ -44,6 +44,14 @@ Object >> sqlStringIn: anSSWSQLDialect [
 ]
 
 { #category : '*SSW ReStore SQL Entities' }
+Object >> writeHardCodedSQLOn: aStream [
+
+	"Hard-coded, i.e. when not parameterized"
+
+	^self writeSQLOn: aStream
+]
+
+{ #category : '*SSW ReStore SQL Entities' }
 Object >> writeSQLOn: aStream forCondition: aSQLCondition [
 
 	^self writeSQLOn: aStream forField: aSQLCondition field

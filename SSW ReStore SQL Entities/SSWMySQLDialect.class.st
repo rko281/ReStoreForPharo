@@ -10,12 +10,6 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWMySQLDialect class >> dbmsName [
-
-	^'MySQL'
-]
-
 { #category : 'maintenance' }
 SSWMySQLDialect >> alterField: aField table: aTable in: aReStore [
 
@@ -101,6 +95,21 @@ SSWMySQLDialect >> maxVarchar [
 	2KB should be safe enough that we don't exceed this, whilst being reasonably large"
 
 	^2048
+]
+
+{ #category : 'constants' }
+SSWMySQLDialect >> nullEqualityComparator [
+
+	^'<=>'
+]
+
+{ #category : 'constants' }
+SSWMySQLDialect >> nullInequalityComparator [
+
+	"For reference - answer IS NOT which is correct only when comparing with NULL.
+	For prepared statements where the parameter may be null or not null we really want NOT (a <=> ?); this would need wider changes to the SQL writer so consider it a rare and unsupported function for the moment - use NOT(a=?) instead"
+
+	^' IS NOT '
 ]
 
 { #category : 'maintenance' }

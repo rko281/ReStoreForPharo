@@ -7,6 +7,12 @@ Class {
 	#package : 'SSW ReStore SQLite3'
 }
 
+{ #category : 'testing' }
+SSWSQLiteNativeDialect class >> isNative [
+
+	^true
+]
+
 { #category : 'constants' }
 SSWSQLiteNativeDialect >> defaultDateTimeResolution [
 

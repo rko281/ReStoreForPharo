@@ -15,3 +15,15 @@ Magnitude class >> instanceFromDBValue: aValue in: anSSWReStore [
 		ifTrue: [aValue]
 		ifFalse: [self instanceFromDBString: aValue]
 ]
+
+{ #category : '*SSW ReStore Main' }
+Magnitude >> isValidForPersistence [
+
+	^true
+]
+
+{ #category : '*SSW ReStore Main' }
+Magnitude >> reStoreValue [
+
+	^self
+]

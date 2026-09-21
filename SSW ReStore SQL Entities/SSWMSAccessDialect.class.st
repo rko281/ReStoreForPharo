@@ -10,12 +10,6 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWMSAccessDialect class >> dbmsName [
-
-	^'ACCESS'
-]
-
 { #category : 'datatypes' }
 SSWMSAccessDialect >> boolean [
 

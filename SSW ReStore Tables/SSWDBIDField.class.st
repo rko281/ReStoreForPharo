@@ -18,7 +18,7 @@ SSWDBIDField >> accessInstVarNamed: aSymbol [
 			name: self name;
 			table: self table;
 			targetClass: self targetClass;
-			accessor: ((self targetClass reStoreInstVarAccessorIn: self sqlDialect) access: aSymbol in: self table instanceClass);
+			accessor: (self targetClass reStoreInstVarAccessor access: aSymbol in: self table instanceClass);
 			yourself)
 ]
 

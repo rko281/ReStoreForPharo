@@ -13,9 +13,9 @@ SSWDBClassWithInfo >> defineAs: aSymbol in: anSSWDBTable [
 ]
 
 { #category : '*SSW ReStore Tables' }
-SSWDBClassWithInfo >> reStoreInstVarAccessorIn: aSQLDialect [
+SSWDBClassWithInfo >> reStoreInstVarAccessor [
 
-	^self infoClass reStoreInstVarAccessorIn: aSQLDialect
+	^self infoClass reStoreInstVarAccessor
 ]
 
 { #category : '*SSW ReStore Tables' }

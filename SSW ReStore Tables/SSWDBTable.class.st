@@ -394,7 +394,7 @@ SSWDBTable >> define: aSymbol asFieldNamed: aString holding: aClass [
 		(SSWDBDataField new
 			name: aString;
 			targetClass: aClass;
-			accessor: ((aClass reStoreInstVarAccessorIn: self sqlDialect) access: aSymbol in: self instanceClass);
+			accessor: (aClass reStoreInstVarAccessor access: aSymbol in: self instanceClass);
 			yourself)
 ]
 

@@ -35,6 +35,13 @@ String >> asSQLFunctionWithResultClass: aClass [
 ]
 
 { #category : '*SSW ReStore SQL Entities' }
+String >> writeHardCodedSQLOn: aStream [
+
+	"For hard-coded parameter support"
+	self printOn: aStream
+]
+
+{ #category : '*SSW ReStore SQL Entities' }
 String >> writeSQLOn: aStream [
 
 	"Avoid SQL injection and other issues by always using parameterized values for Strings"

@@ -10,12 +10,6 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWPostgreSQLDialect class >> dbmsName [
-
-	^'PostgreSQL'
-]
-
 { #category : 'maintenance' }
 SSWPostgreSQLDialect >> alterField: aField table: aTable in: aReStore [
 
@@ -111,6 +105,18 @@ SSWPostgreSQLDialect >> maxCharacter [
 	"Technically 1GB, but limit it to something reasonable"
 
 	^65535
+]
+
+{ #category : 'constants' }
+SSWPostgreSQLDialect >> nullEqualityComparator [
+
+	^' IS NOT DISTINCT FROM '
+]
+
+{ #category : 'constants' }
+SSWPostgreSQLDialect >> nullInequalityComparator [
+
+	^' IS DISTINCT FROM '
 ]
 
 { #category : 'event handling' }

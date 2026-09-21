@@ -294,8 +294,7 @@ SSWSQLOperator >> sqlStringFor: aTargetValue [
 { #category : 'output' }
 SSWSQLOperator >> writeSQLOn: aStream forTarget: aTargetValue [
 
-	"aTargetValue is necessary as some SQL operators change form 
-	depending on the target value (e.g. IS NULL)"
-	
-	aStream nextPutAll: (self sqlStringFor: aTargetValue)
+	self isSetValue 
+		ifTrue: [aStream nextPut: $=]
+		ifFalse: [aStream nextPutOperator: self for: aTargetValue]
 ]

@@ -468,7 +468,7 @@ SSWReStore >> changedClassOfInstVar: aSymbol in: aClass modifyUsing: aBlock [
 						(SSWDBStaticField new
 							name: 'TEMP__';
 							targetClass: origField targetClass;
-							accessor: ((self sqlDialect instVarAccessorFor: aClass) access: aSymbol in: aClass);
+							accessor: (aClass reStoreInstVarAccessor access: aSymbol in: aClass);
 							yourself).
 		tempField accessor name: #temp__.
 		definitionTable == table ifFalse: [definitionTable addDataField: tempField].

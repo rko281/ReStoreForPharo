@@ -11,12 +11,6 @@ Class {
 }
 
 { #category : 'constants' }
-SSWMSAccess2013Dialect class >> dbmsVersion [
-
-	^'12.*'
-]
-
-{ #category : 'constants' }
 SSWMSAccess2013Dialect >> maxAllocatedStatements [
 
 	"Access 2013 gives an error about number of open tables around 340 allocated statements"

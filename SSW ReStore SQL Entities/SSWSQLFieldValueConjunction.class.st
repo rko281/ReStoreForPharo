@@ -29,6 +29,12 @@ SSWSQLFieldValueConjunction >> = anSSWSQLFieldValueConjunction [
 	^self field = anSSWSQLFieldValueConjunction field and: [self value = anSSWSQLFieldValueConjunction value]
 ]
 
+{ #category : 'testing' }
+SSWSQLFieldValueConjunction >> canBeParameterized [
+
+	^false
+]
+
 { #category : 'accessing' }
 SSWSQLFieldValueConjunction >> field [
 

@@ -125,6 +125,12 @@ SSWMySQLConnection >> isConnected [
 	^self connected
 ]
 
+{ #category : 'testing' }
+SSWMySQLConnection >> isMariaDB [
+
+	^'*MariaDB*' match: self versionString
+]
+
 { #category : 'accessing' }
 SSWMySQLConnection >> prepare: queryString [
 
@@ -150,7 +156,9 @@ SSWMySQLConnection >> rollbackTransaction [
 { #category : 'constants' }
 SSWMySQLConnection >> sqlDialectClass [
 
-	^SSWMySQLNativeDialect
+	^self isMariaDB
+		ifTrue: [SSWMariaDBNativeDialect]
+		ifFalse: [SSWMySQLNativeDialect]
 ]
 
 { #category : 'accessing' }
@@ -159,4 +167,10 @@ SSWMySQLConnection >> tablesInNamespace: aString [
 	^(((aString isNil or: [aString = self sqlDialect standardNamespace])
 		ifTrue: [ self execute: 'SHOW TABLES' ]
 		ifFalse: [ self execute: 'SHOW TABLES IN ', (self sqlDialect asIdentifier: aString) ]) collect: [ :row | row first ]) asOrderedCollection
+]
+
+{ #category : 'accessing' }
+SSWMySQLConnection >> versionString [
+
+	^(self query: 'select version()') rows first at: 1
 ]

@@ -23,37 +23,12 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWSQLDialect class >> dbmsName [
-
-	"Return the name of the database whose dialect is represented by the receiver.
-	Should correlate with the result of DBConnection>>dbmsName (ignoring case)"
-
-	^self subclassResponsibility
-]
-
-{ #category : 'constants' }
-SSWSQLDialect class >> dbmsVersion [
-
-	"Return the version of the database whose dialect is represented by the receiver.
-	Should correlate with the result of DBConnection>>dbmsVersion (ignoring case).
-
-	From MS ODBC docs: '
-		The version is of the form ##.##.####, where the first two digits are the major version, the next two digits are the minor version, and the last four digits are the release version. 
-		The driver must render the DBMS product version in this form but can also append the DBMS product-specific version. For example, '04.01.0000 Rdb 4.1'.
-
-	For convenience this value may be a pattern - dialects can handle subtle differences with conditionals (referring to their connection for the version)"
-
-	^'*'
-]
-
 { #category : 'testing' }
-SSWSQLDialect class >> isCompatibleWithConnection: aDBConnection [
+SSWSQLDialect class >> isNative [
 
-	"Default implementation uses name and version.
-	Subclasses with more sophisticated requirements may override"
+	"Answer whether the receiver is specifically for a native (non-ODBC) connection"
 
-	^(self dbmsName sameAs: aDBConnection dbmsName) and: [self dbmsVersion match: aDBConnection dbmsVersion]
+	^false
 ]
 
 { #category : 'instance creation' }
@@ -65,18 +40,9 @@ SSWSQLDialect class >> new [
 { #category : 'instance creation' }
 SSWSQLDialect class >> newFor: aDBConnection [
 
-	^(self subclassFor: aDBConnection) new
+	^self new
 		initializeFor: aDBConnection;
 		yourself
-]
-
-{ #category : 'accessing' }
-SSWSQLDialect class >> subclassFor: aDBConnection [
-
-	"Return the correct subclass of the receiver to use for the given DBConnection"
-
-	"Sort to prefer subclasses with specific version number over non version-specific subclasses"
-	^(self allSubclasses asSortedCollection: [ :c1 :c2 | c1 dbmsVersion size >= c2 dbmsVersion size]) detect: [ :each | each isCompatibleWithConnection: aDBConnection] ifNone: ["Fallback" self]
 ]
 
 { #category : 'maintenance' }
@@ -224,7 +190,7 @@ SSWSQLDialect >> commonFunctions [
 		at: #size put: 'LEN(%1)' asSQLFunctionIntegerResult;
 		at: #, put: '(%1 || %2)' asSQLFunction;
 		at: #indexOfSubCollection: put: 'INSTR(%1,%2)' asSQLFunctionIntegerResult;
-		at: #midString:from: put: 'SUBSTRING(%1 FROM %3 FOR %2)' asSQLFunction;
+		at: #midString:from: put: 'SUBSTRING(%1 FROM %$3 FOR %$2)' asSQLFunction;
 		at: #trimBlanks put: 'TRIM(%1)' asSQLFunction;
 		at: #asUppercase put: 'UPPER(%1)' asSQLFunction;
 		at: #asLowercase put: 'LOWER(%1)' asSQLFunction;
@@ -644,6 +610,18 @@ SSWSQLDialect >> nullBoolean: anObject [
 	To use the legacy behaviour, set nullBoolean to false"
 
 	nullBoolean := anObject
+]
+
+{ #category : 'testing' }
+SSWSQLDialect >> nullEqualityComparator [
+
+	^' IS '
+]
+
+{ #category : 'testing' }
+SSWSQLDialect >> nullInequalityComparator [
+
+	^' IS NOT '
 ]
 
 { #category : 'event handling' }

@@ -29,6 +29,14 @@ SSWDBDirectlyPersistedObject class >> isDirectlyPersisted [
 ]
 
 { #category : 'accessing' }
+SSWDBDirectlyPersistedObject class >> reStoreInstVarAccessor [
+
+	^self hasMutablePersistentInstances 
+		ifTrue: [SSWMutableInstVarAccessor new]
+		ifFalse: [super reStoreInstVarAccessor]
+]
+
+{ #category : 'accessing' }
 SSWDBDirectlyPersistedObject class >> reStoreValueClass [
 
 	"Return the class of object of which instances of the receiver are persisted in the database, i.e. the class of an instance's reStoreValue"

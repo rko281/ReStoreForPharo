@@ -10,12 +10,6 @@ Class {
 	#package : 'SSW ReStore SQL Entities'
 }
 
-{ #category : 'constants' }
-SSWSQLiteDialect class >> dbmsName [
-
-	^'SQLITE'
-]
-
 { #category : 'maintenance' }
 SSWSQLiteDialect >> alterField: aField table: aTable in: aReStore [
 
@@ -104,6 +98,20 @@ SSWSQLiteDialect >> dropColumnNamed: colString fromTable: anSSWDBTable in: anSSW
 		executeSQLFrom: [ :stream | stream nextPutAll: 'INSERT INTO '; writeSQLFor: tempTable ; nextPutAll: ' SELECT '. otherFields writeSQLOn: stream. stream nextPutAll: ' FROM '; writeSQLFor: anSSWDBTable];
 		executeSQLFrom: [ :stream | stream nextPutAll: 'DROP TABLE '; writeSQLFor: anSSWDBTable];
 		executeSQLFrom: [ :stream | stream nextPutAll: 'ALTER TABLE '; writeSQLFor: tempTable; nextPutAll: ' RENAME TO '; nextPutIdentifier: anSSWDBTable name]
+]
+
+{ #category : 'maintenance' }
+SSWSQLiteDialect >> renameField: oldField to: newField in: aReStore [
+
+	aReStore executeSQLFrom: 
+		[ :stream | 
+		stream 
+			nextPutAll: 'ALTER TABLE ';
+			writeSQLFor: newField table;
+			nextPutAll: ' RENAME ';
+			nextPutIdentifier: oldField name;
+			nextPutAll: ' TO ';
+			nextPutIdentifier: newField name]
 ]
 
 { #category : 'testing' }

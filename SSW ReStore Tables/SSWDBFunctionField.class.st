@@ -126,9 +126,15 @@ SSWDBFunctionField >> writeSQLOn: aStream [
 		funcStream peek = $%] whileTrue: [aStream nextPut: funcStream next].
 
 		funcStream atEnd ifFalse:
-			[| argIndex |
+			[| argIndex shouldHardCode param |
+			"$ character denotes a parameter which needs to be hard-coded"
+			(shouldHardCode := funcStream peek = $$) ifTrue: [funcStream next].
 			argIndex := funcStream next digitValue - 1.
 			argIndex = 0
-				ifTrue: [self field writeSQLOn: aStream]
-				ifFalse: [(self arguments at: argIndex) writeSQLOn: aStream]]]
+			ifTrue: 
+				[self field writeSQLOn: aStream]
+			ifFalse: 
+				[param := self arguments at: argIndex.
+				shouldHardCode ifTrue: [param := SSWSQLHardCodedParameter value: param].
+				param writeSQLOn: aStream forField: self]]]
 ]

@@ -118,6 +118,22 @@ SSWSQLWriteStream >> nextPutIdentifier: aString [
 ]
 
 { #category : 'printing' }
+SSWSQLWriteStream >> nextPutOperator: aSQLOperator for: aValue [
+	
+	aValue isSQLNull
+	ifTrue:
+		[aSQLOperator sqlString = '=' 
+		ifTrue: 
+			[self nextPutAll: self dialect nullEqualityComparator]
+		ifFalse:
+			[aSQLOperator sqlString = '<>'
+				ifTrue: [self nextPutAll: self dialect nullInequalityComparator]
+				ifFalse: [self error: 'Invalid operator for nil']]]
+	ifFalse:
+		[self nextPutAll: aSQLOperator sqlString]
+]
+
+{ #category : 'printing' }
 SSWSQLWriteStream >> nextPutParameterPlaceholder [
 
 	self placeholderCount: self placeholderCount + 1.

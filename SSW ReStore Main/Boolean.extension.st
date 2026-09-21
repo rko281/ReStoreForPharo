@@ -13,3 +13,15 @@ Boolean class >> instanceFromDBValue: aValue in: anSSWReStore [
 		ifTrue: [anSSWReStore sqlDialect nullBoolean]
 		ifFalse: [aValue ~= 0]
 ]
+
+{ #category : '*SSW ReStore Main' }
+Boolean >> isValidForPersistence [
+
+	^true
+]
+
+{ #category : '*SSW ReStore Main' }
+Boolean >> reStoreValue [
+
+	^self
+]

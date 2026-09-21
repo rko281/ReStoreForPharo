@@ -1,6 +1,6 @@
-Extension { #name : #SSWDBStringWithInfo }
+Extension { #name : 'SSWDBStringWithInfo' }
 
-{ #category : #'*SSW ReStore ODBC' }
+{ #category : '*SSW ReStore ODBC' }
 SSWDBStringWithInfo >> dbMaxFieldSize [
 
 	^self fieldSize

@@ -7,6 +7,12 @@ Class {
 	#package : 'SSW ReStore MySQL'
 }
 
+{ #category : 'testing' }
+SSWMySQLNativeDialect class >> isNative [
+
+	^true
+]
+
 { #category : 'constants' }
 SSWMySQLNativeDialect >> postLoginScript [
 
