@@ -25,6 +25,8 @@ Class {
 		'datetime',
 		'timeWithMilliseconds',
 		'datetimeWithMilliseconds',
+		'datetimeTimezoneAware',
+		'datetimeTimezoneAwareWithMilliseconds',
 		'trueBoolean',
 		'falseBoolean',
 		'uuid'
@@ -57,6 +59,8 @@ TypeTest class >> reStoreDefinition [
 		define: #time as: Time;
 		define: #datetime as: DateAndTime;
 		define: #datetimeWithMilliseconds as: DateAndTime withMillisecondResolution;
+		define: #datetimeTimezoneAware as: DateAndTime timezoneAware;
+		define: #datetimeTimezoneAwareWithMilliseconds as: DateAndTime timezoneAware beMillisecondResolution;
 
 		define: #trueBoolean as: Boolean;
 		define: #falseBoolean as: Boolean;
@@ -106,6 +110,30 @@ TypeTest >> datetime: anObject [
 	"Private - Set the value of the receiver's ''datetime'' instance variable to the argument, anObject."
 
 	datetime := anObject
+]
+
+{ #category : 'accessing' }
+TypeTest >> datetimeTimezoneAware [
+
+	^ datetimeTimezoneAware
+]
+
+{ #category : 'accessing' }
+TypeTest >> datetimeTimezoneAware: anObject [
+
+	datetimeTimezoneAware := anObject
+]
+
+{ #category : 'accessing' }
+TypeTest >> datetimeTimezoneAwareWithMilliseconds [
+
+	^ datetimeTimezoneAwareWithMilliseconds
+]
+
+{ #category : 'accessing' }
+TypeTest >> datetimeTimezoneAwareWithMilliseconds: anObject [
+
+	datetimeTimezoneAwareWithMilliseconds := anObject
 ]
 
 { #category : 'accessing' }

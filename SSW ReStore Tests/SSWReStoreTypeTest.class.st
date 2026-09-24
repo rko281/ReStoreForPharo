@@ -53,6 +53,8 @@ SSWReStoreTypeTest >> createTestData [
 		time: time;
 		datetime: datetime;
 		datetimeWithMilliseconds: datetimeWithMilliseconds;
+		datetimeTimezoneAware: datetime;
+		datetimeTimezoneAwareWithMilliseconds: datetimeWithMilliseconds;
 
 		trueBoolean: true;
 		falseBoolean: false;
@@ -150,7 +152,83 @@ SSWReStoreTypeTest >> testDateTimeQuery [
 	self assert: t notNil
 ]
 
-{ #category : 'public' }
+{ #category : 'unit tests' }
+SSWReStoreTypeTest >> testDateTimeTimezoneAwareness [
+
+	"Verify that timezone-aware DateAndTime field values adjust themselves based on the session UTC offset but non-aware field values stay the same"
+
+	| utcOffset skew |
+
+	reStore sqlDialect datetimeTimezoneAware isNil ifTrue: [^self].
+
+	self assert: typeTest datetime equals: datetime.
+	self assert: typeTest datetimeWithMilliseconds equals: datetimeWithMilliseconds.
+	self assert: typeTest datetime displayString equals: datetime displayString.
+	self assert: typeTest datetimeWithMilliseconds displayString equals: datetimeWithMilliseconds displayString.
+
+	utcOffset := reStore connection utcOffset.	
+	self assert: typeTest datetimeTimezoneAware equals: datetime.
+	self assert: typeTest datetimeTimezoneAwareWithMilliseconds equals: datetimeWithMilliseconds.
+	self assert: typeTest datetimeTimezoneAware displayString equals: datetime displayString.
+	self assert: typeTest datetimeTimezoneAwareWithMilliseconds displayString equals: datetimeWithMilliseconds displayString.
+	self assert: typeTest datetimeTimezoneAware offset equals: utcOffset.
+	self assert: typeTest datetimeTimezoneAwareWithMilliseconds offset equals: utcOffset.
+	
+	reStore simulateReconnect.
+
+	utcOffset positive
+		ifTrue: [skew := -2 hours]
+		ifFalse: [skew := 2 hours].
+	reStore connection utcOffset: (utcOffset + skew).
+
+	self readTypeTest.
+
+	"Non-timezone-aware DateTimes will have no changes at all"
+	self assert: typeTest datetime equals: datetime.
+	self assert: typeTest datetimeWithMilliseconds equals: datetimeWithMilliseconds.
+	self assert: typeTest datetime displayString equals: datetime displayString.
+	self assert: typeTest datetimeWithMilliseconds displayString equals: datetimeWithMilliseconds displayString.
+
+	"Timezone-aware DateTimes will still compare equal (since only the timezone has changed, not the absolute time) but will have different display strings and UTC offsets"
+	self assert: typeTest datetimeTimezoneAware equals: datetime.
+	self assert: typeTest datetimeTimezoneAwareWithMilliseconds equals: datetimeWithMilliseconds.
+	self deny: typeTest datetimeTimezoneAware displayString equals: datetime displayString.
+	self deny: typeTest datetimeTimezoneAwareWithMilliseconds displayString equals: datetimeWithMilliseconds displayString.
+	self assert: typeTest datetimeTimezoneAware offset equals: (utcOffset + skew).
+	self assert: typeTest datetimeTimezoneAwareWithMilliseconds offset equals: (utcOffset + skew)
+]
+
+{ #category : 'unit tests' }
+SSWReStoreTypeTest >> testDateTimeTimezoneAwarenessQuery [
+
+	"Verify querying on Datetime fields which are timezone-aware"
+
+	| utcOffset skewedDatetime |
+
+	reStore sqlDialect datetimeTimezoneAware isNil ifTrue: [^self].
+
+	self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each datetime = datetime] ifNone: [nil]) identicalTo: typeTest.
+	self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each datetimeTimezoneAware = datetime] ifNone: [nil]) identicalTo: typeTest.
+	
+	utcOffset := reStore connection utcOffset.
+	utcOffset positive
+		ifTrue: [skewedDatetime := datetime offset: -2 hours]
+		ifFalse: [skewedDatetime := datetime offset: 2 hours].
+
+	"Non-timezone aware datetime should no longer match but timezone-aware should"
+	self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each datetime = skewedDatetime] ifNone: [nil]) isNil.
+
+	"MySQL doesn't support adding a UTC offset when using bound parameters - use hardcoded comparison instead"
+	(reStore sqlDialect isKindOf: SSWMySQLDialect)
+	ifTrue: 
+		[reStore sqlDialect sqlFunctions at: #hardcodedEquality: put: '%1=''%$2''' asSQLFunctionBooleanResult.
+		self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each datetimeTimezoneAware hardcodedEquality: skewedDatetime] ifNone: [nil]) identicalTo: typeTest]
+	ifFalse: 
+		[self assert: ((TypeTest storedInstancesIn: reStore) detect: [ :each | each datetimeTimezoneAware = skewedDatetime] ifNone: [nil]) identicalTo: typeTest]
+
+]
+
+{ #category : 'unit tests' }
 SSWReStoreTypeTest >> testDateTimeWithMilliseconds [
 
 	reStore sqlDialect maxDateTimeResolution < 3 ifTrue: [^self].

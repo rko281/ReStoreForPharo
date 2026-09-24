@@ -234,6 +234,27 @@ SSWSQLDialect >> datetime [
 ]
 
 { #category : 'datatypes' }
+SSWSQLDialect >> datetimeTimezoneAware [
+
+	"Answer the SQL type in this dialect which represents a timezone-aware date and time.
+	This is normally converted from the session's timezone to UTC when written and converted back to the session's timezone on retrieval.
+	This contrasts with the datetime type which will always answer the written value, regardless of the session timezone when written / retrieved"
+
+	"Answer nil if not supported - in this case datetime is used as a fallback.
+	Note the current implementation of ODBC does not include support for SQL_TYPE_TIMESTAMP_WITH_TIMEZONE so typically only native dialects will answer a non-nil value for this"
+	^nil
+]
+
+{ #category : 'datatypes' }
+SSWSQLDialect >> datetimeTimezoneAwareWithResolution [
+
+	"See datetimeTimezoneAware and datetimeWithResolution"
+
+	"Default - not supported"
+	^nil
+]
+
+{ #category : 'datatypes' }
 SSWSQLDialect >> datetimeWithResolution [
 
 	"Parameter is resolution (0=seconds, 3=milliseconds etc.)"

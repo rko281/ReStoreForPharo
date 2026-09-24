@@ -131,6 +131,13 @@ SSWMySQLConnection >> isMariaDB [
 	^'*MariaDB*' match: self versionString
 ]
 
+{ #category : 'connection open/close' }
+SSWMySQLConnection >> postConnect [
+
+	self syncTimeZone.
+	self sqlDialect onConnected: self
+]
+
 { #category : 'accessing' }
 SSWMySQLConnection >> prepare: queryString [
 
@@ -161,12 +168,40 @@ SSWMySQLConnection >> sqlDialectClass [
 		ifFalse: [SSWMySQLNativeDialect]
 ]
 
+{ #category : 'connection open/close' }
+SSWMySQLConnection >> syncTimeZone [
+
+	| localeOffset |
+
+	"Ensure the session timezone matches the Locale"
+	localeOffset := DateAndTime localOffset.
+	self utcOffset = localeOffset 
+		ifTrue: [MySQLBinaryReader default utcOffset: nil]
+		ifFalse: [self utcOffset: localeOffset]
+]
+
 { #category : 'accessing' }
 SSWMySQLConnection >> tablesInNamespace: aString [
 
 	^(((aString isNil or: [aString = self sqlDialect standardNamespace])
 		ifTrue: [ self execute: 'SHOW TABLES' ]
 		ifFalse: [ self execute: 'SHOW TABLES IN ', (self sqlDialect asIdentifier: aString) ]) collect: [ :row | row first ]) asOrderedCollection
+]
+
+{ #category : 'public API - introspection' }
+SSWMySQLConnection >> utcOffset [
+
+	"Query result will be a Time if positive or Duration if negative"
+	^Duration seconds: ((self exec: 'SELECT TIMEDIFF(NOW(), UTC_TIMESTAMP);') first at: 1) asSeconds
+]
+
+{ #category : 'public API - introspection' }
+SSWMySQLConnection >> utcOffset: aDuration [
+
+	self exec: 'set @@session.time_zone = <1p>' << ((aDuration positive ifTrue: [ '+', (aDuration printString allButFirst: 2) ] ifFalse: [ '-', (aDuration printString allButFirst: 3) ]) allButLast: 3).
+
+	"Also update the reader"
+	MySQLBinaryReader default utcOffset: aDuration
 ]
 
 { #category : 'accessing' }

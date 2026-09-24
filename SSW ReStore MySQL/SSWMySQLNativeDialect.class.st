@@ -13,6 +13,18 @@ SSWMySQLNativeDialect class >> isNative [
 	^true
 ]
 
+{ #category : 'datatypes' }
+SSWMySQLNativeDialect >> datetimeTimezoneAware [
+
+	^'TIMESTAMP'
+]
+
+{ #category : 'datatypes' }
+SSWMySQLNativeDialect >> datetimeTimezoneAwareWithResolution [
+
+	^'TIMESTAMP(<1p>)'
+]
+
 { #category : 'constants' }
 SSWMySQLNativeDialect >> postLoginScript [
 
