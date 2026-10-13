@@ -2165,15 +2165,6 @@ SSWReStore >> swapAll: aCollection using: aProxySwapperClass [
 ]
 
 { #category : 'proxy swapping' }
-SSWReStore >> swapAllRecursively: aCollection [
-
-	"Swap aCollection of objects, recursing into contained persistent objects and collections.
-	Answer the Swapper"
-
-	^self swapAll: aCollection using: SSWDBRecursiveProxySwapper
-]
-
-{ #category : 'proxy swapping' }
 SSWReStore >> swapObjectsRecoveredDuring: aBlock [
 
 	"Evaluate aBlock. Any objects newly-recovered during its evaluation will then be swapped."
@@ -2391,15 +2382,6 @@ SSWReStore >> unswapAll: aCollection using: aProxySwapperClass [
 	^(aProxySwapperClass newFor: self) 
 		unswapAll: aCollection;
 		yourself
-]
-
-{ #category : 'proxy swapping' }
-SSWReStore >> unswapAllRecursively: aCollection [
-
-	"Unswap aCollection of objects, recursing into contained persistent objects and collections.
-	Answer the Swapper"
-
-	^self unswapAll: aCollection using: SSWDBRecursiveProxySwapper
 ]
 
 { #category : 'initialize/release' }

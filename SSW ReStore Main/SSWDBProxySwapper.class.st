@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'reStore',
-		'proxiesMap'
+		'proxies',
+		'objects'
 	],
 	#category : 'SSW ReStore Main',
 	#package : 'SSW ReStore Main'
@@ -55,7 +56,7 @@ SSWDBProxySwapper >> add: aProxyOrObject [
 { #category : 'adding' }
 SSWDBProxySwapper >> addAll: aCollection [
 
-	proxiesMap isNil ifTrue: [self initialize: aCollection size].
+	proxies isNil ifTrue: [self initialize: aCollection size].
 
 	^aCollection do: [ :each | self add: each]
 ]
@@ -78,7 +79,8 @@ SSWDBProxySwapper >> addProxy: aDBProxy [
 { #category : 'adding' }
 SSWDBProxySwapper >> addProxy: aProxy forObject: anObject [
 
-	proxiesMap at: aProxy put: anObject.
+	proxies addLast: aProxy.
+	objects addLast: anObject.
 	^aProxy
 ]
 
@@ -87,25 +89,24 @@ SSWDBProxySwapper >> initialize: anInteger [
 
 	self initialize.
 		
-	proxiesMap := IdentityDictionary new: anInteger
+	"Use a parallel pair of OrderedCollections to record proxies and their objects to be swapped.
+	This is more performant than the previous IdentityDictionary implementation but does not prevent duplicate additions.
+	Subclasses must therefore be tolerant of potential duplicates (e.g. via checks in the swapAllWhere: block) 
+	or their client code must not introduce them"
+	proxies := OrderedCollection new: anInteger.
+	objects := OrderedCollection new: anInteger
 ]
 
 { #category : 'testing' }
 SSWDBProxySwapper >> isEmpty [
 
-	^proxiesMap isEmpty
+	^proxies isEmpty
 ]
 
 { #category : 'enumerating' }
 SSWDBProxySwapper >> proxiesDo: aBlock [
 
-	^proxiesMap keysDo: aBlock
-]
-
-{ #category : 'accessing' }
-SSWDBProxySwapper >> proxiesMap [
-
-	^proxiesMap
+	^proxies do: aBlock
 ]
 
 { #category : 'accessing' }
@@ -125,14 +126,19 @@ SSWDBProxySwapper >> reswap [
 	Reverse the map to reflect that a swap has previously occurred then reswap objects back into place"
 
 	^reStore ensureHasTransactionCritical: [
-		| reversedMap |
+		| reversedProxies reversedObjects |
 
-		reversedMap := IdentityDictionary new: proxiesMap size.
-		proxiesMap do: 
+		reversedProxies := OrderedCollection new: proxies size.
+		reversedObjects := reversedProxies copy.
+		objects do: 
 			[ :proxy |
 			proxy isDBProxy ifTrue:  "<- filter out locally deleted objects"
-				[proxy _proxiedObject ifNotNil: [ :object | reversedMap at: proxy put: object]]].
-		proxiesMap := reversedMap.
+				[proxy _proxiedObject ifNotNil: 
+					[ :object | .
+					reversedProxies addLast: proxy.
+					reversedObjects addLast: object ]]].
+		proxies := reversedProxies.
+		objects := reversedObjects.
 
 		self _swap]
 ]
@@ -156,21 +162,21 @@ SSWDBProxySwapper >> swapAll: aCollection [
 { #category : 'helpers' }
 SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 
-	| proxies objects |
+	| swapProxies swapObjects |
 
-	proxies := OrderedCollection new: proxiesMap size.
-	objects := proxies copy.
+	swapProxies := OrderedCollection new: proxies size.
+	swapObjects := swapProxies copy.
 
-	proxiesMap keysAndValuesDo: [ :proxy :object |
+	proxies with: objects do: [ :proxy :object |
 		(preBlock value: proxy) ifTrue: [
 			proxy _preSwapReferences.
-			proxies add: proxy.
-			objects add: object ] ].
+			swapProxies add: proxy.
+			swapObjects add: object ] ].
 
-	proxies asArray elementsExchangeIdentityWith: objects asArray.
+	swapProxies asArray elementsExchangeIdentityWith: swapObjects asArray.
 
-	proxies
-		with: objects
+	swapProxies
+		with: swapObjects
 		do: [ :object :proxy | "<- arguments reversed following the swap"
 			proxy
 				_setProxiedObject: object;
