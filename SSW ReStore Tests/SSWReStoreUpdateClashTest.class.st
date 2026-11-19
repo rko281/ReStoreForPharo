@@ -116,7 +116,7 @@ SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 	self prvTestOwnerTest: inst2 in: reStore2
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 
 	"Check detect and fail (independent changes but merge prevented)"
@@ -133,7 +133,7 @@ SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 	self deny: (reStore2 evaluateAsTransaction: [inst2 number: 99]). 
 
 	reStore2 rollbackAndRefreshTransaction.
-	self deny: (reStore2 hasTransaction).
+	self deny: reStore2 isTransactionInProgress.
 	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = 'blockMerge').
 	self assert: (inst2 number = oldNumber).
@@ -145,10 +145,9 @@ SSWReStoreUpdateClashTest >> test02DetectNoMerge [
 	self assert: (inst2 name = 'blockMerge').
 
 	self prvTestOwnerTest: inst2 in: reStore2
-	
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 
 	"Check detect-fail-rollback"
@@ -163,7 +162,7 @@ SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 	self deny: (reStore2 evaluateAsTransaction: [inst2 name: 'test2:2'. inst2 single1 name: 'single2:2']).
 
 	reStore2 rollbackAndRefreshTransaction.
-	self deny: (reStore2 hasTransaction).
+	self deny: reStore2 isTransactionInProgress.
 	self assert: (inst1 isDBProxy).
 	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = 'test2:1').
@@ -212,7 +211,7 @@ SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 	self assert: (inst2 single1 name = 'single3:2')
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 
 	"Check detect-fail-handle-pass"
@@ -227,8 +226,8 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: (reStore evaluateAsTransaction: [inst1 single1 name: 'single4:1']).
 	self assert: (reStore2 evaluateAsTransaction: [inst2 name: 'test4:2'. inst2 single1 name: 'single4:2']).
 
-	self assert: (inst1 isDBProxy).
-	self assert: (inst1 isDBProxy).
+	self deny: (inst1 isDBProxy).
+	self assert: (inst2 isDBProxy).
 	self assert: (inst1 single1 isDBProxy).
 	self assert: (inst1 single1 _proxiedObject name = 'single4:1').	"Change not picked up till refresh"
 	self assert: (inst1 single1 _copyObject name = 'single4:1').		"Change not picked up till refresh"
@@ -337,7 +336,7 @@ SSWReStoreUpdateClashTest >> test08DetectFailWithDeleteRollforward [
 	self deny: ((inst2 single1 class storedInstancesIn: reStore2) anySatisfy: [ :each | each _id = id])
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 
 	"Check update clashes to the NEXT_ID table are correctly handled, and without failing the transaction"
@@ -347,10 +346,10 @@ SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 	record1 := reStore tableRecordFor: (reStore tableForClass: Test).
 	record2 := reStore2 tableRecordFor: (reStore2 tableForClass: Test).
 
-	self assert: record1 nextID equals: record2 nextID.
+	self assert: record1 _proxiedObject nextID equals: record2 _proxiedObject nextID.
 
 	"Create new instances in both reStores; ensure commits succeed and nextIDs are updated accordingly in the order of commit"
-	nextID := record1 nextID.
+	nextID := record1 _proxiedObject nextID.
 	obj1 := Test new name: 'one'.
 	obj2 := Test new name: 'two'.
 
@@ -360,8 +359,8 @@ SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 	self assert: obj1 _id equals: nextID.
 	self assert: obj2 _id equals: nextID + 1.
 
-	self assert: record1 nextID equals: nextID + 1.
-	self assert: record2 nextID equals: nextID + 2.
+	self assert: record1 _proxiedObject nextID equals: nextID + 1.
+	self assert: record2 _proxiedObject nextID equals: nextID + 2.
 
 	"Try again reversing order"
 	nextID := record2 nextID. "record2 is most up-to-date"
@@ -378,7 +377,7 @@ SSWReStoreUpdateClashTest >> test10ObjectNextIDClash [
 	self assert: record1 nextID equals: nextID + 2
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 
 	"Check update clashes to the NEXT_ID table for collection tables are correctly handled, and without failing the transaction"
@@ -391,10 +390,10 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 	record1 := reStore tableRecordFor: ((reStore tableForClass: OwnerTest) collectionAccessing: #ordered) collectionTable.
 	record2 := reStore2 tableRecordFor: ((reStore2 tableForClass: OwnerTest) collectionAccessing: #ordered) collectionTable.
 
-	self assert: record1 nextID equals: record2 nextID.
+	self assert: record1 _proxiedObject nextID equals: record2 _proxiedObject nextID.
 
 	"Add new instances in both reStores; ensure commits succeed and nextIDs are updated accordingly in the order of commit"
-	nextID := record1 nextID.
+	nextID := record1 _proxiedObject nextID.
 	inst1 ordered add: (Test new name: 'one').
 	inst2 ordered add: (Test new name: 'two').
 
@@ -404,8 +403,8 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 	self assert: inst1 ordered _collectionEntries last entryID equals: nextID.
 	self assert: inst2 ordered _collectionEntries last entryID equals: nextID + 1.
 
-	self assert: record1 nextID equals: nextID + 1.
-	self assert: record2 nextID equals: nextID + 2.
+	self assert: record1 _proxiedObject nextID equals: nextID + 1.
+	self assert: record2 _proxiedObject nextID equals: nextID + 2.
 
 	"Try again reversing order"
 	nextID := record2 nextID. "record2 is most up-to-date"

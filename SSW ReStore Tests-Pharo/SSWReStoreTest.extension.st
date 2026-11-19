@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStoreTest }
+Extension { #name : 'SSWReStoreTest' }
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> addMethod: aCompiledMethod withSelector: aSymbol toClass: aClass [
 
 	"Add/replace the method named aSymbol in aClass with aCompiledMethod.
@@ -8,19 +8,19 @@ SSWReStoreTest >> addMethod: aCompiledMethod withSelector: aSymbol toClass: aCla
 	aClass methodDictionary at: aSymbol put: aCompiledMethod
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> debugStream [
 
 	^nil
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> errorPrefix [
 
 	^'Error: '
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> initConnectionFor: aReStore [
 
 	"Use SQLite in memory"
@@ -33,13 +33,13 @@ SSWReStoreTest >> initConnectionFor: aReStore [
 	aReStore connection: (SSWMySQLConnection new connectionSpec: (MySQLDriverSpec new db: 'database'; host: '192.168.1.234'; port: 3306; user: 'user'; password: 'pwd'; yourself); yourself)"
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> isDolphin [
 
 	^false
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest class >> listModelClass [
 
 	"Not in Pharo"
@@ -47,7 +47,7 @@ SSWReStoreTest class >> listModelClass [
 	^OrderedCollection
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest class >> listModelOn: aCollection [
 
 	"Not in Pharo"
@@ -55,19 +55,19 @@ SSWReStoreTest class >> listModelOn: aCollection [
 	^aCollection
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> removeSelector: aSymbol fromClass: aClass [
 
 	aClass methodDictionary removeKey: aSymbol
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest >> should: aBlock raise: anErrorClass matching: errorBlock [
 
 	self assert: ([aBlock value. false] on: anErrorClass do: [  :exc | exc return: (errorBlock value: exc) ])
 ]
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTest class >> shouldInheritSelectors [ 
 
 	^true

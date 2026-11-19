@@ -13,6 +13,7 @@ Class {
 	],
 	#classVars : [
 		'IsDeletedMask',
+		'IsDirtyMask',
 		'IsPersistentMask',
 		'IsSwappedMask'
 	],
@@ -25,7 +26,8 @@ SSWDBProxy class >> initialize [
 
 	IsSwappedMask := 1.
 	IsPersistentMask := 2.
-	IsDeletedMask := 4
+	IsDeletedMask := 4.
+	IsDirtyMask := 8
 ]
 
 { #category : 'instance creation' }
@@ -47,7 +49,9 @@ SSWDBProxy >> __ensureActive [
 	c.f. _ensureActiveIn:, which is a distinct method sent only by objects external to the proxy mechanism.
 	__ensureActive is sent internally within the proxy mechanism, 
 	hence the receipt of the message cannot be taken as a guarantee of non-activity"
-	
+
+	self _isSwapped ifTrue: [^self __referenced].
+
 	proxiedObject == nil ifTrue: [self _recoverProxiedObject].
 
 	(reStore transaction includesProxy: self) ifFalse: [self _referenced]
@@ -64,6 +68,7 @@ SSWDBProxy >> __proxiedObject: anObject [
 { #category : 'actions-internal' }
 SSWDBProxy >> __referenced [
 
+	self _setDirty.
 	reStore addToTransaction: self
 ]
 
@@ -105,6 +110,12 @@ SSWDBProxy >> _clearDeleted [
 	"Private - Clear deleted status"
 
 	flags := flags maskClear: IsDeletedMask
+]
+
+{ #category : 'actions-internal' }
+SSWDBProxy >> _clearDirty [
+
+	flags := flags maskClear: IsDirtyMask
 ]
 
 { #category : 'actions-internal' }
@@ -158,6 +169,13 @@ SSWDBProxy >> _dbProxyIfNone: aBlock [
 SSWDBProxy >> _dbProxyIn: aReStore [
 	
 	^self _dbProxyIn: aReStore ifNone: [self error: 'proxy does not belong to aReStore']
+]
+
+{ #category : 'accessing:direct' }
+SSWDBProxy >> _dbProxyIn: aReStore do: aBlock [
+
+	self validateReStore: aReStore.
+	^aBlock value: self
 ]
 
 { #category : 'accessing:direct' }
@@ -257,7 +275,8 @@ SSWDBProxy >> _forceRefreshWithContents [
 SSWDBProxy >> _forgetProxiedObject [
 
 	"Dispose of the reference to the receiver's proxiedObject"
-	
+
+	reStore removeProxiedObjectFromTransaction: proxiedObject.
 	proxiedObject := nil
 ]
 
@@ -281,7 +300,7 @@ SSWDBProxy >> _hasChanged [
 	actually changed, then the receiver will next be sent _prepareToCommit. 
 	Subclasses may take advantage by caching some of the work done here"
 
-	^self _checkHasChanged
+	^self _isDirty and: [self _checkHasChanged]
 ]
 
 { #category : 'testing' }
@@ -296,6 +315,12 @@ SSWDBProxy >> _isDeleted [
 	"Return a Boolean indicating whether the receiver is marked as deleted"
 	
 	^flags anyMask: IsDeletedMask
+]
+
+{ #category : 'actions-internal' }
+SSWDBProxy >> _isDirty [
+
+	^flags anyMask: IsDirtyMask
 ]
 
 { #category : 'testing' }
@@ -353,7 +378,7 @@ SSWDBProxy >> _postCommitChanges [
 	"The receiver's changes have been successfully committed.
 	Carry out any necessary internal updates"
 
-	^self
+	self _clearDirty
 ]
 
 { #category : 'actions-internal' }
@@ -568,7 +593,9 @@ SSWDBProxy >> _rollbackChanges [
 	"Forget changes to the receiver.
 	By default, this is done by forgetting about the proxiedObject (forcing a re-read)"
 	
-	self _forgetProxiedObject
+	self 
+		_clearDirty;
+		_forgetProxiedObject
 ]
 
 { #category : 'actions-internal' }
@@ -587,6 +614,12 @@ SSWDBProxy >> _setDeleted [
 	"Private - Set the receiver's state to mark it as deleted from the database (assuming the commit completes)"
 
 	flags := flags maskSet: IsDeletedMask
+]
+
+{ #category : 'actions-internal' }
+SSWDBProxy >> _setDirty [
+
+	flags := flags maskSet: IsDirtyMask
 ]
 
 { #category : 'actions-internal' }
@@ -671,7 +704,13 @@ SSWDBProxy >> _swapReferences [
 	me := proxiedObject.
 	him := self.
 
-	proxiedObject become: self.
+	proxiedObject isImmutable 
+	ifTrue: 
+		[proxiedObject isImmutable: false.
+		 proxiedObject become: self.
+		him isImmutable: true ]
+	ifFalse: 
+		[ proxiedObject become: self].
 
 	me _setProxiedObject: him.
 	me _postSwapReferences.

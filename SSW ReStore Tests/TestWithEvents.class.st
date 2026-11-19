@@ -53,7 +53,13 @@ TestWithEvents >> onRefresh [
 { #category : 'event handling' }
 TestWithEvents >> onRollback [
 
-	count := nil
+	self isImmutable 
+	ifTrue: 
+		[ self isImmutable: false.
+		count := nil.
+		self isImmutable: true ] 
+	ifFalse:
+		[ count := nil]
 ]
 
 { #category : 'removing' }

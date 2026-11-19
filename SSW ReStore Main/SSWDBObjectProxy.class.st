@@ -325,6 +325,8 @@ SSWDBObjectProxy >> _postCommitChanges [
 	"The receiver's changes have successfully been committed.
 	Complete follow-on work"
 
+	self _clearDirty.
+
 	^self _isPersistent
 	ifTrue:
 		[self _isDeleted
@@ -453,6 +455,8 @@ SSWDBObjectProxy >> _refreshFromRow: aDatabaseRow table: aDBTable [
 { #category : 'actions-internal' }
 SSWDBObjectProxy >> _rollbackChanges [
 
+	self _clearDirty.
+
 	self _isPersistent
 	ifTrue:
 		[self _isDeleted
@@ -503,7 +507,7 @@ SSWDBObjectProxy >> _storeNonPersistentComponents [
 		ifNil: 
 			[(self _collectionProxyFor: collectionSpec)
 				_setProxiedObject: collectionSpec newCollection;
-				_referenced]
+				__referenced]
 		ifNotNil: 
 			[ :collection || proxy |
 			collection isDBProxy ifFalse: 
@@ -513,7 +517,7 @@ SSWDBObjectProxy >> _storeNonPersistentComponents [
 					(reStore transaction proxyForObject: collection ifNone: [nil]) isNil ifFalse: [self error: 'attempt to assign collection to >1 persistent object'].
 					proxy 
 						_setProxiedObject: collection; 
-						_referenced]]]]
+						__referenced]]]]
 ]
 
 { #category : 'accessing:derived' }

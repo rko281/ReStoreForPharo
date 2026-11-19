@@ -304,7 +304,7 @@ SSWReStoreRefreshTest >> test26 [
 	self deny: inst2 hasChanged
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test31 [
 
 	"owned collections - refresh with contents - change auto-detect/touch of single object"
@@ -329,22 +329,22 @@ SSWReStoreRefreshTest >> test31 [
 	self assert: (inst1 ownedOrdered first == test1).
 	self assert: (test1 name = origName).
 
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	self usesVersioning ifTrue: [self assert: (test1 _version = ver1)].
 
 	"Re-read; test1 should now be updated"
 	inst1 ownedOrdered _forgetProxiedObject.
 	self assert: (test1 name = origName).
 
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	self assert: (inst1 ownedOrdered first == test1).	"<< will re-read ordered"
 	self assert: (test1 name = 'ownedMod').
 	self usesVersioning ifTrue: 
-		[reStore rollbackTransaction.
+		[reStore softRollbackAndSwap.
 		self assert: (test1 _version = (ver1 + 1))]
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test32 [
 
 	"general collections - refresh with contents - change auto-detect/touch of single object"
@@ -368,17 +368,16 @@ SSWReStoreRefreshTest >> test32 [
 	self assert: (test1 name = 'ordered1').
 
 	"Rollback and re-read; test1 should now be updated"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	inst1 ordered _forgetProxiedObject.
 	self assert: (test1 name = 'ordered1').
 
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	self assert: (inst1 ordered first == test1).	"<< will re-read ordered"
 	self assert: (test1 name = 'ordered1mod')
-
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test33 [
 
 	"owned collections - refresh with contents - change auto-detect/touch of collection object"
@@ -405,7 +404,7 @@ SSWReStoreRefreshTest >> test33 [
 	self deny: (inst2 ownedOrdered anySatisfy: [ :e | e name = 'testA2']).
 
 	"Rollback then touch one"
-	reStore2 rollbackTransaction.
+	reStore2 softRollbackAndSwap.
 	inst2 ownedOrdered _proxiedObject "<-collection proxies now swap their elements when touched, need to avoid this for this test" last name.
 
 	"Read them"
@@ -416,7 +415,7 @@ SSWReStoreRefreshTest >> test33 [
 	self deny: (inst2 ownedOrdered last name = 'testA2').
 
 	"Untouch and re-read"
-	reStore2 rollbackTransaction.
+	reStore2 softRollbackAndSwap.
 	(Test storedInstancesIn: reStore2) asOrderedCollection.
 
 	"Should now have picked up the change"
@@ -424,7 +423,7 @@ SSWReStoreRefreshTest >> test33 [
 	self assert: (inst2 ownedOrdered last name = 'testA2')
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test34 [
 
 	"general collections - refresh with contents - change auto-detect/touch of collection object"
@@ -451,7 +450,7 @@ SSWReStoreRefreshTest >> test34 [
 	self deny: (inst2 ordered anySatisfy: [ :e | e name = 'testB2']).
 
 	"Rollback then touch one"
-	reStore2 rollbackTransaction.
+	reStore2 softRollbackAndSwap.
 	inst2 ordered _proxiedObject "<-collection proxies now swap their elements when touched, need to avoid this for this test" last name.
 
 	"Read them"
@@ -462,7 +461,7 @@ SSWReStoreRefreshTest >> test34 [
 	self deny: (inst2 ordered last name = 'testB2').
 
 	"Untouch and re-read"
-	reStore2 rollbackTransaction.
+	reStore2 softRollbackAndSwap.
 	(Test storedInstancesIn: reStore2) asOrderedCollection.
 
 	"Should now have picked up the change"
@@ -470,7 +469,7 @@ SSWReStoreRefreshTest >> test34 [
 	self assert: (inst2 ordered last name = 'testB2')
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test35 [
 
 	"test only actual changed things are updated"
@@ -488,7 +487,7 @@ SSWReStoreRefreshTest >> test35 [
 	self assert: (inst2 number = 123).
 
 	"Rollback and refresh - shouldn't do anything as no change"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 123).
@@ -500,7 +499,7 @@ SSWReStoreRefreshTest >> test35 [
 	self refreshDelay.
 
 	"Rollback, touch and refresh - shouldn't do anything due to touch"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	inst1 name.
 	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
@@ -508,7 +507,7 @@ SSWReStoreRefreshTest >> test35 [
 	self assert: (inst1 name == name1).
 
 	"Rollback and refresh - should update, but only number"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 	(OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	self assert: (inst1 name = 'owner').
 	self assert: (inst1 number = 987).
@@ -516,7 +515,7 @@ SSWReStoreRefreshTest >> test35 [
 	self assert: (inst1 refreshCount = 1)
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 
 	"Check it doesn't update when toched/does when not touched"
@@ -550,7 +549,7 @@ SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 				collect: [ :each | each number]) asSortedCollection asArray = #(1 2 3 4 5 6 7 8 9 10)).
 
 	"Rollback - they'll then refresh themselves when their row is brought in"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 
 	"...but for fun, we'll touch a couple of them"
 	realInsts first name.
@@ -562,13 +561,12 @@ SSWReStoreRefreshTest >> test40QueryingShouldRefresh [
 				collect: [ :each | each number]) asSortedCollection asArray = #(1 2 13 14 15 16 17 18 19 20)).
 
 	"And finally we'll refresh 'em all"
-	reStore rollbackTransaction.
+	reStore softRollbackAndSwap.
 
 	self assert:
 		(((insts
 			asOrderedCollection)
 				collect: [ :each | each number]) asSortedCollection asArray = #(11 12 13 14 15 16 17 18 19 20)).
-
 ]
 
 { #category : 'unit tests' }

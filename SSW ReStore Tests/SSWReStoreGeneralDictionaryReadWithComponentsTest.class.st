@@ -90,7 +90,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollection [
 	self validateKeysAlreadyFetched
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollectionKey [
 
 	| allCustomers testAddress originalPostcode |
@@ -108,7 +108,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> testRefreshCollectionKey [
 	self assert: testAddress postcode equals: originalPostcode.
 
 	"Following a soft rollback however we should pick it up"
-	reStore softRollback.
+	reStore softRollbackAndSwap.
 	allCustomers fetch: #orders.
 	self assert: testAddress postcode equals: 'x'.
 	self assert: ((SimpleAddress storedInstancesIn: reStore) select: [ :each | each postcode = 'x']) size equals: 1

@@ -85,7 +85,7 @@ SSWDBObjectWithComponents >> _refreshIn: aReStore with: aBlock [
 
 	"Private - Refresh objects represented by the receiver by evaluating each one with aBlock. Each evaluation should return a collection of refreshed objects"
 
-	| all evaluated |
+	| all needingRollback evaluated |
 
 	"Refresh happens immediately so may cause some items to be skipped; examples: 
 	 - item added to collection in this session; refresh of collection removes it
@@ -93,6 +93,9 @@ SSWDBObjectWithComponents >> _refreshIn: aReStore with: aBlock [
 	To prevent these objects being skipped we first accumulate all items"
 	all := IdentitySet new.
 	self withComponentsIn: aReStore do: [ :each | all add: each].
+
+	needingRollback := all reject: [ :each | each isDBProxy or: [each isValidForPersistence]].
+	needingRollback isEmpty ifFalse: [aReStore rollbackAll: needingRollback ].
 
 	evaluated := self exclusions copy.
 	self withComponentsIn: aReStore do: [ :each | evaluated addAll: (aBlock value: each)] visited: self exclusions copy evaluated: evaluated.

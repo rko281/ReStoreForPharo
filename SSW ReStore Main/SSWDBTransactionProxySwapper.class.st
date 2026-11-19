@@ -53,8 +53,7 @@ SSWDBTransactionProxySwapper >> _unswap [
 
 	self
 		swapAllWhere: [ :proxy | proxy _preUnswap. true ]
-		postAction: [ :proxy | "ASSERT: We are removing everything from #currentReferencedObjects, so we don't need to remove one by one"
-			 ].
+		postAction: [ :proxy | proxy _reStore removeProxiedObjectFromTransaction: proxy ]
 ]
 
 { #category : 'operations' }
@@ -75,4 +74,14 @@ SSWDBTransactionProxySwapper >> addProxy: aProxy [
 	"We are used internal to the transaction mechanism,
 	so must be willing to swap proxies that are not yet persistent, i.e. about to be stored."
 	^ self addProxy: aProxy forObject: aProxy _proxiedObject
+]
+
+{ #category : 'operations' }
+SSWDBTransactionProxySwapper >> bookmark: aCollection [
+
+	aCollection isEmpty ifFalse: 
+		[self reStore: aCollection anyOne _reStore.
+		self 
+			initialize: aCollection size;
+			addAll: aCollection]
 ]

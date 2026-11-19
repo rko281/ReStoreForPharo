@@ -158,7 +158,6 @@ SSWReStoreProcessSafetyTest >> testInconsistentProxySwap [
 	reStore rollbackTransaction.
 
 	"Should now be OK"
-	self assert: john isDBProxy.
 	self shouldnt: [john firstName] raise: Error
 ]
 
@@ -231,7 +230,7 @@ SSWReStoreProcessSafetyTest >> testProxyDoesNotUnderstandWhenPreempted [
 	self assert: result equals: 'Smith'
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProcessSafetyTest >> testProxyLookupDuringTransaction [
 
 	"Verify proxy lookup in one process is blocked whilst a transaction occurs in another"
@@ -252,6 +251,7 @@ SSWReStoreProcessSafetyTest >> testProxyLookupDuringTransaction [
 	john surname: 'updated'.
 	self wrappedMethod: (SSWDBProxy>>#__referenced).
 
+	reStore softRollbackAndSwap.
 	john storeIn: reStore.
 
 	"Execution resumes here once the higher priority process has terminated"

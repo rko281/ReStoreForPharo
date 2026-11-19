@@ -22,11 +22,7 @@ Object >> _checkHasChangedIn: aReStore [
 { #category : '*SSW ReStore Main' }
 Object >> _commitIn: aReStore [
 
-	"Should only be sent when all proxied objects have been swapped out to their proxy,
-	therefore the receiver is not currently persistent, therefore store it"
-
-	"...however if the object is encountered multiple times during a commitObjects: operation, its proxy will have flipped to the object"
-	(aReStore isInCurrentTransaction: self) ifFalse: 
+	(aReStore ensureIsActiveInCurrentTransaction: self) ifFalse: 
 		"isValidForPersistence test excludes base object types (String, Number etc.)"
 		[self isValidForPersistence ifFalse: [self storeInAnsweringProxy: aReStore]]
 ]
@@ -56,6 +52,14 @@ Object >> _dbProxyIn: aReStore [
 ]
 
 { #category : '*SSW ReStore Main' }
+Object >> _dbProxyIn: aReStore do: aBlock [
+
+	"Evaluate aBlock with the receiver's proxy if it has one. Otherwise do nothing"
+
+	^(self _dbProxyIn: aReStore ifNone: [nil]) ifNotNil: [ :proxy | aBlock value: proxy]
+]
+
+{ #category : '*SSW ReStore Main' }
 Object >> _dbProxyIn: aReStore ifNone: aBlock [
 	
 	^aReStore activeProxyForObject: self ifNone: aBlock
@@ -77,7 +81,7 @@ Object >> _ensureActiveIn: anSSWReStore [
 	"Ensure that the receiver is 'active' in the given ReStore 
 	'active' means persistent in anSSWReStore, and present and active in the current transaction"
 
-	^self _ensurePersistentIn: anSSWReStore
+	^(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
 { #category : '*SSW ReStore Main' }
@@ -86,7 +90,7 @@ Object >> _ensurePersistentIn: anSSWReStore [
 	"Ensure that the receiver is persistent in the given ReStore.
 	When received by a non-proxy object, the receiver is either non-persistent (store it) or already in the current transaction (ensure it is active, otherwise do nothing)"
 
-	(self isValidForPersistence or: [anSSWReStore ensureIsActiveInCurrentTransaction: self]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
+	(self isValidForPersistence or: [(self _dbProxyIn: anSSWReStore ifNone: [nil]) notNil]) ifFalse: [self storeInAnsweringProxy: anSSWReStore]
 ]
 
 { #category : '*SSW ReStore Main' }
@@ -203,8 +207,10 @@ Object >> _refreshWithContentsIfUpdated [
 { #category : '*SSW ReStore Main' }
 Object >> _rollbackIn: aReStore [
 
-	"Should only be sent when all proxied objects have been swapped out to their proxy,
-	therefore the receiver is not currently persistent, therefore do nothing"
+	"Previously only be sent when all proxied objects have been swapped out to their proxy,
+	Under write-barrier system the receiver may be active (swapped) but not active (dirty) in the current transaction"
+
+	aReStore ensureIsActiveInCurrentTransaction: self
 ]
 
 { #category : '*SSW ReStore Main' }

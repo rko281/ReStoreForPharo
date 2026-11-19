@@ -99,7 +99,7 @@ SSWReStoreUpdateClashTestPersistent >> test02 [
 	self deny: (reStore2 evaluateAsTransaction: [inst2 name: 'XYZ'; single1: singleB2]).
 
 	reStore2 rollbackAndRefreshTransaction.
-	self deny: (reStore2 hasTransaction).
+	self deny: reStore2 isTransactionInProgress.
 	self assert: (inst1 isDBProxy).
 	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = oldName).

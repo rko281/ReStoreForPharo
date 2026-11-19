@@ -4,9 +4,18 @@ Class {
 	#instVars : [
 		'ownerTest'
 	],
+	#classVars : [
+		'SwapCount'
+	],
 	#category : 'SSW ReStore Tests',
 	#package : 'SSW ReStore Tests'
 }
+
+{ #category : 'as yet unclassified' }
+SSWReStoreProxySwapperTest class >> incrementSwapCount: anInteger [
+
+	SwapCount := SwapCount + anInteger
+]
 
 { #category : 'asserting' }
 SSWReStoreProxySwapperTest >> assertAllSwapped: aCollection [
@@ -44,6 +53,20 @@ SSWReStoreProxySwapperTest >> assertIsUnswapped: anObject [
 ]
 
 { #category : 'running' }
+SSWReStoreProxySwapperTest >> countSwapsDuring: aBlock [
+
+	SwapCount := 0.
+	self 
+		addMethod: (SSWDBProxySwapper>>#swapAllWhere:postAction:) withSelector: #swapAllWhere:postActionORIGINAL: toClass: SSWDBProxySwapper;
+		addMethod: (SSWDBProxySwapper>>#swapAllWhere:postActionWithCount:) withSelector: #swapAllWhere:postAction: toClass: SSWDBProxySwapper.
+	aBlock ensure: 
+		[self 
+			addMethod: (SSWDBProxySwapper>>#swapAllWhere:postActionORIGINAL:) withSelector: #swapAllWhere:postAction: toClass: SSWDBProxySwapper;
+			removeSelector: #swapAllWhere:postActionORIGINAL: fromClass: SSWDBProxySwapper].
+
+]
+
+{ #category : 'running' }
 SSWReStoreProxySwapperTest >> createTestData [
 
 	| orders |
@@ -71,7 +94,7 @@ SSWReStoreProxySwapperTest >> createTestData [
 	ownerTest refresh
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testDumbTransactionAbandon [
 
 	"Verify abandoning a dumb transaction unswaps touched objects"
@@ -96,14 +119,15 @@ SSWReStoreProxySwapperTest >> testDumbTransactionAbandon [
 	
 	reStore abandonTransaction.
 
-	self assertAllUnswapped: {customer1. orders. sampleOrder. product}.
-	self assertAllUnswapped: 
-		{ownerTest. ownerTest _proxiedObject arrayOfNames. ownerTest _proxiedObject ordered. ownerTest _proxiedObject ordered _proxiedObject first. 
-		ownerTest _proxiedObject keyedBaseDictionary. ownerTest _proxiedObject keyedBaseDictionary _proxiedObject values anyOne. 
-		ownerTest _proxiedObject keyedIdentityDictionary. ownerTest _proxiedObject keyedIdentityDictionary _proxiedObject keys anyOne. ownerTest _proxiedObject keyedIdentityDictionary _proxiedObject values anyOne}
+	"We no longer unswap unchanged objects"
+	self assertAllSwapped: {customer1. orders. sampleOrder. product}.
+	self assertAllSwapped: 
+		{ownerTest. ownerTest arrayOfNames. ownerTest ordered. ownerTest ordered first. 
+		ownerTest keyedBaseDictionary. ownerTest keyedBaseDictionary values anyOne. 
+		ownerTest keyedIdentityDictionary. ownerTest keyedIdentityDictionary keys anyOne. ownerTest keyedIdentityDictionary values anyOne}
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testPersistentComponentCollectionSwapping [
 
 	"Verify swapping a collection proxy also swaps its persistent elements"
@@ -111,6 +135,7 @@ SSWReStoreProxySwapperTest >> testPersistentComponentCollectionSwapping [
 	| orders |
 
 	orders := customer1 orders.
+	reStore softRollbackAndSwap.
 
 	self 
 		assertIsUnswapped: orders;
@@ -136,7 +161,8 @@ SSWReStoreProxySwapperTest >> testPersistentComponentCollectionSwapping [
 		assertAllSwapped: ownerTest ordered;
 		assertAllSwapped: ownerTest keyedBaseDictionary values;
 		assertAllSwapped: ownerTest keyedIdentityDictionary keys;
-		assertAllSwapped: ownerTest keyedIdentityDictionary values
+		assertAllSwapped: ownerTest keyedIdentityDictionary values.
+
 ]
 
 { #category : 'unit tests' }
@@ -198,7 +224,7 @@ SSWReStoreProxySwapperTest >> testPersistentComponentSelfReferencingCollectionSw
 	self assert: collectionProxy _owner isDBProxy
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testPreSwappingDumbTransaction [
 
 	| allObjects |
@@ -211,7 +237,7 @@ SSWReStoreProxySwapperTest >> testPreSwappingDumbTransaction [
 		[ :cls |
 		allObjects addAll: (cls storedInstancesIn: reStore) asOrderedCollection].
 
-	self deny: reStore hasTransaction.
+	self deny: reStore isTransactionInProgress.
 
 	"Referencing one object should swap everything"
 	allObjects first _deproxify.
@@ -219,7 +245,7 @@ SSWReStoreProxySwapperTest >> testPreSwappingDumbTransaction [
 	self assert: reStore hasTransaction.
 	self assert: reStore transaction class equals: SSWDBPreSwappingDumbTransaction.
 	self deny: reStore transaction isEmpty.
-	self assert: (reStore proxyCache allSatisfy: [ :proxies | proxies allSatisfy: [ :each | each isDBProxy not]]).
+	self assert: (reStore proxyCache keys allSatisfy: [ :cls | (reStore isSystemClass: cls) or: [(reStore proxyCache at: cls) allSatisfy: [ :each | each isDBProxy not]]]).
 
 	"Also check collection proxies have been swapped"
 	self assert: ({customer1. customer2. customer3. customer4} allSatisfy: [ :each | each orders isDBProxy not])
@@ -284,7 +310,7 @@ SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingLazyRefreshAll 
 	self assert: deletedProduct isDBDeleted
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingRefresh [
 
 	"Verify that swapped objects are preserved following a transaction refresh"
@@ -310,12 +336,13 @@ SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingRefresh [
 		(products2 detect: [ :each | each _id = deletedProduct _id]) unstore].
 	reStore2 disconnect.
 	
+	reStore markProxyDirty: (product _dbProxyIn: reStore).
 	reStore preserveSwappedProxiesFollowingTransaction: [{product. deletedProduct} refreshAll].
 	
 	self assertAllSwapped: {customer1. orders. sampleOrder. product}.
 	self assert: product description equals: 'updated2'.
 	self assert: deletedProduct isDBDeleted
-	
+
 ]
 
 { #category : 'unit tests' }
@@ -340,7 +367,7 @@ SSWReStoreProxySwapperTest >> testPreserveSwappedProxiesFollowingRollback [
 	
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testSwapAll [
 
 	"Test the ability to swap all recovered persistent objects"
@@ -354,6 +381,7 @@ SSWReStoreProxySwapperTest >> testSwapAll [
 	allOrders := (SimpleProductOrder storedInstancesIn: reStore) asOrderedCollection.
 	self assertAllUnswapped: allOrders.
 	allProducts := (SimpleProduct storedInstancesIn: reStore) asOrderedCollection.
+	reStore softRollbackAndSwap.
 	self assertAllUnswapped: allProducts.
 
 	"Also test that having already-swapped objects doesn't cause issues"
@@ -364,7 +392,7 @@ SSWReStoreProxySwapperTest >> testSwapAll [
 	reStore swapAll.
 
 	self assertAllSwapped: allCustomers.
-	
+	allOrderCollections := allCustomers collect: [ :each | each orders].
 	self 
 		assertAllSwapped: allOrderCollections;
 		assertAllSwapped: allOrders;
@@ -373,12 +401,14 @@ SSWReStoreProxySwapperTest >> testSwapAll [
 	"Validate swapped objects have been tracked by abandoing the dumb transaction"
 	self shouldnt: [reStore abandonTransaction] raise: Error.
 
+	reStore softRollbackAndSwap.
 	self assertAllUnswapped: allCustomers.
 	allOrderCollections := allCustomers collect: [ :each | each _proxiedObject orders].
 	self 
 		assertAllUnswapped: allOrderCollections;
 		assertAllUnswapped: allOrders;
-		assertAllUnswapped: allProducts
+		assertAllUnswapped: allProducts.
+
 ]
 
 { #category : 'unit tests' }
@@ -400,7 +430,153 @@ SSWReStoreProxySwapperTest >> testSwapCollectionsOnly [
 	self assertAllUnswapped: {customer1. sampleOrder}
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountEmptyCommit [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: [ownerTest store].
+
+	self assert: SwapCount equals: 0.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountEmptyRollback [
+
+	| activeCount |
+
+	reStore swapAll.
+
+	self assert: (activeCount := reStore transaction activeProxiesMap size) > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: [ownerTest rollback].
+
+	self assert: SwapCount equals: 18.
+	self assert: reStore transaction activeProxiesMap size equals: activeCount - 18.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountEmptyTransactionCommit [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: [reStore evaluateAsTransaction: [self yourself]].
+
+	self assert: SwapCount equals: 0.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountEmptyTransactionRollback [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: 
+		[reStore
+			beginTransaction;
+			rollbackTransaction].
+
+	self assert: SwapCount equals: 0.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountSingleCommit [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	ownerTest name: 'x'.
+	self assert: reStore transaction currentReferencedObjects size equals: 1.
+	self countSwapsDuring: [ownerTest store].
+
+	self assert: SwapCount equals: 1.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountSingleRollback [
+
+	| activeCount |
+
+	reStore swapAll.
+
+	self assert: (activeCount := reStore transaction activeProxiesMap size) > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	ownerTest name: 'x'.
+	self assert: reStore transaction currentReferencedObjects size equals: 1.
+	self countSwapsDuring: [ownerTest rollback].
+
+	self assert: SwapCount equals: 19.
+	self assert: reStore transaction activeProxiesMap size equals: activeCount - 18.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountSingleTransactionCommit [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: 
+		[reStore beginTransaction.
+		ownerTest name: 'x'.
+		self assert: reStore transaction currentReferencedObjects size equals: 1.
+		reStore commitTransaction].
+
+	self assert: SwapCount equals: 1.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
+SSWReStoreProxySwapperTest >> testSwapCountSingleTransactionRollback [
+
+	reStore swapAll.
+
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+	self countSwapsDuring: 
+		[reStore beginTransaction.
+		ownerTest name: 'x'.
+		self assert: reStore transaction currentReferencedObjects size equals: 1.
+		reStore rollbackTransaction].
+
+	self assert: SwapCount equals: 1.
+	self assert: reStore transaction activeProxiesMap size > 100.
+	self assert: reStore transaction currentReferencedObjects isEmpty.
+
+]
+
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 
 	"Test objects' collections are swapped automatically when using SSWDBProxyAndCollectionsSwapper"
@@ -413,6 +589,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 	sampleOrder := orders _proxiedObject anyOne.
 	self assertIsUnswapped: sampleOrder.
 	product := sampleOrder _proxiedObject product.
+	reStore softRollbackAndSwap.
 	self assertIsUnswapped: product.
 
 	self assertIsUnswapped: ownerTest.
@@ -430,7 +607,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollections [
 	self assertIsUnswapped: sampleOrder
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testSwapObjectsAndCollectionsWithSwappedObject [
 
 	"Test the customer's collections are swapped on request even when the customer is already swapped"
@@ -443,6 +620,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollectionsWithSwappedObject [
 	sampleOrder := orders _proxiedObject anyOne.
 	self assertIsUnswapped: sampleOrder.
 	product := sampleOrder _proxiedObject product.
+	reStore softRollbackAndSwap.
 	self assertIsUnswapped: product.
 	
 	reStore swapAll: {customer1. product} using: SSWDBProxyAndCollectionsSwapper.
@@ -451,7 +629,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsAndCollectionsWithSwappedObject [
 	self assertIsUnswapped: sampleOrder
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreProxySwapperTest >> testSwapObjectsOnly [
 
 	"Test objects' collections are swapped only passed directly to swapper."
@@ -464,6 +642,7 @@ SSWReStoreProxySwapperTest >> testSwapObjectsOnly [
 	sampleOrder := orders _proxiedObject anyOne.
 	self assertIsUnswapped: sampleOrder.
 	product := sampleOrder _proxiedObject product.
+	reStore softRollbackAndSwap.
 	self assertIsUnswapped: product.
 
 	self assertIsUnswapped: ownerTest.

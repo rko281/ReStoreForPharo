@@ -85,6 +85,43 @@ SSWDBSortedStaticCollectionSpec >> queryClass [
 ]
 
 { #category : 'actions - api' }
+SSWDBSortedStaticCollectionSpec >> recoverModelClassCollectionForProxy: aCollectionProxy [
+
+	"Recover a collection of model class (non-base, specifying a table) instances.
+	Return the recovered collection"
+
+	| targetTable statement collection entries |
+
+	targetTable := self targetTable.
+	statement := self readStatement.
+	collection := self newCollection.
+	entries := OrderedCollection new.
+
+	statement values: (Array with: aCollectionProxy _ownerID).
+	self reStore rowsFromStatement: statement do:
+		[ :row || entry |
+		entry := self createNonProxiedInstanceFromRow: row.
+		entry target isDBProxy 
+		ifTrue: 
+			["Untouched and possibly unrecovered proxy - use the row data appropriately"
+			entry target _isRecovered 
+				ifTrue: [entry target _refreshFromRow: row table: targetTable]
+				ifFalse: [targetTable recoverInstanceFromRow: row into: entry target]]
+		ifFalse: 
+			["Need to refresh even if touched to preserve correctness of sort"
+			(entry target _dbProxyIn: aCollectionProxy _reStore ifNone: [nil]) ifNotNil: [ :proxy | proxy _isDirty ifFalse: [proxy _refreshFromRow: row table: targetTable]]].
+		entry
+			addTo: entries;
+			addTargetTo: collection].
+	
+	aCollectionProxy
+		_proxiedObject: collection;
+		_collectionEntries: entries.
+
+	^collection
+]
+
+{ #category : 'actions - api' }
 SSWDBSortedStaticCollectionSpec >> refreshCollectionForProxy: aCollectionProxy [
 
 	"We need to join to the target table in order to order the query (ie. sort the results correctly), therefore we may as well do a full recover"

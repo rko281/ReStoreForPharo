@@ -296,7 +296,7 @@ SSWReStoreDirectlyPersistedTest >> testAutoRefresh [
 	self refreshDelay.
 
 	"Re-reading after a rollback will perform an auto refresh"
-	reStore rollbackTransaction.
+	reStore rollback: owner.
 	(reStore instancesOf: TestWithBitmask) first.
 
 	self assert: owner isDBProxy.

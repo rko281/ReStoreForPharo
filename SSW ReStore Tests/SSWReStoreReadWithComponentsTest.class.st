@@ -355,7 +355,7 @@ SSWReStoreReadWithComponentsTest >> testProxySingleObjectMultipleRead [
 	self assert: (self queryCount = 0)
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshCollection [
 
 	| allCustomers testOrder originalQuantity |
@@ -373,12 +373,12 @@ SSWReStoreReadWithComponentsTest >> testRefreshCollection [
 	self assert: testOrder quantity equals: originalQuantity.
 
 	"Following a soft rollback however we should pick it up"
-	reStore softRollback.
+	reStore softRollbackAndSwap.
 	allCustomers fetch: #orders.
 	self assert: testOrder quantity equals: (originalQuantity * 10)
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshProxyCollection [
 
 	| allCustomers testCustomer originalName newName testOrder originalQuantity |
@@ -402,17 +402,19 @@ SSWReStoreReadWithComponentsTest >> testRefreshProxyCollection [
 	self assert: testOrder quantity = originalQuantity.
 
 	"If #refreshed we should pick up the change to testCustomer - but not testOrder since we are not fetching this component"
+	reStore softRollbackAndSwap.
 	customers refreshed asOrderedCollection.
 	self assert: testCustomer surname = newName.
 	self assert: testOrder quantity = originalQuantity.
 
 	"asOrderedCollection with the #orders component will now also refresh testOrder"
+	reStore softRollbackAndSwap. "<- needed for write-barrier mode"
 	(customers include: #orders) asOrderedCollection.
 	self assert: testCustomer surname = newName.
 	self assert: testOrder quantity = (originalQuantity * 10)
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreReadWithComponentsTest >> testRefreshSingleObject [
 
 	| allCustomers test originalName newName |
@@ -431,7 +433,7 @@ SSWReStoreReadWithComponentsTest >> testRefreshSingleObject [
 	self assert: test name = originalName.
 
 	"Following a soft rollback however we should pick it up"
-	reStore softRollback.
+	reStore softRollbackAndSwap.
 	allCustomers fetch: #test.
 	self assert: test name = newName
 ]

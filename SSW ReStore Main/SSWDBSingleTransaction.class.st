@@ -55,6 +55,26 @@ SSWDBSingleTransaction >> hasFailedCommit [
 	^false
 ]
 
+{ #category : 'operations' }
+SSWDBSingleTransaction >> ownerTransaction [
+
+	"Filter out any uncommitted new objects"
+	self allocatedIDs do: 
+		[ :perTable | 
+		perTable do: 
+			[ :allocatedID |
+			(self activeProxiesMap removeKey: allocatedID object ifAbsent: [nil]) ifNotNil: 
+				[ :proxy |
+				proxy _collectionProxies do: 
+					[ :cProxy | 
+					self activeProxiesMap removeKey: cProxy ifAbsent: 
+						[(self activeProxiesMap keyAtValue: cProxy ifAbsent: [nil]) ifNotNil: 
+							[ :cKey | 
+							self activeProxiesMap removeKey: cKey]]]]]].
+
+	^super ownerTransaction
+]
+
 { #category : 'actions' }
 SSWDBSingleTransaction >> postCommit [
 

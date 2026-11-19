@@ -26,8 +26,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test01DetectAndMerge [
 	self assert: inst1 store.
 	self assert: inst2 store.
 
-	self deny: reStore hasTransaction.
-	self deny: reStore2 hasTransaction.
+	self deny: reStore isTransactionInProgress.
+	self deny: reStore2 isTransactionInProgress.
 
 	self assert: (inst1 isDBProxy).
 	self assert: (inst1 _proxiedObject number = 11).		"Change persisted"
@@ -103,8 +103,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test03DetectFailRollback [
 	self assert: inst1 store.
 	self deny: (Array with: inst2 with: inst2 single1) storeAll. 
 
-	self deny: reStore hasTransaction.
-	self deny: reStore2 hasTransaction.
+	self deny: reStore isTransactionInProgress.
+	self deny: reStore2 isTransactionInProgress.
 
 	(Array with: inst2 with: inst2 single1) refreshAll. 
 	self assert: (inst1 isDBProxy).
@@ -139,8 +139,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test04DetectFailRollforward [
 	self assert: inst1 store.
 	self deny: ([(Array with: inst2 with: inst2 single1) storeAll] on: StoreFailure do: [ :exc | exc return: false]).
 
-	self deny: reStore hasTransaction.
-	self assert: reStore2 hasTransaction.
+	self deny: reStore isTransactionInProgress.
+	self assert: reStore2 isTransactionInProgress.
 
 	reStore2 refreshAndRollforwardTransaction.
 	self assert: (reStore2 commitTransaction).
@@ -180,11 +180,11 @@ SSWReStoreTransactionlessUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: inst1 single1 store.
 	self assert: (Array with: inst2 with: inst2 single1) storeAll. 
 
-	self deny: reStore hasTransaction.
-	self deny: reStore2 hasTransaction.
+	self deny: reStore isTransactionInProgress.
+	self deny: reStore2 isTransactionInProgress.
 
-	self assert: (inst1 isDBProxy).
-	self assert: (inst1 isDBProxy).
+	self deny: inst1 isDBProxy.
+	self assert: (inst2 isDBProxy).
 	self assert: (inst1 single1 isDBProxy).
 	self assert: (inst1 single1 _proxiedObject name = 'single4:1').	"Change not picked up till refresh"
 	self assert: (inst1 single1 _copyObject name = 'single4:1').		"Change not picked up till refresh"
@@ -224,8 +224,8 @@ SSWReStoreTransactionlessUpdateClashTest >> test06DetectFailNoHandle [
 	self assert: (Array with: inst1 with: inst1 single1) storeAll.
 	self deny: (Array with: inst2 with: inst2 single1) storeAll.
 
-	self deny: reStore hasTransaction.
-	self deny: reStore2 hasTransaction.
+	self deny: reStore isTransactionInProgress.
+	self deny: reStore2 isTransactionInProgress.
 
 	(Array with: inst2 with: inst2 single1) rollbackAll.
 

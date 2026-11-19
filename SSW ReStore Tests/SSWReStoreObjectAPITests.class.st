@@ -490,7 +490,7 @@ SSWReStoreObjectAPITests >> test10UnstoreProxied [
 	prevCount := (OwnerTest storedInstances satisfying: [ :each | each name = prevName]) size.
 	prevSingleCount := (Test storedInstances satisfying: [ :each | each name = prevSingleName]) size.
 
-	reStore softRollback.
+	reStore rollback: obj1.
 
 	self assert: obj1 isDBProxy.
 	self assert: obj1 unstore.
@@ -659,8 +659,8 @@ SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 
 	reStore beginTransaction.
 
-	self assert: obj1 isDBProxy.
-	self assert: obj2 isDBProxy.
+	self assert: obj1 isDBProxy. "Since it was changed outside the transaction it is unswapped by beginTransaction"
+	self deny: obj2 isDBProxy. "Wasn't changed outside the transaction so isn't unswapped"
 
 	obj1 store.
 	obj2 unstore.
@@ -762,8 +762,8 @@ SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 
 	reStore beginTransaction.
 
-	self assert: obj1 isDBProxy.
-	self assert: obj2 isDBProxy.
+	self assert: obj1 isDBProxy. "Since it was changed outside the transaction it is unswapped by beginTransaction"
+	self deny: obj2 isDBProxy. "Wasn't changed outside the transaction so isn't unswapped"
 
 	obj1 store.
 	obj2 unstore.

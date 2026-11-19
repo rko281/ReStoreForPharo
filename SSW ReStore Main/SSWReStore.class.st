@@ -392,8 +392,14 @@ SSWReStore >> beginDumbTransaction [
 { #category : 'transaction api' }
 SSWReStore >> beginTransaction [
 
+	self beginTransactionWithSoftRollback: true
+]
+
+{ #category : 'transaction management' }
+SSWReStore >> beginTransactionWithSoftRollback: aBoolean [
+
 	self transactionCritical: 
-		[self softRollback.
+		[aBoolean ifTrue: [self softRollback].
 
 		self transaction: 
 			(self transactionClass new
@@ -1021,7 +1027,15 @@ SSWReStore >> evaluateAsTransaction: aBlock [
 
 	"Return whether the commit succeeded"
 	
-	^[self beginTransaction.
+	^self evaluateAsTransaction: aBlock withSoftRollback: true
+]
+
+{ #category : 'transaction management' }
+SSWReStore >> evaluateAsTransaction: aBlock withSoftRollback: aBoolean [
+
+	"Private - Return whether the commit succeeded"
+	
+	^[self beginTransactionWithSoftRollback: aBoolean.
 	aBlock value.
 	self commitTransaction] ifCurtailed: [self rollbackTransaction]
 ]
@@ -1050,10 +1064,10 @@ SSWReStore >> evaluateAsTxn: aBlock [
 	^self connection evaluateAsTxn: aBlock
 ]
 
-{ #category : 'transaction api' }
+{ #category : 'transaction management' }
 SSWReStore >> evaluateInTransaction: aBlock [
 
-	"Evaluate aBlock within a transaction:
+	"Private - Evaluate aBlock within a transaction:
 	 - if there is currently a transaction in progress just evaluate aBlock
 	 - if there is no transaction in progress, begin and commit one around aBlock
 	Return success (presumed in the case of the former).
@@ -1062,7 +1076,7 @@ SSWReStore >> evaluateInTransaction: aBlock [
 	
 	^self isTransactionInProgress
 		ifTrue: [aBlock value. true]
-		ifFalse: [self evaluateAsTransaction: aBlock]
+		ifFalse: [self evaluateAsTransaction: aBlock withSoftRollback: false]
 ]
 
 { #category : 'connection' }
@@ -1395,6 +1409,13 @@ SSWReStore >> leaveDebugMode [
 	self isDebugging: false
 ]
 
+{ #category : 'proxy manipulation' }
+SSWReStore >> markProxyDirty: aDBProxy [
+
+	aDBProxy _setDirty.
+	self transaction currentReferencedObjects add: aDBProxy
+]
+
 { #category : 'connection' }
 SSWReStore >> mustBeConnected [
 	
@@ -1614,7 +1635,7 @@ SSWReStore >> preserveSwappedProxiesFollowingTransaction: aBlock [
 			[ :previousTransaction |
 			previousTransaction isDumb ifFalse: [self error: 'not appropriate'].
 			aBlock value.
-			previousTransaction proxySwapper reswap]]
+			previousTransaction proxySwapper isEmpty ifFalse: [previousTransaction proxySwapper reswap]]]
 ]
 
 { #category : 'accessing' }
@@ -1748,9 +1769,7 @@ SSWReStore >> refreshAllObjects [
 	"Patched for issue 120-010 (revised)"
 
 	self transactionCritical:
-		[self ensureNoActiveTransaction.
-		self connection rollbackTxn.
-
+		[self softRollbackAndSwap.
 		self proxyCache keysAndValuesDo: 
 			[ :class :proxies | 
 			(self isSystemClass: class) ifFalse:
@@ -1823,6 +1842,12 @@ SSWReStore >> registerProxy: anSSWDBObjectProxy [
 SSWReStore >> removeFromTransaction: aProxy [
 
 	self transaction removeProxy: aProxy
+]
+
+{ #category : 'proxy manipulation' }
+SSWReStore >> removeProxiedObjectFromTransaction: anObject [
+
+	self hasTransaction ifTrue: [self transaction activeProxiesMap removeKey: anObject ifAbsent: []]
 ]
 
 { #category : 'class maintenance' }
@@ -1965,7 +1990,7 @@ SSWReStore >> rollbackTransaction [
 	rolledBack do: [ :each | each onRollback].
 
 	"Implementation of onRollback may cause further objects to be referenced - where this has happened invoke a softRollback to ensure all persistent objects are proxies"
-	self transaction isEmpty ifFalse: [self softRollback].
+	self transaction isEmpty ifFalse: [self softRollbackAndSwap].
 
 	self transaction: previousTransaction ownerTransaction
 ]
@@ -2062,6 +2087,13 @@ SSWReStore >> softRollback [
 		ifTrue: [self rollbackTransaction]
 		ifFalse: [self error: 'active transaction - cannot proceed']
 
+]
+
+{ #category : 'transaction api' }
+SSWReStore >> softRollbackAndSwap [
+
+	self softRollback.
+	self hasTransaction ifTrue: [(SSWDBTransactionProxySwapper newFor: self) unswapAll: self transaction activeProxiesMap values]
 ]
 
 { #category : 'accessing' }

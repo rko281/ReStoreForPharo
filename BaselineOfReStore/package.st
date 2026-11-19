@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfReStore }
+Package { #name : 'BaselineOfReStore' }

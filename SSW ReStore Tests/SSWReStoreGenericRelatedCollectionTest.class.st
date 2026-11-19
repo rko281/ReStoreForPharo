@@ -209,8 +209,16 @@ SSWReStoreGenericRelatedCollectionTest >> _testRefreshComponentChangeWithExclusi
 	reStore refresh: (anObject withRelatedComponents without: collection).
 	self assert: (component name = originalName).
 
-	"Exclusion mechanism does not (currently) apply to components of collections"
+	"Previous comment - Exclusion mechanism does not (currently) apply to components of collections
+	- APPEARS TO WORKS UNDER WRITE BARRIER?!"
 	reStore refresh: (anObject withRelatedComponents without: component).
+	self assert: (component name = originalName).
+
+	reStore refresh: anObject withRelatedComponents.
+	self assert: (component name = changedName).
+
+	"Exclusion mechanism does not (currently) apply to components of collections - WORKS UNDER WRITE BARRIER?!"
+	reStore refresh: (anObject withRelatedComponents "without: component").
 	self assert: (component name = changedName)
 ]
 

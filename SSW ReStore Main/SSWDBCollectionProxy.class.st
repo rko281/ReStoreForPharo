@@ -138,7 +138,9 @@ SSWDBCollectionProxy >> _rollbackChanges [
 
 	| unchangedCollection |
 
-	self _clearDeleted.
+	self 
+		_clearDeleted;
+		_clearDirty.
 
 	unchangedCollection := self _unchangedCollection.
 	unchangedCollection == proxiedObject ifFalse: 

@@ -100,7 +100,7 @@ SSWDBProxySwapper >> initialize: anInteger [
 { #category : 'testing' }
 SSWDBProxySwapper >> isEmpty [
 
-	^proxies isEmpty
+	^proxies isNil or: [proxies isEmpty]
 ]
 
 { #category : 'enumerating' }
@@ -162,16 +162,18 @@ SSWDBProxySwapper >> swapAll: aCollection [
 { #category : 'helpers' }
 SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 
-	| swapProxies swapObjects |
+	| swapProxies swapObjects immutables |
 
 	swapProxies := OrderedCollection new: proxies size.
 	swapObjects := swapProxies copy.
+	immutables := swapProxies copy.
 
 	proxies with: objects do: [ :proxy :object |
 		(preBlock value: proxy) ifTrue: [
 			proxy _preSwapReferences.
 			swapProxies add: proxy.
-			swapObjects add: object ] ].
+			swapObjects add: object.
+			object isImmutable ifTrue: [ object isImmutable: false. immutables add: object ]. ] ].
 
 	swapProxies asArray elementsExchangeIdentityWith: swapObjects asArray.
 
@@ -181,7 +183,9 @@ SSWDBProxySwapper >> swapAllWhere: preBlock postAction: postBlock [
 			proxy
 				_setProxiedObject: object;
 				_postSwapReferences.
-			postBlock value: proxy ]
+			postBlock value: proxy ].
+		
+	immutables do: [  :each | each _proxiedObject isImmutable: true ]
 ]
 
 { #category : 'operations' }

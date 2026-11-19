@@ -72,3 +72,13 @@ SSWDBDumbTransaction >> rollback [
 
 	^#()
 ]
+
+{ #category : 'actions' }
+SSWDBDumbTransaction >> snapshot [
+
+	"Preserve any currentReferencedObjects in the swapper"
+
+	currentReferencedObjects isEmpty ifFalse: 
+		[self proxySwapper bookmark: currentReferencedObjects.
+		self currentReferencedObjects: self newEmptyObjectsSet]
+]

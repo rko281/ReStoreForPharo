@@ -129,6 +129,7 @@ SSWDBGeneralCollectionProxy >> _postCommitChanges [
 		ifFalse: [self _collectionEntries: (changes collect: [ :change | change affectedEntry])].
 
 	self 
+		_clearDirty;
 		_setPersistent;
 		_resetChanges
 ]
@@ -158,12 +159,16 @@ SSWDBGeneralCollectionProxy >> _setChanges [
 			(collectionSpec isValueDependent or: [collectionSpec isKeyDependent]) ifTrue: 
 				[collectionEntries do: 
 					[ :each |
-					(collectionSpec isKeyDependent and: [each index isDBProxy]) ifTrue: 
-						[reStore transaction addDeletedObject: each index.
-						each index unstore].
-					(collectionSpec isValueDependent and: [each target isDBProxy]) ifTrue: 
-						[reStore transaction addDeletedObject: each target.
-						each target unstore]]]]
+					collectionSpec isKeyDependent ifTrue: 
+						[each index _dbProxyIn: reStore do: 
+							[ :proxy | 
+							reStore transaction addDeletedObject: proxy.
+							proxy unstore]].
+					collectionSpec isValueDependent ifTrue: 
+						[each target _dbProxyIn: reStore do: 
+							[ :proxy | 
+							reStore transaction addDeletedObject: proxy.
+							proxy unstore]]]]]
 		ifFalse: 
 			[changes := collectionSpec changesTo: proxiedObject from: collectionEntries]]
 	ifFalse: 

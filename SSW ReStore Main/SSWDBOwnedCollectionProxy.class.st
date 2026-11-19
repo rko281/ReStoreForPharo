@@ -79,6 +79,7 @@ SSWDBOwnedCollectionProxy >> _forgetProxiedObject [
 SSWDBOwnedCollectionProxy >> _postCommitChanges [
 
 	self 
+		_clearDirty;
 		_setPersistent;
 		_acquireCopyCollection
 ]
@@ -131,8 +132,11 @@ SSWDBOwnedCollectionProxy >> _prepareToCommitPhase2 [
 
 	collectionSpec isValueDependent
 	ifTrue:
-		[self _isDeleted ifTrue: [removed do: [ :each | each isDBProxy ifTrue: [reStore transaction addDeletedObject: each]]].
-		removed do: [ :each | each unstore]]
+		[self _isDeleted ifTrue: 
+			[removed do: 
+				[ :each | 
+				each _dbProxyIn: reStore do: [ :proxy | reStore transaction addDeletedObject: each]]].
+		removed do: [ :each | each _dbProxyIn: reStore do: [ :proxy | proxy unstore]]]
 	ifFalse:
 		[removed do: 
 			[ :each |

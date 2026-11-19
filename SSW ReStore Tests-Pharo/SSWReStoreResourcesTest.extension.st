@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStoreResourcesTest }
+Extension { #name : 'SSWReStoreResourcesTest' }
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreResourcesTest >> _testStatementFreedAfter: aBlock [
 
 	| templateStatement prevStatements newStatements |

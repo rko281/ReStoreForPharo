@@ -1,6 +1,6 @@
-Extension { #name : #SSWReStoreTableWithNamespaceTest }
+Extension { #name : 'SSWReStoreTableWithNamespaceTest' }
 
-{ #category : #'*SSW ReStore Tests-Pharo' }
+{ #category : '*SSW ReStore Tests-Pharo' }
 SSWReStoreTableWithNamespaceTest class >> shouldInheritSelectors [ 
 
 	^true

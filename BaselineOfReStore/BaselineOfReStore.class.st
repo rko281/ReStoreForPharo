@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfReStore,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfReStore
+	#name : 'BaselineOfReStore',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfReStore',
+	#package : 'BaselineOfReStore'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> baseline: spec [
 	<baseline>
 	spec
@@ -21,9 +22,10 @@ BaselineOfReStore >> baseline: spec [
 					package: 'SSW ReStore SQL Queries' with: [ spec requires: #('SSW ReStore SQL Entities') ];
 					package: 'SSW ReStore Tables' with: [ spec requires: #('SSW ReStore SQL Queries') ];
 					package: 'SSW ReStore Collections' with: [ spec requires: #('SSW ReStore Tables') ];
-					package: 'SSW ReStore Querying' with: [ spec requires: #('SSW ReStore Collections') ];
+					package: 'SSW ReStore Querying' with: [ spec requires: #('SSW ReStore Collections') ];					
 					package: 'SSW ReStore Main' with: [ spec requires: #('SSW ReStore Querying') ];
-					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Main') ];
+					package: 'SSW ReStore Write Barrier' with: [ spec requires: #('SSW ReStore Main') ];
+					package: 'SSW ReStore for Pharo' with: [ spec requires: #('SSW ReStore Write Barrier') ];
 					package: 'SSW ReStore SQLite3' with: [ spec requires: #('SSW ReStore for Pharo' 'SQLite3') ];
 					package: 'SSW ReStore Tests' with: [ spec requires: #('SSW ReStore SQLite3') ];
 					package: 'SSW ReStore Tests-Pharo' with: [ spec requires: #('SSW ReStore Tests') ];
@@ -43,7 +45,7 @@ BaselineOfReStore >> baseline: spec [
 					group: 'default' with: #('Tests' 'Examples')]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> mySQL: spec [
 
 	spec
@@ -54,7 +56,7 @@ BaselineOfReStore >> mySQL: spec [
 		]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> odbc: spec [
 
 	spec
@@ -65,7 +67,7 @@ BaselineOfReStore >> odbc: spec [
 		]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> p3: spec [
 
 	spec
@@ -76,7 +78,7 @@ BaselineOfReStore >> p3: spec [
 		]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> porpoise: spec [
 
 	spec
@@ -88,7 +90,7 @@ BaselineOfReStore >> porpoise: spec [
 		]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfReStore >> sqlite3: spec [
 
 	spec
