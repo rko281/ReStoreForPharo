@@ -1,6 +1,6 @@
 Extension { #name : 'Set' }
 
-{ #category : '*SSW ReStore Write Barrier' }
+{ #category : '*SSW ReStore for Pharo' }
 Set >> grow [
 	"Grow the elements array and reinsert the old elements"
 
@@ -12,14 +12,14 @@ Set >> grow [
 	self setArrayImmutability 
 ]
 
-{ #category : '*SSW ReStore Write Barrier' }
+{ #category : '*SSW ReStore for Pharo' }
 Set >> postCopy [
 	super postCopy.
 	array := array copy.
 	self setArrayImmutability 
 ]
 
-{ #category : '*SSW ReStore Write Barrier' }
+{ #category : '*SSW ReStore for Pharo' }
 Set >> rehash [
 	| newSelf |
 	newSelf := self species new: self size.
@@ -28,7 +28,7 @@ Set >> rehash [
 	self setArrayImmutability 
 ]
 
-{ #category : '*SSW ReStore Write Barrier' }
+{ #category : '*SSW ReStore for Pharo' }
 Set >> withArray: anArray [
 	"private -- for use only in copy"
 	"I want to get a conflict"
