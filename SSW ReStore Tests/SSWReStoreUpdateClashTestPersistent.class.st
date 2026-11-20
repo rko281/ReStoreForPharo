@@ -70,9 +70,6 @@ SSWReStoreUpdateClashTestPersistent >> test01 [
 	self assert: (reStore evaluateAsTransaction: [inst1 single1: inst1 single2]).
 	self assert: (reStore2 evaluateAsTransaction: [inst2 single2: inst2 single1]).
 
-	self assert: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
-
 	reStore refreshAllObjects. 
 	reStore2 refreshAllObjects. 
 
@@ -100,8 +97,6 @@ SSWReStoreUpdateClashTestPersistent >> test02 [
 
 	reStore2 rollbackAndRefreshTransaction.
 	self deny: reStore2 isTransactionInProgress.
-	self assert: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = oldName).
 	self assert: (inst2 single1 = singleA2).
 

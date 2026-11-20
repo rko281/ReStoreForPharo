@@ -378,7 +378,8 @@ SSWDBProxy >> _postCommitChanges [
 	"The receiver's changes have been successfully committed.
 	Carry out any necessary internal updates"
 
-	self _clearDirty
+	self _clearDirty.
+	self _isDeleted ifFalse: [ reStore addToTransaction: self ]
 ]
 
 { #category : 'actions-internal' }

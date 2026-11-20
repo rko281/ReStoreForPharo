@@ -15,7 +15,7 @@ SSWReStoreDeleteDependentDictionaryTest class >> isAbstract [
 SSWReStoreDeleteDependentDictionaryTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	"Need to convert orders to Dictionary if not already done"
-	reStore abandonTransaction.
+	reStore softRollbackAndSwap.
 	(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject become: Dictionary new].
 
 	^aCustomer orders at: (SimpleAddress new postcode: (aProduct description, anInteger displayString); yourself) put: 

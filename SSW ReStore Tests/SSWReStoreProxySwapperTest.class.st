@@ -94,6 +94,13 @@ SSWReStoreProxySwapperTest >> createTestData [
 	ownerTest refresh
 ]
 
+{ #category : 'running' }
+SSWReStoreProxySwapperTest >> setUp [
+
+	super setUp.
+	reStore softRollbackAndSwap
+]
+
 { #category : 'tests' }
 SSWReStoreProxySwapperTest >> testDumbTransactionAbandon [
 
@@ -224,13 +231,13 @@ SSWReStoreProxySwapperTest >> testPersistentComponentSelfReferencingCollectionSw
 	self assert: collectionProxy _owner isDBProxy
 ]
 
-{ #category : 'tests' }
+{ #category : 'unit tests' }
 SSWReStoreProxySwapperTest >> testPreSwappingDumbTransaction [
 
 	| allObjects |
 
 	reStore dumbTransactionClass: SSWDBPreSwappingDumbTransaction.
-	reStore ensureNoActiveTransaction.
+	reStore ensureNoActiveTransaction; transaction: nil.
 
 	allObjects := OrderedCollection new.
 	reStore tableCache keysDo: 
@@ -510,7 +517,7 @@ SSWReStoreProxySwapperTest >> testSwapCountSingleCommit [
 	self assert: reStore transaction currentReferencedObjects size equals: 1.
 	self countSwapsDuring: [ownerTest store].
 
-	self assert: SwapCount equals: 1.
+	self assert: SwapCount equals: 0.
 	self assert: reStore transaction activeProxiesMap size > 100.
 	self assert: reStore transaction currentReferencedObjects isEmpty.
 
@@ -550,7 +557,7 @@ SSWReStoreProxySwapperTest >> testSwapCountSingleTransactionCommit [
 		self assert: reStore transaction currentReferencedObjects size equals: 1.
 		reStore commitTransaction].
 
-	self assert: SwapCount equals: 1.
+	self assert: SwapCount equals: 0.
 	self assert: reStore transaction activeProxiesMap size > 100.
 	self assert: reStore transaction currentReferencedObjects isEmpty.
 

@@ -78,12 +78,12 @@ SSWReStoreUpdateClashTest >> prvTestTest: aTest in: aReStore [
 	self assert: (aTest name = ('xxx', oldName, 'xxx'))
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 
 	"Check detect and pass (independent changes)"
 
-	| inst1 inst2 origName |
+	| inst1 inst2 origName proxy1 proxy2 |
 
 	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
@@ -92,17 +92,23 @@ SSWReStoreUpdateClashTest >> test01DetectAndMerge [
 	self assert: (reStore evaluateAsTransaction: [inst1 number: 11]).
 	self assert: (reStore2 evaluateAsTransaction: [inst2 name: 'test1:2']).
 
-	self assert: (inst1 isDBProxy).
-	self assert: (inst1 _proxiedObject number = 11).		"Change persisted"
-	self assert: (inst1 _copyObject number = 11).		"...and copied"
-	self assert: (inst1 _proxiedObject name = origName).	"Change not picked up till refresh"
-	self assert: (inst1 _copyObject name = origName).	"Changed not picked up till refresh"
+	self assert: inst1 number equals: 11.
+	self assert: inst1 name equals: origName.
+	proxy1 := inst1 _dbProxyIn: reStore ifNone: [nil].
+	self assert: proxy1 notNil.
+	self assert: (proxy1 _proxiedObject number = 11).		"Change persisted"
+	self assert: (proxy1 _copyObject number = 11).		"...and copied"
+	self assert: (proxy1 _proxiedObject name = origName).	"Change not picked up till refresh"
+	self assert: (proxy1 _copyObject name = origName).	"Changed not picked up till refresh"
 
-	self assert: (inst2 isDBProxy).
-	self assert: (inst2 _proxiedObject number = 11).		"Change in session1 picked up and merged"
-	self assert: (inst2 _copyObject number = 11).		"...and copied"
-	self assert: (inst2 _proxiedObject name = 'test1:2').	"Change persisted"
-	self assert: (inst2 _copyObject name = 'test1:2').	"...and copied"
+	self assert: inst2 number equals: 11.
+	self assert: inst2 name equals: 'test1:2'.
+	proxy2 := inst2 _dbProxyIn: reStore2 ifNone: [nil].
+	self assert: proxy2 notNil.
+	self assert: (proxy2 _proxiedObject number = 11).		"Change in session1 picked up and merged"
+	self assert: (proxy2 _copyObject number = 11).		"...and copied"
+	self assert: (proxy2 _proxiedObject name = 'test1:2').	"Change persisted"
+	self assert: (proxy2 _copyObject name = 'test1:2').	"...and copied"
 
 	self refreshDelay.
 	reStore refreshAllObjects. 
@@ -163,8 +169,6 @@ SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 
 	reStore2 rollbackAndRefreshTransaction.
 	self deny: reStore2 isTransactionInProgress.
-	self assert: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
 	self assert: (inst2 name = 'test2:1').
 	self assert: (inst2 single1 name = oldSingle).
 
@@ -178,7 +182,7 @@ SSWReStoreUpdateClashTest >> test03DetectFailRollback [
 	self prvTestTest: inst2 single1 in: reStore2
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 
 	"Check detect-fail-rollforward"
@@ -193,10 +197,6 @@ SSWReStoreUpdateClashTest >> test04DetectFailRollforward [
 
 	reStore2 refreshAndRollforwardTransaction.
 	self assert: (reStore2 commitTransaction).
-
-	self assert: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
-	self assert: (inst2 single1 isDBProxy).
 
 	reStore simulateReconnect.
 	reStore2 simulateReconnect.
@@ -216,7 +216,7 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 
 	"Check detect-fail-handle-pass"
 
-	| inst1 inst2 |
+	| inst1 inst2 proxy1 proxy2 |
 
 	inst1 := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	inst2 := (OwnerTest storedInstancesIn: reStore2) asOrderedCollection first.
@@ -226,15 +226,17 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: (reStore evaluateAsTransaction: [inst1 single1 name: 'single4:1']).
 	self assert: (reStore2 evaluateAsTransaction: [inst2 name: 'test4:2'. inst2 single1 name: 'single4:2']).
 
-	self deny: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
-	self assert: (inst1 single1 isDBProxy).
-	self assert: (inst1 single1 _proxiedObject name = 'single4:1').	"Change not picked up till refresh"
-	self assert: (inst1 single1 _copyObject name = 'single4:1').		"Change not picked up till refresh"
+	self assert: (inst1 single1 name = 'single4:1').	"Change not picked up till refresh"
+	proxy1 := inst1 single1 _dbProxyIn: reStore ifNone: [nil].
+	self assert: proxy1 notNil.
+	self assert: (proxy1 _proxiedObject name = 'single4:1').	"Change not picked up till refresh"
+	self assert: (proxy1 _copyObject name = 'single4:1').		"Change not picked up till refresh"
 
-	self assert: (inst2 single1 isDBProxy).
-	self assert: (inst2 single1 _proxiedObject name = 'single4:2 (overriden single4:1)').  "Clash handled"
-	self assert: (inst2 single1 _copyObject name = 'single4:2 (overriden single4:1)').	"...and copied"
+	self assert: (inst2 single1 name = 'single4:2 (overriden single4:1)').  "Clash handled"
+	proxy2 := inst2 single1 _dbProxyIn: reStore2 ifNone: [nil].
+	self assert: proxy2 notNil.
+	self assert: (proxy2 _proxiedObject name = 'single4:2 (overriden single4:1)').  "Clash handled"
+	self assert: (proxy2 _copyObject name = 'single4:2 (overriden single4:1)').	"...and copied"
 
 	self refreshDelay.
 	reStore refreshAllObjects.
@@ -245,7 +247,7 @@ SSWReStoreUpdateClashTest >> test05DetectFailAndHandle [
 	self assert: (inst2 name = 'test4:2')
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreUpdateClashTest >> test06DetectFailNoHandle [
 
 	"Check detect-fail-handle-fail"
@@ -263,11 +265,7 @@ SSWReStoreUpdateClashTest >> test06DetectFailNoHandle [
 	self deny: (reStore2 evaluateAsTransaction: [inst2 name: 'test5:2'. inst2 single1 name: 'single5:2']).
 	reStore2 rollbackTransaction.
 
-	self assert: (inst1 isDBProxy).
-	self assert: (inst2 isDBProxy).
-	self assert: (inst1 single1 isDBProxy).
 	self assert: (inst2 name = oldName).
-	self assert: (inst2 single1 isDBProxy).
 	self assert: (inst2 single1 _proxiedObject name = oldSingle).
 	self assert: (inst2 single1 _copyObject name = oldSingle).
 
@@ -400,8 +398,8 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 	self assert: inst1 store.
 	self assert: inst2 store.
 
-	self assert: inst1 ordered _collectionEntries last entryID equals: nextID.
-	self assert: inst2 ordered _collectionEntries last entryID equals: nextID + 1.
+	self assert: (inst1 ordered _dbProxyIn: reStore) _collectionEntries last entryID equals: nextID.
+	self assert: (inst2 ordered _dbProxyIn: reStore2) _collectionEntries last entryID equals: nextID + 1.
 
 	self assert: record1 _proxiedObject nextID equals: nextID + 1.
 	self assert: record2 _proxiedObject nextID equals: nextID + 2.
@@ -414,8 +412,8 @@ SSWReStoreUpdateClashTest >> test11CollectionNextIDClash [
 	self assert: inst2 store.
 	self assert: inst1 store.
 
-	self assert: inst2 ordered _collectionEntries last entryID equals: nextID.
-	self assert: inst1 ordered _collectionEntries last entryID equals: nextID + 1.
+	self assert: (inst2 ordered _dbProxyIn: reStore2) _collectionEntries last entryID equals: nextID.
+	self assert: (inst1 ordered _dbProxyIn: reStore) _collectionEntries last entryID equals: nextID + 1.
 
 	self assert: record2 nextID equals: nextID + 1.
 	self assert: record1 nextID equals: nextID + 2

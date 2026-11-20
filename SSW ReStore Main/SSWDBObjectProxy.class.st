@@ -325,15 +325,15 @@ SSWDBObjectProxy >> _postCommitChanges [
 	"The receiver's changes have successfully been committed.
 	Complete follow-on work"
 
-	self _clearDirty.
+	super _postCommitChanges.
 
 	^self _isPersistent
 	ifTrue:
 		[self _isDeleted
 			ifTrue: [self _postCommitUnstore]
-			ifFalse: [self _postCommitUpdates]]
+			ifFalse: [self _postCommitUpdates. reStore addToTransaction: self]]
 	ifFalse:
-		[self _postCommitStore]
+		[self _postCommitStore. reStore addToTransaction: self]
 ]
 
 { #category : 'actions-internal' }
@@ -343,7 +343,8 @@ SSWDBObjectProxy >> _postCommitStore [
 	Complete follow-on work"
 
 	self _dbTable idDataField ifNotNil: [ :idDataField | idDataField accessor value: id in: proxiedObject].
-	self _setPersistent
+	self _setPersistent.
+	reStore cacheObject: self
 ]
 
 { #category : 'actions-internal' }
@@ -352,17 +353,9 @@ SSWDBObjectProxy >> _postCommitUnstore [
 	"Private - The receiver has been successfully deleted from the database.
 	Complete follow-on work and notify interest parties"
 
-	| me object |
-
 	reStore uncacheObject: self. 
 
-	me := proxiedObject.
-	object := self.
-
-	self _swap.
-
-	object onUnstored.
-	me _proxiedObjectMissing
+	proxiedObject onUnstored
 ]
 
 { #category : 'actions-internal' }
@@ -540,7 +533,7 @@ SSWDBObjectProxy >> _unstore [
 
 	self _isPersistent 
 		ifTrue: [self __referenced]
-		ifFalse: [reStore deregisterProxy: self; removeFromTransaction: self].
+		ifFalse: [reStore deregisterProxy: self].
 
 	"Separate loops to cope with potential reference swap"
 	collectionProxies do: [ :each | each __ensureActive].

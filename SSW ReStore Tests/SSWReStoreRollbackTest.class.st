@@ -87,7 +87,8 @@ SSWReStoreRollbackTest >> testRollbackStore [
 	"Following the rollback the object should not be a proxy which has had #onRollback invoked on it, and no proxy for it should exist"
 	self assert: rolledBack.
 	self deny: newPerson isDBProxy.
-	self deny: ((reStore classCacheFor: newPerson class) anySatisfy: [ :each | each _proxiedObject == newPerson])
+	self assert: (newPerson _dbProxyIn: reStore ifNone: [nil]) isNil.
+	self deny: ((reStore classCacheFor: newPerson class) anySatisfy: [ :each | each == newPerson or: [each isDBProxy and: [each _proxiedObject == newPerson]]])
 ]
 
 { #category : 'tests' }

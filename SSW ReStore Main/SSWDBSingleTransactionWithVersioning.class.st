@@ -17,8 +17,8 @@ Class {
 SSWDBSingleTransactionWithVersioning >> commitFailures [
 
 	"Return the actual objects (not proxies) which failed to commit"
-	
-	^self proxyCommitFailures collect: [ :proxy | proxy _proxiedObject]
+
+	^self proxyCommitFailures "Under write barrier, due to no pre-swap proxyCommitFailures contains actual objects"
 ]
 
 { #category : 'actions' }
@@ -58,13 +58,11 @@ SSWDBSingleTransactionWithVersioning >> commitTo: aDBConnection [
 	self hasFailedCommit 
 	ifTrue: 
 		[aDBConnection rollbackTxn.
-		self freeStatements.
-		(SSWDBTransactionProxySwapper swapAll: self changedObjects)]
+		self currentReferencedObjects: self changedObjects.
+		self freeStatements]
 	ifFalse: 
 		[aDBConnection commitTxn.
-		self postCommit].
-
-	self resetChangedObjects
+		self postCommit]
 ]
 
 { #category : 'actions' }
@@ -108,21 +106,24 @@ SSWDBSingleTransactionWithVersioning >> proxyCommitFailures: anOrderedCollection
 SSWDBSingleTransactionWithVersioning >> refreshAndRollforward [
 
 	self ensureHasFailedCommit.
-	
+
 	self proxyCommitFailures do: 
-		[ :proxyObj |
-		(proxyObj _refreshAndRollforward) ifFalse: [self currentReferencedObjects remove: proxyObj]]
+		[ :obj |
+		(self activeProxiesMap at: obj) _refreshAndRollforward ifFalse: [self currentReferencedObjects remove: obj]]
 ]
 
 { #category : 'actions' }
 SSWDBSingleTransactionWithVersioning >> rollbackAndRefresh [
 
+	| failures |
+
 	self ensureHasFailedCommit.
 	
-	self proxyCommitFailures do: 
-		[ :proxyObj | 
-		self currentReferencedObjects remove: proxyObj.
-		proxyObj _unswap _forgetProxiedObject].
+	failures := self proxyCommitFailures.
+	self currentReferencedObjects: self activeProxiesMap values. 
+	self activeProxiesMap: IdentityDictionary new.
 
-	self rollback
+	self rollback.
+
+	failures do: [ :each | each _forgetProxiedObject]
 ]

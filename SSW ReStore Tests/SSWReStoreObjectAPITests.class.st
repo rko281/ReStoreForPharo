@@ -878,7 +878,7 @@ SSWReStoreObjectAPITests >> test35StoreFailureHandlerOverriddenDirectedToProxy [
 	self _test35StoreFailureHandlerOverriddenDirectedToProxy: true
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreObjectAPITests >> test36StoreFailureWithNewObject [
 
 	"Test a store failure where the objects being stored includes a new object.
@@ -909,28 +909,26 @@ SSWReStoreObjectAPITests >> test36StoreFailureWithNewObject [
 	
 	"Due to standard behaviour we should still have our changes in obj1 which should have reverted to a proxy but obj2 should not be a proxy"
 	self deny: reStore isTransactionInProgress.
-	self assert: obj1 isDBProxy.
-	self deny: obj2 isDBProxy.
-	self assert: obj1 name equals: newName.
-	self assert: obj1 single2 name equals: newSingleName.
+	self assert: obj1 name = newName.
+	self assert: obj1 single2 name = newSingleName.
 
 	"Unblock the changes and we should be able to storeAll"
 	obj1 refresh.
+	newName := oldName, 'AAA'.
+	newSingleName := oldSingleName, 'AAA'.
 	obj1 name: newName.
 	obj1 single2 name: newSingleName.
 
 	self assert: {obj1. obj2} storeAll.
 	
 	self deny: reStore isTransactionInProgress.
-	self assert: obj1 isDBProxy.
-	self assert: obj2 isDBProxy.
-	self assert: obj1 name equals: newName.
-	self assert: obj1 single2 name equals: newSingleName.
+	self assert: obj1 name = newName.
+	self assert: obj1 single2 name = newSingleName.
 
 	self assert: ((OwnerTest storedInstancesIn: reStore) detect: [ :each | each name = 'new object']) identicalTo: obj2
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreObjectAPITests >> test37StoreFailureWithNewObjectWithTransaction [
 
 	"Test a store failure involving transactions where the objects being stored includes a new object.
@@ -978,9 +976,6 @@ SSWReStoreObjectAPITests >> test37StoreFailureWithNewObjectWithTransaction [
 	self assert: reStore commitTransaction.
 
 	self deny: reStore isTransactionInProgress.
-	self assert: obj1 isDBProxy.
-	self assert: obj2 isDBProxy.
-
 	self assert: ((OwnerTest storedInstancesIn: reStore) detect: [ :each | each name = 'new object']) identicalTo: obj2
 ]
 

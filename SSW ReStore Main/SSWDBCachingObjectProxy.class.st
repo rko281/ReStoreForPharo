@@ -180,8 +180,9 @@ SSWDBCachingObjectProxy >> _refreshAndRollforwardFrom: currentProxyObject [
 			[| myUpdates |
 			myUpdates := self _fieldUpdates.
 			currentProxyObject _copyObject: copyObject.
-			currentProxyObject _fieldUpdates applyTo: proxiedObject.
-			myUpdates applyTo: proxiedObject].
+			proxiedObject whileMutableDo: 
+				[currentProxyObject _fieldUpdates applyTo: proxiedObject.
+				myUpdates applyTo: proxiedObject]].
 		true]
 ]
 

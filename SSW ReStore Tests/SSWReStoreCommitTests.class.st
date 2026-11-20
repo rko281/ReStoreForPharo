@@ -108,7 +108,17 @@ SSWReStoreCommitTests >> test04MultiStoreSameObjectViaRelationships [
 	self assert: (obj2 single2 == obj2 single3)
 ]
 
-{ #category : 'public' }
+{ #category : 'tests' }
+SSWReStoreCommitTests >> test05CommitDeletedObject [
+
+	reStore beginTransaction.
+	self assert: (reStore deferredObjectOfClass: OwnerTest withID: 77) isDBDeleted.
+	"At this point it used to be the case that the DeletedObject above was marked as touched,
+	and ReStore would crash when committing, even though it's not actually *referenced* from anywhere"
+	self shouldnt: [reStore commitTransaction] raise: Error
+]
+
+{ #category : 'tests' }
 SSWReStoreCommitTests >> test06UnstoreNonPersistentObject [
 
 	"Ensure that storing and unstoring an object within a single transaction is supported.
@@ -126,5 +136,5 @@ SSWReStoreCommitTests >> test06UnstoreNonPersistentObject [
 	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who was'] ifNone: [nil]) == obj1.
 	self assert: ((SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName: 'The man who never was'] ifNone: [nil]) isNil.
 
-	self deny: ((reStore classCacheFor: SimplePerson) anySatisfy: [:each | each _proxiedObject == obj2])
+	self deny: ((reStore classCacheFor: SimplePerson) anySatisfy: [ :each | each == obj2 or: [each isDBProxy and: [each _proxiedObject == obj2]]])
 ]

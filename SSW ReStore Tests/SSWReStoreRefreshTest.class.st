@@ -641,7 +641,7 @@ SSWReStoreRefreshTest >> testRefreshOfCopyObject [
 
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 
 	"Test previously-failing case where refreshing an object with an onRollback implementation which references an also-refreshed linked persistent object caused incorrect proxy swapping"
@@ -656,6 +656,7 @@ SSWReStoreRefreshTest >> testRefreshWithOnRollback [
 	owner := (OwnerTest storedInstancesIn: reStore) asOrderedCollection first.
 	owner owned: (OwnedTest new name: 'owned'; owner: owner; yourself); store.
 
+	reStore softRollbackAndSwap.
 	self assert: owner isDBProxy.	
 	owned := owner owned.
 	self assert: owned isDBProxy.

@@ -2382,7 +2382,9 @@ SSWReStore >> uncacheObject: aPersistentObjectProxy [
 	"Remove the given persistent object proxy to the receiver's cache"
 
 	"Use _class to avoid fetching inherited objects (issue#0015)"
-	(self classCacheFor: aPersistentObjectProxy _class) removeKey: aPersistentObjectProxy _id
+	(self classCacheFor: aPersistentObjectProxy _class) removeKey: aPersistentObjectProxy _id.
+
+	self hasTransaction ifTrue: [self transaction removeProxy: aPersistentObjectProxy]
 ]
 
 { #category : 'class maintenance' }

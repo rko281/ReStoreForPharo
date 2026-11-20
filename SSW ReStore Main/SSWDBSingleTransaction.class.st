@@ -80,7 +80,8 @@ SSWDBSingleTransaction >> postCommit [
 
 	self postCommitAllocatedIDs.
 	self changedObjects do: [ :proxyObj | proxyObj _postCommitChanges].
-	self freeStatements
+	self freeStatements.
+	self resetChangedObjects
 ]
 
 { #category : 'actions' }

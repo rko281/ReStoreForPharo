@@ -8,6 +8,7 @@ SSWReStoreResourcesTest >> _testStatementFreedAfter: aBlock [
 	templateStatement := reStore prepareStatementForQuery: (SSWSQLSelectQuery new table: (reStore tableForClass: SimplePerson); conditions: #(); yourself).
 	prevStatements := templateStatement class allInstances.
 
+	reStore softRollbackAndSwap.
 	aBlock value.
 	newStatements := templateStatement class allInstances difference: prevStatements.
 	self assert: (newStatements allSatisfy: [ :each | each isFreed]).

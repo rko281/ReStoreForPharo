@@ -189,7 +189,7 @@ SSWReStoreDebugTest >> testDebugModePreCommitErrorHandling [
 	reStore rollbackTransaction
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 
 	"Verify instVarAt: accesses directed to a proxy return the proxy's own instance variables when debug mode is active.
@@ -198,6 +198,7 @@ SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 	| john |
 	
 	john := self john.
+	reStore softRollbackAndSwap.
 	self assert: john isDBProxy.
 
 	"Non-debug mode should access the proxiedObject's instance variables"
@@ -213,13 +214,14 @@ SSWReStoreDebugTest >> testDebugModeProxyInstVarAt [
 	self assert: (john _instVarAt: 1 "firstName") equals: 'John'] ensure: [self unmakeIDEClass]
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreDebugTest >> testDebugPrintStrings [
 
 	| customerString |
 
 	customerString := customer1 class name, '<', customer1 _id printString, '>'.
 
+	reStore softRollbackAndSwap.
 	customer1 _forgetProxiedObject.
 	self assert: customer1 debugPrintString equals: '<an unrecovered ', customerString, '>'.
 	self assert: customer1 isDBProxy.

@@ -78,6 +78,8 @@ SSWDBOwnedCollectionProxy >> _forgetProxiedObject [
 { #category : 'actions-internal' }
 SSWDBOwnedCollectionProxy >> _postCommitChanges [
 
+	super _postCommitChanges.
+
 	self 
 		_clearDirty;
 		_setPersistent;

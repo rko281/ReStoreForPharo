@@ -15,7 +15,7 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest class >> testSelectors [
 SSWReStoreGeneralDictionaryReadWithComponentsTest >> addOrderFor: aProduct to: aCustomer quantity: anInteger [
 
 	"Need to convert orders to Dictionary if not already done"
-	reStore abandonTransaction.
+	reStore softRollbackAndSwap.
 	aCustomer isPersistent
 		ifTrue: [(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject become: Dictionary new]]
 		ifFalse: [(aCustomer orders isKindOf: Dictionary) ifFalse: [aCustomer orders become: Dictionary new]].

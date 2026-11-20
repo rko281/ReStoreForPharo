@@ -61,3 +61,15 @@ Object >> modificationForbiddenFor: selector index: index value: value [
 	self makeMutableAndAddToTransaction.
 	^self perform: selector withArguments: { index. value }
 ]
+
+{ #category : '*SSW ReStore Write Barrier' }
+Object >> whileMutableDo: aNiladicBlock [ 
+	"Evaluate and answer the result of the <niladicBlock> argument while the receiver is 
+	temporarily made mutable."
+
+	^self isImmutable 
+		ifTrue: 
+			[self isImmutable: false.
+			aNiladicBlock ensure: [self isImmutable: true]]
+		ifFalse: [aNiladicBlock value]
+]

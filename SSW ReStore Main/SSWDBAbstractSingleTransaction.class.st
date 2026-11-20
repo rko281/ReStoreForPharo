@@ -23,6 +23,7 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
+	currentReferencedObjects do: [ :proxy | proxy _isPersistent ifFalse: [activeProxiesMap removeKey: proxy _proxiedObject]].
 	self proxySwapper abandon: self currentReferencedObjects.
 	
 	self endObjectCollection
@@ -115,7 +116,7 @@ SSWDBAbstractSingleTransaction >> allocatedIDs: anIdentityDictionary [
 	allocatedIDs := anIdentityDictionary
 ]
 
-{ #category : 'actions' }
+{ #category : 'operations' }
 SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 
 	"Attempt to fix up the receiver following an error during the commit stage"
@@ -125,8 +126,7 @@ SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 	SSWDBTransactionProxySwapper unswapAll: self currentReferencedObjects.
 
 	"The receiver's changedObjects should now be the currentReferencedObjects"
-	self currentReferencedObjects: (self newEmptyObjectsSet: self changedObjects size).
-	(SSWDBTransactionProxySwapper swapAll: self changedObjects).
+	self currentReferencedObjects: self changedObjects.
 	self allReferencedObjects: self newEmptyObjectsSet
 ]
 
@@ -348,8 +348,10 @@ SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 
 	self allocatedIDs keysAndValuesDo: 
 		[ :tableRecord :ids |
-
-		ids do: [ :id | id postCommit].
+		ids do: 
+			[ :id | 
+			self activeProxiesMap at: id object ifPresent: [ :proxy | id object: proxy].
+			id postCommit].
 		"Avoid invoking change detection system by referencing proxied table record directly"
 		tableRecord _proxiedObject incrementNextIDBy: ids size].
 
@@ -360,6 +362,7 @@ SSWDBAbstractSingleTransaction >> postCommitAllocatedIDs [
 SSWDBAbstractSingleTransaction >> prepareToCommit [
 
 	| changed currentObjects |
+
 	changed := self newEmptyObjectsSet: self currentReferencedObjects size // 2.
 
 	"Pre-write validate the changed objects. This may cause other objects to be added to the transaction,
@@ -376,9 +379,7 @@ SSWDBAbstractSingleTransaction >> prepareToCommit [
 					proxy _prepareToCommitPhase1 ifTrue: [ needingPhase2 add: proxy ] ] ] ].
 		needingPhase2 do: [ :each | each _prepareToCommitPhase2 ] ].
 
-	self changedObjects: (changed collect: [ :each | each _proxiedObject ]).
-	SSWDBTransactionProxySwapper unswapAll: self changedObjects.
-
+	self changedObjects: changed.
 	self endObjectCollection
 ]
 
@@ -402,15 +403,15 @@ SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 	aDBProxy _isSwapped
 	ifTrue: 
 		["The standard though unusual case of an object being stored and unstored in one transaction. In this case we also need to remove any allocated ID"
-		self allocatedIDs at: aDBProxy _tableRecord ifPresent: [ :allocIDs | allocIDs removeAllSuchThat: [ :each | each object == aDBProxy _proxiedObject]].
-		self currentReferencedObjects remove: aDBProxy.
-		self allReferencedObjects remove: aDBProxy ifAbsent: []. "May be empty"
-		self activeProxiesMap removeKey: aDBProxy _proxiedObject]
+		aDBProxy _isNew ifTrue: [self allocatedIDs at: aDBProxy _tableRecord ifPresent: [ :allocIDs | allocIDs removeAllSuchThat: [ :each | each object == aDBProxy _proxiedObject]]].
+		self currentReferencedObjects remove: aDBProxy ifAbsent: [].
+		self allReferencedObjects ifNotNil: [ :all | all remove: aDBProxy ifAbsent: []]. "May be empty"
+		self activeProxiesMap removeKey: aDBProxy _proxiedObject ifAbsent: []]
 	ifFalse: 
 		["aDBProxy has been unswapped after earlier being swapped into this transaction, hence the receiver now contains the proxied object in place of the proxy and vice versa"
 		self currentReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: [].
-		self allReferencedObjects remove: aDBProxy _proxiedObject ifAbsent: []. "May be empty"
-		self activeProxiesMap removeKey: aDBProxy]
+		self allReferencedObjects ifNotNil: [ :all | all remove: aDBProxy _proxiedObject ifAbsent: []]. "May be empty"
+		self activeProxiesMap removeKey: aDBProxy ifAbsent: []]
 ]
 
 { #category : 'initializing' }

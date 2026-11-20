@@ -273,7 +273,7 @@ SSWReStoreDefaultWriteTest >> testStoreExistingObject [
 	self assert: zoe2 age = newAge
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreDefaultWriteTest >> testStoreExistingRelatedObject [
 
 	"Test the use of the store message to update an existing related object"
@@ -284,6 +284,7 @@ SSWReStoreDefaultWriteTest >> testStoreExistingRelatedObject [
 	john1 address postcode: 'JS1 1JS'.
 	john1 store.
 
+	reStore2 softRollbackAndSwap.
 	john2 := (SimplePerson storedInstancesIn: reStore2) detect: [ :each | each fullName = john1 fullName].
 	self assert: (john2 address postcode = 'JS1 1JS').
 ]

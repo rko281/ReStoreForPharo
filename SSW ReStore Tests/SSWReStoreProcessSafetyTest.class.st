@@ -44,7 +44,9 @@ SSWReStoreProcessSafetyTest >> setUp [
 	semaphore := Semaphore new.
 	self wrappedMethod: nil.
 
-	super setUp
+	super setUp.
+
+	reStore softRollbackAndSwap
 ]
 
 { #category : 'running' }

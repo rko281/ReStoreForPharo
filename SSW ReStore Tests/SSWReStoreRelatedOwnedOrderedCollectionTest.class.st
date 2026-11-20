@@ -77,7 +77,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionDeletionWithElement
 	self assert: element owner equals: template2
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithDirectCollectionStore [
 
 	"Verify that an element removed from the collection is stored correctly when the collection (rather than its owner) is stored.
@@ -97,12 +97,12 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithD
 	self fetchTestObjects.
 
 	self assert: collection size equals: size - 1.
-	((cls storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) ifNotNil: [ :elem | self deny: (collection includes: elem)].
+	((cls storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) ifNotNil: [ :elem | element := elem. self deny: (collection includes: elem)].
 
 	self _testComponentExistenceOnDependency: element
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithNilBackpointer [
 
 	"Verify that an element removed from the collection is stored correctly even if the backpointer is manually nil'd out"
@@ -122,7 +122,7 @@ SSWReStoreRelatedOwnedOrderedCollectionTest >> testCollectionElementRemovalWithN
 	self fetchTestObjects.
 
 	self assert: collection size equals: size - 1.
-	((cls storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) ifNotNil: [ :elem | self deny: (collection includes: elem)].
+	((cls storedInstancesIn: reStore) detect: [ :each | each _id = id] ifNone: [nil]) ifNotNil: [ :elem | element := elem. self deny: (collection includes: elem)].
 
 	self _testComponentExistenceOnDependency: element
 ]

@@ -369,7 +369,7 @@ SSWReStoreTableTest >> test15RenameInstVarPersistentHierarchy [
 	self ensureHierarchyColumnsAllPresent
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 
 	| table originalSize origField people |
@@ -396,6 +396,7 @@ SSWReStoreTableTest >> test16ChangeInstVarClassHierarchy [
 	people storeAllIn: reStore.
 
 	self refreshDelay.
+	reStore softRollbackAndSwap. "To refresh on read"
 
 	DetailedPerson2 useLongNotes: true.
 	self assert: (DetailedPerson2 notesSize > originalSize).

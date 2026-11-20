@@ -124,12 +124,13 @@ SSWDBGeneralCollectionProxy >> _hasChanged [
 { #category : 'actions-internal' }
 SSWDBGeneralCollectionProxy >> _postCommitChanges [
 
+	super _postCommitChanges.
+	
 	self _isPersistent 
 		ifTrue: [changes do: [ :change | change applyTo: collectionEntries]]
 		ifFalse: [self _collectionEntries: (changes collect: [ :change | change affectedEntry])].
 
 	self 
-		_clearDirty;
 		_setPersistent;
 		_resetChanges
 ]
