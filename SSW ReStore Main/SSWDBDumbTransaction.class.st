@@ -6,9 +6,6 @@ https://github.com/rko281/ReStore
 Class {
 	#name : 'SSWDBDumbTransaction',
 	#superclass : 'SSWDBAbstractSingleTransaction',
-	#instVars : [
-		'proxySwapper'
-	],
 	#category : 'SSW ReStore Main',
 	#package : 'SSW ReStore Main'
 }
@@ -54,12 +51,12 @@ SSWDBDumbTransaction >> isDumb [
 	^true
 ]
 
-{ #category : 'accessing' }
-SSWDBDumbTransaction >> proxySwapper [
+{ #category : 'operations' }
+SSWDBDumbTransaction >> ownerTransaction [ 
 
-	"Cache for potential reswap"
+	"No need to create another"
 
-	^proxySwapper ifNil: [proxySwapper := super proxySwapper]
+	^self
 ]
 
 { #category : 'actions' }
@@ -71,14 +68,4 @@ SSWDBDumbTransaction >> rollback [
 	self abandon.
 
 	^#()
-]
-
-{ #category : 'actions' }
-SSWDBDumbTransaction >> snapshot [
-
-	"Preserve any currentReferencedObjects in the swapper"
-
-	currentReferencedObjects isEmpty ifFalse: 
-		[self proxySwapper bookmark: currentReferencedObjects.
-		self currentReferencedObjects: self newEmptyObjectsSet]
 ]

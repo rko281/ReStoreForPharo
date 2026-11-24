@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'operations' }
+SSWDBTransactionProxySwapper class >> abandonAll: aCollection [
+
+	aCollection isEmpty ifFalse: [(self newFor: aCollection anyOne _reStore) abandonAll: aCollection]
+]
+
+{ #category : 'operations' }
 SSWDBTransactionProxySwapper class >> swapAll: aCollection [
 
 	"Equivalent to
@@ -57,14 +63,12 @@ SSWDBTransactionProxySwapper >> _unswap [
 ]
 
 { #category : 'operations' }
-SSWDBTransactionProxySwapper >> abandon: aCollection [
+SSWDBTransactionProxySwapper >> abandonAll: aCollection [
 
-	aCollection isEmpty ifFalse: 
-		[self reStore: aCollection anyOne _reStore.
-		self 
-			initialize: aCollection size;
-			addAll: aCollection;
-			_abandon]
+	self 
+		initialize: aCollection size;
+		addAll: aCollection;
+		_abandon
 ]
 
 { #category : 'operations' }
@@ -74,14 +78,4 @@ SSWDBTransactionProxySwapper >> addProxy: aProxy [
 	"We are used internal to the transaction mechanism,
 	so must be willing to swap proxies that are not yet persistent, i.e. about to be stored."
 	^ self addProxy: aProxy forObject: aProxy _proxiedObject
-]
-
-{ #category : 'operations' }
-SSWDBTransactionProxySwapper >> bookmark: aCollection [
-
-	aCollection isEmpty ifFalse: 
-		[self reStore: aCollection anyOne _reStore.
-		self 
-			initialize: aCollection size;
-			addAll: aCollection]
 ]

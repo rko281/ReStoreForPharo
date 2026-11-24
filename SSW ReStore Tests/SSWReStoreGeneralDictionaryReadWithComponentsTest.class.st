@@ -17,8 +17,8 @@ SSWReStoreGeneralDictionaryReadWithComponentsTest >> addOrderFor: aProduct to: a
 	"Need to convert orders to Dictionary if not already done"
 	reStore softRollbackAndSwap.
 	aCustomer isPersistent
-		ifTrue: [(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject become: Dictionary new]]
-		ifFalse: [(aCustomer orders isKindOf: Dictionary) ifFalse: [aCustomer orders become: Dictionary new]].
+		ifTrue: [(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject whileMutableDo: [aCustomer orders _proxiedObject become: Dictionary new]]]
+		ifFalse: [(aCustomer orders isKindOf: Dictionary) ifFalse: [aCustomer orders whileMutableDo: [aCustomer orders become: Dictionary new]]].
 
 	^aCustomer orders at: (SimpleAddress new postcode: (aProduct description, anInteger displayString); yourself) put: 
 		(SimpleProductOrder new 

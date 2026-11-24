@@ -24,7 +24,7 @@ SSWDBAbstractSingleTransaction >> abandon [
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
 	currentReferencedObjects do: [ :proxy | proxy _isPersistent ifFalse: [activeProxiesMap removeKey: proxy _proxiedObject]].
-	self proxySwapper abandon: self currentReferencedObjects.
+	SSWDBTransactionProxySwapper abandonAll: self currentReferencedObjects.
 	
 	self endObjectCollection
 ]
@@ -170,9 +170,7 @@ SSWDBAbstractSingleTransaction >> beginWithin: anotherTransaction [
 	
 	anotherTransaction isNil ifTrue: [^self begin].
 
-	anotherTransaction isDumb 
-		ifTrue: [anotherTransaction snapshot]
-		ifFalse: [self error: 'Nesting of transaction not supported'].
+	anotherTransaction isDumb ifFalse: [self error: 'Nesting of transaction not supported'].
 
 	self
 		allocatedIDs: (IdentityDictionary new: 64);
@@ -255,21 +253,12 @@ SSWDBAbstractSingleTransaction >> deletedObjects: anIdentitySet [
 ]
 
 { #category : 'operations' }
-SSWDBAbstractSingleTransaction >> dumbTransactionClass [
-
-	"Is pre-swapping dumb transaction still necessary?"
-	activeProxiesMap do: [ :proxy | proxy _reStore ifNotNil: [ :reStore | ^reStore dumbTransactionClass]].
-
-	^SSWDBDumbTransaction
-]
-
-{ #category : 'operations' }
 SSWDBAbstractSingleTransaction >> endObjectCollection [
 
 	"End the accumulation of referenced objects"
 
 	self 
-		allReferencedObjects: nil;
+		allReferencedObjects: self newEmptyObjectsSet;
 		currentReferencedObjects: self newEmptyObjectsSet
 ]
 
@@ -337,7 +326,7 @@ SSWDBAbstractSingleTransaction >> nextCollectionPhase [
 { #category : 'operations' }
 SSWDBAbstractSingleTransaction >> ownerTransaction [
 
-	^self dumbTransactionClass new
+	^SSWDBDumbTransaction new
 		beginObjectCollection;
 		activeProxiesMap: self activeProxiesMap;
 		yourself
@@ -389,12 +378,6 @@ SSWDBAbstractSingleTransaction >> proxyForObject: anObject ifNone: aBlock [
 	^self activeProxiesMap at: anObject ifAbsent: aBlock
 ]
 
-{ #category : 'evaluating' }
-SSWDBAbstractSingleTransaction >> proxySwapper [
-
-	^ SSWDBTransactionProxySwapper new
-]
-
 { #category : 'operations' }
 SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 
@@ -418,11 +401,4 @@ SSWDBAbstractSingleTransaction >> removeProxy: aDBProxy [
 SSWDBAbstractSingleTransaction >> resetChangedObjects [
 
 	self changedObjects: nil
-]
-
-{ #category : 'operations' }
-SSWDBAbstractSingleTransaction >> rollbackAndUnswap [
-
-	self activeProxiesMap do: [ :proxy | proxy isDBProxy ifTrue: [proxy __referenced]].
-	self rollback
 ]

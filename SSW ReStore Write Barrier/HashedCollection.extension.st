@@ -8,12 +8,3 @@ HashedCollection >> isDBImmutable: aBoolean [
 		isImmutable: aBoolean;
 		dbImmutabilityHandler: self
 ]
-
-{ #category : '*SSW ReStore Write Barrier' }
-HashedCollection >> setArrayImmutability [
-
-	self isImmutable ifTrue: 
-		[ array 
-			isImmutable: true;
-			dbImmutabilityHandler: self ]
-]

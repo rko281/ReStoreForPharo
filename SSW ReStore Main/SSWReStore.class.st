@@ -22,8 +22,7 @@ Class {
 		'affiliations',
 		'isDebugging',
 		'storeFailureHandler',
-		'currentRecoveries',
-		'dumbTransactionClass'
+		'currentRecoveries'
 	],
 	#classInstVars : [
 		'globalDefault',
@@ -386,7 +385,7 @@ SSWReStore >> beginDumbTransaction [
 
 	"Begin a dumb transaction to absorb object traversals"
 
-	self transaction: (self dumbTransactionClass new begin; yourself)
+	self transaction: (SSWDBDumbTransaction new begin; yourself)
 ]
 
 { #category : 'transaction api' }
@@ -950,18 +949,6 @@ SSWReStore >> disconnect [
 	self mustBeConnected.
 
 	self hardDisconnect
-]
-
-{ #category : 'accessing' }
-SSWReStore >> dumbTransactionClass [
-
-	^dumbTransactionClass ifNil: [SSWDBDumbTransaction]
-]
-
-{ #category : 'accessing' }
-SSWReStore >> dumbTransactionClass: aClass [
-
-	dumbTransactionClass := aClass
 ]
 
 { #category : 'class maintenance' }
@@ -1620,22 +1607,6 @@ SSWReStore >> prepareStatementForQuery: anSSWSQLQuery [
 	anSSWSQLQuery preExecIn: self.
 
 	^self connection prepareQuery: anSSWSQLQuery
-]
-
-{ #category : 'proxy swapping' }
-SSWReStore >> preserveSwappedProxiesFollowingTransaction: aBlock [
-
-	"Evaluate aBlock (which should invoke some transaction operation) ensuring that the current set of swapped proxies is restored after the transaction completes"
-
-	self transactionCritical: 
-		[self transaction 
-		ifNil: 
-			[aBlock value]
-		ifNotNil: 
-			[ :previousTransaction |
-			previousTransaction isDumb ifFalse: [self error: 'not appropriate'].
-			aBlock value.
-			previousTransaction proxySwapper isEmpty ifFalse: [previousTransaction proxySwapper reswap]]]
 ]
 
 { #category : 'accessing' }

@@ -52,7 +52,7 @@ SSWReStoreDebugTest >> testCommitErrorCleanup [
 		[ :exc | 
 		"Verify not yet cleaned up"
 		self deny: exc isRecovered.
-		self assert: reStore transaction allReferencedObjects isNil.
+		self assert: reStore transaction allReferencedObjects isEmpty.
 		exc return: exc].
 
 	"Verify cleaned up"
@@ -69,7 +69,7 @@ SSWReStoreDebugTest >> testCommitErrorCleanup [
 	error := [reStore commitTransaction] on: actualErrorClass do: 
 		[ :exc | 
 		"Verify not yet cleaned up"
-		self assert: reStore transaction allReferencedObjects isNil. 
+		self assert: reStore transaction allReferencedObjects isEmpty. 
 		exc return: exc].
 	self assert: error notNil.
 	self assert: error class equals: actualErrorClass.

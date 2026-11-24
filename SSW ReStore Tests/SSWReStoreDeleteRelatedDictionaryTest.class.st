@@ -16,7 +16,7 @@ SSWReStoreDeleteRelatedDictionaryTest >> addOrderFor: aProduct to: aCustomer qua
 
 	"Need to convert orders to Dictionary if not already done"
 	reStore softRollbackAndSwap.
-	(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject become: Dictionary new].
+	(aCustomer orders _proxiedObject isKindOf: Dictionary) ifFalse: [aCustomer orders _proxiedObject whileMutableDo: [aCustomer orders _proxiedObject become: Dictionary new]].
 
 	^aCustomer orders at: (SimpleAddress new postcode: (aProduct description, anInteger displayString); yourself) put: 
 		(SimpleProductOrder new 
