@@ -394,10 +394,9 @@ SSWReStoreProxySwapperTest >> testSwapCountSingleRollback [
 	self assert: reStore transaction currentReferencedObjects size equals: 1.
 	self countSwapsDuring: [ownerTest rollback].
 
-	self assert: SwapCount equals: 19.
+	self assert: SwapCount equals: 18.
 	self assert: reStore transaction activeProxiesMap size equals: activeCount - 18.
-	self assert: reStore transaction currentReferencedObjects isEmpty.
-
+	self assert: reStore transaction currentReferencedObjects isEmpty
 ]
 
 { #category : 'tests' }

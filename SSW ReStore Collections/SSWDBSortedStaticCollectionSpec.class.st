@@ -109,7 +109,7 @@ SSWDBSortedStaticCollectionSpec >> recoverModelClassCollectionForProxy: aCollect
 				ifFalse: [targetTable recoverInstanceFromRow: row into: entry target]]
 		ifFalse: 
 			["Need to refresh even if touched to preserve correctness of sort"
-			(entry target _dbProxyIn: aCollectionProxy _reStore ifNone: [nil]) ifNotNil: [ :proxy | proxy _isDirty ifFalse: [proxy _refreshFromRow: row table: targetTable]]].
+			(entry target _dbProxyIn: aCollectionProxy _reStore ifNone: [nil]) ifNotNil: [ :proxy | proxy _refreshFromRow: row table: targetTable]].
 		entry
 			addTo: entries;
 			addTargetTo: collection].

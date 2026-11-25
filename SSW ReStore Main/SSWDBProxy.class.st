@@ -78,6 +78,12 @@ SSWDBProxy >> _abandonChanges [
 	self _isPersistent ifTrue: [self _unswap]
 ]
 
+{ #category : 'actions-internal' }
+SSWDBProxy >> _armWriteBarrier [
+
+	proxiedObject isNil ifFalse: [proxiedObject isDBImmutable: true proxy: self]
+]
+
 { #category : 'accessing' }
 SSWDBProxy >> _changedObjectsIn: aReStore [
 

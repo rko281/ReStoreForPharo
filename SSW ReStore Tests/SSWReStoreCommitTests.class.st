@@ -138,3 +138,40 @@ SSWReStoreCommitTests >> test06UnstoreNonPersistentObject [
 
 	self deny: ((reStore classCacheFor: SimplePerson) anySatisfy: [ :each | each == obj2 or: [each isDBProxy and: [each _proxiedObject == obj2]]])
 ]
+
+{ #category : 'public' }
+SSWReStoreCommitTests >> test07ChangesOusideTransaction [
+
+	| p1 p2 |
+
+	p1 := SimplePerson new firstName: 'Joe'.
+	p2 := SimplePerson new firstName: 'Molly'.
+	self assert: ({p1. p2} storeAllIn: reStore).
+	
+	p1 surname: 'Smith'.
+	reStore beginTransaction.
+	p2 surname: 'Jones'.
+	self assert: reStore commitTransaction.
+
+	reStore simulateReconnect.
+	p1 := (SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'Joe'].
+	p2 := (SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'Molly'].
+
+	"p1 change won't have been persisted due to change outside the transaction"
+	self assert: p1 surname isNil.
+	self assert: p2 surname equals: 'Jones'.
+
+	"Try again but with an additional separate change inside the transaction"
+	p1 surname: 'Smith'.
+	reStore beginTransaction.
+	p1 friend: p2.
+	self assert: reStore commitTransaction.
+
+	reStore simulateReconnect.
+	p1 := (SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'Joe'].
+	p2 := (SimplePerson storedInstancesIn: reStore) detect: [ :each | each firstName = 'Molly'].
+
+	"Both p1 changes should have been persisted since one was within the transaction"
+	self assert: p1 surname equals: 'Smith'.
+	self assert: p1 friend identicalTo: p2
+]

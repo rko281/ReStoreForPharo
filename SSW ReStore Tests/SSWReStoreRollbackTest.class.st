@@ -27,6 +27,35 @@ SSWReStoreRollbackTest >> testRollbackChanges [
 ]
 
 { #category : 'tests' }
+SSWReStoreRollbackTest >> testRollbackChangesOutsideTransaction [
+
+	| p1 p2 |
+
+	p1 := SimplePerson new firstName: 'Joe'.
+	p2 := SimplePerson new firstName: 'Molly'.
+	self assert: ({p1. p2} storeAllIn: reStore).
+	
+	p1 surname: 'Smith'.
+	reStore beginTransaction.
+	p2 surname: 'Jones'.
+	reStore rollbackTransaction.
+
+	"p1 change won't have been rolled back due to happening outside the transaction"
+	self assert: p1 surname equals: 'Smith'.
+	self assert: p2 surname isNil.
+
+	"Try again but with an additional separate change inside the transaction"
+	p1 surname: 'Smith'.
+	reStore beginTransaction.
+	p1 friend: p2.
+	reStore rollbackTransaction.
+
+	"Both p1 changes should have been rolled back since one was within the transaction"
+	self assert: p1 surname isNil.
+	self assert: p1 friend isNil
+]
+
+{ #category : 'tests' }
 SSWReStoreRollbackTest >> testRollbackChangesPreservesEventsInRegister [
 
 	"Verify a rollback preserves events stored in the _EventsRegister / EventManager"

@@ -23,8 +23,11 @@ SSWDBAbstractSingleTransaction >> abandon [
 
 	"End this transaction, leaving objects in their current state (unlike rollback which returns them to their state prior to the transaction)"
 
-	currentReferencedObjects do: [ :proxy | proxy _isPersistent ifFalse: [activeProxiesMap removeKey: proxy _proxiedObject]].
-	SSWDBTransactionProxySwapper abandonAll: self currentReferencedObjects.
+	currentReferencedObjects do: 
+		[ :proxy | 
+		proxy _isPersistent 
+			ifTrue: [proxy _armWriteBarrier]
+			ifFalse: [activeProxiesMap removeKey: proxy _proxiedObject]].
 	
 	self endObjectCollection
 ]
@@ -57,12 +60,11 @@ SSWDBAbstractSingleTransaction >> addProxy: aDBProxy [
 	"Add aDBProxy to the collection of potentially-changed objects.
 	ASSERT: aDBProxy is swapped, wearing the back-face identity of the pair."
 
-	aDBProxy _proxiedObject ifNotNil: 
-		[ :object | 
-		object isDBImmutable: true proxy: aDBProxy.
-		self activeProxiesMap at: object put: aDBProxy].
+	self activeProxiesMap at: aDBProxy _proxiedObject put: aDBProxy.
 
-	aDBProxy _isDirty ifTrue: [self currentReferencedObjects add: aDBProxy]
+	aDBProxy _isDirty 
+		ifTrue: [self currentReferencedObjects add: aDBProxy]
+		ifFalse: [aDBProxy _armWriteBarrier]
 ]
 
 { #category : 'accessing' }
@@ -121,10 +123,6 @@ SSWDBAbstractSingleTransaction >> autoRecoverCommitIn: anSSWReStore [
 
 	"Attempt to fix up the receiver following an error during the commit stage"
 
-	"Any objects referenced during the errored commit will erroneously be in currentReferencedObjects.
-	Swap back and forget"
-	SSWDBTransactionProxySwapper unswapAll: self currentReferencedObjects.
-
 	"The receiver's changedObjects should now be the currentReferencedObjects"
 	self currentReferencedObjects: self changedObjects.
 	self allReferencedObjects: self newEmptyObjectsSet
@@ -170,7 +168,9 @@ SSWDBAbstractSingleTransaction >> beginWithin: anotherTransaction [
 	
 	anotherTransaction isNil ifTrue: [^self begin].
 
-	anotherTransaction isDumb ifFalse: [self error: 'Nesting of transaction not supported'].
+	anotherTransaction isDumb 
+		ifTrue: [anotherTransaction abandon]
+		ifFalse: [self error: 'Nesting of transaction not supported'].
 
 	self
 		allocatedIDs: (IdentityDictionary new: 64);

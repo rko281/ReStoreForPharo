@@ -388,19 +388,11 @@ SSWReStore >> beginDumbTransaction [
 	self transaction: (SSWDBDumbTransaction new begin; yourself)
 ]
 
-{ #category : 'transaction api' }
+{ #category : 'transactions' }
 SSWReStore >> beginTransaction [
 
-	self beginTransactionWithSoftRollback: true
-]
-
-{ #category : 'transaction management' }
-SSWReStore >> beginTransactionWithSoftRollback: aBoolean [
-
 	self transactionCritical: 
-		[aBoolean ifTrue: [self softRollback].
-
-		self transaction: 
+		[self transaction: 
 			(self transactionClass new
 				beginWithin: self transaction;
 				yourself)]
@@ -1009,20 +1001,12 @@ SSWReStore >> enterDebugMode [
 	self isDebugging: true
 ]
 
-{ #category : 'transaction api' }
+{ #category : 'transactions' }
 SSWReStore >> evaluateAsTransaction: aBlock [
 
 	"Return whether the commit succeeded"
-	
-	^self evaluateAsTransaction: aBlock withSoftRollback: true
-]
 
-{ #category : 'transaction management' }
-SSWReStore >> evaluateAsTransaction: aBlock withSoftRollback: aBoolean [
-
-	"Private - Return whether the commit succeeded"
-	
-	^[self beginTransactionWithSoftRollback: aBoolean.
+	^[self beginTransaction.
 	aBlock value.
 	self commitTransaction] ifCurtailed: [self rollbackTransaction]
 ]
@@ -1051,7 +1035,7 @@ SSWReStore >> evaluateAsTxn: aBlock [
 	^self connection evaluateAsTxn: aBlock
 ]
 
-{ #category : 'transaction management' }
+{ #category : 'transactions' }
 SSWReStore >> evaluateInTransaction: aBlock [
 
 	"Private - Evaluate aBlock within a transaction:
@@ -1063,7 +1047,7 @@ SSWReStore >> evaluateInTransaction: aBlock [
 	
 	^self isTransactionInProgress
 		ifTrue: [aBlock value. true]
-		ifFalse: [self evaluateAsTransaction: aBlock withSoftRollback: false]
+		ifFalse: [self evaluateAsTransaction: aBlock]
 ]
 
 { #category : 'connection' }

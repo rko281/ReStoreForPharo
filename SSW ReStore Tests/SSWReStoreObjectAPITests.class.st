@@ -640,7 +640,7 @@ SSWReStoreObjectAPITests >> test14HasAnyChanged [
 	self deny: objs hasAnyChanged
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 
 	"Test use of store/unstore methods with an open transaction"
@@ -659,7 +659,7 @@ SSWReStoreObjectAPITests >> test15StoreWithTransaction [
 
 	reStore beginTransaction.
 
-	self assert: obj1 isDBProxy. "Since it was changed outside the transaction it is unswapped by beginTransaction"
+	self deny: obj1 isDBProxy. "Write barrier - no longer unswap objects changed outside the transaction"
 	self deny: obj2 isDBProxy. "Wasn't changed outside the transaction so isn't unswapped"
 
 	obj1 store.
@@ -744,7 +744,7 @@ SSWReStoreObjectAPITests >> test16StoreWithTransactionNonProxied [
 	self assert: obj3 single2 name equals: 'test3'
 ]
 
-{ #category : 'unit tests' }
+{ #category : 'tests' }
 SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 
 	"Test use of store/unstore methods with an open transaction which is rolled back"
@@ -762,7 +762,7 @@ SSWReStoreObjectAPITests >> test17StoreWithTransactionRollback [
 
 	reStore beginTransaction.
 
-	self assert: obj1 isDBProxy. "Since it was changed outside the transaction it is unswapped by beginTransaction"
+	self deny: obj1 isDBProxy. "Write barrier - no longer unswap objects changed outside the transaction"
 	self deny: obj2 isDBProxy. "Wasn't changed outside the transaction so isn't unswapped"
 
 	obj1 store.
